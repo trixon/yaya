@@ -5,9 +5,11 @@
         <groupId>se.trixon.yaya</groupId>
         <artifactId>parent</artifactId>
         <version>0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>main</artifactId>
     <packaging>nbm</packaging>
+
     <build>
         <plugins>
             <plugin>
@@ -26,6 +28,7 @@
             </plugin>
         </plugins>
     </build>
+
     <dependencies>
         <dependency>
             <groupId>org.netbeans.api</groupId>
@@ -33,6 +36,7 @@
             <version>${netbeans.version}</version>
         </dependency>
     </dependencies>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>

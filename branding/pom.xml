@@ -6,6 +6,7 @@
         <groupId>se.trixon.yaya</groupId>
         <artifactId>parent</artifactId>
         <version>0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>branding</artifactId>
@@ -35,7 +36,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <!-- to have the jar plugin pickup the nbm generated manifest -->
                     <archive>
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
                     </archive>
