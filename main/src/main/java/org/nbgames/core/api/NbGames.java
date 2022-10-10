@@ -19,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.scene.paint.Color;
-import org.nbgames.core.toolbar.AppToolBar;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 import se.trixon.almond.nbp.Monitor;
@@ -38,7 +37,7 @@ public class NbGames {
     private static final int ICON_SIZE_CONTEXT_MENU = 16;
     private static final int ICON_SIZE_TOOLBAR = 36;
     private static final int ICON_SIZE_TOOLBAR_INT = 24;
-    private static AppToolBar sAppToolBar;
+//    private static AppToolBar sAppToolBar;
     private static final Color sIconColor = Color.BLACK;
 
     public static void errln(String name, String message) {
@@ -49,10 +48,9 @@ public class NbGames {
         return AlmondOptions.getInstance();
     }
 
-    public static AppToolBar getAppToolBar() {
-        return sAppToolBar;
-    }
-
+//    public static AppToolBar getAppToolBar() {
+//        return sAppToolBar;
+//    }
     public static ResourceBundle getBundle() {
         return NbBundle.getBundle(NbGames.class);
     }
@@ -85,8 +83,7 @@ public class NbGames {
         new Monitor(name, false, true).outln(message);
     }
 
-    public static void setToolBar(AppToolBar appToolBar) {
-        NbGames.sAppToolBar = appToolBar;
-    }
-
+//    public static void setToolBar(AppToolBar appToolBar) {
+//        NbGames.sAppToolBar = appToolBar;
+//    }
 }

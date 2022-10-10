@@ -20,11 +20,9 @@ import java.util.Comparator;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.StringUtils;
-import org.nbgames.core.NbGamesTopComponent;
 import org.nbgames.core.api.GameController;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
-import org.openide.windows.WindowManager;
 import se.trixon.almond.nbp.Almond;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.icons.material.MaterialIcon;
@@ -113,8 +111,8 @@ public class GameOverDialog {
 
         SwingUtilities.invokeLater(() -> {
             if (retVal == mNewGameButton) {
-                NbGamesTopComponent nbGamesTopComponent = (NbGamesTopComponent) WindowManager.getDefault().findTopComponent("NbGamesTopComponent");
-                nbGamesTopComponent.displayNewGameDialog(gameController);
+//                NbGamesTopComponent nbGamesTopComponent = (NbGamesTopComponent) WindowManager.getDefault().findTopComponent("NbGamesTopComponent");
+//                nbGamesTopComponent.displayNewGameDialog(gameController);
             } else if (retVal == mQuickNewGameButton) {
                 gameController.onRequestNewGameStart();
             }

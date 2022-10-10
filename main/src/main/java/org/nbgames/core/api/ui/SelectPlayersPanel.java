@@ -24,7 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.SpinnerNumberModel;
 import org.apache.commons.lang3.StringUtils;
 import org.nbgames.core.api.Player;
-import org.nbgames.core.api.db.manager.PlayerManager;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.util.Dict;
 
@@ -133,8 +132,8 @@ public class SelectPlayersPanel extends javax.swing.JPanel {
     private void initCombos() {
         try {
             for (int i = 0; i < mMaxNumOfPlayers; i++) {
-                mModels[i] = PlayerManager.getInstance().getComboBoxModel();
-                mCombos[i].setModel(mModels[i]);
+//                mModels[i] = PlayerManager.getInstance().getComboBoxModel();
+//                mCombos[i].setModel(mModels[i]);
             }
         } catch (NullPointerException e) {
             // nvm
