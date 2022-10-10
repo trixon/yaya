@@ -15,10 +15,9 @@
  */
 package se.trixon.yaya.main;
 
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import org.openide.awt.Actions;
 import org.openide.windows.OnShowing;
-import se.trixon.almond.nbp.swing.NoTabsTabDisplayerUI;
+import org.openide.windows.WindowManager;
 
 /**
  *
@@ -29,14 +28,11 @@ public class DoOnShowing implements Runnable {
 
     @Override
     public void run() {
-        SwingUtilities.invokeLater(() -> {
-            UIManager.put("EditorTabDisplayerUI", NoTabsTabDisplayerUI.class.getName());
-//            UIManager.put("EditorTabDisplayerUI", NoTabsTabDisplayerUI.ID);
-            //UIManager.put("NbMainWindow.showCustomBackground", Boolean.TRUE);
-            //System.setProperty("netbeans.winsys.status_line.path", "");
-        });
-
-//        Almond.openAndActivateTopComponent("MainTopComponent");
+        var windowManager = WindowManager.getDefault();
+        var topComponent = windowManager.findTopComponent("MainTopComponent");
+        topComponent.open();
+        topComponent.requestActive();
+        Actions.forID("Window", "org.netbeans.core.windows.actions.ShowEditorOnlyAction").actionPerformed(null);
     }
 
 }

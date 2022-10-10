@@ -16,7 +16,7 @@
 package se.trixon.yaya.main;
 
 import java.util.prefs.BackingStoreException;
-import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import org.openide.modules.OnStart;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.nbp.dialogs.NbOptionalDialog;
@@ -30,6 +30,8 @@ import se.trixon.almond.util.PrefsHelper;
 public class DoOnStart implements Runnable {
 
     static {
+        UIManager.put("NbMainWindow.showCustomBackground", Boolean.TRUE);
+        System.setProperty("netbeans.winsys.status_line.path", "");
         System.setProperty("netbeans.winsys.no_help_in_dialogs", "true");
         System.setProperty("netbeans.winsys.no_toolbars", "true");
 
@@ -47,11 +49,6 @@ public class DoOnStart implements Runnable {
 
     @Override
     public void run() {
-        SwingUtilities.invokeLater(() -> {
-//            UIManager.put("EditorTabDisplayerUI", NoTabsTabDisplayerUI.class.getName());
-            //UIManager.put("NbMainWindow.showCustomBackground", Boolean.TRUE);
-            //System.setProperty("netbeans.winsys.status_line.path", "");
-        });
     }
 
 }
