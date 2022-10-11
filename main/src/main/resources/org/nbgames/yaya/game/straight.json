@@ -1,0 +1,130 @@
+{
+  "id": "org.nbgames.yaya.straight",
+  "author": "Patrik Karlström",
+  "title": "Straight",
+  "format_version": 1,
+  "version_date": "2014-01-03",
+  "version_name": "2",
+  "dice": 6,
+  "rolls": 2,
+  "result_row": 8,
+  "default_variant": 0,
+  "variants": [
+    "STANDARD",
+    "DOWNWARDS",
+    "UPWARDS",
+    "RANDOM"
+  ],
+  "i10n": {
+    "title-sv": "Stegen"
+  },
+  "rows": [
+    {
+      "id": "rolls",
+      "lim": 0,
+      "max": 0,
+      "roll_counter": true,
+      "sum": true,
+      "title": "Throws",
+      "title_symbol": "",
+      "i10n": {
+        "title-sv": "Slag"
+      }
+    },
+    {
+      "formula": "sum 1",
+      "id": "ones",
+      "lim": 2,
+      "max": 5,
+      "playable": true,
+      "title": "Ones",
+      "title_symbol": "⚀",
+      "i10n": {
+        "title-sv": "Ettor"
+      }
+    },
+    {
+      "formula": "sum 2",
+      "id": "twos",
+      "lim": 4,
+      "max": 10,
+      "playable": true,
+      "title": "Twos",
+      "title_symbol": "⚁",
+      "i10n": {
+        "title-sv": "Tvåor"
+      }
+    },
+    {
+      "formula": "sum 3",
+      "id": "threes",
+      "lim": 6,
+      "max": 15,
+      "playable": true,
+      "title": "Threes",
+      "title_symbol": "⚂",
+      "i10n": {
+        "title-sv": "Treor"
+      }
+    },
+    {
+      "formula": "sum 4",
+      "id": "fours",
+      "lim": 8,
+      "max": 20,
+      "playable": true,
+      "title": "Fours",
+      "title_symbol": "⚃",
+      "i10n": {
+        "title-sv": "Fyror"
+      }
+    },
+    {
+      "formula": "sum 5",
+      "id": "fives",
+      "lim": 10,
+      "max": 25,
+      "playable": true,
+      "title": "Fives",
+      "title_symbol": "⚄",
+      "i10n": {
+        "title-sv": "Femmor"
+      }
+    },
+    {
+      "formula": "sum 6",
+      "id": "sixes",
+      "lim": 12,
+      "max": 30,
+      "playable": true,
+      "title": "Sixes",
+      "title_symbol": "⚅",
+      "i10n": {
+        "title-sv": "Sexor"
+      }
+    },
+    {
+      "formula": "straight 6",
+      "id": "fullStraight",
+      "lim": 21,
+      "max": 45,
+      "playable": true,
+      "title": "Full Straight",
+      "title_symbol": "⚀ ⚁ ⚂ ⚃ ⚄ ⚅",
+      "i10n": {
+        "title-sv": "Full stege"
+      }
+    },
+    {
+      "id": "total",
+      "lim": 0,
+      "max": 171,
+      "sum": true,
+      "title": "Total",
+      "title_symbol": "∑",
+      "i10n": {
+        "title-sv": "Summa"
+      }
+    }
+  ]
+}
