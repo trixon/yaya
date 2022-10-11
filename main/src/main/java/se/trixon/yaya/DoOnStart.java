@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.main;
+package se.trixon.yaya;
 
 import java.util.prefs.BackingStoreException;
 import javax.swing.UIManager;
