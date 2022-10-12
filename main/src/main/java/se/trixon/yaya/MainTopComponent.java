@@ -45,9 +45,8 @@ import org.openide.windows.TopComponent;
         preferredID = "MainTopComponent"
 )
 @Messages({
-    "CTL_MainAction=Main",
-    "CTL_MainTopComponent=Main Window",
-    "HINT_MainTopComponent=This is a Main window"
+    "CTL_MainAction=Yaya",
+    "CTL_MainTopComponent=Yaya"
 })
 public final class MainTopComponent extends TopComponent {
 
@@ -56,7 +55,6 @@ public final class MainTopComponent extends TopComponent {
     public MainTopComponent() {
         initComponents();
         setName(Bundle.CTL_MainTopComponent());
-        setToolTipText(Bundle.HINT_MainTopComponent());
         putClientProperty(TopComponent.PROP_CLOSING_DISABLED, Boolean.TRUE);
         putClientProperty(TopComponent.PROP_DRAGGING_DISABLED, Boolean.TRUE);
         putClientProperty(TopComponent.PROP_UNDOCKING_DISABLED, Boolean.TRUE);

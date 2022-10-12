@@ -15,12 +15,17 @@
  */
 package se.trixon.yaya;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.prefs.BackingStoreException;
 import javax.swing.UIManager;
+import org.openide.awt.HtmlBrowser;
 import org.openide.modules.OnStart;
+import org.openide.util.Exceptions;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.nbp.dialogs.NbOptionalDialog;
 import se.trixon.almond.util.PrefsHelper;
+import se.trixon.almond.util.SystemHelper;
 
 /**
  *
@@ -49,6 +54,13 @@ public class DoOnStart implements Runnable {
 
     @Override
     public void run() {
+        SystemHelper.setDesktopBrowser(url -> {
+            try {
+                HtmlBrowser.URLDisplayer.getDefault().showURL(new URL(url));
+            } catch (MalformedURLException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        });
     }
 
 }

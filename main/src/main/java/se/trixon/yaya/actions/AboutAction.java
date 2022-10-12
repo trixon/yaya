@@ -22,6 +22,10 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle.Messages;
+import se.trixon.almond.nbp.dialogs.NbAbout;
+import se.trixon.almond.util.SystemHelper;
+import se.trixon.almond.util.swing.AboutModel;
+import se.trixon.yaya.MainTopComponent;
 
 @ActionID(
         category = "Yaya",
@@ -38,7 +42,8 @@ public final class AboutAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("about");
-
+        var aboutModel = new AboutModel(SystemHelper.getBundle(MainTopComponent.class, "about"), SystemHelper.getResourceAsImageIcon(MainTopComponent.class, "logo.png"));
+        var nbAboutFx = new NbAbout(aboutModel);
+        nbAboutFx.display();
     }
 }
