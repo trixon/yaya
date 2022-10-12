@@ -33,7 +33,6 @@ import org.openide.util.NbBundle.Messages;
         displayName = "#CTL_FullscreenAction"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Tools", position = 1400),
     @ActionReference(path = "Shortcuts", name = "F11")
 })
 @Messages("CTL_FullscreenAction=Fullscreen")

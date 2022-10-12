@@ -31,7 +31,6 @@ import org.openide.util.NbBundle.Messages;
         displayName = "#CTL_OptionsAction"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Tools", position = 1400),
     @ActionReference(path = "Shortcuts", name = "D-COMMA")
 })
 @Messages("CTL_OptionsAction=Options")

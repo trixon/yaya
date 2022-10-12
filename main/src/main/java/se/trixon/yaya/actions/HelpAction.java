@@ -31,7 +31,6 @@ import org.openide.util.NbBundle.Messages;
         displayName = "#CTL_HelpAction"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Tools", position = 1400),
     @ActionReference(path = "Shortcuts", name = "F1")
 })
 @Messages("CTL_HelpAction=Help")

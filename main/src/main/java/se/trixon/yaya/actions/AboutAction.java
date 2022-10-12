@@ -18,8 +18,6 @@ package se.trixon.yaya.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.openide.awt.ActionID;
-import org.openide.awt.ActionReference;
-import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle.Messages;
 import se.trixon.almond.nbp.dialogs.NbAbout;
@@ -34,9 +32,6 @@ import se.trixon.yaya.MainTopComponent;
 @ActionRegistration(
         displayName = "#CTL_AboutAction"
 )
-@ActionReferences({
-    @ActionReference(path = "Menu/Tools", position = 1400)
-})
 @Messages("CTL_AboutAction=About")
 public final class AboutAction implements ActionListener {
 
