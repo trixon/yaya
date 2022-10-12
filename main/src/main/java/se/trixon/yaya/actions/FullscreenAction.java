@@ -17,10 +17,12 @@ package se.trixon.yaya.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.apache.commons.lang3.SystemUtils;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
+import org.openide.awt.Actions;
 import org.openide.util.NbBundle.Messages;
 
 @ActionID(
@@ -39,7 +41,10 @@ public final class FullscreenAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("fullscreen");
-
+        if (SystemUtils.IS_OS_MAC) {
+            Actions.forID("Almond", "se.trixon.almond.nbp.osx.actions.ToggleFullScreenAction").actionPerformed(null);
+        } else {
+            Actions.forID("Window", "org.netbeans.core.windows.actions.ToggleFullScreenAction").actionPerformed(null);
+        }
     }
 }

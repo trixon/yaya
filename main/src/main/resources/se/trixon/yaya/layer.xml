@@ -14,4 +14,8 @@
             </file>
         </folder>
     </folder>
+    <folder name="Shortcuts">
+        <file name="DS-ENTER.shadow_hidden"/>
+        <file name="OS-ENTER.shadow_hidden"/>
+    </folder>
 </filesystem>
