@@ -21,6 +21,7 @@ import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
+import org.openide.awt.Actions;
 import org.openide.util.NbBundle.Messages;
 
 @ActionID(
@@ -38,7 +39,6 @@ public final class OptionsAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("options");
-
+        Actions.forID("Window", "org.netbeans.modules.options.OptionsWindowAction").actionPerformed(null);
     }
 }
