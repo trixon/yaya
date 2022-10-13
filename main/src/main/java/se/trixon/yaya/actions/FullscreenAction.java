@@ -24,6 +24,8 @@ import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.awt.Actions;
 import org.openide.util.NbBundle.Messages;
+import se.trixon.almond.nbp.Almond;
+import se.trixon.yaya.Options;
 
 @ActionID(
         category = "Yaya",
@@ -38,6 +40,8 @@ import org.openide.util.NbBundle.Messages;
 @Messages("CTL_FullscreenAction=Fullscreen")
 public final class FullscreenAction implements ActionListener {
 
+    private final Options mOptions = Options.getInstance();
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (SystemUtils.IS_OS_MAC) {
@@ -45,5 +49,7 @@ public final class FullscreenAction implements ActionListener {
         } else {
             Actions.forID("Window", "org.netbeans.core.windows.actions.ToggleFullScreenAction").actionPerformed(null);
         }
+
+        mOptions.setFullscreen(Almond.getFrame().isUndecorated());
     }
 }
