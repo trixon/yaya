@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya;
+package se.trixon.yaya;
 
 import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
-import org.nbgames.core.api.ui.NewGamePanel;
+import javax.swing.JPanel;
 import org.nbgames.yaya.gamedef.GameType;
 import org.nbgames.yaya.gamedef.GameTypeLoader;
 import org.openide.util.NbBundle;
@@ -27,7 +27,7 @@ import se.trixon.almond.util.Dict;
  *
  * @author Patrik Karlström
  */
-public class YayaNewGamePanel extends NewGamePanel {
+public class NewGamePanel extends JPanel {
 
     private final GameTypeLoader mGameDef = GameTypeLoader.getInstance();
     private GameType mGameType;
@@ -36,14 +36,13 @@ public class YayaNewGamePanel extends NewGamePanel {
     /**
      * Creates new form YayaNewGamePanel
      */
-    public YayaNewGamePanel() {
+    public NewGamePanel() {
         initComponents();
 
         variantLabel.setFont(gameLabel.getFont());
         selectPlayersPanel.getLabel().setFont(gameLabel.getFont());
     }
 
-    @Override
     public void load() {
         //mGameDef.init();
         gameComboBox.setModel(new DefaultComboBoxModel(mGameDef.getTitleArray()));
@@ -52,7 +51,6 @@ public class YayaNewGamePanel extends NewGamePanel {
         selectPlayersPanel.restoreSelection(getClass());
     }
 
-    @Override
     public void save() {
         String gameTypeId = mGameDef.getIdForIndex(gameComboBox.getSelectedIndex());
         mOptions.setGameTypeId(gameTypeId);

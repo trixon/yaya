@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2018 Patrik Karlström.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,9 @@ package org.nbgames.yaya.gamedef;
 import java.util.Collections;
 import java.util.LinkedList;
 import org.nbgames.core.api.NbGames;
-import org.nbgames.yaya.Yaya;
 import org.nbgames.yaya.api.YayaGameProvider;
 import org.openide.util.Lookup;
+import se.trixon.yaya.Yaya;
 
 /**
  *

@@ -17,7 +17,6 @@ package se.trixon.yaya;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import org.nbgames.yaya.Yaya;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -50,7 +49,7 @@ import org.openide.windows.TopComponent;
 })
 public final class MainTopComponent extends TopComponent {
 
-    private Yaya mYaya;
+    private final Yaya mYaya = Yaya.getInstance();
 
     public MainTopComponent() {
         initComponents();
@@ -63,7 +62,6 @@ public final class MainTopComponent extends TopComponent {
     }
 
     private void createUI() {
-        mYaya = new Yaya();
         mainPanel.removeAll();
         mainPanel.add(mYaya.getPanel());
         mainPanel.repaint();
@@ -79,7 +77,6 @@ public final class MainTopComponent extends TopComponent {
         Actions.connect(aboutMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.AboutAction"), true);
         Actions.connect(helpMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.HelpAction"), true);
         Actions.connect(quitMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.QuitAction"), true);
-
     }
 
     /**

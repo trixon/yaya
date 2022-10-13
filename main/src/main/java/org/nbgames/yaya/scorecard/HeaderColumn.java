@@ -18,7 +18,7 @@ package org.nbgames.yaya.scorecard;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import javax.swing.SwingConstants;
-import org.nbgames.yaya.Options;
+import se.trixon.yaya.Options;
 import org.nbgames.yaya.gamedef.GameRow;
 import org.nbgames.yaya.gamedef.GameRows;
 import org.nbgames.yaya.gamedef.GameType;

@@ -21,7 +21,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import org.nbgames.yaya.Options;
+import se.trixon.yaya.Options;
 import org.nbgames.yaya.gamedef.GameRow;
 import se.trixon.almond.util.GraphicsHelper;
 

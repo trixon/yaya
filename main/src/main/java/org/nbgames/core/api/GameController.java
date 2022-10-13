@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import org.nbgames.core.api.service.PresenterProvider;
-import org.nbgames.core.api.ui.NewGamePanel;
 import org.openide.modules.Modules;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
@@ -92,8 +91,6 @@ public abstract class GameController implements PresenterProvider, NewsProvider 
         return getResource("Game-Name");
     }
 
-    public abstract NewGamePanel getNewGamePanel();
-
     public ResourceBundle getNewsBundle() {
         return null;
     }
@@ -135,10 +132,10 @@ public abstract class GameController implements PresenterProvider, NewsProvider 
         mFirstRun = firstRun;
     }
 
-    private void init() {
-    }
-
     protected String getHelp(Class cls) {
         return SystemHelper.getLocalizedResourceAsString(cls, "help_%s.html", "help.html");
+    }
+
+    private void init() {
     }
 }

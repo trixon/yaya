@@ -17,11 +17,16 @@ package se.trixon.yaya.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.openide.DialogDescriptor;
+import org.openide.DialogDisplayer;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle.Messages;
+import se.trixon.almond.util.Dict;
+import se.trixon.almond.util.swing.SwingHelper;
+import se.trixon.yaya.Yaya;
 
 @ActionID(
         category = "Yaya",
@@ -36,9 +41,18 @@ import org.openide.util.NbBundle.Messages;
 @Messages("CTL_NewGameAction=New game")
 public final class NewGameAction implements ActionListener {
 
+    private final Yaya mYaya = Yaya.getInstance();
+
+    public NewGameAction() {
+        mYaya.getNewGamePanel().setPreferredSize(SwingHelper.getUIScaledDim(400, 400));
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("start new game");
-
+        var d = new DialogDescriptor(mYaya.getNewGamePanel(), Dict.Game.NEW_ROUND.toString());
+        if (DialogDescriptor.OK_OPTION == DialogDisplayer.getDefault().notify(d)) {
+            mYaya.getNewGamePanel().save();
+            mYaya.onRequestNewGameStart();
+        }
     }
 }

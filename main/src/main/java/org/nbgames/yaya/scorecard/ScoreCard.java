@@ -30,7 +30,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import org.nbgames.yaya.Options;
+import se.trixon.yaya.Options;
 import org.nbgames.yaya.gamedef.GameTypeLoader;
 import org.nbgames.yaya.gamedef.GameType;
 import org.nbgames.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
