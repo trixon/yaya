@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.core.dice.data.image;
+package se.trixon.yaya.dice.data.image;
 
 import java.awt.image.BufferedImage;
 import org.openide.util.ImageUtilities;

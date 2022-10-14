@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.core.dice;
+package se.trixon.yaya.dice;
 
 import java.awt.Color;
 import java.awt.Graphics;

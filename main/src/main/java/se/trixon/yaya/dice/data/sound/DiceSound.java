@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.core.dice.data.sound;
+package se.trixon.yaya.dice.data.sound;
 
 import java.applet.Applet;
 import java.applet.AudioClip;

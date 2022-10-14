@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.core.dice;
+package se.trixon.yaya.dice;
 
 import java.applet.AudioClip;
 import java.awt.geom.AffineTransform;
@@ -22,8 +22,8 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
-import org.nbgames.core.dice.data.image.DiceImage;
-import org.nbgames.core.dice.data.sound.DiceSound;
+import se.trixon.yaya.dice.data.image.DiceImage;
+import se.trixon.yaya.dice.data.sound.DiceSound;
 import org.openide.util.Exceptions;
 
 /**
