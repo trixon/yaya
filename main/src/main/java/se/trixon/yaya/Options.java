@@ -18,22 +18,23 @@ package se.trixon.yaya;
 import java.awt.Color;
 import java.util.prefs.Preferences;
 import org.nbgames.core.api.Player;
-import org.nbgames.core.api.options.NbgOptions;
-import se.trixon.yaya.gamedef.GameVariant;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.util.GraphicsHelper;
+import se.trixon.almond.util.OptionsBase;
 import static se.trixon.almond.util.OptionsBase.DEFAULT_FULL_SCREEN;
 import static se.trixon.almond.util.OptionsBase.KEY_FULL_SCREEN;
+import se.trixon.yaya.gamedef.GameVariant;
 
 /**
  *
  * @author Patrik Karlström
  */
-public class Options extends NbgOptions {
+public class Options extends OptionsBase {
 
     public static final String KEY_GAME_TYPE_ID = "gameType";
     public static final String KEY_NUM_OF_PLAYERS = "numOfPlayers";
     public static final String KEY_OPACITY = "opacity";
+    public static final String KEY_REVERSE_DIRECTION = "reverseDirection";
     public static final String KEY_SHOW_INDICATORS = "showIndicators";
     public static final String KEY_SHOW_MAX_COLUMN = "showMaxColumn";
     public static final String KEY_SHOW_SYMBOLS = "showSymbols";
@@ -49,6 +50,7 @@ public class Options extends NbgOptions {
     private static final String DEFAULT_GAME_VARIANT = "standard";
     private static final int DEFAULT_NUM_OF_PLAYERS = 2;
     private static final int DEFAULT_OPACITY = 255;
+    private static final boolean DEFAULT_REVERSE_DIRECTION = false;
     private static final boolean DEFAULT_SHOW_INDICATORS = true;
     private static final boolean DEFAULT_SHOW_MAX_COLUMN = false;
     private static final boolean DEFAULT_SHOW_TOP_COLUMN = false;
@@ -97,6 +99,10 @@ public class Options extends NbgOptions {
         return mPreferences.getBoolean(KEY_FULL_SCREEN, DEFAULT_FULL_SCREEN);
     }
 
+    public boolean isReverseDirection() {
+        return mPreferences.getBoolean(KEY_REVERSE_DIRECTION, DEFAULT_REVERSE_DIRECTION);
+    }
+
     public boolean isShowingIndicators() {
         return mPreferences.getBoolean(KEY_SHOW_INDICATORS, DEFAULT_SHOW_INDICATORS);
     }
@@ -139,6 +145,10 @@ public class Options extends NbgOptions {
 
     public void setPlayers(Player[] players) {
         mPlayers = players;
+    }
+
+    public void setReverseDirection(boolean state) {
+        mPreferences.putBoolean(KEY_REVERSE_DIRECTION, state);
     }
 
     public void setShowIndicators(boolean state) {

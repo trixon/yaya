@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2018 Patrik Karlström.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,6 +28,7 @@ import java.awt.geom.AffineTransform;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 import org.nbgames.core.api.Player.Handedness;
+import se.trixon.yaya.Options;
 
 /**
  *
@@ -35,7 +36,7 @@ import org.nbgames.core.api.Player.Handedness;
  */
 class Painter extends JPanel {
 
-    private final NbgDiceOptions mOptions = NbgDiceOptions.getInstance();
+    private final Options mOptions = Options.getInstance();
 
     private static final int MARGIN_X_DICE_SET = 160;
     static final int DIE_CELL_WIDTH = 140;
