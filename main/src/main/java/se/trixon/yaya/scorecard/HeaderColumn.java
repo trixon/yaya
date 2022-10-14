@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya.scorecard;
+package se.trixon.yaya.scorecard;
 
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import javax.swing.SwingConstants;
 import se.trixon.yaya.Options;
-import org.nbgames.yaya.gamedef.GameRow;
-import org.nbgames.yaya.gamedef.GameRows;
-import org.nbgames.yaya.gamedef.GameType;
+import se.trixon.yaya.gamedef.GameRow;
+import se.trixon.yaya.gamedef.GameRows;
+import se.trixon.yaya.gamedef.GameType;
 
 /**
  *

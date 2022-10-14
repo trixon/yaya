@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya.game;
+package se.trixon.yaya.game;
 
-import org.nbgames.yaya.api.YayaGameProvider;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
@@ -23,9 +22,9 @@ import org.openide.util.lookup.ServiceProvider;
  * @author Patrik Karlström
  */
 @ServiceProvider(service = YayaGameProvider.class)
-public class MaxiYahtzee extends YayaGameProvider {
+public class Straight extends YayaGameProvider {
 
-    public MaxiYahtzee() {
-        super("maxi_yahtzee.json");
+    public Straight() {
+        super("straight.json");
     }
 }

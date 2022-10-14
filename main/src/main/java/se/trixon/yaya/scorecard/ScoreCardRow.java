@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya.scorecard;
+package se.trixon.yaya.scorecard;
 
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -22,7 +22,7 @@ import java.awt.event.MouseListener;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import se.trixon.yaya.Options;
-import org.nbgames.yaya.gamedef.GameRow;
+import se.trixon.yaya.gamedef.GameRow;
 import se.trixon.almond.util.GraphicsHelper;
 
 /**

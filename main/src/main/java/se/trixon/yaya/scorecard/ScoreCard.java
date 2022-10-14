@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya.scorecard;
+package se.trixon.yaya.scorecard;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -31,9 +31,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import se.trixon.yaya.Options;
-import org.nbgames.yaya.gamedef.GameTypeLoader;
-import org.nbgames.yaya.gamedef.GameType;
-import org.nbgames.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
+import se.trixon.yaya.gamedef.GameTypeLoader;
+import se.trixon.yaya.gamedef.GameType;
+import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
 import se.trixon.almond.util.CircularInt;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.GraphicsHelper;

@@ -13,31 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya.scorecard;
+package se.trixon.yaya.game;
 
-import java.awt.Color;
-import javax.swing.JLabel;
+import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author Patrik Karlström
  */
-public class RowLabel extends JLabel {
+@ServiceProvider(service = YayaGameProvider.class)
+public class YahtzeeScandinavian extends YayaGameProvider {
 
-    private Color mCurrentBackgroundColor;
-
-    public RowLabel() {
-    }
-
-    public Color getCurrentBackgroundColor() {
-        return mCurrentBackgroundColor;
-    }
-
-    public void setBackground() {
-        setBackground(mCurrentBackgroundColor);
-    }
-
-    public void setCurrentBackgroundColor(Color color) {
-        mCurrentBackgroundColor = color;
+    public YahtzeeScandinavian() {
+        super("yahtzee_scandinavian.json");
     }
 }

@@ -18,8 +18,8 @@ package se.trixon.yaya;
 import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
-import org.nbgames.yaya.gamedef.GameType;
-import org.nbgames.yaya.gamedef.GameTypeLoader;
+import se.trixon.yaya.gamedef.GameType;
+import se.trixon.yaya.gamedef.GameTypeLoader;
 import org.openide.util.NbBundle;
 import se.trixon.almond.util.Dict;
 

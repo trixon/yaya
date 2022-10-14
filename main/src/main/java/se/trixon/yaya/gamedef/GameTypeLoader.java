@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya.gamedef;
+package se.trixon.yaya.gamedef;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import org.nbgames.core.api.NbGames;
-import org.nbgames.yaya.api.YayaGameProvider;
+import se.trixon.yaya.game.YayaGameProvider;
 import org.openide.util.Lookup;
 import se.trixon.yaya.Yaya;
 

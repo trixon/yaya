@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya.scorecard;
+package se.trixon.yaya.scorecard;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import org.nbgames.yaya.gamedef.GameRow;
+import se.trixon.yaya.gamedef.GameRow;
 
 /**
  *

@@ -20,7 +20,7 @@ import java.net.URL;
 import java.util.prefs.BackingStoreException;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-import org.nbgames.yaya.gamedef.GameTypeLoader;
+import se.trixon.yaya.gamedef.GameTypeLoader;
 import org.openide.awt.Actions;
 import org.openide.awt.HtmlBrowser;
 import org.openide.modules.OnStart;

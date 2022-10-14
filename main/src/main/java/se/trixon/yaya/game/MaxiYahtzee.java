@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya.scorecard;
+package se.trixon.yaya.game;
 
-import java.util.Observable;
+import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author Patrik Karlström
  */
-public class ScoreCardObservable extends Observable {
+@ServiceProvider(service = YayaGameProvider.class)
+public class MaxiYahtzee extends YayaGameProvider {
 
-    public void notify(ScoreCardEvent scoreCardEvent) {
-        setChanged();
-        notifyObservers(scoreCardEvent);
-    }
-
-    public enum ScoreCardEvent {
-
-        GAME_OVER, REGISTER, UNDO
+    public MaxiYahtzee() {
+        super("maxi_yahtzee.json");
     }
 }

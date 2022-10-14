@@ -13,27 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya.gamedef;
+package se.trixon.yaya.scorecard;
 
-import java.util.ResourceBundle;
-import org.openide.util.NbBundle;
+import java.util.Observable;
 
 /**
  *
  * @author Patrik Karlström
  */
-public enum GameVariant {
-    STANDARD,
-    DOWNWARDS,
-    UPWARDS,
-    UPPER_LOWER,
-    LOWER_UPPER,
-    RANDOM;
+public class ScoreCardObservable extends Observable {
 
-    public static final String PREFIX = "Variant.";
-    private final ResourceBundle mBundle = NbBundle.getBundle(GameVariant.class);
+    public void notify(ScoreCardEvent scoreCardEvent) {
+        setChanged();
+        notifyObservers(scoreCardEvent);
+    }
 
-    public String getLocalized() {
-        return mBundle.getString(PREFIX + name().toLowerCase());
+    public enum ScoreCardEvent {
+
+        GAME_OVER, REGISTER, UNDO
     }
 }

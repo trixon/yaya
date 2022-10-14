@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya.scorecard;
+package se.trixon.yaya.scorecard;
 
 import java.awt.Dimension;
 import java.util.LinkedList;
@@ -21,9 +21,9 @@ import java.util.Stack;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import org.nbgames.core.api.Player;
-import org.nbgames.yaya.gamedef.GameRow;
-import org.nbgames.yaya.gamedef.GameRows;
-import org.nbgames.yaya.gamedef.GameType;
+import se.trixon.yaya.gamedef.GameRow;
+import se.trixon.yaya.gamedef.GameRows;
+import se.trixon.yaya.gamedef.GameType;
 
 /**
  *

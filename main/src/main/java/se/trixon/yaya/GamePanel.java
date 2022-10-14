@@ -28,10 +28,10 @@ import javax.swing.JPanel;
 import org.nbgames.core.api.NbGames;
 import se.trixon.yaya.dice.DiceBoard;
 import se.trixon.yaya.dice.DiceBoard.RollEvent;
-import org.nbgames.yaya.gamedef.GameType;
-import org.nbgames.yaya.gamedef.GameTypeLoader;
-import org.nbgames.yaya.scorecard.ScoreCard;
-import org.nbgames.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
+import se.trixon.yaya.gamedef.GameType;
+import se.trixon.yaya.gamedef.GameTypeLoader;
+import se.trixon.yaya.scorecard.ScoreCard;
+import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
 
 /**
  *

@@ -13,19 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.yaya.game;
-
-import org.nbgames.yaya.api.YayaGameProvider;
-import org.openide.util.lookup.ServiceProvider;
+package se.trixon.yaya.gamedef;
 
 /**
  *
  * @author Patrik Karlström
  */
-@ServiceProvider(service = YayaGameProvider.class)
-public class Straight extends YayaGameProvider {
+import java.util.LinkedList;
 
-    public Straight() {
-        super("straight.json");
+public class GameRows extends LinkedList<GameRow> {
+
+    public int[] getLim() {
+        int[] values = new int[size()];
+        int i = 0;
+
+        for (GameRow gameRow : this) {
+            values[i] = gameRow.getLim();
+            i++;
+        }
+
+        return values;
+    }
+
+    public int[] getMax() {
+        int[] values = new int[size()];
+        int i = 0;
+
+        for (GameRow gameRow : this) {
+            values[i] = gameRow.getMax();
+            i++;
+        }
+
+        return values;
     }
 }
