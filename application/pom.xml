@@ -294,6 +294,14 @@
                     <groupId>org.netbeans.api</groupId>
                     <artifactId>org-netbeans-modules-masterfs-ui</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.netbeans.api</groupId>
+                    <artifactId>org-netbeans-modules-keyring</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.netbeans.api</groupId>
+                    <artifactId>org-netbeans-api-scripting</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 

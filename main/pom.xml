@@ -112,6 +112,25 @@
         <!--Trixon-->
         <dependency>
             <groupId>se.trixon.almond</groupId>
+            <artifactId>almond-util</artifactId>
+            <version>${almond.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.oshi</groupId>
+                    <artifactId>oshi-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-csv</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-text</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>se.trixon.almond</groupId>
             <artifactId>almond-nbp</artifactId>
             <version>${almond.version}</version>
         </dependency>
@@ -129,12 +148,6 @@
             <groupId>org.jdesktop</groupId>
             <artifactId>beansbinding</artifactId>
             <version>1.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.healthmarketscience.sqlbuilder</groupId>
-            <artifactId>sqlbuilder</artifactId>
-            <version>3.0.2</version>
-            <type>jar</type>
         </dependency>
     </dependencies>
 
