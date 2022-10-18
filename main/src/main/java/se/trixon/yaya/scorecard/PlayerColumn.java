@@ -20,7 +20,7 @@ import java.util.LinkedList;
 import java.util.Stack;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import org.nbgames.core.api.Player;
+import se.trixon.yaya.Player;
 import se.trixon.yaya.gamedef.GameRow;
 import se.trixon.yaya.gamedef.GameRows;
 import se.trixon.yaya.gamedef.GameType;

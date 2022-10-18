@@ -17,7 +17,6 @@ package se.trixon.yaya;
 
 import java.awt.Color;
 import java.util.prefs.Preferences;
-import org.nbgames.core.api.Player;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.almond.util.OptionsBase;

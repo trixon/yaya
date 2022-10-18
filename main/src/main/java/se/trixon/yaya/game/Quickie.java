@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2018 Patrik Karlström.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,40 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.core.api.ui;
+package se.trixon.yaya.game;
 
-import se.trixon.yaya.Player;
+import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author Patrik Karlström
  */
-public class GameOverItem {
+@ServiceProvider(service = YayaGameProvider.class)
+public class Quickie extends YayaGameProvider {
 
-    private Player mPlayer;
-    private int mScore;
-
-    public GameOverItem() {
-    }
-
-    public GameOverItem(Player player, int score) {
-        mScore = score;
-        mPlayer = player;
-    }
-
-    public Player getPlayer() {
-        return mPlayer;
-    }
-
-    public int getScore() {
-        return mScore;
-    }
-
-    public void setPlayer(Player player) {
-        mPlayer = player;
-    }
-
-    public void setScore(int score) {
-        mScore = score;
+    public Quickie() {
+        super("quickie.json");
     }
 }

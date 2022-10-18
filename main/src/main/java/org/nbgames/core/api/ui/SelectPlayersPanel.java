@@ -23,8 +23,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpinnerNumberModel;
 import org.apache.commons.lang3.StringUtils;
-import org.nbgames.core.api.Player;
-import org.nbgames.core.api.db.manager.PlayerManager;
+import se.trixon.yaya.Player;
+import se.trixon.yaya.PlayerManager;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.util.Dict;
 

@@ -18,7 +18,7 @@ package se.trixon.yaya.dice;
 import java.util.LinkedList;
 import java.util.Observable;
 import javax.swing.JPanel;
-import org.nbgames.core.api.Player.Handedness;
+import se.trixon.yaya.Player.Handedness;
 
 /**
  *

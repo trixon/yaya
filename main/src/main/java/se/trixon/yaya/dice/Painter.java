@@ -27,7 +27,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
-import org.nbgames.core.api.Player.Handedness;
+import se.trixon.yaya.Player.Handedness;
 import se.trixon.yaya.Options;
 
 /**

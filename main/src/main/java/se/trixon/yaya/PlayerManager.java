@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.core.api.db.manager;
+package se.trixon.yaya;
 
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
 import com.healthmarketscience.sqlbuilder.DeleteQuery;
@@ -26,6 +26,9 @@ import com.healthmarketscience.sqlbuilder.UpdateQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.Constraint;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSchema;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,32 +36,42 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import org.nbgames.core.api.Player;
+import org.nbgames.core.api.db.Db;
 import org.openide.util.Exceptions;
+import se.trixon.yaya.Player;
 
 /**
  *
  * @author Patrik Karlström
  */
-public class PlayerManager extends BaseManager {
+public class PlayerManager {
 
     private static final String COL_HANDEDNESS = "handedness";
     private static final String COL_ID = "player_id";
     private static final String COL_NAME = "name";
     private static final String TABLE_NAME = "player";
+    private final Db mDb;
     private final DbColumn mHandedness;
     private PlaceHolder mHandednessPlaceHolder;
     private PlaceHolder mHandednessUpdatePlaceHolder;
+    private DbColumn mId;
+    private PlaceHolder mIdPlaceHolder;
     private PlaceHolder mIdUpdatePlaceHolder;
+    private PreparedStatement mInsertPreparedStatement;
     private final DbColumn mName;
     private PlaceHolder mNamePlaceHolder;
     private PlaceHolder mNameUpdatePlaceHolder;
+    private PreparedStatement mSelectPreparedStatement;
+    private DbTable mTable;
+    private PreparedStatement mUpdatePreparedStatement;
 
     public static PlayerManager getInstance() {
         return Holder.INSTANCE;
     }
 
     private PlayerManager() {
+        mDb = Db.getInstance();
+
         mTable = getSchema().addTable(TABLE_NAME);
         mId = mTable.addColumn(COL_ID, "IDENTITY", null);
         mName = mTable.addColumn(COL_NAME, "VARCHAR", Integer.MAX_VALUE);
@@ -67,7 +80,11 @@ public class PlayerManager extends BaseManager {
         addNotNullConstraint(mName);
     }
 
-    @Override
+    public void addNotNullConstraint(DbColumn column) {
+        DbConstraint statusNotNullConstraint = new DbConstraint(column, null, Constraint.Type.NOT_NULL);
+        column.addConstraint(statusNotNullConstraint);
+    }
+
     public void create() {
         String indexName;
         indexName = getIndexName(new DbColumn[]{mId}, "pkey");
@@ -94,6 +111,28 @@ public class PlayerManager extends BaseManager {
         return players;
     }
 
+    public DbColumn getId() {
+        return mId;
+    }
+
+    public String getIndexName(DbColumn[] dbColumns, String suffix) {
+        StringBuilder builder = new StringBuilder(mTable.getName()).append("_");
+
+        if (dbColumns != null) {
+            for (DbColumn dbColumn : dbColumns) {
+                builder.append(dbColumn.getName()).append("_");
+            }
+        }
+
+        if (builder.lastIndexOf("_") != builder.length() - 1) {
+            builder.append("_");
+        }
+
+        builder.append(suffix);
+
+        return builder.toString();
+    }
+
     public DefaultListModel<Player> getListModel() {
         DefaultListModel<Player> players = new DefaultListModel<>();
 
@@ -102,6 +141,15 @@ public class PlayerManager extends BaseManager {
         });
 
         return players;
+    }
+
+    public DbSchema getSchema() {
+        return mDb.getSpec().getDefaultSchema();
+
+    }
+
+    public DbTable getTable() {
+        return mTable;
     }
 
     public void save(HashSet<Player> changeSet, HashSet<Player> deleteSet) throws ClassNotFoundException, SQLException {
