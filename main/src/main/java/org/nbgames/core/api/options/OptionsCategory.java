@@ -16,7 +16,6 @@
 package org.nbgames.core.api.options;
 
 import javax.swing.ImageIcon;
-import org.nbgames.core.api.GameCategory;
 import se.trixon.almond.nbp.Almond;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.icons.material.MaterialIcon;
@@ -28,12 +27,12 @@ import se.trixon.almond.util.icons.material.MaterialIcon;
 public enum OptionsCategory {
 
     PLAYERS(MaterialIcon._Social.PEOPLE, Dict.Game.PLAYERS.toString()),
-    ARCADE(MaterialIcon._Editor.LINEAR_SCALE, GameCategory.ARCADE.getString()),
-    BOARD(MaterialIcon._Editor.LINEAR_SCALE, GameCategory.BOARD.getString()),
-    CARD(MaterialIcon._Editor.LINEAR_SCALE, GameCategory.CARD.getString()),
-    DICE(MaterialIcon._Editor.LINEAR_SCALE, GameCategory.DICE.getString()),
-    LOGIC(MaterialIcon._Editor.LINEAR_SCALE, GameCategory.LOGIC.getString()),
-    STRATEGY(MaterialIcon._Editor.LINEAR_SCALE, GameCategory.STRATEGY.getString()),
+    ARCADE(MaterialIcon._Editor.LINEAR_SCALE, "ARCADE"),
+    BOARD(MaterialIcon._Editor.LINEAR_SCALE, "BOARD"),
+    CARD(MaterialIcon._Editor.LINEAR_SCALE, "CARD"),
+    DICE(MaterialIcon._Editor.LINEAR_SCALE, "DICE"),
+    LOGIC(MaterialIcon._Editor.LINEAR_SCALE, "LOGIC"),
+    STRATEGY(MaterialIcon._Editor.LINEAR_SCALE, "STRATEGY"),
     SYSTEM(MaterialIcon._Action.BUILD, Dict.SYSTEM.toString());
 
 //    private final IconColor mIconColor = IconColor.getDefault();

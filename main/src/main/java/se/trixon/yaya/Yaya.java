@@ -15,7 +15,11 @@
  */
 package se.trixon.yaya;
 
-import org.nbgames.core.api.options.NbgOptionsPanel;
+import java.awt.image.BufferedImage;
+import java.util.Locale;
+import org.openide.util.ImageUtilities;
+import se.trixon.almond.nbp.Monitor;
+import se.trixon.almond.util.SystemHelper;
 
 /**
  *
@@ -28,8 +32,28 @@ public class Yaya {
     private NewGamePanel mNewGamePanel;
     private OptionsPanel mOptionPanel;
 
+    public static void errln(String name, String message) {
+        new Monitor(name, false, true).errln(message);
+    }
+
+    public static BufferedImage getImage(Class c, String imagePath) {
+        return (BufferedImage) ImageUtilities.loadImage(SystemHelper.getPackageAsPath(c) + imagePath);
+    }
+
+    public static BufferedImage getImage(String imagePath) {
+        return getImage(Yaya.class, imagePath);
+    }
+
     public static Yaya getInstance() {
         return Holder.INSTANCE;
+    }
+
+    public static String getLanguageSuffix() {
+        return "-" + Locale.getDefault().getLanguage();
+    }
+
+    public static void outln(String name, String message) {
+        new Monitor(name, false, true).outln(message);
     }
 
     private Yaya() {
@@ -44,7 +68,7 @@ public class Yaya {
         return mNewGamePanel;
     }
 
-    public NbgOptionsPanel getOptionsPanel() {
+    public OptionsPanel getOptionsPanel() {
         if (mOptionPanel == null) {
             mOptionPanel = new OptionsPanel();
         }

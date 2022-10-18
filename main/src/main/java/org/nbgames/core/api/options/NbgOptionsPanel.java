@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2018 Patrik Karlström.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +16,12 @@
 package org.nbgames.core.api.options;
 
 import javax.swing.JPanel;
-import org.nbgames.core.api.service.Persistor;
 
 /**
  *
  * @author Patrik Karlström
  */
-public abstract class NbgOptionsPanel extends JPanel implements Persistor {
+public abstract class NbgOptionsPanel extends JPanel {
 
     public OptionsCategory getCategory() {
         return null;

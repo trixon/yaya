@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2018 Patrik Karlström.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import org.apache.commons.io.FileUtils;
-import org.nbgames.core.api.NbGames;
+import se.trixon.yaya.Yaya;
 
 /**
  *
@@ -151,7 +151,7 @@ public class GameType {
     }
 
     public String getTitle() {
-        return mI10n.getOrDefault("title" + NbGames.getLanguageSuffix(), mTitle);
+        return mI10n.getOrDefault("title" + Yaya.getLanguageSuffix(), mTitle);
     }
 
     public String getVariantByTitle(String title) {

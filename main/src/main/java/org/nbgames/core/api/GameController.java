@@ -16,58 +16,40 @@
 package org.nbgames.core.api;
 
 import java.awt.image.BufferedImage;
-import java.util.Collection;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import org.nbgames.core.api.service.PresenterProvider;
 import org.openide.modules.Modules;
-import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
-import se.trixon.almond.nbp.core.news.NewsProvider;
 import se.trixon.almond.util.SystemHelper;
 
 /**
  *
  * @author Patrik Karlström
  */
-public abstract class GameController implements PresenterProvider, NewsProvider {
+public abstract class GameController {
 
     private boolean mFirstRun = true;
-
-    public static GameController forID(GameCategory category, String id) {
-        Collection<? extends GameController> gameControllers = Lookup.getDefault().lookupAll(GameController.class);
-
-        for (GameController gameController : gameControllers) {
-            if (gameController.getCategory() == category && gameController.getId().equalsIgnoreCase(id)) {
-                return gameController;
-            }
-        }
-
-        return null;
-    }
 
     public GameController() {
         init();
     }
 
-    public abstract GameCategory getCategory();
+    public String getBundlePath() {
+        return getClass().getPackage().getName().replace(".", "/") + "/" + "News";
+    }
 
-    @Override
     public String getCopyright() {
         return getResource("Game-Copyright");
     }
 
-    @Override
     public String getCredit() {
         return getResource("Game-Credit");
     }
 
-    @Override
     public String getDescription() {
         return getResource("Game-Description");
     }
 
-    @Override
     public String getId() {
         return getClass().getName();
     }
@@ -76,17 +58,14 @@ public abstract class GameController implements PresenterProvider, NewsProvider 
         return new BufferedImage(96, 96, BufferedImage.TYPE_INT_ARGB);
     }
 
-    @Override
     public String getLicense() {
         return getResource("Game-License");
     }
 
-    @Override
     public String getModuleName() {
         return Modules.getDefault().ownerOf(getClass()).getDisplayName();
     }
 
-    @Override
     public String getName() {
         return getResource("Game-Name");
     }
@@ -107,17 +86,14 @@ public abstract class GameController implements PresenterProvider, NewsProvider 
         }
     }
 
-    @Override
     public String getShortDescription() {
         return getResource("Game-ShortDescription");
     }
 
-    @Override
     public BufferedImage getToolBarBackground() {
         return null;
     }
 
-    @Override
     public String getVersion() {
         return getResource("Game-Version");
     }

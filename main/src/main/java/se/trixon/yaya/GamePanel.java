@@ -25,7 +25,6 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import org.nbgames.core.api.NbGames;
 import se.trixon.yaya.dice.DiceBoard;
 import se.trixon.yaya.dice.DiceBoard.RollEvent;
 import se.trixon.yaya.gamedef.GameType;
@@ -55,7 +54,7 @@ public class GamePanel extends JPanel implements Observer {
         initComponents();
         //GameDef.getInstance().init();
         initInitialLayout();
-        setBackgroundImage(NbGames.getImage("images/wood_panel1.jpg"));
+        setBackgroundImage(Yaya.getImage("images/wood_panel1.jpg"));
     }
 
     public void centerInParent() {
@@ -142,7 +141,6 @@ public class GamePanel extends JPanel implements Observer {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
     public void newGame() {
-        NbGames.outln(Yaya.LOG_TITLE, "newGame");
 //        if (numOfPlayers != settings.getNumOfPlayers()) {
 //            numOfPlayers = settings.getNumOfPlayers();
 //            initRule(settings.getRule());

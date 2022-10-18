@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2018 Patrik Karlström.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
-import org.nbgames.core.api.NbGames;
+import se.trixon.yaya.Yaya;
 
 /**
  *
@@ -70,7 +70,7 @@ class DiceBoardPanel extends JPanel {
     }
 
     private void init() {
-        setBackgroundImage(NbGames.getImage("images/wood_panel1.jpg"));
+        setBackgroundImage(Yaya.getImage("images/wood_panel1.jpg"));
         setPreferredSize(PREFERRED_DIMENSION);
         setLayout(new GridLayout(1, 1));
 

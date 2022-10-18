@@ -18,8 +18,8 @@ package se.trixon.yaya.gamedef;
 import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.TreeSet;
-import org.nbgames.core.api.NbGames;
 import se.trixon.almond.util.StringHelper;
+import se.trixon.yaya.Yaya;
 
 /**
  *
@@ -79,7 +79,7 @@ public class GameRow {
     }
 
     public String getTitle() {
-        return mI10n.getOrDefault("title" + NbGames.getLanguageSuffix(), mTitle);
+        return mI10n.getOrDefault("title" + Yaya.getLanguageSuffix(), mTitle);
     }
 
     public String getTitleSymbol() {

@@ -46,12 +46,10 @@ public class OptionsPanel extends NbgOptionsPanel {
         return true;
     }
 
-    @Override
     public void load() {
         reverseScrollDirectionCheckBox.setSelected(mOptions.isReverseDirection());
     }
 
-    @Override
     public void save() {
         mOptions.setReverseDirection(reverseScrollDirectionCheckBox.isSelected());
     }

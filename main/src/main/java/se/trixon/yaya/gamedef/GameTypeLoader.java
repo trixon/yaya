@@ -17,7 +17,6 @@ package se.trixon.yaya.gamedef;
 
 import java.util.Collections;
 import java.util.LinkedList;
-import org.nbgames.core.api.NbGames;
 import se.trixon.yaya.game.YayaGameProvider;
 import org.openide.util.Lookup;
 import se.trixon.yaya.Yaya;
@@ -103,7 +102,7 @@ public class GameTypeLoader {
         mGameTypes = new LinkedList<>();
 
         for (YayaGameProvider gameProvider : Lookup.getDefault().lookupAll(YayaGameProvider.class)) {
-            NbGames.outln(Yaya.LOG_TITLE, String.format("Found GameLoader in %s.", gameProvider.getId()));
+            Yaya.outln(Yaya.LOG_TITLE, String.format("Found GameLoader in %s.", gameProvider.getId()));
             final GameType gameType = GameType.restore(gameProvider.getDefinition());
             gameType.postRestore();
             mGameTypes.add(gameType);
