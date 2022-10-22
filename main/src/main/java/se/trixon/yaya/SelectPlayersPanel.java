@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.core.api.ui;
+package se.trixon.yaya;
 
 import java.util.Random;
 import javax.swing.Box;
@@ -23,8 +23,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpinnerNumberModel;
 import org.apache.commons.lang3.StringUtils;
-import se.trixon.yaya.Player;
-import se.trixon.yaya.PlayerManager;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.util.Dict;
 

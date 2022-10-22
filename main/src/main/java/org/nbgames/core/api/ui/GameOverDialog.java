@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,11 @@
 package org.nbgames.core.api.ui;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.StringUtils;
 import org.nbgames.core.api.GameController;
+import org.nbgames.core.api.ui.GameOverItem;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import se.trixon.almond.nbp.Almond;
@@ -68,12 +68,7 @@ public class GameOverDialog {
     }
 
     public void display(GameController gameController, ArrayList<GameOverItem> gameOverItems) {
-        gameOverItems.sort(new Comparator<GameOverItem>() {
-            @Override
-            public int compare(GameOverItem o1, GameOverItem o2) {
-                return new Integer(o2.getScore()).compareTo(new Integer(o1.getScore()));
-            }
-        });
+        gameOverItems.sort((o1, o2) -> o2.score().compareTo(o1.score()));
 
         StringBuilder cssBuilder = new StringBuilder("<html>");
         cssBuilder.append("<head><style>");
@@ -91,8 +86,8 @@ public class GameOverDialog {
         builder.append("<html><table>");
         int position = 0;
         for (GameOverItem gameOverItem : gameOverItems) {
-            final String name = gameOverItem.getPlayer().getName();
-            final int score = gameOverItem.getScore();
+            final String name = gameOverItem.player().getName();
+            final int score = gameOverItem.score();
 
             builder.append("<tr>");
             builder.append("<td>").append(++position).append("</td>");

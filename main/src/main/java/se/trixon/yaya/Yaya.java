@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,6 @@ public class Yaya {
     public static final String LOG_TITLE = "Yaya";
     private GamePanel mGamePanel;
     private NewGamePanel mNewGamePanel;
-    private OptionsPanel mOptionPanel;
 
     public static void errln(String name, String message) {
         new Monitor(name, false, true).errln(message);
@@ -66,14 +65,6 @@ public class Yaya {
         }
 
         return mNewGamePanel;
-    }
-
-    public OptionsPanel getOptionsPanel() {
-        if (mOptionPanel == null) {
-            mOptionPanel = new OptionsPanel();
-        }
-
-        return mOptionPanel;
     }
 
     public GamePanel getPanel() {

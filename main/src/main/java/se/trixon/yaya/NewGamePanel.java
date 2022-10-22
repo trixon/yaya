@@ -78,7 +78,7 @@ public class NewGamePanel extends JPanel {
         byLineLabel = new javax.swing.JLabel();
         variantLabel = new javax.swing.JLabel();
         variantComboBox = new javax.swing.JComboBox();
-        selectPlayersPanel = new org.nbgames.core.api.ui.SelectPlayersPanel();
+        selectPlayersPanel = new se.trixon.yaya.SelectPlayersPanel();
         jPanel1 = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
@@ -170,7 +170,7 @@ public class NewGamePanel extends JPanel {
     private javax.swing.JComboBox gameComboBox;
     private javax.swing.JLabel gameLabel;
     private javax.swing.JPanel jPanel1;
-    private org.nbgames.core.api.ui.SelectPlayersPanel selectPlayersPanel;
+    private se.trixon.yaya.SelectPlayersPanel selectPlayersPanel;
     private javax.swing.JComboBox variantComboBox;
     private javax.swing.JLabel variantLabel;
     // End of variables declaration//GEN-END:variables

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,32 +21,6 @@ import se.trixon.yaya.Player;
  *
  * @author Patrik Karlström
  */
-public class GameOverItem {
+public record GameOverItem(Player player, Integer score) {
 
-    private Player mPlayer;
-    private int mScore;
-
-    public GameOverItem() {
-    }
-
-    public GameOverItem(Player player, int score) {
-        mScore = score;
-        mPlayer = player;
-    }
-
-    public Player getPlayer() {
-        return mPlayer;
-    }
-
-    public int getScore() {
-        return mScore;
-    }
-
-    public void setPlayer(Player player) {
-        mPlayer = player;
-    }
-
-    public void setScore(int score) {
-        mScore = score;
-    }
 }
