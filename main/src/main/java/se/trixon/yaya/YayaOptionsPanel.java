@@ -15,12 +15,14 @@
  */
 package se.trixon.yaya;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ChangeListener;
 
 final class YayaOptionsPanel extends javax.swing.JPanel {
 
     private final YayaOptionsPanelController mController;
     private final Options mOptions = Options.getInstance();
+    private final ThemeManager mThemeManager = ThemeManager.getInstance();
 
     YayaOptionsPanel(YayaOptionsPanelController controller) {
         mController = controller;
@@ -34,7 +36,14 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
         };
 
         indicatorsCheckBox.addChangeListener(changeListener);
-        // TODO listen to changes in form fields and call controller.changed()
+        maxCheckBox.addChangeListener(changeListener);
+        symbolsCheckBox.addChangeListener(changeListener);
+        topCheckBox.addChangeListener(changeListener);
+        reverseDirectionCheckBox.addChangeListener(changeListener);
+
+        themeComboBox.addItemListener(itemEvent -> {
+            mController.changed();
+        });
     }
 
     /**
@@ -50,8 +59,8 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
         maxCheckBox = new javax.swing.JCheckBox();
         symbolsCheckBox = new javax.swing.JCheckBox();
         topCheckBox = new javax.swing.JCheckBox();
-        colorLabel = new javax.swing.JLabel();
-        colorComboBox = new javax.swing.JComboBox<>();
+        themeLabel = new javax.swing.JLabel();
+        themeComboBox = new javax.swing.JComboBox<>();
         opacityLabel = new javax.swing.JLabel();
         opacitySlider = new javax.swing.JSlider();
         reverseDirectionCheckBox = new javax.swing.JCheckBox();
@@ -68,9 +77,7 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(topCheckBox, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "OptionsPanel.showTopCheckBox.text")); // NOI18N
         checkboxPanel.add(topCheckBox);
 
-        org.openide.awt.Mnemonics.setLocalizedText(colorLabel, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "YayaOptionsPanel.colorLabel.text")); // NOI18N
-
-        colorComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        org.openide.awt.Mnemonics.setLocalizedText(themeLabel, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "YayaOptionsPanel.themeLabel.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(opacityLabel, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "YayaOptionsPanel.opacityLabel.text")); // NOI18N
 
@@ -89,8 +96,8 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(colorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(colorLabel))
+                                    .addComponent(themeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(themeLabel))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(opacityLabel)
@@ -106,11 +113,11 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
                 .addComponent(checkboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(colorLabel)
+                    .addComponent(themeLabel)
                     .addComponent(opacityLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(colorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(themeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(opacitySlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(reverseDirectionCheckBox)
@@ -126,6 +133,11 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
         reverseDirectionCheckBox.setSelected(mOptions.isReverseDirection());
         opacitySlider.setValue(mOptions.getOpacity());
 
+        var items = mThemeManager.getItems().stream().map(t -> t.getName()).toArray(String[]::new);
+        var themeModel = new DefaultComboBoxModel<>(items);
+        themeComboBox.setModel(themeModel);
+
+        themeComboBox.setSelectedItem(mOptions.getTheme());
     }
 
     void store() {
@@ -135,6 +147,7 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
         mOptions.setShowTopColumn(topCheckBox.isSelected());
         mOptions.setReverseDirection(reverseDirectionCheckBox.isSelected());
         mOptions.setOpacity(opacitySlider.getValue());
+        mOptions.setTheme((String) themeComboBox.getSelectedItem());
     }
 
     boolean valid() {
@@ -144,14 +157,14 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel checkboxPanel;
-    private javax.swing.JComboBox<String> colorComboBox;
-    private javax.swing.JLabel colorLabel;
     private javax.swing.JCheckBox indicatorsCheckBox;
     private javax.swing.JCheckBox maxCheckBox;
     private javax.swing.JLabel opacityLabel;
     private javax.swing.JSlider opacitySlider;
     private javax.swing.JCheckBox reverseDirectionCheckBox;
     private javax.swing.JCheckBox symbolsCheckBox;
+    private javax.swing.JComboBox<String> themeComboBox;
+    private javax.swing.JLabel themeLabel;
     private javax.swing.JCheckBox topCheckBox;
     // End of variables declaration//GEN-END:variables
 }

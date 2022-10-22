@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,9 +21,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import se.trixon.yaya.Options;
-import se.trixon.yaya.gamedef.GameRow;
 import se.trixon.almond.util.GraphicsHelper;
+import se.trixon.yaya.Options;
+import se.trixon.yaya.ThemeManager;
+import se.trixon.yaya.gamedef.GameRow;
 
 /**
  *
@@ -42,6 +43,7 @@ public class ScoreCardRow {
     private ScoreCard mScoreCard;
     private int mValue;
     private final Options mOptions = Options.getInstance();
+    private final ThemeManager mThemeManager = ThemeManager.getInstance();
 
     ScoreCardRow(ScoreCard scoreCard, PlayerColumn playerColumn, GameRow gameRow, int row) {
         mScoreCard = scoreCard;
@@ -62,7 +64,7 @@ public class ScoreCardRow {
     public void clearPreview() {
         if (isPlayable() && !isRegistered()) {
             mRowLabel.setText("");
-            mRowLabel.setCurrentBackgroundColor(mOptions.getColor(Options.ColorItem.ROW));
+            mRowLabel.setCurrentBackgroundColor(mThemeManager.getRow());
 
             mRowLabel.setBackground();
         }
@@ -127,7 +129,7 @@ public class ScoreCardRow {
 
     public void newGame() {
         mRegistered = false;
-        mRowLabel.setCurrentBackgroundColor(mOptions.getColor(Options.ColorItem.ROW));
+        mRowLabel.setCurrentBackgroundColor(mThemeManager.getRow());
         mRowLabel.setText(null);
         mPreview = 0;
         mValue = 0;
@@ -144,14 +146,14 @@ public class ScoreCardRow {
     public void setEnabled(boolean aState) {
         if (mGameRow.isPlayable()) {
             mRowLabel.setFont(mRowLabel.getFont().deriveFont(Font.PLAIN));
-            mRowLabel.setCurrentBackgroundColor(mOptions.getColor(Options.ColorItem.ROW));
+            mRowLabel.setCurrentBackgroundColor(mThemeManager.getRow());
         }
 
         if (aState) {
             if (mGameRow.isSum() || mGameRow.isBonus()) {
-                mRowLabel.setBackground(mOptions.getColor(Options.ColorItem.SUM));
+                mRowLabel.setBackground(mThemeManager.getSum());
             } else {
-                mRowLabel.setBackground(mOptions.getColor(Options.ColorItem.ROW));
+                mRowLabel.setBackground(mThemeManager.getRow());
             }
 
             if (mGameRow.isRollCounter()) {
@@ -162,9 +164,9 @@ public class ScoreCardRow {
 
         } else {
             if (mGameRow.isSum() || mGameRow.isBonus()) {
-                mRowLabel.setBackground(GraphicsHelper.colorAndMask(mOptions.getColor(Options.ColorItem.SUM), COLOR_MASK));
+                mRowLabel.setBackground(GraphicsHelper.colorAndMask(mThemeManager.getSum(), COLOR_MASK));
             } else {
-                mRowLabel.setBackground(GraphicsHelper.colorAndMask(mOptions.getColor(Options.ColorItem.ROW), COLOR_MASK));
+                mRowLabel.setBackground(GraphicsHelper.colorAndMask(mThemeManager.getRow(), COLOR_MASK));
             }
 
             if (mGameRow.isRollCounter()) {
@@ -216,12 +218,12 @@ public class ScoreCardRow {
             mRowLabel.setHorizontalAlignment(SwingConstants.LEADING);
 
             if (mPreview < mGameRow.getLim()) {
-                mRowLabel.setCurrentBackgroundColor(mOptions.getColor(Options.ColorItem.INDICATOR_LO));
+                mRowLabel.setCurrentBackgroundColor(mThemeManager.getIndicatorLo());
             } else {
-                mRowLabel.setCurrentBackgroundColor(mOptions.getColor(Options.ColorItem.INDICATOR_HI));
+                mRowLabel.setCurrentBackgroundColor(mThemeManager.getIndicatorHi());
             }
         } else {
-            mRowLabel.setCurrentBackgroundColor(mOptions.getColor(Options.ColorItem.ROW));
+            mRowLabel.setCurrentBackgroundColor(mThemeManager.getRow());
         }
 
         mRowLabel.setText(text);

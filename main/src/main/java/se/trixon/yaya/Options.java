@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +15,7 @@
  */
 package se.trixon.yaya;
 
-import java.awt.Color;
-import java.util.prefs.Preferences;
 import org.openide.util.NbPreferences;
-import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.almond.util.OptionsBase;
 import static se.trixon.almond.util.OptionsBase.DEFAULT_FULL_SCREEN;
 import static se.trixon.almond.util.OptionsBase.KEY_FULL_SCREEN;
@@ -38,13 +35,7 @@ public class Options extends OptionsBase {
     public static final String KEY_SHOW_MAX_COLUMN = "showMaxColumn";
     public static final String KEY_SHOW_SYMBOLS = "showSymbols";
     public static final String KEY_SHOW_TOP_COLUMN = "showTopColumn";
-    private static final String DEFAULT_COLOR_BACKGROUND = "#333333";
-    private static final String DEFAULT_COLOR_HEADER = "#FFC800";
-    private static final String DEFAULT_COLOR_INDICATOR_HI = "#BBEEBB";
-    private static final String DEFAULT_COLOR_INDICATOR_LO = "#EEBBBB";
-    private static final String DEFAULT_COLOR_ROW = "#FFFFFF";
-    private static final String DEFAULT_COLOR_SCORECARD = "#666666";
-    private static final String DEFAULT_COLOR_SUM = "#FFFF00";
+    public static final String KEY_THEME = "theme";
     private static final String DEFAULT_GAME_TYPE_ID = "default";
     private static final String DEFAULT_GAME_VARIANT = "standard";
     private static final int DEFAULT_NUM_OF_PLAYERS = 2;
@@ -53,9 +44,9 @@ public class Options extends OptionsBase {
     private static final boolean DEFAULT_SHOW_INDICATORS = true;
     private static final boolean DEFAULT_SHOW_MAX_COLUMN = false;
     private static final boolean DEFAULT_SHOW_TOP_COLUMN = false;
+    private static final String DEFAULT_THEME = "Legacy";
     private static final boolean DEFAULT_USE_SYMBOLS = false;
     private Player[] mPlayers;
-    private Preferences mPreferencesColors = NbPreferences.forModule(getClass()).node("colors");
 
     public static Options getInstance() {
         return Holder.INSTANCE;
@@ -64,10 +55,6 @@ public class Options extends OptionsBase {
     private Options() {
         mPreferences = NbPreferences.forModule(getClass());
         init();
-    }
-
-    public Color getColor(ColorItem colorItem) {
-        return Color.decode(mPreferencesColors.get(colorItem.getKey(), colorItem.getDefaultColorAsString()));
     }
 
     public String getGameTypeId() {
@@ -90,8 +77,8 @@ public class Options extends OptionsBase {
         return mPlayers;
     }
 
-    public Preferences getPreferencesColors() {
-        return mPreferencesColors;
+    public String getTheme() {
+        return mPreferences.get(KEY_THEME, DEFAULT_THEME);
     }
 
     public boolean isFullscreen() {
@@ -116,10 +103,6 @@ public class Options extends OptionsBase {
 
     public boolean isShowingTopColumn() {
         return mPreferences.getBoolean(KEY_SHOW_TOP_COLUMN, DEFAULT_SHOW_TOP_COLUMN);
-    }
-
-    public void setColor(ColorItem colorItem, Color color) {
-        mPreferencesColors.put(colorItem.getKey(), GraphicsHelper.colorToString(color));
     }
 
     public void setFullscreen(boolean value) {
@@ -166,6 +149,10 @@ public class Options extends OptionsBase {
         mPreferences.putBoolean(KEY_SHOW_TOP_COLUMN, state);
     }
 
+    public void setTheme(String theme) {
+        mPreferences.put(KEY_THEME, theme);
+    }
+
     private void init() {
     }
 
@@ -174,32 +161,4 @@ public class Options extends OptionsBase {
         private static final Options INSTANCE = new Options();
     }
 
-    public enum ColorItem {
-
-        BACKGROUND(DEFAULT_COLOR_BACKGROUND),
-        HEADER(DEFAULT_COLOR_HEADER),
-        INDICATOR_HI(DEFAULT_COLOR_INDICATOR_HI),
-        INDICATOR_LO(DEFAULT_COLOR_INDICATOR_LO),
-        ROW(DEFAULT_COLOR_ROW),
-        SCORECARD(DEFAULT_COLOR_SCORECARD),
-        SUM(DEFAULT_COLOR_SUM);
-
-        private final String mDefaultColor;
-
-        ColorItem(String defaultColor) {
-            mDefaultColor = defaultColor;
-        }
-
-        public Color getDefaultColor() {
-            return Color.decode(mDefaultColor);
-        }
-
-        public String getDefaultColorAsString() {
-            return mDefaultColor;
-        }
-
-        public String getKey() {
-            return name().toLowerCase();
-        }
-    }
 }

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -147,12 +147,12 @@ public class PlayerColumn {
     }
 
     public void setNumOfRolls(int numOfRolls) {
-        this.mNumOfRolls = numOfRolls;
+        mNumOfRolls = numOfRolls;
         Integer i;
     }
 
     public void setPlayOrder(int playOrder) {
-        this.mPlayOrder = playOrder;
+        mPlayOrder = playOrder;
     }
 
     public void setPlayer(Player player) {

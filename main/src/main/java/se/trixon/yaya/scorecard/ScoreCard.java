@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,13 +30,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import se.trixon.yaya.Options;
-import se.trixon.yaya.gamedef.GameTypeLoader;
-import se.trixon.yaya.gamedef.GameType;
-import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
 import se.trixon.almond.util.CircularInt;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.GraphicsHelper;
+import se.trixon.yaya.Options;
+import se.trixon.yaya.ThemeManager;
+import se.trixon.yaya.gamedef.GameType;
+import se.trixon.yaya.gamedef.GameTypeLoader;
+import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
 
 /**
  *
@@ -60,6 +61,7 @@ public class ScoreCard {
     private LinkedList<PlayerColumn> mPlayers = new LinkedList<>();
     private boolean mRegisterable;
     private boolean mShowIndicators;
+    private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private AbstractAction mUndoAction;
     private JButton mUndoButton;
 
@@ -141,6 +143,42 @@ public class ScoreCard {
         mPlayers.get(mActivePlayer).setVisibleIndicators(visible);
     }
 
+    void hoverRowEntered(int row) {
+        Color activeColor = GraphicsHelper.colorAndMask(mThemeManager.getHeader(), 0xEEEEEE);
+
+        mHeaderColumn.getRows()[row].getLabel().setBackground(activeColor);
+        mHeaderColumn.getHiScoreColumn()[row].getLabel().setBackground(activeColor);
+        mHeaderColumn.getMaxColumn()[row].getLabel().setBackground(activeColor);
+    }
+
+    void hoverRowExited(int row) {
+        mHeaderColumn.getRows()[row].getLabel().setBackground(mThemeManager.getHeader());
+        mHeaderColumn.getHiScoreColumn()[row].getLabel().setBackground(mThemeManager.getHeader());
+        mHeaderColumn.getMaxColumn()[row].getLabel().setBackground(mThemeManager.getHeader());
+    }
+
+    void register() {
+        if (mRegisterable) {
+            mRegisterable = false;
+            mNumOfRolls = 0;
+            mPlayers.get(mActivePlayer).register();
+
+            updatePolePosition();
+
+            if (isGameOver()) {
+                mObservable.notify(ScoreCardEvent.GAME_OVER);
+                gameOver();
+
+            } else {
+                mUndoAction.setEnabled(true);
+                mObservable.notify(ScoreCardEvent.REGISTER);
+
+                mActivePlayer = mCurrentPlayer.inc();
+                mPlayers.get(mActivePlayer).setEnabled(true);
+            }
+        }
+    }
+
     private void actionPerformedUndo() {
         mRegisterable = true;
         mPlayers.get(mActivePlayer).setEnabled(false);
@@ -151,16 +189,16 @@ public class ScoreCard {
     }
 
     private void applyColors() {
-        mPanel.setBackground(mOptions.getColor(Options.ColorItem.SCORECARD));
-        mBasePanel.setBackground(mOptions.getColor(Options.ColorItem.BACKGROUND));
+        mPanel.setBackground(mThemeManager.getScorecard());
+        mBasePanel.setBackground(mThemeManager.getBackground());
         Color color;
 
         for (int i = 0; i < mNumOfRows; i++) {
 
             if (mHeaderColumn.getRows()[i].getGameRow().isSum() || mHeaderColumn.getRows()[i].getGameRow().isBonus()) {
-                color = mOptions.getColor(Options.ColorItem.SUM);
+                color = mThemeManager.getSum();
             } else {
-                color = mOptions.getColor(Options.ColorItem.HEADER);
+                color = mThemeManager.getHeader();
             }
 
             mHeaderColumn.getRows()[i].getLabel().setBackground(color);
@@ -171,9 +209,9 @@ public class ScoreCard {
         for (int i = 0; i < mPlayers.size(); i++) {
             for (int j = 0; j < mNumOfRows; j++) {
                 if (mPlayers.get(i).getRows()[j].getGameRow().isSum() || mHeaderColumn.getRows()[j].getGameRow().isBonus()) {
-                    color = mOptions.getColor(Options.ColorItem.SUM);
+                    color = mThemeManager.getSum();
                 } else {
-                    color = mOptions.getColor(Options.ColorItem.ROW);
+                    color = mThemeManager.getRow();
                 }
                 mPlayers.get(i).getRows()[j].getLabel().setBackground(color);
                 mPlayers.get(i).getRows()[j].getLabel().setCurrentBackgroundColor(color);
@@ -247,10 +285,9 @@ public class ScoreCard {
                 }
             }
         });
-        mOptions.getPreferencesColors().addPreferenceChangeListener(new PreferenceChangeListener() {
 
-            @Override
-            public void preferenceChange(PreferenceChangeEvent evt) {
+        mOptions.getPreferences().addPreferenceChangeListener(pce -> {
+            if (pce.getKey().equals(Options.KEY_THEME)) {
                 applyColors();
             }
         });
@@ -369,39 +406,4 @@ public class ScoreCard {
         }
     }
 
-    void hoverRowEntered(int row) {
-        Color activeColor = GraphicsHelper.colorAndMask(mOptions.getColor(Options.ColorItem.HEADER), 0xEEEEEE);
-
-        mHeaderColumn.getRows()[row].getLabel().setBackground(activeColor);
-        mHeaderColumn.getHiScoreColumn()[row].getLabel().setBackground(activeColor);
-        mHeaderColumn.getMaxColumn()[row].getLabel().setBackground(activeColor);
-    }
-
-    void hoverRowExited(int row) {
-        mHeaderColumn.getRows()[row].getLabel().setBackground(mOptions.getColor(Options.ColorItem.HEADER));
-        mHeaderColumn.getHiScoreColumn()[row].getLabel().setBackground(mOptions.getColor(Options.ColorItem.HEADER));
-        mHeaderColumn.getMaxColumn()[row].getLabel().setBackground(mOptions.getColor(Options.ColorItem.HEADER));
-    }
-
-    void register() {
-        if (mRegisterable) {
-            mRegisterable = false;
-            mNumOfRolls = 0;
-            mPlayers.get(mActivePlayer).register();
-
-            updatePolePosition();
-
-            if (isGameOver()) {
-                mObservable.notify(ScoreCardEvent.GAME_OVER);
-                gameOver();
-
-            } else {
-                mUndoAction.setEnabled(true);
-                mObservable.notify(ScoreCardEvent.REGISTER);
-
-                mActivePlayer = mCurrentPlayer.inc();
-                mPlayers.get(mActivePlayer).setEnabled(true);
-            }
-        }
-    }
 }

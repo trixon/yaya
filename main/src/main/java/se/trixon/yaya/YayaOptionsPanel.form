@@ -46,8 +46,8 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="colorComboBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="colorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="themeComboBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="themeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -71,12 +71,12 @@
               <Component id="checkboxPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="colorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="themeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="opacityLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="colorComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="themeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="opacitySlider" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -121,24 +121,14 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="colorLabel">
+    <Component class="javax.swing.JLabel" name="themeLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="se/trixon/yaya/Bundle.properties" key="YayaOptionsPanel.colorLabel.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="se/trixon/yaya/Bundle.properties" key="YayaOptionsPanel.themeLabel.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="colorComboBox">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
-        </Property>
-      </Properties>
+    <Component class="javax.swing.JComboBox" name="themeComboBox">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>

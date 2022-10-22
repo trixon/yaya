@@ -45,12 +45,9 @@ public final class YayaOptionsPanelController extends OptionsPanelController {
 
     @Override
     public void applyChanges() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                getPanel().store();
-                mChanged = false;
-            }
+        SwingUtilities.invokeLater(() -> {
+            getPanel().store();
+            mChanged = false;
         });
     }
 
