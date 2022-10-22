@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.core.api.ui;
+package se.trixon.yaya;
 
 import se.trixon.yaya.Player;
 

@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nbgames.core.api.ui;
+package se.trixon.yaya;
 
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.StringUtils;
-import org.nbgames.core.api.GameController;
-import org.nbgames.core.api.ui.GameOverItem;
+import se.trixon.yaya.GameOverItem;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import se.trixon.almond.nbp.Almond;
@@ -34,7 +33,6 @@ import se.trixon.almond.util.swing.dialogs.HtmlPanel;
  */
 public class GameOverDialog {
 
-    private final DialogButtonManager mButtonManager = DialogButtonManager.getInstance();
     private final JButton mNewGameButton;
     private final NotifyDescriptor mNotifyDescriptor;
     private final JButton mQuickNewGameButton;
@@ -47,7 +45,7 @@ public class GameOverDialog {
         mNewGameButton = new JButton(MaterialIcon._Av.PLAY_ARROW.getImageIcon(Almond.ICON_LARGE));
         mQuickNewGameButton = new JButton(MaterialIcon._Av.PLAY_CIRCLE_OUTLINE.getImageIcon(Almond.ICON_LARGE));
 
-        JButton[] options = new JButton[]{mButtonManager.getCancel(), mNewGameButton, mQuickNewGameButton};
+        JButton[] options = new JButton[]{mNewGameButton, mQuickNewGameButton};
         mNotifyDescriptor = new NotifyDescriptor(
                 null,
                 Dict.Game.GAME_OVER.toString(),
@@ -58,16 +56,16 @@ public class GameOverDialog {
 
     }
 
-    public void display(GameController gameController, String s) {
+    public void display(String s) {
         Object message = s;
         if (StringUtils.startsWithIgnoreCase(s, "<html>")) {
             message = new HtmlPanel(s.toString());
         }
 
-        display(gameController, message);
+        display((Object) message);
     }
 
-    public void display(GameController gameController, ArrayList<GameOverItem> gameOverItems) {
+    public void display(ArrayList<GameOverItem> gameOverItems) {
         gameOverItems.sort((o1, o2) -> o2.score().compareTo(o1.score()));
 
         StringBuilder cssBuilder = new StringBuilder("<html>");
@@ -97,10 +95,10 @@ public class GameOverDialog {
         }
         builder.append("</table></html>");
 
-        display(gameController, builder.toString());
+        display(builder.toString());
     }
 
-    private void display(GameController gameController, Object message) {
+    private void display(Object message) {
         mNotifyDescriptor.setMessage(message);
         Object retVal = DialogDisplayer.getDefault().notify(mNotifyDescriptor);
 
@@ -109,7 +107,7 @@ public class GameOverDialog {
 //                NbGamesTopComponent nbGamesTopComponent = (NbGamesTopComponent) WindowManager.getDefault().findTopComponent("NbGamesTopComponent");
 //                nbGamesTopComponent.displayNewGameDialog(gameController);
             } else if (retVal == mQuickNewGameButton) {
-                gameController.onRequestNewGameStart();
+//                gameController.onRequestNewGameStart();
             }
         });
     }
