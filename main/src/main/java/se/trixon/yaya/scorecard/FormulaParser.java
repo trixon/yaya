@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@ package se.trixon.yaya.scorecard;
 
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.SortedSet;
 import java.util.TreeSet;
 import se.trixon.yaya.gamedef.GameRow;
 
@@ -44,7 +43,7 @@ public class FormulaParser {
         }
 
         try {
-            Formula formula = Formula.valueOf(command.toUpperCase());
+            var formula = Formula.valueOf(command.toUpperCase());
             result = processFormula(formula);
         } catch (IllegalArgumentException e) {
             System.err.println("Unknown command: " + command);
@@ -84,15 +83,15 @@ public class FormulaParser {
     private static int getHouse(int majorPart, int minorPart) {
         int result = 0;
 
-        LinkedList<Integer> majorList = new LinkedList<>();
-        LinkedList<Integer> minorList = new LinkedList<>();
+        var majorList = new LinkedList<Integer>();
+        var minorList = new LinkedList<Integer>();
 
         for (int i = 6; i > 0; i--) {
             int sum = getSumOf(i);
             int freq = sum / i;
 
             if (freq >= majorPart) {
-                if (majorList.size() > 0) {
+                if (!majorList.isEmpty()) {
                     if (i > Collections.max(majorList)) {
                         majorList.add(i);
                     }
@@ -106,7 +105,7 @@ public class FormulaParser {
             }
         }
 
-        if (majorList.size() > 0 && minorList.size() > 0) {
+        if (!majorList.isEmpty() && !minorList.isEmpty()) {
             result = majorPart * Collections.max(majorList) + minorPart * Collections.max(minorList);
         }
 
@@ -139,16 +138,16 @@ public class FormulaParser {
 
     private static int getStraight(int sizeOfStraight) {
         int result = 0;
-        SortedSet<Integer> sortedSet = new TreeSet<>();
+        var sortedSet = new TreeSet<Integer>();
 
-        for (Integer integer : sDiceList) {
+        for (var integer : sDiceList) {
             sortedSet.add(integer);
         }
 
         if (sortedSet.size() >= sizeOfStraight) {
             int setSum = 0;
 
-            for (Integer integer : sortedSet) {
+            for (var integer : sortedSet) {
                 setSum += integer;
             }
 
@@ -182,29 +181,25 @@ public class FormulaParser {
         int result = -1;
 
         switch (formula) {
-            case DUPLICATES:
+            case DUPLICATES ->
                 result = getDuplicates(sArgList.get(0));
-                break;
 
-            case HOUSE:
+            case HOUSE ->
                 result = getHouse(sArgList.get(0), sArgList.get(1));
-                break;
 
-            case PAIR:
+            case PAIR ->
                 result = getPair(sArgList.get(0));
-                break;
 
-            case STRAIGHT:
+            case STRAIGHT ->
                 result = getStraight(sArgList.get(0));
-                break;
 
-            case SUM:
-                if (sArgList.size() == 0) {
+            case SUM -> {
+                if (sArgList.isEmpty()) {
                     result = getSum();
                 } else {
                     result = getSumOf(sArgList.get(0));
                 }
-                break;
+            }
         }
 
         return result;
@@ -215,8 +210,10 @@ public class FormulaParser {
 
     public enum Formula {
 
-        DUPLICATES, HOUSE,
+        DUPLICATES,
+        HOUSE,
         PAIR,
-        STRAIGHT, SUM,
+        STRAIGHT,
+        SUM,
     }
 }

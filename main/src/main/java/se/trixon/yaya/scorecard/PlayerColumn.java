@@ -15,14 +15,11 @@
  */
 package se.trixon.yaya.scorecard;
 
-import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.Stack;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import se.trixon.yaya.Player;
-import se.trixon.yaya.gamedef.GameRow;
-import se.trixon.yaya.gamedef.GameRows;
 import se.trixon.yaya.gamedef.GameType;
 
 /**
@@ -34,15 +31,14 @@ public class PlayerColumn {
     private boolean mActive;
     private int mCurrentScore;
     private LinkedList<Integer> mDice;
-    private GameType mGameType;
-    private JLabel mLabel = new JLabel("XXX");
-    private String mName;
+    private final GameType mGameType;
+    private final JLabel mLabel = new JLabel("XXX");
     private int mNumOfRolls;
     private int mPlayOrder;
     private Player mPlayer;
-    private Stack<Integer> mRowStack = new Stack<Integer>();
+    private final Stack<Integer> mRowStack = new Stack<>();
     private ScoreCardRow[] mRows;
-    private ScoreCard mScoreCard;
+    private final ScoreCard mScoreCard;
 
     public PlayerColumn(ScoreCard scoreCard, int playOrder, GameType gameType) {
         mScoreCard = scoreCard;
@@ -52,8 +48,8 @@ public class PlayerColumn {
     }
 
     public void clearPreview() {
-        for (ScoreCardRow scoreCardRow : mRows) {
-            scoreCardRow.clearPreview();
+        for (var row : mRows) {
+            row.clearPreview();
         }
     }
 
@@ -102,8 +98,8 @@ public class PlayerColumn {
         mRowStack.clear();
         setEnabled(false);
 
-        for (ScoreCardRow scoreCardRow : mRows) {
-            scoreCardRow.newGame();
+        for (var row : mRows) {
+            row.newGame();
         }
 
         setRollCounterLabel();
@@ -111,21 +107,22 @@ public class PlayerColumn {
 
     public void parse(LinkedList<Integer> values) {
         mDice = values;
-        for (ScoreCardRow scoreCardRow : mRows) {
-            if (scoreCardRow.getGameRow().isRollCounter()) {
+
+        for (var row : mRows) {
+            if (row.getGameRow().isRollCounter()) {
                 String rolls = Integer.toString(getNumOfRolls());
                 int maxRolls = mGameType.getNumOfRolls();
                 if (maxRolls > 0) {
                     rolls += " (" + mScoreCard.getNumOfRolls() + "/" + maxRolls + ")";
                 }
-                scoreCardRow.getLabel().setText(rolls);
+                row.getLabel().setText(rolls);
             }
 
-            String formula = scoreCardRow.getGameRow().getFormula();
-            if (!formula.isEmpty() && !scoreCardRow.isRegistered()) {
-                scoreCardRow.setPreview(FormulaParser.parseFormula(formula, mDice, scoreCardRow.getGameRow()));
+            String formula = row.getGameRow().getFormula();
+            if (!formula.isEmpty() && !row.isRegistered()) {
+                row.setPreview(FormulaParser.parseFormula(formula, mDice, row.getGameRow()));
             }
-            scoreCardRow.enableInput();
+            row.enableInput();
         }
     }
 
@@ -138,17 +135,16 @@ public class PlayerColumn {
         mActive = aState;
         String text = (mNumOfRolls == 0) ? "0" : Integer.toString(mNumOfRolls);
 
-        for (ScoreCardRow scoreCardRow : mRows) {
-            scoreCardRow.setEnabled(aState);
-            if (scoreCardRow.getGameRow().isRollCounter()) {
-                scoreCardRow.getLabel().setText(text);
+        for (var row : mRows) {
+            row.setEnabled(aState);
+            if (row.getGameRow().isRollCounter()) {
+                row.getLabel().setText(text);
             }
         }
     }
 
     public void setNumOfRolls(int numOfRolls) {
         mNumOfRolls = numOfRolls;
-        Integer i;
     }
 
     public void setPlayOrder(int playOrder) {
@@ -161,14 +157,14 @@ public class PlayerColumn {
     }
 
     public void setText() {
-        for (ScoreCardRow scoreCardRow : mRows) {
-            scoreCardRow.setText();
+        for (var row : mRows) {
+            row.setText();
         }
     }
 
     public void setVisibleIndicators(boolean visible) {
-        for (ScoreCardRow scoreCardRow : mRows) {
-            scoreCardRow.setVisibleIndicator(visible);
+        for (var row : mRows) {
+            row.setVisibleIndicator(visible);
         }
     }
 
@@ -181,22 +177,22 @@ public class PlayerColumn {
         updateSums();
         setEnabled(true);
 
-        for (ScoreCardRow scoreCardRow : mRows) {
-            scoreCardRow.enableHover();
+        for (var row : mRows) {
+            row.enableHover();
         }
     }
 
     private void init() {
-        GameRows rowsRule = mGameType.getRows();
+        var rowsRule = mGameType.getRows();
         mRows = new ScoreCardRow[rowsRule.size()];
-        Dimension d = mLabel.getPreferredSize();
+        var d = mLabel.getPreferredSize();
         d.width = 90;
         mLabel.setPreferredSize(d);
         mLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mLabel.setOpaque(true);
 
         for (int i = 0; i < mRows.length; i++) {
-            GameRow rowRule = rowsRule.get(i);
+            var rowRule = rowsRule.get(i);
             mRows[i] = new ScoreCardRow(mScoreCard, this, rowRule, i);
 
             if (i == 0) {
@@ -212,39 +208,38 @@ public class PlayerColumn {
     }
 
     private void updateSums() {
-        for (ScoreCardRow scoreCardRow : mRows) {
-            if (scoreCardRow.getGameRow().getSumSet() != null) {
+        for (var row : mRows) {
+            if (row.getGameRow().getSumSet() != null) {
 
-                if (scoreCardRow.getGameRow().isBonus()) {
+                if (row.getGameRow().isBonus()) {
                     int sum = 0;
 
-                    for (Integer row : scoreCardRow.getGameRow().getSumSet()) {
-                        sum += mRows[row].getValue();
+                    for (var rowValue : row.getGameRow().getSumSet()) {
+                        sum += mRows[rowValue].getValue();
                     }
 
-                    if (sum >= scoreCardRow.getGameRow().getLim()) {
-                        int bonus = scoreCardRow.getGameRow().getMax();
-                        scoreCardRow.getLabel().setText(Integer.toString(bonus));
-                        scoreCardRow.setValue(bonus);
+                    if (sum >= row.getGameRow().getLim()) {
+                        int bonus = row.getGameRow().getMax();
+                        row.getLabel().setText(Integer.toString(bonus));
+                        row.setValue(bonus);
                     }
                 }
 
-                if (scoreCardRow.getGameRow().isSum()) {
+                if (row.getGameRow().isSum()) {
                     int sum = 0;
 
-                    for (Integer row : scoreCardRow.getGameRow().getSumSet()) {
-                        sum += mRows[row].getValue();
+                    for (var rowValue : row.getGameRow().getSumSet()) {
+                        sum += mRows[rowValue].getValue();
                     }
 
-                    if (scoreCardRow.getRow() == mGameType.getResultRow()) {
-                        scoreCardRow.setValue(sum);
+                    if (row.getRow() == mGameType.getResultRow()) {
+                        row.setValue(sum);
                         mCurrentScore = sum;
                     }
 
-                    if (!scoreCardRow.getGameRow().isBonus()) {
-                        scoreCardRow.getLabel().setText(Integer.toString(sum));
+                    if (!row.getGameRow().isBonus()) {
+                        row.getLabel().setText(Integer.toString(sum));
                     }
-
                 }
             }
         }

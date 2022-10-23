@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import se.trixon.yaya.Yaya;
  */
 public class GameType {
 
-    public static Comparator<GameType> NameComparator = (GameType type1, GameType type2) -> type1.getTitle().compareTo(type2.getTitle());
+    public static Comparator<GameType> NameComparator = (o1, o2) -> o1.getTitle().compareTo(o2.getTitle());
     private static final int FILE_FORMAT_VERSION = 1;
     private static final Gson GSON = new GsonBuilder()
             .setVersion(1.0)

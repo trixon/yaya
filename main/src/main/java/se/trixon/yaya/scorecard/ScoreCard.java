@@ -23,12 +23,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.prefs.PreferenceChangeEvent;
-import java.util.prefs.PreferenceChangeListener;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import se.trixon.almond.util.CircularInt;
 import se.trixon.almond.util.Dict;
@@ -51,14 +48,14 @@ public class ScoreCard {
     private final GameTypeLoader mGameDef = GameTypeLoader.getInstance();
     private final GameType mGameType;
     private HeaderColumn mHeaderColumn;
-    private int mNumOfPlayers;
+    private final int mNumOfPlayers;
     private int mNumOfRolls;
     private int mNumOfRows;
     private final ScoreCardObservable mObservable = new ScoreCardObservable();
     private final Options mOptions = Options.getInstance();
     private final JPanel mPanel = new JPanel();
     private LinkedList<PlayerColumn> mPlayerPositions;
-    private LinkedList<PlayerColumn> mPlayers = new LinkedList<>();
+    private final LinkedList<PlayerColumn> mPlayerColumns = new LinkedList<>();
     private boolean mRegisterable;
     private boolean mShowIndicators;
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
@@ -108,26 +105,25 @@ public class ScoreCard {
 
         int i = 0;
 
-        for (PlayerColumn playerColumn : mPlayers) {
+        for (var playerColumn : mPlayerColumns) {
             playerColumn.newGame();
             playerColumn.setPlayer(mOptions.getPlayers()[i]);
             i++;
         }
 
-        mPlayers.get(mActivePlayer).setEnabled(true);
+        getActivePlayerColumn().setEnabled(true);
     }
 
     public void newRoll() {
-        mPlayers.get(mActivePlayer).clearPreview();
+        getActivePlayerColumn().clearPreview();
     }
 
     public void parseDice(LinkedList<Integer> values) {
         setEnabledRegister(true);
         mNumOfRolls++;
-        mPlayers.get(mActivePlayer).incNumOfRolls();
-        mPlayers.get(mActivePlayer).parse(values);
-
-        mPlayers.get(mActivePlayer).setVisibleIndicators(mOptions.isShowingIndicators());
+        getActivePlayerColumn().incNumOfRolls();
+        getActivePlayerColumn().parse(values);
+        getActivePlayerColumn().setVisibleIndicators(mOptions.isShowingIndicators());
     }
 
     public void setEnabledRegister(boolean enabled) {
@@ -140,11 +136,15 @@ public class ScoreCard {
 
     public void setVisibleIndicators(boolean visible) {
         mShowIndicators = visible;
-        mPlayers.get(mActivePlayer).setVisibleIndicators(visible);
+        getActivePlayerColumn().setVisibleIndicators(visible);
+    }
+
+    private PlayerColumn getActivePlayerColumn() {
+        return mPlayerColumns.get(mActivePlayer);
     }
 
     void hoverRowEntered(int row) {
-        Color activeColor = GraphicsHelper.colorAndMask(mThemeManager.getHeader(), 0xEEEEEE);
+        var activeColor = GraphicsHelper.colorAndMask(mThemeManager.getHeader(), 0xEEEEEE);
 
         mHeaderColumn.getRows()[row].getLabel().setBackground(activeColor);
         mHeaderColumn.getHiScoreColumn()[row].getLabel().setBackground(activeColor);
@@ -161,29 +161,28 @@ public class ScoreCard {
         if (mRegisterable) {
             mRegisterable = false;
             mNumOfRolls = 0;
-            mPlayers.get(mActivePlayer).register();
+            getActivePlayerColumn().register();
 
             updatePolePosition();
 
             if (isGameOver()) {
                 mObservable.notify(ScoreCardEvent.GAME_OVER);
                 gameOver();
-
             } else {
                 mUndoAction.setEnabled(true);
                 mObservable.notify(ScoreCardEvent.REGISTER);
 
                 mActivePlayer = mCurrentPlayer.inc();
-                mPlayers.get(mActivePlayer).setEnabled(true);
+                getActivePlayerColumn().setEnabled(true);
             }
         }
     }
 
     private void actionPerformedUndo() {
         mRegisterable = true;
-        mPlayers.get(mActivePlayer).setEnabled(false);
+        getActivePlayerColumn().setEnabled(false);
         mActivePlayer = mCurrentPlayer.dec();
-        mPlayers.get(mActivePlayer).undo();
+        getActivePlayerColumn().undo();
 
         mObservable.notify(ScoreCardEvent.UNDO);
     }
@@ -194,7 +193,6 @@ public class ScoreCard {
         Color color;
 
         for (int i = 0; i < mNumOfRows; i++) {
-
             if (mHeaderColumn.getRows()[i].getGameRow().isSum() || mHeaderColumn.getRows()[i].getGameRow().isBonus()) {
                 color = mThemeManager.getSum();
             } else {
@@ -206,15 +204,15 @@ public class ScoreCard {
             mHeaderColumn.getMaxColumn()[i].getLabel().setBackground(color);
         }
 
-        for (int i = 0; i < mPlayers.size(); i++) {
+        for (int i = 0; i < mPlayerColumns.size(); i++) {
             for (int j = 0; j < mNumOfRows; j++) {
-                if (mPlayers.get(i).getRows()[j].getGameRow().isSum() || mHeaderColumn.getRows()[j].getGameRow().isBonus()) {
+                if (mPlayerColumns.get(i).getRows()[j].getGameRow().isSum() || mHeaderColumn.getRows()[j].getGameRow().isBonus()) {
                     color = mThemeManager.getSum();
                 } else {
                     color = mThemeManager.getRow();
                 }
-                mPlayers.get(i).getRows()[j].getLabel().setBackground(color);
-                mPlayers.get(i).getRows()[j].getLabel().setCurrentBackgroundColor(color);
+                mPlayerColumns.get(i).getRows()[j].getLabel().setBackground(color);
+                mPlayerColumns.get(i).getRows()[j].getLabel().setCurrentBackgroundColor(color);
             }
         }
 
@@ -268,7 +266,7 @@ public class ScoreCard {
     }
 
     private void init() {
-        mPlayers.clear();
+        mPlayerColumns.clear();
         mHeaderColumn = new HeaderColumn(this, mGameType);
         initActions();
         mNumOfRows = mGameType.getRows().size();
@@ -276,18 +274,10 @@ public class ScoreCard {
         initLayout();
         applyColors();
 
-        mOptions.getPreferences().addPreferenceChangeListener(new PreferenceChangeListener() {
-
-            @Override
-            public void preferenceChange(PreferenceChangeEvent evt) {
-                if (evt.getKey().equalsIgnoreCase(Options.KEY_SHOW_INDICATORS)) {
-                    setVisibleIndicators(mOptions.isShowingIndicators());
-                }
-            }
-        });
-
         mOptions.getPreferences().addPreferenceChangeListener(pce -> {
-            if (pce.getKey().equals(Options.KEY_THEME)) {
+            if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_INDICATORS)) {
+                setVisibleIndicators(mOptions.isShowingIndicators());
+            } else if (pce.getKey().equals(Options.KEY_THEME)) {
                 applyColors();
             }
         });
@@ -313,7 +303,7 @@ public class ScoreCard {
         mBasePanel.setOpaque(false);
         mPanel.setOpaque(true);
 
-        GridBagLayout gridBagLayout = new GridBagLayout();
+        var gridBagLayout = new GridBagLayout();
         mPanel.setLayout(gridBagLayout);
         GridBagConstraints gridBagConstraints;
 
@@ -326,7 +316,7 @@ public class ScoreCard {
         gridBagLayout.setConstraints(mUndoButton, gridBagConstraints);
         mPanel.add(mUndoButton);
 
-        Insets insets = new Insets(1, 0, 0, 0);
+        var insets = new Insets(1, 0, 0, 0);
 
         for (int i = 0; i < mNumOfRows; i++) {
             gridBagConstraints = new GridBagConstraints();
@@ -350,9 +340,10 @@ public class ScoreCard {
 
         int startGridX = 3;
         insets.left = 1;
+
         for (int i = 0; i < mNumOfPlayers; i++) {
-            mPlayers.add(new PlayerColumn(this, i, mGameType));
-            ScoreCardRow[] column = mPlayers.get(i).getRows();
+            mPlayerColumns.add(new PlayerColumn(this, i, mGameType));
+            ScoreCardRow[] column = mPlayerColumns.get(i).getRows();
 
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = startGridX + i;
@@ -361,8 +352,9 @@ public class ScoreCard {
             gridBagConstraints.gridy = 0;
             gridBagConstraints.insets = insets;
 
-            gridBagLayout.setConstraints(mPlayers.get(i).getLabel(), gridBagConstraints);
-            mPanel.add(mPlayers.get(i).getLabel());
+            gridBagLayout.setConstraints(mPlayerColumns.get(i).getLabel(), gridBagConstraints);
+            mPanel.add(mPlayerColumns.get(i).getLabel());
+
             for (int j = 0; j < mNumOfRows; j++) {
                 gridBagConstraints.gridy = j + 1;
 
@@ -376,8 +368,9 @@ public class ScoreCard {
         boolean gameOver;
         if (mActivePlayer == mNumOfPlayers - 1) {
             gameOver = true;
-            for (int i = 0; i < mPlayers.get(mNumOfPlayers - 1).getRows().length; i++) {
-                ScoreCardRow scoreCardRow = mPlayers.get(mNumOfPlayers - 1).getRows()[i];
+
+            for (int i = 0; i < mPlayerColumns.get(mNumOfPlayers - 1).getRows().length; i++) {
+                var scoreCardRow = mPlayerColumns.get(mNumOfPlayers - 1).getRows()[i];
 
                 if (scoreCardRow.isPlayable() && !scoreCardRow.isRegistered()) {
                     gameOver = false;
@@ -392,18 +385,17 @@ public class ScoreCard {
     }
 
     private void updatePolePosition() {
-        mPlayerPositions = (LinkedList<PlayerColumn>) mPlayers.clone();
-        PlayerColumnComparator pcc = new PlayerColumnComparator(PlayerColumnComparator.DESCENDING);
+        mPlayerPositions = (LinkedList<PlayerColumn>) mPlayerColumns.clone();
+        var pcc = new PlayerColumnComparator(PlayerColumnComparator.DESCENDING);
         Collections.sort(mPlayerPositions, pcc);
 
         float reducer = 0.F;
         Font font = mHeaderColumn.getRows()[mGameType.getResultRow()].getLabel().getFont();
 
-        for (PlayerColumn playerColumn : mPlayerPositions) {
-            JLabel label = playerColumn.getRows()[mGameType.getResultRow()].getLabel();
+        for (var playerColumn : mPlayerPositions) {
+            var label = playerColumn.getRows()[mGameType.getResultRow()].getLabel();
             label.setFont(font.deriveFont((16.0F - reducer)));
             reducer += 1.0;
         }
     }
-
 }

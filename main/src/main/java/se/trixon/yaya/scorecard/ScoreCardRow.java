@@ -50,6 +50,7 @@ public class ScoreCardRow {
         mPlayerColumn = playerColumn;
         mGameRow = gameRow;
         mRow = row;
+
         init();
     }
 
@@ -58,6 +59,7 @@ public class ScoreCardRow {
         mGameRow = gameRow;
         mRow = row;
         mHeader = isHeader;
+
         init();
     }
 
@@ -133,6 +135,7 @@ public class ScoreCardRow {
         mRowLabel.setText(null);
         mPreview = 0;
         mValue = 0;
+
         if (mGameRow.isRollCounter()) {
             mRowLabel.setText("0");
         }
@@ -161,7 +164,6 @@ public class ScoreCardRow {
             }
 
             enableHover();
-
         } else {
             if (mGameRow.isSum() || mGameRow.isBonus()) {
                 mRowLabel.setBackground(GraphicsHelper.colorAndMask(mThemeManager.getSum(), COLOR_MASK));
@@ -173,24 +175,25 @@ public class ScoreCardRow {
                 mRowLabel.setFont(mRowLabel.getFont().deriveFont(Font.PLAIN));
             }
 
-            MouseListener[] mouseListeners = (MouseListener[]) (mRowLabel.getListeners(MouseListener.class));
+            var mouseListeners = (MouseListener[]) (mRowLabel.getListeners(MouseListener.class));
 
-            for (MouseListener mouseListener : mouseListeners) {
+            for (var mouseListener : mouseListeners) {
                 mRowLabel.removeMouseListener(mouseListener);
             }
         }
     }
 
     public void setPreview(int preview) {
-        this.mPreview = preview;
+        mPreview = preview;
     }
 
     public void setRegistered(boolean registered) {
-        this.mRegistered = registered;
+        mRegistered = registered;
     }
 
     public void setText() {
         String text = "";
+
         if (isPlayable()) {
             mRowLabel.setFont(mRowLabel.getFont().deriveFont(Font.PLAIN));
             if (isRegistered()) {
@@ -255,9 +258,9 @@ public class ScoreCardRow {
             mPlayerColumn.getRowStack().push(mRow);
             mScoreCard.hoverRowExited(mRow);
 
-            MouseListener[] mouseListeners = (MouseListener[]) (mRowLabel.getListeners(MouseListener.class));
+            var mouseListeners = (MouseListener[]) (mRowLabel.getListeners(MouseListener.class));
 
-            for (MouseListener mouseListener : mouseListeners) {
+            for (var mouseListener : mouseListeners) {
                 mRowLabel.removeMouseListener(mouseListener);
             }
 

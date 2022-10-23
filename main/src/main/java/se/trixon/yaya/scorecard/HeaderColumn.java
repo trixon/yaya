@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +15,8 @@
  */
 package se.trixon.yaya.scorecard;
 
-import java.util.prefs.PreferenceChangeEvent;
-import java.util.prefs.PreferenceChangeListener;
 import javax.swing.SwingConstants;
 import se.trixon.yaya.Options;
-import se.trixon.yaya.gamedef.GameRow;
-import se.trixon.yaya.gamedef.GameRows;
 import se.trixon.yaya.gamedef.GameType;
 
 /**
@@ -72,17 +68,14 @@ public class HeaderColumn {
     private void init() {
         initRows();
         initLabelTexts();
-        mOptions.getPreferences().addPreferenceChangeListener(new PreferenceChangeListener() {
 
-            @Override
-            public void preferenceChange(PreferenceChangeEvent evt) {
-                if (evt.getKey().equals(Options.KEY_SHOW_SYMBOLS)) {
-                    initLabelTexts();
-                } else if (evt.getKey().equalsIgnoreCase(Options.KEY_SHOW_TOP_COLUMN)) {
-                    setVisibleColumnHiscore(mOptions.isShowingTopColumn());
-                } else if (evt.getKey().equalsIgnoreCase(Options.KEY_SHOW_MAX_COLUMN)) {
-                    setVisibleColumnMax(mOptions.isShowingMaxColumn());
-                }
+        mOptions.getPreferences().addPreferenceChangeListener(pce -> {
+            if (pce.getKey().equals(Options.KEY_SHOW_SYMBOLS)) {
+                initLabelTexts();
+            } else if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_TOP_COLUMN)) {
+                setVisibleColumnHiscore(mOptions.isShowingTopColumn());
+            } else if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_MAX_COLUMN)) {
+                setVisibleColumnMax(mOptions.isShowingMaxColumn());
             }
         });
     }
@@ -105,7 +98,7 @@ public class HeaderColumn {
         boolean showMaxColumn = mOptions.isShowingMaxColumn();
         boolean showHiScoreColumn = mOptions.isShowingTopColumn();
 
-        GameRows rowsRule = mGameType.getRows();
+        var rowsRule = mGameType.getRows();
         mLimValues = rowsRule.getLim();
         mMaxValues = rowsRule.getMax();
 
@@ -115,7 +108,7 @@ public class HeaderColumn {
         mHiScoreColumn = new ScoreCardRow[mNumOfRows];
 
         for (int i = 0; i < mNumOfRows; i++) {
-            GameRow gameRow = rowsRule.get(i);
+            var gameRow = rowsRule.get(i);
 
             mRows[i] = new ScoreCardRow(mScoreCard, gameRow, i, true);
             mMaxColumn[i] = new ScoreCardRow(mScoreCard, gameRow, i, true);
