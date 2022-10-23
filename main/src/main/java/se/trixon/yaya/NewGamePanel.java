@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,10 +18,10 @@ package se.trixon.yaya;
 import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
-import se.trixon.yaya.gamedef.GameType;
-import se.trixon.yaya.gamedef.GameTypeLoader;
 import org.openide.util.NbBundle;
 import se.trixon.almond.util.Dict;
+import se.trixon.yaya.gamedef.GameType;
+import se.trixon.yaya.gamedef.GameTypeLoader;
 
 /**
  *
@@ -40,15 +40,13 @@ public class NewGamePanel extends JPanel {
         initComponents();
 
         variantLabel.setFont(gameLabel.getFont());
-        selectPlayersPanel.getLabel().setFont(gameLabel.getFont());
     }
 
     public void load() {
         //mGameDef.init();
         gameComboBox.setModel(new DefaultComboBoxModel(mGameDef.getTitleArray()));
         gameComboBox.setSelectedIndex(mGameDef.getIndexForId(mOptions.getGameTypeId()));
-        selectPlayersPanel.setNumOfPlayers(mOptions.getNumOfPlayers());
-        selectPlayersPanel.restoreSelection(getClass());
+        selectPlayersPanel.load();
     }
 
     public void save() {
@@ -58,9 +56,8 @@ public class NewGamePanel extends JPanel {
         String variantByTitle = mGameType.getVariantByTitle(variantTitle);
 
         mOptions.setGameVariant(gameTypeId, variantByTitle);
-        mOptions.setNumOfPlayers(selectPlayersPanel.getNumOfPlayers());
-        selectPlayersPanel.saveSelection(getClass());
-        mOptions.setPlayers(selectPlayersPanel.getPlayers());
+        selectPlayersPanel.save();
+        mOptions.setPlayers(mOptions.createPlayers());
     }
 
     /**
@@ -78,7 +75,7 @@ public class NewGamePanel extends JPanel {
         byLineLabel = new javax.swing.JLabel();
         variantLabel = new javax.swing.JLabel();
         variantComboBox = new javax.swing.JComboBox();
-        selectPlayersPanel = new se.trixon.yaya.SelectPlayersPanel();
+        selectPlayersPanel = new se.trixon.yaya.PlayersPanel();
         jPanel1 = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
@@ -170,7 +167,7 @@ public class NewGamePanel extends JPanel {
     private javax.swing.JComboBox gameComboBox;
     private javax.swing.JLabel gameLabel;
     private javax.swing.JPanel jPanel1;
-    private se.trixon.yaya.SelectPlayersPanel selectPlayersPanel;
+    private se.trixon.yaya.PlayersPanel selectPlayersPanel;
     private javax.swing.JComboBox variantComboBox;
     private javax.swing.JLabel variantLabel;
     // End of variables declaration//GEN-END:variables

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,6 @@ import java.net.URL;
 import java.util.prefs.BackingStoreException;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-import se.trixon.yaya.gamedef.GameTypeLoader;
 import org.openide.awt.Actions;
 import org.openide.awt.HtmlBrowser;
 import org.openide.modules.OnStart;
@@ -31,6 +30,7 @@ import se.trixon.almond.nbp.Almond;
 import se.trixon.almond.nbp.dialogs.NbOptionalDialog;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
+import se.trixon.yaya.gamedef.GameTypeLoader;
 
 /**
  *

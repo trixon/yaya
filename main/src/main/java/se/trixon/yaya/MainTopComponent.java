@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,6 +23,8 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.Actions;
 import org.openide.util.NbBundle.Messages;
 import org.openide.windows.TopComponent;
+import se.trixon.almond.util.PrefsHelper;
+import se.trixon.almond.util.swing.SwingHelper;
 
 /**
  * Top component which displays something.
@@ -49,6 +51,7 @@ import org.openide.windows.TopComponent;
 })
 public final class MainTopComponent extends TopComponent {
 
+    private final Options mOptions = Options.getInstance();
     private final Yaya mYaya = Yaya.getInstance();
 
     public MainTopComponent() {
@@ -59,6 +62,15 @@ public final class MainTopComponent extends TopComponent {
         putClientProperty(TopComponent.PROP_UNDOCKING_DISABLED, Boolean.TRUE);
 
         createUI();
+
+        int startCounter = PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
+        if (startCounter == 1) {
+            SwingHelper.runLaterDelayed(200, () -> {
+                Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction").actionPerformed(null);
+            });
+        } else {
+            mYaya.onRequestNewGameStart();
+        }
     }
 
     private void createUI() {
@@ -133,15 +145,6 @@ public final class MainTopComponent extends TopComponent {
     private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JMenuItem undoMenuItem;
     // End of variables declaration//GEN-END:variables
-    @Override
-    public void componentOpened() {
-        // TODO add custom code on component opening
-    }
-
-    @Override
-    public void componentClosed() {
-        // TODO add custom code on component closing
-    }
 
     void writeProperties(java.util.Properties p) {
         // better to version settings since initial version as advocated at
@@ -157,10 +160,12 @@ public final class MainTopComponent extends TopComponent {
 
     class PopupListener extends MouseAdapter {
 
+        @Override
         public void mousePressed(MouseEvent e) {
             maybeShowPopup(e);
         }
 
+        @Override
         public void mouseReleased(MouseEvent e) {
             maybeShowPopup(e);
         }

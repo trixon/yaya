@@ -141,6 +141,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JSlider" name="opacitySlider">
+      <Properties>
+        <Property name="maximum" type="int" value="255"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="reverseDirectionCheckBox">
       <Properties>

@@ -26,6 +26,7 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle.Messages;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.swing.SwingHelper;
+import se.trixon.yaya.NewGamePanel;
 import se.trixon.yaya.Yaya;
 
 @ActionID(
@@ -41,17 +42,20 @@ import se.trixon.yaya.Yaya;
 @Messages("CTL_NewGameAction=New game")
 public final class NewGameAction implements ActionListener {
 
+    private final NewGamePanel mNewGamePanel = new NewGamePanel();
     private final Yaya mYaya = Yaya.getInstance();
 
     public NewGameAction() {
-        mYaya.getNewGamePanel().setPreferredSize(SwingHelper.getUIScaledDim(400, 400));
+        mNewGamePanel.setPreferredSize(SwingHelper.getUIScaledDim(400, 400));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        mNewGamePanel.load();
+
         String[] buttons = new String[]{Dict.CANCEL.toString(), Dict.PLAY.toString()};
         var d = new NotifyDescriptor(
-                mYaya.getNewGamePanel(),
+                mNewGamePanel,
                 Dict.Game.NEW_ROUND.toString(),
                 NotifyDescriptor.OK_CANCEL_OPTION,
                 NotifyDescriptor.PLAIN_MESSAGE,
@@ -59,7 +63,7 @@ public final class NewGameAction implements ActionListener {
                 Dict.PLAY.toString());
 
         if (Dict.PLAY.toString() == DialogDisplayer.getDefault().notify(d)) {
-            mYaya.getNewGamePanel().save();
+            mNewGamePanel.save();
             mYaya.onRequestNewGameStart();
         }
     }

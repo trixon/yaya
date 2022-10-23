@@ -81,6 +81,8 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(opacityLabel, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "YayaOptionsPanel.opacityLabel.text")); // NOI18N
 
+        opacitySlider.setMaximum(255);
+
         org.openide.awt.Mnemonics.setLocalizedText(reverseDirectionCheckBox, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "YayaOptionsPanel.reverseDirectionCheckBox.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

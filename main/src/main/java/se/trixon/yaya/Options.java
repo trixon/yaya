@@ -15,6 +15,7 @@
  */
 package se.trixon.yaya;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.util.OptionsBase;
 import static se.trixon.almond.util.OptionsBase.DEFAULT_FULL_SCREEN;
@@ -27,9 +28,13 @@ import se.trixon.yaya.gamedef.GameVariant;
  */
 public class Options extends OptionsBase {
 
+    public static final String DEFAULT_PLAYERS = "Ask;Embla;Ask;Embla;Ask;Embla;Ask;Embla";
+    public static final String DEFAULT_PLAYERS_ALL = "Ask;Embla";
     public static final String KEY_GAME_TYPE_ID = "gameType";
     public static final String KEY_NUM_OF_PLAYERS = "numOfPlayers";
     public static final String KEY_OPACITY = "opacity";
+    public static final String KEY_PLAYERS = "players";
+    public static final String KEY_PLAYERS_ALL = "players.all";
     public static final String KEY_REVERSE_DIRECTION = "reverseDirection";
     public static final String KEY_SHOW_INDICATORS = "showIndicators";
     public static final String KEY_SHOW_MAX_COLUMN = "showMaxColumn";
@@ -57,72 +62,90 @@ public class Options extends OptionsBase {
         init();
     }
 
+    public Player[] createPlayers() {
+        int numOfPlayers = getNumOfPlayers();
+        var players = new Player[numOfPlayers];
+
+        String storedNames = get(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
+        var names = StringUtils.split(storedNames, ";");
+
+        for (int i = 0; i < numOfPlayers; i++) {
+            players[i] = new Player(-1L, names[i], Player.Handedness.RIGHT);
+        }
+
+        return players;
+    }
+
     public String getGameTypeId() {
-        return mPreferences.get(KEY_GAME_TYPE_ID, DEFAULT_GAME_TYPE_ID);
+        return get(KEY_GAME_TYPE_ID, DEFAULT_GAME_TYPE_ID);
     }
 
     public String getGameVariant(String type) {
-        return mPreferences.get(GameVariant.PREFIX + type, DEFAULT_GAME_VARIANT);
+        return get(GameVariant.PREFIX + type, DEFAULT_GAME_VARIANT);
     }
 
     public int getNumOfPlayers() {
-        return mPreferences.getInt(KEY_NUM_OF_PLAYERS, DEFAULT_NUM_OF_PLAYERS);
+        return getInt(KEY_NUM_OF_PLAYERS, DEFAULT_NUM_OF_PLAYERS);
     }
 
     public int getOpacity() {
-        return mPreferences.getInt(KEY_OPACITY, DEFAULT_OPACITY);
+        return getInt(KEY_OPACITY, DEFAULT_OPACITY);
     }
 
     public Player[] getPlayers() {
+        if (mPlayers == null) {
+            setPlayers(createPlayers());
+        }
+
         return mPlayers;
     }
 
     public String getTheme() {
-        return mPreferences.get(KEY_THEME, DEFAULT_THEME);
+        return get(KEY_THEME, DEFAULT_THEME);
     }
 
     public boolean isFullscreen() {
-        return mPreferences.getBoolean(KEY_FULL_SCREEN, DEFAULT_FULL_SCREEN);
+        return is(KEY_FULL_SCREEN, DEFAULT_FULL_SCREEN);
     }
 
     public boolean isReverseDirection() {
-        return mPreferences.getBoolean(KEY_REVERSE_DIRECTION, DEFAULT_REVERSE_DIRECTION);
+        return is(KEY_REVERSE_DIRECTION, DEFAULT_REVERSE_DIRECTION);
     }
 
     public boolean isShowingIndicators() {
-        return mPreferences.getBoolean(KEY_SHOW_INDICATORS, DEFAULT_SHOW_INDICATORS);
+        return is(KEY_SHOW_INDICATORS, DEFAULT_SHOW_INDICATORS);
     }
 
     public boolean isShowingMaxColumn() {
-        return mPreferences.getBoolean(KEY_SHOW_MAX_COLUMN, DEFAULT_SHOW_MAX_COLUMN);
+        return is(KEY_SHOW_MAX_COLUMN, DEFAULT_SHOW_MAX_COLUMN);
     }
 
     public boolean isShowingSymbols() {
-        return mPreferences.getBoolean(KEY_SHOW_SYMBOLS, DEFAULT_USE_SYMBOLS);
+        return is(KEY_SHOW_SYMBOLS, DEFAULT_USE_SYMBOLS);
     }
 
     public boolean isShowingTopColumn() {
-        return mPreferences.getBoolean(KEY_SHOW_TOP_COLUMN, DEFAULT_SHOW_TOP_COLUMN);
+        return is(KEY_SHOW_TOP_COLUMN, DEFAULT_SHOW_TOP_COLUMN);
     }
 
     public void setFullscreen(boolean value) {
-        mPreferences.putBoolean(KEY_FULL_SCREEN, value);
+        put(KEY_FULL_SCREEN, value);
     }
 
     public void setGameTypeId(String typeId) {
-        mPreferences.put(KEY_GAME_TYPE_ID, typeId);
+        put(KEY_GAME_TYPE_ID, typeId);
     }
 
     public void setGameVariant(String type, String variant) {
-        mPreferences.put(GameVariant.PREFIX + type, variant);
+        put(GameVariant.PREFIX + type, variant);
     }
 
     public void setNumOfPlayers(int players) {
-        mPreferences.putInt(KEY_NUM_OF_PLAYERS, players);
+        put(KEY_NUM_OF_PLAYERS, players);
     }
 
     public void setOpacity(int value) {
-        mPreferences.putInt(KEY_OPACITY, value);
+        put(KEY_OPACITY, value);
     }
 
     public void setPlayers(Player[] players) {
@@ -130,27 +153,27 @@ public class Options extends OptionsBase {
     }
 
     public void setReverseDirection(boolean state) {
-        mPreferences.putBoolean(KEY_REVERSE_DIRECTION, state);
+        put(KEY_REVERSE_DIRECTION, state);
     }
 
     public void setShowIndicators(boolean state) {
-        mPreferences.putBoolean(KEY_SHOW_INDICATORS, state);
+        put(KEY_SHOW_INDICATORS, state);
     }
 
     public void setShowMaxColumn(boolean state) {
-        mPreferences.putBoolean(KEY_SHOW_MAX_COLUMN, state);
+        put(KEY_SHOW_MAX_COLUMN, state);
     }
 
     public void setShowSymbols(boolean state) {
-        mPreferences.putBoolean(KEY_SHOW_SYMBOLS, state);
+        put(KEY_SHOW_SYMBOLS, state);
     }
 
     public void setShowTopColumn(boolean state) {
-        mPreferences.putBoolean(KEY_SHOW_TOP_COLUMN, state);
+        put(KEY_SHOW_TOP_COLUMN, state);
     }
 
     public void setTheme(String theme) {
-        mPreferences.put(KEY_THEME, theme);
+        put(KEY_THEME, theme);
     }
 
     private void init() {

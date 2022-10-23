@@ -29,7 +29,6 @@ public class Yaya {
 
     public static final String LOG_TITLE = "Yaya";
     private GamePanel mGamePanel;
-    private NewGamePanel mNewGamePanel;
 
     public static void errln(String name, String message) {
         new Monitor(name, false, true).errln(message);
@@ -56,15 +55,6 @@ public class Yaya {
     }
 
     private Yaya() {
-    }
-
-    public NewGamePanel getNewGamePanel() {
-        if (mNewGamePanel == null) {
-            mNewGamePanel = new NewGamePanel();
-            mNewGamePanel.load();
-        }
-
-        return mNewGamePanel;
     }
 
     public GamePanel getPanel() {

@@ -16,126 +16,98 @@
 package se.trixon.yaya;
 
 import java.util.Random;
+import java.util.TreeSet;
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpinnerNumberModel;
 import org.apache.commons.lang3.StringUtils;
-import org.openide.util.NbPreferences;
 import se.trixon.almond.util.Dict;
 
 /**
  *
  * @author Patrik Karlström
  */
-public class SelectPlayersPanel extends javax.swing.JPanel {
+public class PlayersPanel extends javax.swing.JPanel {
 
     private int mMaxNumOfPlayers;
-    private JComboBox<Player>[] mCombos;
-    private DefaultComboBoxModel<Player>[] mModels;
+    private JComboBox<String>[] mNameComboBoxes;
+    private final Options mOptions = Options.getInstance();
 
     /**
      * Creates new form PlayersPanel
      */
-    public SelectPlayersPanel() {
+    public PlayersPanel() {
         initComponents();
         setMaxNumOfPlayers(8);
     }
 
-    public JLabel getLabel() {
-        return numOfPlayersLabel;
-    }
-
-    public int getMaxNumOfPlayers() {
-        return mMaxNumOfPlayers;
-    }
-
-    public int getNumOfPlayers() {
-        return (Integer) numberSpinner.getValue();
-    }
-
-    public Player[] getPlayers() {
-        int numOfPlayers = (Integer) numberSpinner.getValue();
-        Player[] players = new Player[numOfPlayers];
-
-        for (int i = 0; i < numOfPlayers; i++) {
-            players[i] = (Player) mCombos[i].getSelectedItem();
-        }
-
-        return players;
-    }
-
-    public void restoreSelection(Class clazz) {
+    public void load() {
         initCombos();
-        String joinedArray = NbPreferences.forModule(getClass()).get(clazz.getName(), "");
-        if (!StringUtils.isBlank(joinedArray)) {
-            String[] playerIds = StringUtils.split(joinedArray, ',');
-            int i = 0;
+        String storedNames = mOptions.get(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
 
-            for (JComboBox<Player> combo : mCombos) {
-                long id = Long.valueOf(playerIds[i]);
-                for (int j = 0; j < combo.getModel().getSize(); j++) {
-                    if (combo.getItemAt(j).getId() == id) {
-                        combo.setSelectedIndex(j);
-                        break;
-                    }
-                }
-                i++;
+        if (!StringUtils.isBlank(storedNames)) {
+            var names = StringUtils.split(storedNames, ';');
+            for (int i = 0; i < mNameComboBoxes.length; i++) {
+                var comboBox = mNameComboBoxes[i];
+                comboBox.setSelectedItem(names[i]);
             }
         }
+
+        numberSpinner.setValue(mOptions.getNumOfPlayers());
+        numberSpinnerStateChanged(null);
     }
 
-    public void saveSelection(Class clazz) {
-        long[] playerIds = new long[mMaxNumOfPlayers];
-        int i = 0;
+    public void save() {
+        var names = new String[mMaxNumOfPlayers];
+        var allNames = new TreeSet<String>();
 
-        try {
-            for (JComboBox<Player> combo : mCombos) {
-                playerIds[i] = ((Player) combo.getSelectedItem()).getId();
-                i++;
+        for (int i = 0; i < mNameComboBoxes.length; i++) {
+            var comboBox = mNameComboBoxes[i];
+            names[i] = (String) comboBox.getSelectedItem();
+            allNames.add((String) comboBox.getEditor().getItem());
+
+            for (int j = 0; j < comboBox.getModel().getSize(); j++) {
+                String name = comboBox.getModel().getElementAt(j);
+                allNames.add(name);
             }
-
-            NbPreferences.forModule(getClass()).put(clazz.getName(), StringUtils.join(playerIds, ','));
-        } catch (NullPointerException e) {
-            // nvm
         }
+
+        mOptions.put(Options.KEY_PLAYERS, String.join(";", names));
+        mOptions.put(Options.KEY_PLAYERS_ALL, String.join(";", allNames));
+        mOptions.setNumOfPlayers(getNumOfPlayers());
     }
 
-    public void setMaxNumOfPlayers(int maxNumOfPlayers) {
+    private int getNumOfPlayers() {
+        return (int) numberSpinner.getValue();
+    }
+
+    private void setMaxNumOfPlayers(int maxNumOfPlayers) {
         mMaxNumOfPlayers = maxNumOfPlayers;
         numberSpinner.setModel(new SpinnerNumberModel(1, 1, maxNumOfPlayers, 1));
 
-        mCombos = new JComboBox[mMaxNumOfPlayers];
-        mModels = new DefaultComboBoxModel[mMaxNumOfPlayers];
+        mNameComboBoxes = new JComboBox[mMaxNumOfPlayers];
         leftPanel.removeAll();
         rightPanel.removeAll();
         JPanel parent;
 
         for (int i = 0; i < mMaxNumOfPlayers; i++) {
-            mCombos[i] = new JComboBox<>();
+            mNameComboBoxes[i] = new JComboBox<>();
             parent = (i & 1) == 0 ? leftPanel : rightPanel;
-            parent.add(mCombos[i]);
+            parent.add(mNameComboBoxes[i]);
             parent.add(Box.createVerticalStrut(4));
         }
 
         initCombos();
     }
 
-    public void setNumOfPlayers(int numOfPlayers) {
-        numberSpinner.setValue(numOfPlayers);
-        numberSpinnerStateChanged(null);
-    }
-
     private void initCombos() {
-        try {
-            for (int i = 0; i < mMaxNumOfPlayers; i++) {
-                mModels[i] = PlayerManager.getInstance().getComboBoxModel();
-                mCombos[i].setModel(mModels[i]);
-            }
-        } catch (NullPointerException e) {
-            // nvm
+        var names = StringUtils.split(mOptions.get(Options.KEY_PLAYERS_ALL, Options.DEFAULT_PLAYERS_ALL), ";");
+
+        for (var comboBox : mNameComboBoxes) {
+            comboBox.setModel(new DefaultComboBoxModel<String>(names));
+            comboBox.setEditable(true);
         }
     }
 
@@ -149,7 +121,7 @@ public class SelectPlayersPanel extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        numOfPlayersLabel = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
         numberSpinner = new javax.swing.JSpinner();
         shuffleButton = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
@@ -159,13 +131,13 @@ public class SelectPlayersPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        numOfPlayersLabel.setFont(numOfPlayersLabel.getFont().deriveFont(numOfPlayersLabel.getFont().getStyle() | java.awt.Font.BOLD, numOfPlayersLabel.getFont().getSize()+4));
-        org.openide.awt.Mnemonics.setLocalizedText(numOfPlayersLabel, Dict.Game.PLAYERS.toString());
+        titleLabel.setFont(titleLabel.getFont().deriveFont(titleLabel.getFont().getStyle() | java.awt.Font.BOLD, titleLabel.getFont().getSize()+4));
+        org.openide.awt.Mnemonics.setLocalizedText(titleLabel, Dict.Game.PLAYERS.toString());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
-        add(numOfPlayersLabel, gridBagConstraints);
+        add(titleLabel, gridBagConstraints);
 
         numberSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 8, 1));
         numberSpinner.setMinimumSize(new java.awt.Dimension(64, 26));
@@ -231,21 +203,25 @@ public class SelectPlayersPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void numberSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_numberSpinnerStateChanged
-        int players = (Integer) numberSpinner.getValue();
+        int players = getNumOfPlayers();
         for (int i = 0; i < mMaxNumOfPlayers; i++) {
-            mCombos[i].setEnabled(i < players);
+            mNameComboBoxes[i].setEnabled(i < players);
         }
     }//GEN-LAST:event_numberSpinnerStateChanged
 
     private void shuffleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shuffleButtonActionPerformed
-        int num = (Integer) numberSpinner.getValue();
-        Random r = new Random();
+        int numOfPlayers = getNumOfPlayers();
+        var r = new Random();
 
-        for (int i = 0; i < num; i++) {
-            int swapWith = r.nextInt(num);
-            int temp = mCombos[swapWith].getSelectedIndex();
-            mCombos[swapWith].setSelectedIndex(mCombos[i].getSelectedIndex());
-            mCombos[i].setSelectedIndex(temp);
+        for (int i = 0; i < numOfPlayers; i++) {
+            int swapWith = r.nextInt(numOfPlayers);
+            var name0 = mNameComboBoxes[i];
+            var name1 = mNameComboBoxes[swapWith];
+            var editor0 = name0.getEditor();
+            var editor1 = name1.getEditor();
+            String temp = (String) editor0.getItem();
+            name0.setSelectedItem(editor1.getItem());
+            name1.setSelectedItem(temp);
         }
     }//GEN-LAST:event_shuffleButtonActionPerformed
 
@@ -253,9 +229,9 @@ public class SelectPlayersPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel leftPanel;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JLabel numOfPlayersLabel;
     private javax.swing.JSpinner numberSpinner;
     private javax.swing.JPanel rightPanel;
     private javax.swing.JButton shuffleButton;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
