@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +17,8 @@ package se.trixon.yaya.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
@@ -49,8 +49,16 @@ public final class NewGameAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var d = new DialogDescriptor(mYaya.getNewGamePanel(), Dict.Game.NEW_ROUND.toString());
-        if (DialogDescriptor.OK_OPTION == DialogDisplayer.getDefault().notify(d)) {
+        String[] buttons = new String[]{Dict.CANCEL.toString(), Dict.PLAY.toString()};
+        var d = new NotifyDescriptor(
+                mYaya.getNewGamePanel(),
+                Dict.Game.NEW_ROUND.toString(),
+                NotifyDescriptor.OK_CANCEL_OPTION,
+                NotifyDescriptor.PLAIN_MESSAGE,
+                buttons,
+                Dict.PLAY.toString());
+
+        if (Dict.PLAY.toString() == DialogDisplayer.getDefault().notify(d)) {
             mYaya.getNewGamePanel().save();
             mYaya.onRequestNewGameStart();
         }
