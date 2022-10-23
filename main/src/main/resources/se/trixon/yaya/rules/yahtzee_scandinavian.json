@@ -1,0 +1,262 @@
+{
+    "id": "se.trixon.yaya.rules.yahtzee_scandinavian",
+    "author": "Patrik Karlström",
+    "title": "Yahtzee (Scandinavian)",
+    "format_version": 1,
+    "version_date": "2014-01-03",
+    "version_name": "1",
+    "dice": 5,
+    "rolls": 3,
+    "result_row": 19,
+    "default_variant": 0,
+    "variants": [
+        "STANDARD",
+        "DOWNWARDS",
+        "UPWARDS",
+        "UPPER_LOWER",
+        "LOWER_UPPER",
+        "RANDOM"
+    ],
+    "i10n": {
+        "title-sv": "Yatzy (Skandinavisk)"
+    },
+    "rows": [
+        {
+            "id": "rolls",
+            "lim": 0,
+            "max": 0,
+            "roll_counter": true,
+            "sum": true,
+            "title": "Throws",
+            "title_symbol": "",
+            "i10n": {
+                "title-sv": "Slag"
+            }
+        },
+        {
+            "formula": "sum 1",
+            "id": "ones",
+            "lim": 3,
+            "max": 5,
+            "playable": true,
+            "title": "Ones",
+            "title_symbol": "⚀",
+            "i10n": {
+                "title-sv": "Ettor"
+            }
+        },
+        {
+            "formula": "sum 2",
+            "id": "twos",
+            "lim": 6,
+            "max": 10,
+            "playable": true,
+            "title": "Twos",
+            "title_symbol": "⚁",
+            "i10n": {
+                "title-sv": "Tvåor"
+            }
+        },
+        {
+            "formula": "sum 3",
+            "id": "threes",
+            "lim": 9,
+            "max": 15,
+            "playable": true,
+            "title": "Threes",
+            "title_symbol": "⚂",
+            "i10n": {
+                "title-sv": "Treor"
+            }
+        },
+        {
+            "formula": "sum 4",
+            "id": "fours",
+            "lim": 12,
+            "max": 20,
+            "playable": true,
+            "title": "Fours",
+            "title_symbol": "⚃",
+            "i10n": {
+                "title-sv": "Fyror"
+            }
+        },
+        {
+            "formula": "sum 5",
+            "id": "fives",
+            "lim": 15,
+            "max": 25,
+            "playable": true,
+            "title": "Fives",
+            "title_symbol": "⚄",
+            "i10n": {
+                "title-sv": "Femmor"
+            }
+        },
+        {
+            "formula": "sum 6",
+            "id": "sixes",
+            "lim": 18,
+            "max": 30,
+            "playable": true,
+            "title": "Sixes",
+            "title_symbol": "⚅",
+            "i10n": {
+                "title-sv": "Sexor"
+            }
+        },
+        {
+            "id": "sum1",
+            "lim": 0,
+            "max": 105,
+            "sum": true,
+            "title": "Sum 1",
+            "title_symbol": "∑₁",
+            "i10n": {
+                "title-sv": "Delsumma 1"
+            }
+        },
+        {
+            "bonus": true,
+            "id": "bonus",
+            "lim": 63,
+            "max": 50,
+            "sum": true,
+            "title": "Bonus",
+            "title_symbol": "+",
+            "i10n": {
+                "title-sv": "Bonus"
+            }
+        },
+        {
+            "formula": "duplicates 2",
+            "id": "onePair",
+            "lim": 6,
+            "max": 12,
+            "playable": true,
+            "title": "One pair",
+            "title_symbol": "◼ ◼",
+            "i10n": {
+                "title-sv": "Par"
+            }
+        },
+        {
+            "formula": "pair 2",
+            "id": "twoPair",
+            "lim": 12,
+            "max": 22,
+            "playable": true,
+            "title": "Two pair",
+            "title_symbol": "◼ ◼ ◻ ◻",
+            "i10n": {
+                "title-sv": "Tvåpar"
+            }
+        },
+        {
+            "formula": "duplicates 3",
+            "id": "threeOfAKind",
+            "lim": 12,
+            "max": 18,
+            "playable": true,
+            "title": "Three of a kind",
+            "title_symbol": "◼ ◼ ◼",
+            "i10n": {
+                "title-sv": "Tretal"
+            }
+        },
+        {
+            "formula": "duplicates 4",
+            "id": "fourOfAKind",
+            "lim": 16,
+            "max": 24,
+            "playable": true,
+            "title": "Four of a kind",
+            "title_symbol": "◼ ◼ ◼ ◼",
+            "i10n": {
+                "title-sv": "Fyrtal"
+            }
+        },
+        {
+            "formula": "straight 5",
+            "id": "smallStraight",
+            "lim": 15,
+            "max": 15,
+            "playable": true,
+            "title": "Small Straight",
+            "title_symbol": "⚀ ⚁ ⚂ ⚃ ⚄",
+            "i10n": {
+                "title-sv": "Liten stege"
+            }
+        },
+        {
+            "formula": "straight 5",
+            "id": "largeStraight",
+            "lim": 20,
+            "max": 20,
+            "playable": true,
+            "title": "Large Straight",
+            "title_symbol": "⚁ ⚂ ⚃ ⚄ ⚅",
+            "i10n": {
+                "title-sv": "Stor stege"
+            }
+        },
+        {
+            "formula": "house 3 2",
+            "id": "fullHouse",
+            "lim": 16,
+            "max": 28,
+            "playable": true,
+            "title": "Full House",
+            "title_symbol": "◼ ◼ ◼ ◻ ◻",
+            "i10n": {
+                "title-sv": "Kåk"
+            }
+        },
+        {
+            "formula": "sum",
+            "id": "chance",
+            "lim": 20,
+            "max": 30,
+            "playable": true,
+            "title": "Chance",
+            "title_symbol": "� � � � �",
+            "i10n": {
+                "title-sv": "Chans"
+            }
+        },
+        {
+            "formula": "duplicates 5",
+            "id": "yahtzee",
+            "lim": 50,
+            "max": 50,
+            "playable": true,
+            "title": "Yahtzee",
+            "title_symbol": "◼ ◼ ◼ ◼ ◼",
+            "i10n": {
+                "title-sv": "Yatzy"
+            }
+        },
+        {
+            "id": "sum2",
+            "lim": 0,
+            "max": 219,
+            "sum": true,
+            "title": "Sum 2",
+            "title_symbol": "∑₂",
+            "i10n": {
+                "title-sv": "Delsumma 2"
+            }
+        },
+        {
+            "id": "total",
+            "lim": 0,
+            "max": 374,
+            "sum": true,
+            "title": "Total",
+            "title_symbol": "∑",
+            "i10n": {
+                "title-sv": "Summa"
+            }
+        }
+    ]
+}

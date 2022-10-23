@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.game;
+package se.trixon.yaya.rules;
 
 import org.openide.util.lookup.ServiceProvider;
 
@@ -21,8 +21,8 @@ import org.openide.util.lookup.ServiceProvider;
  *
  * @author Patrik Karlström
  */
-@ServiceProvider(service = YayaGameProvider.class)
-public class MaxiYahtzee extends YayaGameProvider {
+@ServiceProvider(service = RuleProvider.class)
+public class MaxiYahtzee extends RuleProvider {
 
     public MaxiYahtzee() {
         super("maxi_yahtzee.json");

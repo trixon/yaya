@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,12 @@
  */
 package se.trixon.yaya.gamedef;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
-import se.trixon.yaya.game.YayaGameProvider;
+import java.util.Comparator;
 import org.openide.util.Lookup;
 import se.trixon.yaya.Yaya;
+import se.trixon.yaya.rules.RuleProvider;
 
 /**
  *
@@ -27,7 +28,7 @@ import se.trixon.yaya.Yaya;
  */
 public class GameTypeLoader {
 
-    private LinkedList<GameType> mGameTypes;
+    private ArrayList<GameType> mGameTypes;
 
     public static GameTypeLoader getInstance() {
         return Holder.INSTANCE;
@@ -68,7 +69,7 @@ public class GameTypeLoader {
     }
 
     public String getTitle(String id) {
-        for (GameType gameType : mGameTypes) {
+        for (var gameType : mGameTypes) {
             if (gameType.getId().equalsIgnoreCase(id)) {
                 return gameType.getTitle();
             }
@@ -77,18 +78,12 @@ public class GameTypeLoader {
         return "";
     }
 
-    public String[] getTitleArray() {
-        String[] result = new String[mGameTypes.size()];
-
-        for (int i = 0; i < result.length; i++) {
-            result[i] = mGameTypes.get(i).getTitle();
-        }
-
-        return result;
+    public String[] getTitles() {
+        return mGameTypes.stream().map(k -> k.getTitle()).toArray(String[]::new);
     }
 
     public GameType getType(String id) {
-        for (GameType gameType : mGameTypes) {
+        for (var gameType : mGameTypes) {
             if (gameType.getId().equalsIgnoreCase(id)) {
                 return gameType;
             }
@@ -99,16 +94,16 @@ public class GameTypeLoader {
     }
 
     public void init() {
-        mGameTypes = new LinkedList<>();
+        mGameTypes = new ArrayList<>();
 
-        for (YayaGameProvider gameProvider : Lookup.getDefault().lookupAll(YayaGameProvider.class)) {
-            Yaya.outln(Yaya.LOG_TITLE, String.format("Found GameLoader in %s.", gameProvider.getId()));
-            final GameType gameType = GameType.restore(gameProvider.getDefinition());
+        for (var ruleProvider : Lookup.getDefault().lookupAll(RuleProvider.class)) {
+            Yaya.outln(Yaya.LOG_TITLE, String.format("Found GameLoader in %s.", ruleProvider.getId()));
+            var gameType = ruleProvider.load();
             gameType.postRestore();
             mGameTypes.add(gameType);
         }
 
-        Collections.sort(mGameTypes, GameType.NameComparator);
+        Collections.sort(mGameTypes, Comparator.comparing(GameType::getTitle));
     }
 
     private static class Holder {

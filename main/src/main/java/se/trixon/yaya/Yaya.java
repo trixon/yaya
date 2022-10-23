@@ -15,6 +15,8 @@
  */
 package se.trixon.yaya;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
 import org.openide.util.ImageUtilities;
@@ -26,6 +28,12 @@ import se.trixon.almond.util.SystemHelper;
  * @author Patrik Karlström <patrik@trixon.se>
  */
 public class Yaya {
+
+    public static final Gson GSON = new GsonBuilder()
+            .setVersion(1.0)
+            .serializeNulls()
+            .setPrettyPrinting()
+            .create();
 
     public static final String LOG_TITLE = "Yaya";
     private GamePanel mGamePanel;

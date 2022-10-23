@@ -29,7 +29,7 @@ import se.trixon.yaya.gamedef.GameTypeLoader;
  */
 public class NewGamePanel extends JPanel {
 
-    private final GameTypeLoader mGameDef = GameTypeLoader.getInstance();
+    private final GameTypeLoader mGameTypeLoader = GameTypeLoader.getInstance();
     private GameType mGameType;
     private final Options mOptions = Options.getInstance();
 
@@ -44,13 +44,13 @@ public class NewGamePanel extends JPanel {
 
     public void load() {
         //mGameDef.init();
-        gameComboBox.setModel(new DefaultComboBoxModel(mGameDef.getTitleArray()));
-        gameComboBox.setSelectedIndex(mGameDef.getIndexForId(mOptions.getGameTypeId()));
+        gameComboBox.setModel(new DefaultComboBoxModel(mGameTypeLoader.getTitles()));
+        gameComboBox.setSelectedIndex(mGameTypeLoader.getIndexForId(mOptions.getGameTypeId()));
         selectPlayersPanel.load();
     }
 
     public void save() {
-        String gameTypeId = mGameDef.getIdForIndex(gameComboBox.getSelectedIndex());
+        String gameTypeId = mGameTypeLoader.getIdForIndex(gameComboBox.getSelectedIndex());
         mOptions.setGameTypeId(gameTypeId);
         String variantTitle = (String) variantComboBox.getSelectedItem();
         String variantByTitle = mGameType.getVariantByTitle(variantTitle);
@@ -153,7 +153,7 @@ public class NewGamePanel extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void gameComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameComboBoxActionPerformed
-        mGameType = mGameDef.getType(mGameDef.getIdForIndex(gameComboBox.getSelectedIndex()));
+        mGameType = mGameTypeLoader.getType(mGameTypeLoader.getIdForIndex(gameComboBox.getSelectedIndex()));
         String byLine = NbBundle.getMessage(getClass(), "ByLine", mGameType.getAuthor());
         byLineLabel.setText(byLine);
         String[] localizedVariant = mGameType.getLocalizedVariants().clone();

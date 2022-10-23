@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,39 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.game;
+package se.trixon.yaya.rules;
 
+import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
-import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.openide.util.Exceptions;
 import se.trixon.almond.util.SystemHelper;
+import se.trixon.yaya.Yaya;
+import se.trixon.yaya.gamedef.GameType;
 
 /**
  *
  * @author Patrik Karlström
  */
-public abstract class YayaGameProvider {
+public abstract class RuleProvider {
+
+    private static final int FILE_FORMAT_VERSION = 1;
 
     private final String mId;
 
-    public YayaGameProvider(String id) {
+    public RuleProvider(String id) {
         mId = id;
     }
 
-    public String getId() {
-        return mId;
-    }
-
     public String getDefinition() {
-        InputStream inputStream = getClass().getResourceAsStream("/" + SystemHelper.getPackageAsPath(getClass()) + mId);
-
-        try {
+        try ( var inputStream = getClass().getResourceAsStream("/" + SystemHelper.getPackageAsPath(getClass()) + mId)) {
             return IOUtils.toString(inputStream, "UTF-8");
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
 
         return "";
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public GameType load() throws JsonSyntaxException {
+        var gameType = Yaya.GSON.fromJson(getDefinition(), GameType.class);
+
+        if (gameType.getFileFormatVersion() != FILE_FORMAT_VERSION) {
+            //TODO Handle file format version change
+        }
+
+        return gameType;
     }
 }

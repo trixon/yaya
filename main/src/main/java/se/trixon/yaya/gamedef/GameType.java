@@ -15,18 +15,10 @@
  */
 package se.trixon.yaya.gamedef;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
-import org.apache.commons.io.FileUtils;
 import se.trixon.yaya.Yaya;
 
 /**
@@ -35,21 +27,14 @@ import se.trixon.yaya.Yaya;
  */
 public class GameType {
 
-    public static Comparator<GameType> NameComparator = (o1, o2) -> o1.getTitle().compareTo(o2.getTitle());
-    private static final int FILE_FORMAT_VERSION = 1;
-    private static final Gson GSON = new GsonBuilder()
-            .setVersion(1.0)
-            .serializeNulls()
-            .setPrettyPrinting()
-            .create();
     @SerializedName("author")
     private String mAuthor;
     @SerializedName("default_variant")
     private int mDefaultVariant;
     @SerializedName("format_version")
     private int mFileFormatVersion;
-    @SerializedName("rows")
-    private GameRows mRows = new GameRows();
+    @SerializedName("i10n")
+    private final HashMap<String, String> mI10n = new HashMap<>();
     @SerializedName("id")
     private String mId;
     @SerializedName("dice")
@@ -58,6 +43,8 @@ public class GameType {
     private int mNumOfRolls;
     @SerializedName("result_row")
     private int mResultRow;
+    @SerializedName("rows")
+    private GameRows mRows = new GameRows();
     @SerializedName("title")
     private String mTitle;
     @SerializedName("variants")
@@ -66,30 +53,8 @@ public class GameType {
     private String mVersionDate;
     @SerializedName("version_name")
     private String mVersionName;
-    @SerializedName("i10n")
-    private final HashMap<String, String> mI10n = new HashMap<>();
-
-    public static GameType restore(String json) throws JsonSyntaxException {
-        System.out.println(json);
-        GameType gameType = GSON.fromJson(json, GameType.class);
-
-        if (gameType.mFileFormatVersion != FILE_FORMAT_VERSION) {
-            //TODO Handle file format version change
-        }
-
-        return gameType;
-    }
 
     public GameType() {
-    }
-
-    public HashMap<String, String> getI10n() {
-        return mI10n;
-    }
-
-    @Override
-    public String toString() {
-        return GSON.toJson(this);
     }
 
     public String getAuthor() {
@@ -104,8 +69,8 @@ public class GameType {
         return mFileFormatVersion;
     }
 
-    public GameRows getRows() {
-        return mRows;
+    public HashMap<String, String> getI10n() {
+        return mI10n;
     }
 
     public String getId() {
@@ -143,11 +108,15 @@ public class GameType {
     }
 
     public int getNumOfRolls() {
-        return 99;//mNumOfRolls; //TODO Remove me
+        return mNumOfRolls;
     }
 
     public int getResultRow() {
         return mResultRow;
+    }
+
+    public GameRows getRows() {
+        return mRows;
     }
 
     public String getTitle() {
@@ -179,21 +148,12 @@ public class GameType {
         return mVersionName;
     }
 
-    public void save(File file) throws IOException {
-        mFileFormatVersion = FILE_FORMAT_VERSION;
-        FileUtils.writeStringToFile(file, toString(), Charset.defaultCharset());
-    }
-
     public void setAuthor(String author) {
         mAuthor = author;
     }
 
     public void setDefaultVariant(int defaultVariant) {
         mDefaultVariant = defaultVariant;
-    }
-
-    public void setRows(GameRows rows) {
-        mRows = rows;
     }
 
     public void setId(String id) {
@@ -212,6 +172,10 @@ public class GameType {
         mResultRow = resultRow;
     }
 
+    public void setRows(GameRows rows) {
+        mRows = rows;
+    }
+
     public void setTitle(String title) {
         mTitle = title;
     }
@@ -228,8 +192,13 @@ public class GameType {
         mVersionName = versionName;
     }
 
+    @Override
+    public String toString() {
+        return Yaya.GSON.toJson(this);
+    }
+
     void postRestore() {
-        mRows.forEach((row) -> {
+        mRows.forEach(row -> {
             row.postRestore();
         });
     }

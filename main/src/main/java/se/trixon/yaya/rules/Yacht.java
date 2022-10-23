@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.game;
+package se.trixon.yaya.rules;
 
 import org.openide.util.lookup.ServiceProvider;
 
@@ -21,10 +21,10 @@ import org.openide.util.lookup.ServiceProvider;
  *
  * @author Patrik Karlström
  */
-@ServiceProvider(service = YayaGameProvider.class)
-public class YahtzeeScandinavian extends YayaGameProvider {
+@ServiceProvider(service = RuleProvider.class)
+public class Yacht extends RuleProvider {
 
-    public YahtzeeScandinavian() {
-        super("yahtzee_scandinavian.json");
+    public Yacht() {
+        super("yacht.json");
     }
 }
