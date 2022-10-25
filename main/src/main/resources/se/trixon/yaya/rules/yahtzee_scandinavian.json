@@ -3,10 +3,10 @@
     "author": "Patrik Karlström",
     "title": "Yahtzee (Scandinavian)",
     "format_version": 1,
-    "version_date": "2014-01-03",
+    "version_date": "2022-10-25",
     "version_name": "1",
     "dice": 5,
-    "rolls": 3,
+    "rolls": 33,
     "result_row": 19,
     "default_variant": 0,
     "variants": [
@@ -110,10 +110,11 @@
             "lim": 0,
             "max": 105,
             "sum": true,
-            "title": "Sum 1",
+            "sum_rows": "1-6",
+            "title": "Upper total",
             "title_symbol": "∑₁",
             "i10n": {
-                "title-sv": "Delsumma 1"
+                "title-sv": "Övre summa"
             }
         },
         {
@@ -122,6 +123,7 @@
             "lim": 63,
             "max": 50,
             "sum": true,
+            "sum_rows": "1-6",
             "title": "Bonus",
             "title_symbol": "+",
             "i10n": {
@@ -241,10 +243,11 @@
             "lim": 0,
             "max": 219,
             "sum": true,
-            "title": "Sum 2",
+            "sum_rows": "9-17",
+            "title": "Lower total",
             "title_symbol": "∑₂",
             "i10n": {
-                "title-sv": "Delsumma 2"
+                "title-sv": "Nedre summa"
             }
         },
         {
@@ -252,7 +255,8 @@
             "lim": 0,
             "max": 374,
             "sum": true,
-            "title": "Total",
+            "sum_rows": "1-6,8-17",
+            "title": "Grand total",
             "title_symbol": "∑",
             "i10n": {
                 "title-sv": "Summa"

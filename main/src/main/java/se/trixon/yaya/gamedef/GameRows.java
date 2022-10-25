@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,31 +19,15 @@ package se.trixon.yaya.gamedef;
  *
  * @author Patrik Karlström
  */
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-public class GameRows extends LinkedList<GameRow> {
+public class GameRows extends ArrayList<GameRow> {
 
-    public int[] getLim() {
-        int[] values = new int[size()];
-        int i = 0;
-
-        for (GameRow gameRow : this) {
-            values[i] = gameRow.getLim();
-            i++;
-        }
-
-        return values;
+    public Integer[] getLim() {
+        return stream().map(k -> k.getLim()).toArray(Integer[]::new);
     }
 
-    public int[] getMax() {
-        int[] values = new int[size()];
-        int i = 0;
-
-        for (GameRow gameRow : this) {
-            values[i] = gameRow.getMax();
-            i++;
-        }
-
-        return values;
+    public Integer[] getMax() {
+        return stream().map(k -> k.getMax()).toArray(Integer[]::new);
     }
 }

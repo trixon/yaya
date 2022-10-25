@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -148,6 +148,11 @@ public class GamePanel extends JPanel implements Observer {
         initGame();
         mScoreCard.newGame();
         mDiceBoard.newTurn();
+
+        for (int i = 0; i < mScoreCard.getHeaderColumn().getRows().length; i++) {
+            var row = mScoreCard.getHeaderColumn().getRows()[i];
+            System.out.println("%d\t%s".formatted(i, row.getLabel().getText()));
+        }
     }
 
     private void initDiceBoard() {

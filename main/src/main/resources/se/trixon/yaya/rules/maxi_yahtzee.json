@@ -3,10 +3,10 @@
     "author": "Patrik Karlström",
     "title": "Maxi Yahtzee",
     "format_version": 1,
-    "version_date": "2014-01-03",
+    "version_date": "2022-10-25",
     "version_name": "2",
     "dice": 6,
-    "rolls": 3,
+    "rolls": 33,
     "result_row": 25,
     "default_variant": 0,
     "variants": [
@@ -110,10 +110,11 @@
             "lim": 0,
             "max": 126,
             "sum": true,
-            "title": "Sum 1",
+            "sum_rows": "1-6",
+            "title": "Upper total",
             "title_symbol": "∑₁",
             "i10n": {
-                "title-sv": "Delsumma 1"
+                "title-sv": "Övre summa"
             }
         },
         {
@@ -313,10 +314,11 @@
             "lim": 0,
             "max": 423,
             "sum": true,
-            "title": "Sum 2",
+            "sum_rows": "9-23",
+            "title": "Lower total",
             "title_symbol": "∑₂",
             "i10n": {
-                "title-sv": "Delsumma 2"
+                "title-sv": "Nedre summa"
             }
         },
         {
@@ -324,7 +326,8 @@
             "lim": 0,
             "max": 649,
             "sum": true,
-            "title": "Total",
+            "sum_rows": "1-6,8-23",
+            "title": "Grand total",
             "title_symbol": "∑",
             "i10n": {
                 "title-sv": "Summa"

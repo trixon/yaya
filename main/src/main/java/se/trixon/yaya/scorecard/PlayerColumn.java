@@ -209,9 +209,7 @@ public class PlayerColumn {
 
     private void updateSums() {
         for (var row : mRows) {
-            System.out.println(row.getLabel().getText());
             if (row.getGameRow().getSumSet() != null) {
-
                 if (row.getGameRow().isBonus()) {
                     int sum = 0;
 

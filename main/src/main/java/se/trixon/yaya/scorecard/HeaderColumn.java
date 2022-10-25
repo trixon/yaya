@@ -27,9 +27,9 @@ public class HeaderColumn {
 
     private final GameType mGameType;
     private ScoreCardRow[] mHiScoreColumn;
-    private int[] mLimValues;
+    private Integer[] mLimValues;
     private ScoreCardRow[] mMaxColumn;
-    private int[] mMaxValues;
+    private Integer[] mMaxValues;
     private int mNumOfRows;
     private final Options mOptions = Options.getInstance();
     private ScoreCardRow[] mRows;

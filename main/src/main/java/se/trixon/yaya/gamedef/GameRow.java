@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,6 +45,8 @@ public class GameRow {
     private boolean mRollCounter;
     @SerializedName("sum")
     private boolean mSum;
+    @SerializedName("sum_rows")
+    private String mSumRows;
     private transient TreeSet<Integer> mSumSet;
     @SerializedName("title")
     private String mTitle;
@@ -72,6 +74,10 @@ public class GameRow {
 
     public int getMax() {
         return mMax;
+    }
+
+    public String getSumRows() {
+        return mSumRows;
     }
 
     public TreeSet<Integer> getSumSet() {
@@ -134,6 +140,10 @@ public class GameRow {
         mSum = sum;
     }
 
+    public void setSumRows(String sumRows) {
+        mSumRows = sumRows;
+    }
+
     public void setSumSet(TreeSet<Integer> sumSet) {
         mSumSet = sumSet;
     }
@@ -153,6 +163,10 @@ public class GameRow {
     void postRestore() {
         if (mFormula == null) {
             mFormula = "";
+        }
+
+        if (getSumRows() != null) {
+            setSumSet(getSumRows());
         }
     }
 }
