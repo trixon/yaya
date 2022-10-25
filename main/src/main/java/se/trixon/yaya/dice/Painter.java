@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,11 +24,10 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.geom.AffineTransform;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
-import se.trixon.yaya.Player.Handedness;
 import se.trixon.yaya.Options;
+import se.trixon.yaya.Player.Handedness;
 
 /**
  *
@@ -36,18 +35,17 @@ import se.trixon.yaya.Options;
  */
 class Painter extends JPanel {
 
-    private final Options mOptions = Options.getInstance();
-
-    private static final int MARGIN_X_DICE_SET = 160;
     static final int DIE_CELL_WIDTH = 140;
     static final int MARGIN_X_ROLLER = 10;
     static final int MARGIN_Y_ROLLER = 20;
+    private static final int MARGIN_X_DICE_SET = 160;
 
     private final DiceBoard mDiceBoard;
     private Roller mDiceRoller;
     private int mDiceSetX;
     private int mDieAreaWidth;
     private Graphics2D mG2;
+    private final Options mOptions = Options.getInstance();
     private boolean mRollable;
     private boolean mSelectable;
 
@@ -59,10 +57,10 @@ class Painter extends JPanel {
     @Override
     public void paint(Graphics g) {
         mG2 = (Graphics2D) g;
-        AffineTransform originalAffineTransform = mG2.getTransform();
+        var originalAffineTransform = mG2.getTransform();
 
         if (mDiceBoard.getHandedness() == Handedness.RIGHT) {
-            AffineTransform affineTransform = originalAffineTransform;
+            var affineTransform = originalAffineTransform;
             affineTransform.scale(-1, 1);
             affineTransform.translate(-getWidth(), 0);
             mG2.setTransform(affineTransform);
@@ -80,12 +78,45 @@ class Painter extends JPanel {
         paint(g);
     }
 
+    void calcGrid() {
+        int diceSetWidth = DIE_CELL_WIDTH * mDiceBoard.getNumOfDice();
+        mDieAreaWidth = getWidth() - MARGIN_X_DICE_SET;
+        mDiceSetX = (mDieAreaWidth - diceSetWidth) / 2 + MARGIN_X_DICE_SET;
+
+        for (int i = 0; i < mDiceBoard.getNumOfDice(); i++) {
+            try {
+                mDiceBoard.getDice().get(i).setCenter(mDiceSetX + i * DIE_CELL_WIDTH + DIE_CELL_WIDTH / 2);
+            } catch (NullPointerException e) {
+            }
+        }
+    }
+
+    synchronized void calcRollable() {
+        setRollable(mDiceBoard.getNumOfSelectedDice() > 0);
+    }
+
+    boolean isRollable() {
+        return mRollable;
+    }
+
+    boolean isSelectable() {
+        return mSelectable;
+    }
+
+    void setRollable(boolean rollable) {
+        mRollable = rollable;
+    }
+
+    void setSelectable(boolean selectable) {
+        mSelectable = selectable;
+    }
+
     private void init() {
         addMouseListener(new DiceMouseInputAdapter());
         addMouseMotionListener(new MouseInputAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                Point point = translateMousePoint(e.getPoint());
+                var point = translateMousePoint(e.getPoint());
                 int x = point.x;
 
                 if (isRollable() && mDiceRoller != null) {
@@ -106,9 +137,9 @@ class Painter extends JPanel {
 
                 if (isSelectable() && isDiceStoped()) {
                     int dir = e.getWheelRotation();
-                    boolean select = mOptions.isReverseDirection() ? dir == -1 : dir == 1;
+                    boolean select = mOptions.isReverseDirection() ? dir == +1 : dir == -1;
 
-                    for (Die die : mDiceBoard.getDice()) {
+                    for (var die : mDiceBoard.getDice()) {
                         die.setSelected(select);
                     }
                 }
@@ -133,7 +164,7 @@ class Painter extends JPanel {
     private boolean isDiceStoped() {
         boolean stopped = true;
 
-        for (Die die : mDiceBoard.getDice()) {
+        for (var die : mDiceBoard.getDice()) {
             if (die.getAnimator().isAlive()) {
                 stopped = false;
                 break;
@@ -144,7 +175,7 @@ class Painter extends JPanel {
     }
 
     private void paintDice() {
-        for (Die die : mDiceBoard.getDice()) {
+        for (var die : mDiceBoard.getDice()) {
             if (die.isVisible()) {
                 mG2.drawImage(die.getImage(), die.getX(), die.getY(), this);
             }
@@ -191,39 +222,6 @@ class Painter extends JPanel {
         return point;
     }
 
-    void calcGrid() {
-        int diceSetWidth = DIE_CELL_WIDTH * mDiceBoard.getNumOfDice();
-        mDieAreaWidth = getWidth() - MARGIN_X_DICE_SET;
-        mDiceSetX = (mDieAreaWidth - diceSetWidth) / 2 + MARGIN_X_DICE_SET;
-
-        for (int i = 0; i < mDiceBoard.getNumOfDice(); i++) {
-            try {
-                mDiceBoard.getDice().get(i).setCenter(mDiceSetX + i * DIE_CELL_WIDTH + DIE_CELL_WIDTH / 2);
-            } catch (NullPointerException e) {
-            }
-        }
-    }
-
-    synchronized void calcRollable() {
-        setRollable(mDiceBoard.getNumOfSelectedDice() > 0);
-    }
-
-    boolean isRollable() {
-        return mRollable;
-    }
-
-    boolean isSelectable() {
-        return mSelectable;
-    }
-
-    void setRollable(boolean rollable) {
-        mRollable = rollable;
-    }
-
-    void setSelectable(boolean selectable) {
-        mSelectable = selectable;
-    }
-
     private class DiceMouseInputAdapter extends MouseInputAdapter {
 
         @Override
@@ -235,18 +233,17 @@ class Painter extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            Point point = translateMousePoint(e.getPoint());
+            var point = translateMousePoint(e.getPoint());
             int x = point.x;
 
             if (e.getButton() == MouseEvent.BUTTON1) {
-
                 if (x <= mDiceRoller.getImage().getWidth() && isRollable()) {
                     mDiceRoller.shake(true);
                     return;
                 }
 
                 if (isSelectable()) {
-                    for (Die die : mDiceBoard.getDice()) {
+                    for (var die : mDiceBoard.getDice()) {
                         if ((x - mDiceSetX >= DIE_CELL_WIDTH * die.getColumn()) && (x - mDiceSetX <= DIE_CELL_WIDTH * (die.getColumn() + 1))) {
                             die.setSelected(!die.isSelected());
                             break;
@@ -257,7 +254,7 @@ class Painter extends JPanel {
 
             if (e.getButton() == MouseEvent.BUTTON3) {
                 if (isSelectable() && isDiceStoped()) {
-                    for (Die die : mDiceBoard.getDice()) {
+                    for (var die : mDiceBoard.getDice()) {
                         if ((x - mDiceSetX >= DIE_CELL_WIDTH * die.getColumn()) && (x - mDiceSetX <= DIE_CELL_WIDTH * (die.getColumn() + 1))) {
                         } else {
                             die.setSelected(!die.isSelected());
@@ -269,7 +266,7 @@ class Painter extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            Point point = translateMousePoint(e.getPoint());
+            var point = translateMousePoint(e.getPoint());
             int x = point.x;
 
             if (mDiceRoller.getShakeThread().isAlive()) {
