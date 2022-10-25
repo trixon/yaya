@@ -31,12 +31,12 @@ public class GameRow {
     private boolean mBonus;
     @SerializedName("formula")
     private String mFormula;
-    @SerializedName("locals")
-    private final HashMap<String, String> mI10n = new HashMap<>();
     @SerializedName("id")
     private String mId;
     @SerializedName("lim")
     private int mLim = 0;
+    @SerializedName("locals")
+    private final HashMap<String, String> mLocals = new HashMap<>();
     @SerializedName("max")
     private int mMax = 0;
     @SerializedName("playable")
@@ -60,16 +60,16 @@ public class GameRow {
         return mFormula;
     }
 
-    public HashMap<String, String> getI10n() {
-        return mI10n;
-    }
-
     public String getId() {
         return mId;
     }
 
     public int getLim() {
         return mLim;
+    }
+
+    public HashMap<String, String> getLocals() {
+        return mLocals;
     }
 
     public int getMax() {
@@ -85,7 +85,7 @@ public class GameRow {
     }
 
     public String getTitle() {
-        return mI10n.getOrDefault("title" + Yaya.getLanguageSuffix(), mTitle);
+        return mLocals.getOrDefault("title" + Yaya.getLanguageSuffix(), mTitle);
     }
 
     public String getTitleSymbol() {
