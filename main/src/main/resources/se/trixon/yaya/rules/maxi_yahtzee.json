@@ -17,7 +17,7 @@
         "LOWER_UPPER",
         "RANDOM"
     ],
-    "i10n": {
+    "locals": {
         "title-sv": "Maxi-Yatzy"
     },
     "rows": [
@@ -29,7 +29,7 @@
             "sum": true,
             "title": "Throws",
             "title_symbol": "",
-            "i10n": {
+            "locals": {
                 "title-sv": "Slag"
             }
         },
@@ -41,7 +41,7 @@
             "playable": true,
             "title": "Ones",
             "title_symbol": "⚀",
-            "i10n": {
+            "locals": {
                 "title-sv": "Ettor"
             }
         },
@@ -53,7 +53,7 @@
             "playable": true,
             "title": "Twos",
             "title_symbol": "⚁",
-            "i10n": {
+            "locals": {
                 "title-sv": "Tvåor"
             }
         },
@@ -65,7 +65,7 @@
             "playable": true,
             "title": "Threes",
             "title_symbol": "⚂",
-            "i10n": {
+            "locals": {
                 "title-sv": "Treor"
             }
         },
@@ -77,7 +77,7 @@
             "playable": true,
             "title": "Fours",
             "title_symbol": "⚃",
-            "i10n": {
+            "locals": {
                 "title-sv": "Fyror"
             }
         },
@@ -89,7 +89,7 @@
             "playable": true,
             "title": "Fives",
             "title_symbol": "⚄",
-            "i10n": {
+            "locals": {
                 "title-sv": "Femmor"
             }
         },
@@ -101,7 +101,7 @@
             "playable": true,
             "title": "Sixes",
             "title_symbol": "⚅",
-            "i10n": {
+            "locals": {
                 "title-sv": "Sexor"
             }
         },
@@ -113,7 +113,7 @@
             "sum_rows": "1-6",
             "title": "Upper total",
             "title_symbol": "∑₁",
-            "i10n": {
+            "locals": {
                 "title-sv": "Övre summa"
             }
         },
@@ -125,7 +125,7 @@
             "sum": true,
             "title": "Bonus",
             "title_symbol": "+",
-            "i10n": {
+            "locals": {
                 "title-sv": "Bonus"
             }
         },
@@ -137,7 +137,7 @@
             "playable": true,
             "title": "One pair",
             "title_symbol": "◼ ◼",
-            "i10n": {
+            "locals": {
                 "title-sv": "Par"
             }
         },
@@ -149,7 +149,7 @@
             "playable": true,
             "title": "Two pair",
             "title_symbol": "◼ ◼ ◻ ◻",
-            "i10n": {
+            "locals": {
                 "title-sv": "Tvåpar"
             }
         },
@@ -161,7 +161,7 @@
             "playable": true,
             "title": "Three pair",
             "title_symbol": "◼ ◼ ◻ ◻ ◈ ◈",
-            "i10n": {
+            "locals": {
                 "title-sv": "Trepar"
             }
         },
@@ -173,7 +173,7 @@
             "playable": true,
             "title": "Three of a kind",
             "title_symbol": "◼ ◼ ◼",
-            "i10n": {
+            "locals": {
                 "title-sv": "Tretal"
             }
         },
@@ -185,7 +185,7 @@
             "playable": true,
             "title": "Four of a kind",
             "title_symbol": "◼ ◼ ◼ ◼",
-            "i10n": {
+            "locals": {
                 "title-sv": "Fyrtal"
             }
         },
@@ -197,7 +197,7 @@
             "playable": true,
             "title": "Five of a kind",
             "title_symbol": "◼ ◼ ◼ ◼ ◼",
-            "i10n": {
+            "locals": {
                 "title-sv": "Femtal"
             }
         },
@@ -209,7 +209,7 @@
             "playable": true,
             "title": "Small Straight",
             "title_symbol": "⚀ ⚁ ⚂ ⚃ ⚄",
-            "i10n": {
+            "locals": {
                 "title-sv": "Liten stege"
             }
         },
@@ -221,7 +221,7 @@
             "playable": true,
             "title": "Large Straight",
             "title_symbol": "⚁ ⚂ ⚃ ⚄ ⚅",
-            "i10n": {
+            "locals": {
                 "title-sv": "Stor stege"
             }
         },
@@ -233,7 +233,7 @@
             "playable": true,
             "title": "Full Straight",
             "title_symbol": "⚀ ⚁ ⚂ ⚃ ⚄ ⚅",
-            "i10n": {
+            "locals": {
                 "title-sv": "Full stege"
             }
         },
@@ -245,7 +245,7 @@
             "playable": true,
             "title": "Full House",
             "title_symbol": "◼ ◼ ◼ ◻ ◻",
-            "i10n": {
+            "locals": {
                 "title-sv": "Kåk"
             }
         },
@@ -257,7 +257,7 @@
             "playable": true,
             "title": "Villa",
             "title_symbol": "◼ ◼ ◼ ◻ ◻ ◻",
-            "i10n": {
+            "locals": {
                 "title-sv": "Villa"
             }
         },
@@ -269,7 +269,7 @@
             "playable": true,
             "title": "Tower",
             "title_symbol": "◼ ◼ ◼ ◼ ◻ ◻",
-            "i10n": {
+            "locals": {
                 "title-sv": "Torn"
             }
         },
@@ -281,7 +281,7 @@
             "playable": true,
             "title": "Chance",
             "title_symbol": "� � � � �",
-            "i10n": {
+            "locals": {
                 "title-sv": "Chans"
             }
         },
@@ -293,7 +293,7 @@
             "playable": true,
             "title": "Yahtzee",
             "title_symbol": "◼ ◼ ◼ ◼ ◼",
-            "i10n": {
+            "locals": {
                 "title-sv": "Yatzy"
             }
         },
@@ -305,7 +305,7 @@
             "playable": true,
             "title": "Maxi Yahtzee",
             "title_symbol": "◼ ◼ ◼ ◼ ◼ ◼",
-            "i10n": {
+            "locals": {
                 "title-sv": "Maxi-Yatzy"
             }
         },
@@ -317,7 +317,7 @@
             "sum_rows": "9-23",
             "title": "Lower total",
             "title_symbol": "∑₂",
-            "i10n": {
+            "locals": {
                 "title-sv": "Nedre summa"
             }
         },
@@ -329,7 +329,7 @@
             "sum_rows": "1-6,8-23",
             "title": "Grand total",
             "title_symbol": "∑",
-            "i10n": {
+            "locals": {
                 "title-sv": "Summa"
             }
         }

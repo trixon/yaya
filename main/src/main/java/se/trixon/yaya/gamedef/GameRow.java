@@ -31,7 +31,7 @@ public class GameRow {
     private boolean mBonus;
     @SerializedName("formula")
     private String mFormula;
-    @SerializedName("i10n")
+    @SerializedName("locals")
     private final HashMap<String, String> mI10n = new HashMap<>();
     @SerializedName("id")
     private String mId;

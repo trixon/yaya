@@ -15,7 +15,7 @@
         "UPWARDS",
         "RANDOM"
     ],
-    "i10n": {
+    "locals": {
         "title-sv": "Snabben"
     },
     "rows": [
@@ -27,7 +27,7 @@
             "sum": true,
             "title": "Throws",
             "title_symbol": "✋",
-            "i10n": {
+            "locals": {
                 "title-sv": "Slag"
             }
         },
@@ -39,7 +39,7 @@
             "playable": true,
             "title": "One pair",
             "title_symbol": "◼ ◼",
-            "i10n": {
+            "locals": {
                 "title-sv": "Par"
             }
         },
@@ -51,7 +51,7 @@
             "playable": true,
             "title": "Chance",
             "title_symbol": "� � � � � �",
-            "i10n": {
+            "locals": {
                 "title-sv": "Chans"
             }
         },
@@ -63,7 +63,7 @@
             "sum_rows": "1-2",
             "title": "Total",
             "title_symbol": "∑",
-            "i10n": {
+            "locals": {
                 "title-sv": "Summa"
             }
         }

@@ -33,10 +33,10 @@ public class GameType {
     private int mDefaultVariant;
     @SerializedName("format_version")
     private int mFileFormatVersion;
-    @SerializedName("i10n")
-    private final HashMap<String, String> mI10n = new HashMap<>();
     @SerializedName("id")
     private String mId;
+    @SerializedName("locals")
+    private final HashMap<String, String> mLocals = new HashMap<>();
     @SerializedName("dice")
     private int mNumOfDice;
     @SerializedName("rolls")
@@ -69,10 +69,6 @@ public class GameType {
         return mFileFormatVersion;
     }
 
-    public HashMap<String, String> getI10n() {
-        return mI10n;
-    }
-
     public String getId() {
         return mId;
     }
@@ -103,6 +99,10 @@ public class GameType {
         return localized;
     }
 
+    public HashMap<String, String> getLocals() {
+        return mLocals;
+    }
+
     public int getNumOfDice() {
         return mNumOfDice;
     }
@@ -120,7 +120,7 @@ public class GameType {
     }
 
     public String getTitle() {
-        return mI10n.getOrDefault("title" + Yaya.getLanguageSuffix(), mTitle);
+        return mLocals.getOrDefault("title" + Yaya.getLanguageSuffix(), mTitle);
     }
 
     public String getVariantByTitle(String title) {
@@ -137,7 +137,7 @@ public class GameType {
     }
 
     public String[] getVariants() {
-        return mVariants.toArray(new String[0]);
+        return mVariants.toArray(String[]::new);
     }
 
     public String getVersionDate() {

@@ -15,7 +15,7 @@
         "UPWARDS",
         "RANDOM"
     ],
-    "i10n": {
+    "locals": {
         "title-sv": "Stegen"
     },
     "rows": [
@@ -27,7 +27,7 @@
             "sum": true,
             "title": "Throws",
             "title_symbol": "",
-            "i10n": {
+            "locals": {
                 "title-sv": "Slag"
             }
         },
@@ -39,7 +39,7 @@
             "playable": true,
             "title": "Ones",
             "title_symbol": "⚀",
-            "i10n": {
+            "locals": {
                 "title-sv": "Ettor"
             }
         },
@@ -51,7 +51,7 @@
             "playable": true,
             "title": "Twos",
             "title_symbol": "⚁",
-            "i10n": {
+            "locals": {
                 "title-sv": "Tvåor"
             }
         },
@@ -63,7 +63,7 @@
             "playable": true,
             "title": "Threes",
             "title_symbol": "⚂",
-            "i10n": {
+            "locals": {
                 "title-sv": "Treor"
             }
         },
@@ -75,7 +75,7 @@
             "playable": true,
             "title": "Fours",
             "title_symbol": "⚃",
-            "i10n": {
+            "locals": {
                 "title-sv": "Fyror"
             }
         },
@@ -87,7 +87,7 @@
             "playable": true,
             "title": "Fives",
             "title_symbol": "⚄",
-            "i10n": {
+            "locals": {
                 "title-sv": "Femmor"
             }
         },
@@ -99,7 +99,7 @@
             "playable": true,
             "title": "Sixes",
             "title_symbol": "⚅",
-            "i10n": {
+            "locals": {
                 "title-sv": "Sexor"
             }
         },
@@ -111,7 +111,7 @@
             "playable": true,
             "title": "Full Straight",
             "title_symbol": "⚀ ⚁ ⚂ ⚃ ⚄ ⚅",
-            "i10n": {
+            "locals": {
                 "title-sv": "Full stege"
             }
         },
@@ -123,7 +123,7 @@
             "sum_rows": "1-7",
             "title": "Total",
             "title_symbol": "∑",
-            "i10n": {
+            "locals": {
                 "title-sv": "Summa"
             }
         }
