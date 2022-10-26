@@ -29,8 +29,6 @@ import se.trixon.yaya.gamedef.GameType;
  */
 public abstract class RuleProvider {
 
-    private static final int FILE_FORMAT_VERSION = 1;
-
     private final String mId;
 
     public RuleProvider(String id) {
@@ -53,10 +51,6 @@ public abstract class RuleProvider {
 
     public GameType load() throws JsonSyntaxException {
         var gameType = Yaya.GSON.fromJson(getDefinition(), GameType.class);
-
-        if (gameType.getFileFormatVersion() != FILE_FORMAT_VERSION) {
-            //TODO Handle file format version change
-        }
 
         return gameType;
     }

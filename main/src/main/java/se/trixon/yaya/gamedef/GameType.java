@@ -29,10 +29,10 @@ public class GameType {
 
     @SerializedName("author")
     private String mAuthor;
+    @SerializedName("date")
+    private String mDate;
     @SerializedName("default_variant")
     private int mDefaultVariant;
-    @SerializedName("format_version")
-    private int mFileFormatVersion;
     @SerializedName("id")
     private String mId;
     @SerializedName("locals")
@@ -49,10 +49,6 @@ public class GameType {
     private String mTitle;
     @SerializedName("variants")
     private ArrayList<GameVariant> mVariants;
-    @SerializedName("version_date")
-    private String mVersionDate;
-    @SerializedName("version_name")
-    private String mVersionName;
 
     public GameType() {
     }
@@ -61,12 +57,12 @@ public class GameType {
         return mAuthor;
     }
 
-    public int getDefaultVariant() {
-        return mDefaultVariant;
+    public String getDate() {
+        return mDate;
     }
 
-    public int getFileFormatVersion() {
-        return mFileFormatVersion;
+    public int getDefaultVariant() {
+        return mDefaultVariant;
     }
 
     public String getId() {
@@ -140,16 +136,12 @@ public class GameType {
         return mVariants.toArray(String[]::new);
     }
 
-    public String getVersionDate() {
-        return mVersionDate;
-    }
-
-    public String getVersionName() {
-        return mVersionName;
-    }
-
     public void setAuthor(String author) {
         mAuthor = author;
+    }
+
+    public void setDate(String date) {
+        mDate = date;
     }
 
     public void setDefaultVariant(int defaultVariant) {
@@ -182,14 +174,6 @@ public class GameType {
 
     public void setVariants(ArrayList<GameVariant> variants) {
         mVariants = variants;
-    }
-
-    public void setVersionDate(String versionDate) {
-        mVersionDate = versionDate;
-    }
-
-    public void setVersionName(String versionName) {
-        mVersionName = versionName;
     }
 
     @Override
