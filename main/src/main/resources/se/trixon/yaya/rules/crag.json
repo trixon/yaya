@@ -1,0 +1,167 @@
+{
+    "id": "se.trixon.yaya.rules.crag",
+    "author": "Patrik Karlström",
+    "title": "Crag",
+    "locals": {
+        "title-sv": "Klippan"
+    },
+    "numOfDice": 3,
+    "numOfRolls": 2,
+    "defaultVariant": 0,
+    "variants": [
+        "STANDARD",
+        "DOWNWARDS",
+        "UPWARDS",
+        "RANDOM"
+    ],
+    "version_date": "2022-10-25",
+    "rows": [
+        {
+            "id": "rolls",
+            "title": "Throws",
+            "title-sv": "Slag",
+            "isSum": true,
+            "isRollCounter": true
+        },
+        {
+            "id": "crag",
+            "title": "Crag",
+            "title-sv": "Klippan",
+            "titleSym": "◼ ◼ ◻=13",
+            "isPlayable": true,
+            "lim": 50,
+            "max": 50,
+            "formula": "crag 50"
+        },
+        {
+            "id": "thirteen",
+            "title": "thirteen",
+            "title-sv": "Tretton",
+            "titleSym": "� � �=13",
+            "isPlayable": true,
+            "lim": 26,
+            "max": 26,
+            "formula": "sum 13 26"
+        },
+        {
+            "id": "high_straight",
+            "title": "High Straight",
+            "title-sv": "Hög stege",
+            "titleSym": "⚃ ⚄ ⚅",
+            "isPlayable": true,
+            "lim": 20,
+            "max": 20,
+            "formula": "equals 4,5,6 20"
+        },
+        {
+            "id": "low_straight",
+            "title": "Low Straight",
+            "title-sv": "Låg stege",
+            "titleSym": "⚀ ⚁ ⚂",
+            "isPlayable": true,
+            "lim": 20,
+            "max": 20,
+            "formula": "equals 1,2,3 20"
+        },
+        {
+            "id": "even_straight",
+            "title": "Even Straight",
+            "title-sv": "Jämn stege",
+            "titleSym": "⚁ ⚃ ⚅",
+            "isPlayable": true,
+            "lim": 20,
+            "max": 20,
+            "formula": "equals 2,4,6 20"
+        },
+        {
+            "id": "odd_straight",
+            "title": "Odd Straight",
+            "title-sv": "Udda stege",
+            "titleSym": "⚀ ⚂ ⚄",
+            "isPlayable": true,
+            "lim": 20,
+            "max": 20,
+            "formula": "equals 1,3,5 20"
+        },
+        {
+            "id": "triple",
+            "title": "Triple",
+            "title-sv": "Trippel",
+            "titleSym": "◼ ◼ ◼",
+            "isPlayable": true,
+            "lim": 12,
+            "max": 18,
+            "formula": "sum_n 3"
+        },
+        {
+            "id": "sixes",
+            "title": "Sixes",
+            "title-sv": "Sexor",
+            "titleSym": "⚅",
+            "isPlayable": true,
+            "lim": 12,
+            "max": 30,
+            "formula": "sum 6"
+        },
+        {
+            "id": "fives",
+            "title": "Fives",
+            "title-sv": "Femmor",
+            "titleSym": "⚄",
+            "isPlayable": true,
+            "lim": 10,
+            "max": 25,
+            "formula": "sum 5"
+        },
+        {
+            "id": "fours",
+            "title": "Fours",
+            "title-sv": "Fyror",
+            "titleSym": "⚃",
+            "isPlayable": true,
+            "lim": 8,
+            "max": 20,
+            "formula": "sum 4"
+        },
+        {
+            "id": "threes",
+            "title": "Threes",
+            "title-sv": "Treor",
+            "titleSym": "⚂",
+            "isPlayable": true,
+            "lim": 6,
+            "max": 15,
+            "formula": "sum 3"
+        },
+        {
+            "id": "twos",
+            "title": "Twos",
+            "title-sv": "Tvåor",
+            "titleSym": "⚁",
+            "isPlayable": true,
+            "lim": 4,
+            "max": 10,
+            "formula": "sum 2"
+        },
+        {
+            "id": "ones",
+            "title": "Ones",
+            "title-sv": "Ettor",
+            "titleSym": "⚀",
+            "isPlayable": true,
+            "lim": 2,
+            "max": 5,
+            "formula": "sum 1"
+        },
+        {
+            "id": "total",
+            "title": "Grand total",
+            "title-sv": "Totalsumma",
+            "titleSym": "∑",
+            "isSum": true,
+            "isResult": true,
+            "max": 171,
+            "sum": "2-14"
+        }
+    ]
+}
