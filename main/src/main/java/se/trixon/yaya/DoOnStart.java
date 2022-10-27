@@ -30,7 +30,7 @@ import se.trixon.almond.nbp.Almond;
 import se.trixon.almond.nbp.dialogs.NbOptionalDialog;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
-import se.trixon.yaya.gamedef.GameTypeLoader;
+import se.trixon.yaya.rules.RuleManager;
 
 /**
  *
@@ -62,7 +62,7 @@ public class DoOnStart implements Runnable {
     @Override
     public void run() {
         boolean fullscreen = mOptions.isFullscreen();
-        GameTypeLoader.getInstance().init();
+        RuleManager.getInstance().init();
 
         SystemHelper.setDesktopBrowser(url -> {
             try {

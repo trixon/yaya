@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +15,19 @@
  */
 package se.trixon.yaya.rules;
 
-import org.openide.util.lookup.ServiceProvider;
-
 /**
  *
  * @author Patrik Karlström
  */
-@ServiceProvider(service = RuleProvider.class)
-public class Straight extends RuleProvider {
+import java.util.ArrayList;
 
-    public Straight() {
-        super("straight.json");
+public class GameRows extends ArrayList<GameRow> {
+
+    public Integer[] getLim() {
+        return stream().map(k -> k.getLim()).toArray(Integer[]::new);
+    }
+
+    public Integer[] getMax() {
+        return stream().map(k -> k.getMax()).toArray(Integer[]::new);
     }
 }

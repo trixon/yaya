@@ -17,7 +17,7 @@ package se.trixon.yaya.scorecard;
 
 import javax.swing.SwingConstants;
 import se.trixon.yaya.Options;
-import se.trixon.yaya.gamedef.GameType;
+import se.trixon.yaya.rules.Rule;
 
 /**
  *
@@ -25,7 +25,6 @@ import se.trixon.yaya.gamedef.GameType;
  */
 public class HeaderColumn {
 
-    private final GameType mGameType;
     private ScoreCardRow[] mHiScoreColumn;
     private Integer[] mLimValues;
     private ScoreCardRow[] mMaxColumn;
@@ -33,10 +32,11 @@ public class HeaderColumn {
     private int mNumOfRows;
     private final Options mOptions = Options.getInstance();
     private ScoreCardRow[] mRows;
+    private final Rule mRule;
     private final ScoreCard mScoreCard;
 
-    public HeaderColumn(ScoreCard scoreCard, GameType gameType) {
-        mGameType = gameType;
+    public HeaderColumn(ScoreCard scoreCard, Rule rule) {
+        mRule = rule;
         mScoreCard = scoreCard;
         init();
     }
@@ -81,13 +81,13 @@ public class HeaderColumn {
     }
 
     private void initLabelTexts() {
-        for (int i = 0; i < mGameType.getRows().size(); i++) {
+        for (int i = 0; i < mRule.getRows().size(); i++) {
             String text;
 
-            if (mOptions.isShowingSymbols() && !mGameType.getRows().get(i).getTitleSymbol().equalsIgnoreCase("")) {
-                text = mGameType.getRows().get(i).getTitleSymbol();
+            if (mOptions.isShowingSymbols() && !mRule.getRows().get(i).getTitleSymbol().equalsIgnoreCase("")) {
+                text = mRule.getRows().get(i).getTitleSymbol();
             } else {
-                text = mGameType.getRows().get(i).getTitle();
+                text = mRule.getRows().get(i).getTitle();
             }
 
             mRows[i].getLabel().setText(text);
@@ -98,7 +98,7 @@ public class HeaderColumn {
         boolean showMaxColumn = mOptions.isShowingMaxColumn();
         boolean showHiScoreColumn = mOptions.isShowingTopColumn();
 
-        var rowsRule = mGameType.getRows();
+        var rowsRule = mRule.getRows();
         mLimValues = rowsRule.getLim();
         mMaxValues = rowsRule.getMax();
 
@@ -127,7 +127,7 @@ public class HeaderColumn {
 //            mHiScoreColumn[i].getLabel().setToolTipText(toolTip);
         }
 
-        int row = mGameType.getResultRow();
+        int row = mRule.getResultRow();
         mRows[row].getLabel().setFont(mRows[row].getLabel().getFont().deriveFont((16.0F)));
     }
 }

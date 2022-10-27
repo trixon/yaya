@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,21 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.gamedef;
+package se.trixon.yaya.rules;
+
+import java.util.ResourceBundle;
+import org.openide.util.NbBundle;
 
 /**
  *
  * @author Patrik Karlström
  */
-import java.util.ArrayList;
+public enum GameVariant {
+    STANDARD,
+    DOWNWARDS,
+    UPWARDS,
+    UPPER_LOWER,
+    LOWER_UPPER,
+    RANDOM;
 
-public class GameRows extends ArrayList<GameRow> {
+    public static final String PREFIX = "Variant.";
+    private final ResourceBundle mBundle = NbBundle.getBundle(GameVariant.class);
 
-    public Integer[] getLim() {
-        return stream().map(k -> k.getLim()).toArray(Integer[]::new);
-    }
-
-    public Integer[] getMax() {
-        return stream().map(k -> k.getMax()).toArray(Integer[]::new);
+    public String getLocalized() {
+        return mBundle.getString(PREFIX + name().toLowerCase());
     }
 }

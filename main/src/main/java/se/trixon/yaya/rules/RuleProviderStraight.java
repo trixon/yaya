@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,27 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.gamedef;
+package se.trixon.yaya.rules;
 
-import java.util.ResourceBundle;
-import org.openide.util.NbBundle;
+import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author Patrik Karlström
  */
-public enum GameVariant {
-    STANDARD,
-    DOWNWARDS,
-    UPWARDS,
-    UPPER_LOWER,
-    LOWER_UPPER,
-    RANDOM;
+@ServiceProvider(service = RuleProvider.class)
+public class RuleProviderStraight extends RuleProvider {
 
-    public static final String PREFIX = "Variant.";
-    private final ResourceBundle mBundle = NbBundle.getBundle(GameVariant.class);
-
-    public String getLocalized() {
-        return mBundle.getString(PREFIX + name().toLowerCase());
+    public RuleProviderStraight() {
+        super("straight.json");
     }
 }

@@ -22,9 +22,9 @@ import org.openide.util.lookup.ServiceProvider;
  * @author Patrik Karlström
  */
 @ServiceProvider(service = RuleProvider.class)
-public class Crag extends RuleProvider {
+public class RuleProviderMaxiYahtzee extends RuleProvider {
 
-    public Crag() {
-        super("crag.json");
+    public RuleProviderMaxiYahtzee() {
+        super("maxi_yahtzee.json");
     }
 }

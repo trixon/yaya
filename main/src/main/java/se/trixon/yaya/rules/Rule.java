@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.gamedef;
+package se.trixon.yaya.rules;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import se.trixon.yaya.Yaya;
  *
  * @author Patrik Karlström
  */
-public class GameType {
+public class Rule {
 
     @SerializedName("author")
     private String mAuthor;
@@ -50,7 +50,7 @@ public class GameType {
     @SerializedName("variants")
     private ArrayList<GameVariant> mVariants;
 
-    public GameType() {
+    public Rule() {
     }
 
     public String getAuthor() {
@@ -136,6 +136,12 @@ public class GameType {
         return mVariants.toArray(String[]::new);
     }
 
+    public void postLoad() {
+        mRows.forEach(row -> {
+            row.postLoad();
+        });
+    }
+
     public void setAuthor(String author) {
         mAuthor = author;
     }
@@ -181,9 +187,4 @@ public class GameType {
         return Yaya.GSON.toJson(this);
     }
 
-    void postRestore() {
-        mRows.forEach(row -> {
-            row.postRestore();
-        });
-    }
 }

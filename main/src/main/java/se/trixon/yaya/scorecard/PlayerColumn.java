@@ -20,7 +20,7 @@ import java.util.Stack;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import se.trixon.yaya.Player;
-import se.trixon.yaya.gamedef.GameType;
+import se.trixon.yaya.rules.Rule;
 
 /**
  *
@@ -31,19 +31,19 @@ public class PlayerColumn {
     private boolean mActive;
     private int mCurrentScore;
     private LinkedList<Integer> mDice;
-    private final GameType mGameType;
     private final JLabel mLabel = new JLabel("XXX");
     private int mNumOfRolls;
     private int mPlayOrder;
     private Player mPlayer;
     private final Stack<Integer> mRowStack = new Stack<>();
     private ScoreCardRow[] mRows;
+    private final Rule mRule;
     private final ScoreCard mScoreCard;
 
-    public PlayerColumn(ScoreCard scoreCard, int playOrder, GameType gameType) {
+    public PlayerColumn(ScoreCard scoreCard, int playOrder, Rule rule) {
         mScoreCard = scoreCard;
         mPlayOrder = playOrder;
-        mGameType = gameType;
+        mRule = rule;
         init();
     }
 
@@ -111,7 +111,7 @@ public class PlayerColumn {
         for (var row : mRows) {
             if (row.getGameRow().isRollCounter()) {
                 String rolls = Integer.toString(getNumOfRolls());
-                int maxRolls = mGameType.getNumOfRolls();
+                int maxRolls = mRule.getNumOfRolls();
                 if (maxRolls > 0) {
                     rolls += " (" + mScoreCard.getNumOfRolls() + "/" + maxRolls + ")";
                 }
@@ -183,7 +183,7 @@ public class PlayerColumn {
     }
 
     private void init() {
-        var rowsRule = mGameType.getRows();
+        var rowsRule = mRule.getRows();
         mRows = new ScoreCardRow[rowsRule.size()];
         var d = mLabel.getPreferredSize();
         d.width = 90;
@@ -231,7 +231,7 @@ public class PlayerColumn {
                         sum += mRows[rowValue].getValue();
                     }
 
-                    if (row.getRow() == mGameType.getResultRow()) {
+                    if (row.getRow() == mRule.getResultRow()) {
                         row.setValue(sum);
                         mCurrentScore = sum;
                     }

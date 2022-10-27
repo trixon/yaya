@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,9 +22,9 @@ import org.openide.util.lookup.ServiceProvider;
  * @author Patrik Karlström
  */
 @ServiceProvider(service = RuleProvider.class)
-public class YahtzeeScandinavian extends RuleProvider {
+public class RuleProviderYacht extends RuleProvider {
 
-    public YahtzeeScandinavian() {
-        super("yahtzee_scandinavian.json");
+    public RuleProviderYacht() {
+        super("yacht.json");
     }
 }

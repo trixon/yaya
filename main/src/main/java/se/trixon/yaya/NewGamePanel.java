@@ -20,8 +20,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import org.openide.util.NbBundle;
 import se.trixon.almond.util.Dict;
-import se.trixon.yaya.gamedef.GameType;
-import se.trixon.yaya.gamedef.GameTypeLoader;
+import se.trixon.yaya.rules.Rule;
+import se.trixon.yaya.rules.RuleManager;
 
 /**
  *
@@ -29,8 +29,8 @@ import se.trixon.yaya.gamedef.GameTypeLoader;
  */
 public class NewGamePanel extends JPanel {
 
-    private final GameTypeLoader mGameTypeLoader = GameTypeLoader.getInstance();
-    private GameType mGameType;
+    private final RuleManager mRuleManager = RuleManager.getInstance();
+    private Rule mRule;
     private final Options mOptions = Options.getInstance();
 
     /**
@@ -44,18 +44,18 @@ public class NewGamePanel extends JPanel {
 
     public void load() {
         //mGameDef.init();
-        gameComboBox.setModel(new DefaultComboBoxModel(mGameTypeLoader.getTitles()));
-        gameComboBox.setSelectedIndex(mGameTypeLoader.getIndexForId(mOptions.getGameTypeId()));
+        gameComboBox.setModel(new DefaultComboBoxModel(mRuleManager.getTitles()));
+        gameComboBox.setSelectedIndex(mRuleManager.getIndexForId(mOptions.getRuleId()));
         selectPlayersPanel.load();
     }
 
     public void save() {
-        String gameTypeId = mGameTypeLoader.getIdForIndex(gameComboBox.getSelectedIndex());
-        mOptions.setGameTypeId(gameTypeId);
+        String ruleId = mRuleManager.getIdForIndex(gameComboBox.getSelectedIndex());
+        mOptions.setRuleId(ruleId);
         String variantTitle = (String) variantComboBox.getSelectedItem();
-        String variantByTitle = mGameType.getVariantByTitle(variantTitle);
+        String variantByTitle = mRule.getVariantByTitle(variantTitle);
 
-        mOptions.setGameVariant(gameTypeId, variantByTitle);
+        mOptions.setGameVariant(ruleId, variantByTitle);
         selectPlayersPanel.save();
         mOptions.setPlayers(mOptions.createPlayers());
     }
@@ -153,13 +153,13 @@ public class NewGamePanel extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void gameComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameComboBoxActionPerformed
-        mGameType = mGameTypeLoader.getType(mGameTypeLoader.getIdForIndex(gameComboBox.getSelectedIndex()));
-        String byLine = NbBundle.getMessage(getClass(), "ByLine", mGameType.getAuthor());
+        mRule = mRuleManager.getType(mRuleManager.getIdForIndex(gameComboBox.getSelectedIndex()));
+        String byLine = NbBundle.getMessage(getClass(), "ByLine", mRule.getAuthor());
         byLineLabel.setText(byLine);
-        String[] localizedVariant = mGameType.getLocalizedVariants().clone();
+        String[] localizedVariant = mRule.getLocalizedVariants().clone();
         Arrays.sort(localizedVariant);
         variantComboBox.setModel(new DefaultComboBoxModel(localizedVariant));
-        variantComboBox.setSelectedIndex(mGameType.getLocalizedIndexForVariantId(mOptions.getGameVariant(mGameType.getId())));
+        variantComboBox.setSelectedIndex(mRule.getLocalizedIndexForVariantId(mOptions.getGameVariant(mRule.getId())));
     }//GEN-LAST:event_gameComboBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

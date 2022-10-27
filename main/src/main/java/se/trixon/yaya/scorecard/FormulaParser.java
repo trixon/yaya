@@ -18,7 +18,7 @@ package se.trixon.yaya.scorecard;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.TreeSet;
-import se.trixon.yaya.gamedef.GameRow;
+import se.trixon.yaya.rules.GameRow;
 
 /**
  *

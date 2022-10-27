@@ -21,11 +21,10 @@ import org.apache.commons.io.IOUtils;
 import org.openide.util.Exceptions;
 import se.trixon.almond.util.SystemHelper;
 import se.trixon.yaya.Yaya;
-import se.trixon.yaya.gamedef.GameType;
 
 /**
  *
- * @author Patrik Karlström
+ * @author Patrik Karlström <patrik@trixon.se>
  */
 public abstract class RuleProvider {
 
@@ -35,7 +34,18 @@ public abstract class RuleProvider {
         mId = id;
     }
 
-    public String getDefinition() {
+    public String getId() {
+        return mId;
+    }
+
+    public Rule load() throws JsonSyntaxException {
+        var rule = Yaya.GSON.fromJson(getDefinition(), Rule.class);
+        rule.postLoad();
+
+        return rule;
+    }
+
+    private String getDefinition() {
         try ( var inputStream = getClass().getResourceAsStream("/" + SystemHelper.getPackageAsPath(getClass()) + mId)) {
             return IOUtils.toString(inputStream, "UTF-8");
         } catch (IOException ex) {
@@ -45,13 +55,4 @@ public abstract class RuleProvider {
         return "";
     }
 
-    public String getId() {
-        return mId;
-    }
-
-    public GameType load() throws JsonSyntaxException {
-        var gameType = Yaya.GSON.fromJson(getDefinition(), GameType.class);
-
-        return gameType;
-    }
 }

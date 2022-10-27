@@ -27,8 +27,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import se.trixon.yaya.dice.DiceBoard;
 import se.trixon.yaya.dice.DiceBoard.RollEvent;
-import se.trixon.yaya.gamedef.GameType;
-import se.trixon.yaya.gamedef.GameTypeLoader;
+import se.trixon.yaya.rules.Rule;
+import se.trixon.yaya.rules.RuleManager;
 import se.trixon.yaya.scorecard.ScoreCard;
 import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
 
@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Observer {
     private int mNumOfPlayers;
     private ScoreCard mScoreCard;
     private final Options mOptions = Options.getInstance();
-    private GameType mGameType;
+    private Rule mRule;
     private BufferedImage mBackgroundImage;
 
     /**
@@ -64,7 +64,7 @@ public class GamePanel extends JPanel implements Observer {
     }
 
     public String getGameTitle() {
-        return mGameType.getTitle();
+        return mRule.getTitle();
     }
 
     @Override
@@ -158,16 +158,16 @@ public class GamePanel extends JPanel implements Observer {
     private void initDiceBoard() {
         mDiceBoard.addObserver(this);
         mDiceBoard.setDiceTofloor(1000);
-        mDiceBoard.setMaxRollCount(mGameType.getNumOfRolls());
+        mDiceBoard.setMaxRollCount(mRule.getNumOfRolls());
         add(mDiceBoard.getPanel(), BorderLayout.SOUTH);
     }
 
     private void initGame() {
         removeAll();
-        mGameType = GameTypeLoader.getInstance().getType(mOptions.getGameTypeId());
+        mRule = RuleManager.getInstance().getType(mOptions.getRuleId());
         mNumOfPlayers = mOptions.getNumOfPlayers();
 
-        mDiceBoard = new DiceBoard(mGameType.getNumOfDice());
+        mDiceBoard = new DiceBoard(mRule.getNumOfDice());
         mScoreCard = new ScoreCard();
         initScoreCard();
         initDiceBoard();

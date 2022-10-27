@@ -24,7 +24,7 @@ import javax.swing.border.EmptyBorder;
 import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.yaya.Options;
 import se.trixon.yaya.ThemeManager;
-import se.trixon.yaya.gamedef.GameRow;
+import se.trixon.yaya.rules.GameRow;
 
 /**
  *
@@ -35,15 +35,15 @@ public class ScoreCardRow {
     private final int COLOR_MASK = 0xEEEEEE;
     private GameRow mGameRow;
     private boolean mHeader = false;
+    private final Options mOptions = Options.getInstance();
     private PlayerColumn mPlayerColumn;
     private int mPreview;
     private boolean mRegistered;
     private int mRow;
     private RowLabel mRowLabel = new RowLabel();
     private ScoreCard mScoreCard;
-    private int mValue;
-    private final Options mOptions = Options.getInstance();
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
+    private int mValue;
 
     ScoreCardRow(ScoreCard scoreCard, PlayerColumn playerColumn, GameRow gameRow, int row) {
         mScoreCard = scoreCard;

@@ -20,7 +20,7 @@ import org.openide.util.NbPreferences;
 import se.trixon.almond.util.OptionsBase;
 import static se.trixon.almond.util.OptionsBase.DEFAULT_FULL_SCREEN;
 import static se.trixon.almond.util.OptionsBase.KEY_FULL_SCREEN;
-import se.trixon.yaya.gamedef.GameVariant;
+import se.trixon.yaya.rules.GameVariant;
 
 /**
  *
@@ -30,22 +30,22 @@ public class Options extends OptionsBase {
 
     public static final String DEFAULT_PLAYERS = "Ask;Embla;Ask;Embla;Ask;Embla;Ask;Embla";
     public static final String DEFAULT_PLAYERS_ALL = "Ask;Embla";
-    public static final String KEY_GAME_TYPE_ID = "gameType";
     public static final String KEY_NUM_OF_PLAYERS = "numOfPlayers";
     public static final String KEY_OPACITY = "opacity";
     public static final String KEY_PLAYERS = "players";
     public static final String KEY_PLAYERS_ALL = "players.all";
     public static final String KEY_REVERSE_DIRECTION = "reverseDirection";
+    public static final String KEY_RULE_ID = "ruleId";
     public static final String KEY_SHOW_INDICATORS = "showIndicators";
     public static final String KEY_SHOW_MAX_COLUMN = "showMaxColumn";
     public static final String KEY_SHOW_SYMBOLS = "showSymbols";
     public static final String KEY_SHOW_TOP_COLUMN = "showTopColumn";
     public static final String KEY_THEME = "theme";
-    private static final String DEFAULT_GAME_TYPE_ID = "default";
     private static final String DEFAULT_GAME_VARIANT = "standard";
     private static final int DEFAULT_NUM_OF_PLAYERS = 2;
     private static final int DEFAULT_OPACITY = 255;
     private static final boolean DEFAULT_REVERSE_DIRECTION = false;
+    private static final String DEFAULT_RULE_ID = "default";
     private static final boolean DEFAULT_SHOW_INDICATORS = true;
     private static final boolean DEFAULT_SHOW_MAX_COLUMN = false;
     private static final boolean DEFAULT_SHOW_TOP_COLUMN = false;
@@ -76,10 +76,6 @@ public class Options extends OptionsBase {
         return players;
     }
 
-    public String getGameTypeId() {
-        return get(KEY_GAME_TYPE_ID, DEFAULT_GAME_TYPE_ID);
-    }
-
     public String getGameVariant(String type) {
         return get(GameVariant.PREFIX + type, DEFAULT_GAME_VARIANT);
     }
@@ -98,6 +94,10 @@ public class Options extends OptionsBase {
         }
 
         return mPlayers;
+    }
+
+    public String getRuleId() {
+        return get(KEY_RULE_ID, DEFAULT_RULE_ID);
     }
 
     public String getTheme() {
@@ -132,10 +132,6 @@ public class Options extends OptionsBase {
         put(KEY_FULL_SCREEN, value);
     }
 
-    public void setGameTypeId(String typeId) {
-        put(KEY_GAME_TYPE_ID, typeId);
-    }
-
     public void setGameVariant(String type, String variant) {
         put(GameVariant.PREFIX + type, variant);
     }
@@ -154,6 +150,10 @@ public class Options extends OptionsBase {
 
     public void setReverseDirection(boolean state) {
         put(KEY_REVERSE_DIRECTION, state);
+    }
+
+    public void setRuleId(String typeId) {
+        put(KEY_RULE_ID, typeId);
     }
 
     public void setShowIndicators(boolean state) {

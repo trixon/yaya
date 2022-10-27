@@ -13,42 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.gamedef;
+package se.trixon.yaya.rules;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import org.openide.util.Lookup;
 import se.trixon.yaya.Yaya;
-import se.trixon.yaya.rules.RuleProvider;
 
 /**
  *
  * @author Patrik Karlström
  */
-public class GameTypeLoader {
+public class RuleManager {
 
-    private ArrayList<GameType> mGameTypes;
+    private ArrayList<Rule> mRules;
 
-    public static GameTypeLoader getInstance() {
+    public static RuleManager getInstance() {
         return Holder.INSTANCE;
     }
 
-    private GameTypeLoader() {
+    private RuleManager() {
     }
 
     public String[] getIdArray() {
-        String[] result = new String[mGameTypes.size()];
-
-        for (int i = 0; i < result.length; i++) {
-            result[i] = mGameTypes.get(i).getId();
-        }
-
-        return result;
+        return mRules.stream().map(k -> k.getId()).toArray(String[]::new);
+//        String[] result = new String[mRules.size()];
+//
+//        for (int i = 0; i < result.length; i++) {
+//            result[i] = mRules.get(i).getId();
+//        }
+//
+//        return result;
     }
 
     public String getIdForIndex(int index) {
-        return mGameTypes.get(index).getId();
+        return mRules.get(index).getId();
     }
 
     public int getIndexForId(String id) {
@@ -69,9 +69,9 @@ public class GameTypeLoader {
     }
 
     public String getTitle(String id) {
-        for (var gameType : mGameTypes) {
-            if (gameType.getId().equalsIgnoreCase(id)) {
-                return gameType.getTitle();
+        for (var rule : mRules) {
+            if (rule.getId().equalsIgnoreCase(id)) {
+                return rule.getTitle();
             }
         }
         // TODO Throw something?
@@ -79,13 +79,13 @@ public class GameTypeLoader {
     }
 
     public String[] getTitles() {
-        return mGameTypes.stream().map(k -> k.getTitle()).toArray(String[]::new);
+        return mRules.stream().map(k -> k.getTitle()).toArray(String[]::new);
     }
 
-    public GameType getType(String id) {
-        for (var gameType : mGameTypes) {
-            if (gameType.getId().equalsIgnoreCase(id)) {
-                return gameType;
+    public Rule getType(String id) {
+        for (var rule : mRules) {
+            if (rule.getId().equalsIgnoreCase(id)) {
+                return rule;
             }
         }
 
@@ -94,20 +94,18 @@ public class GameTypeLoader {
     }
 
     public void init() {
-        mGameTypes = new ArrayList<>();
+        mRules = new ArrayList<>();
 
         for (var ruleProvider : Lookup.getDefault().lookupAll(RuleProvider.class)) {
             Yaya.outln(Yaya.LOG_TITLE, String.format("Found GameLoader in %s.", ruleProvider.getId()));
-            var gameType = ruleProvider.load();
-            gameType.postRestore();
-            mGameTypes.add(gameType);
+            mRules.add(ruleProvider.load());
         }
 
-        Collections.sort(mGameTypes, Comparator.comparing(GameType::getTitle));
+        Collections.sort(mRules, Comparator.comparing(Rule::getTitle));
     }
 
     private static class Holder {
 
-        private static final GameTypeLoader INSTANCE = new GameTypeLoader();
+        private static final RuleManager INSTANCE = new RuleManager();
     }
 }

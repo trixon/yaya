@@ -32,8 +32,8 @@ import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.yaya.Options;
 import se.trixon.yaya.ThemeManager;
-import se.trixon.yaya.gamedef.GameType;
-import se.trixon.yaya.gamedef.GameTypeLoader;
+import se.trixon.yaya.rules.Rule;
+import se.trixon.yaya.rules.RuleManager;
 import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
 
 /**
@@ -45,8 +45,7 @@ public class ScoreCard {
     private int mActivePlayer;
     private final JPanel mBasePanel = new JPanel();
     private CircularInt mCurrentPlayer;
-    private final GameTypeLoader mGameDef = GameTypeLoader.getInstance();
-    private final GameType mGameType;
+    private final RuleManager mGameDef = RuleManager.getInstance();
     private HeaderColumn mHeaderColumn;
     private final int mNumOfPlayers;
     private int mNumOfRolls;
@@ -54,9 +53,10 @@ public class ScoreCard {
     private final ScoreCardObservable mObservable = new ScoreCardObservable();
     private final Options mOptions = Options.getInstance();
     private final JPanel mPanel = new JPanel();
-    private LinkedList<PlayerColumn> mPlayerPositions;
     private final LinkedList<PlayerColumn> mPlayerColumns = new LinkedList<>();
+    private LinkedList<PlayerColumn> mPlayerPositions;
     private boolean mRegisterable;
+    private final Rule mRule;
     private boolean mShowIndicators;
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private AbstractAction mUndoAction;
@@ -64,7 +64,7 @@ public class ScoreCard {
 
     public ScoreCard() {
         mNumOfPlayers = mOptions.getNumOfPlayers();
-        mGameType = mGameDef.getType(mOptions.getGameTypeId());
+        mRule = mGameDef.getType(mOptions.getRuleId());
         init();
     }
 
@@ -137,10 +137,6 @@ public class ScoreCard {
     public void setVisibleIndicators(boolean visible) {
         mShowIndicators = visible;
         getActivePlayerColumn().setVisibleIndicators(visible);
-    }
-
-    private PlayerColumn getActivePlayerColumn() {
-        return mPlayerColumns.get(mActivePlayer);
     }
 
     void hoverRowEntered(int row) {
@@ -265,11 +261,15 @@ public class ScoreCard {
 //        gameOver.getUI().centerInOwner();
     }
 
+    private PlayerColumn getActivePlayerColumn() {
+        return mPlayerColumns.get(mActivePlayer);
+    }
+
     private void init() {
         mPlayerColumns.clear();
-        mHeaderColumn = new HeaderColumn(this, mGameType);
+        mHeaderColumn = new HeaderColumn(this, mRule);
         initActions();
-        mNumOfRows = mGameType.getRows().size();
+        mNumOfRows = mRule.getRows().size();
 
         initLayout();
         applyColors();
@@ -342,7 +342,7 @@ public class ScoreCard {
         insets.left = 1;
 
         for (int i = 0; i < mNumOfPlayers; i++) {
-            mPlayerColumns.add(new PlayerColumn(this, i, mGameType));
+            mPlayerColumns.add(new PlayerColumn(this, i, mRule));
             ScoreCardRow[] column = mPlayerColumns.get(i).getRows();
 
             gridBagConstraints = new GridBagConstraints();
@@ -390,10 +390,10 @@ public class ScoreCard {
         Collections.sort(mPlayerPositions, pcc);
 
         float reducer = 0.F;
-        Font font = mHeaderColumn.getRows()[mGameType.getResultRow()].getLabel().getFont();
+        Font font = mHeaderColumn.getRows()[mRule.getResultRow()].getLabel().getFont();
 
         for (var playerColumn : mPlayerPositions) {
-            var label = playerColumn.getRows()[mGameType.getResultRow()].getLabel();
+            var label = playerColumn.getRows()[mRule.getResultRow()].getLabel();
             label.setFont(font.deriveFont((16.0F - reducer)));
             reducer += 1.0;
         }

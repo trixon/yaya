@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.gamedef;
+package se.trixon.yaya.rules;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
@@ -108,6 +108,16 @@ public class GameRow {
         return mSum;
     }
 
+    public void postLoad() {
+        if (mFormula == null) {
+            mFormula = "";
+        }
+
+        if (getSumRows() != null) {
+            setSumSet(getSumRows());
+        }
+    }
+
     public void setBonus(boolean bonus) {
         mBonus = bonus;
     }
@@ -160,13 +170,4 @@ public class GameRow {
         mTitleSymbol = titleSymbol;
     }
 
-    void postRestore() {
-        if (mFormula == null) {
-            mFormula = "";
-        }
-
-        if (getSumRows() != null) {
-            setSumSet(getSumRows());
-        }
-    }
 }
