@@ -5,7 +5,6 @@
     "date": "2022-10-25",
     "dice": 6,
     "rolls": 33,
-    "result_row": 25,
     "default_variant": 0,
     "variants": [
         "STANDARD",
@@ -23,8 +22,8 @@
             "id": "rolls",
             "lim": 0,
             "max": 0,
-            "roll_counter": true,
-            "sum": true,
+            "isRollCounter": true,
+            "isSum": true,
             "title": "Throws",
             "title_symbol": "",
             "locals": {
@@ -36,7 +35,7 @@
             "id": "ones",
             "lim": 3,
             "max": 6,
-            "playable": true,
+            "isPlayable": true,
             "title": "Ones",
             "title_symbol": "⚀",
             "locals": {
@@ -48,7 +47,7 @@
             "id": "twos",
             "lim": 6,
             "max": 12,
-            "playable": true,
+            "isPlayable": true,
             "title": "Twos",
             "title_symbol": "⚁",
             "locals": {
@@ -60,7 +59,7 @@
             "id": "threes",
             "lim": 9,
             "max": 18,
-            "playable": true,
+            "isPlayable": true,
             "title": "Threes",
             "title_symbol": "⚂",
             "locals": {
@@ -72,7 +71,7 @@
             "id": "fours",
             "lim": 12,
             "max": 24,
-            "playable": true,
+            "isPlayable": true,
             "title": "Fours",
             "title_symbol": "⚃",
             "locals": {
@@ -84,7 +83,7 @@
             "id": "fives",
             "lim": 15,
             "max": 30,
-            "playable": true,
+            "isPlayable": true,
             "title": "Fives",
             "title_symbol": "⚄",
             "locals": {
@@ -96,7 +95,7 @@
             "id": "sixes",
             "lim": 18,
             "max": 36,
-            "playable": true,
+            "isPlayable": true,
             "title": "Sixes",
             "title_symbol": "⚅",
             "locals": {
@@ -107,7 +106,7 @@
             "id": "sum1",
             "lim": 0,
             "max": 126,
-            "sum": true,
+            "isSum": true,
             "sum_rows": "1-6",
             "title": "Upper total",
             "title_symbol": "∑₁",
@@ -120,7 +119,7 @@
             "id": "bonus",
             "lim": 84,
             "max": 100,
-            "sum": true,
+            "isSum": true,
             "title": "Bonus",
             "title_symbol": "+",
             "locals": {
@@ -132,7 +131,7 @@
             "id": "onePair",
             "lim": 6,
             "max": 12,
-            "playable": true,
+            "isPlayable": true,
             "title": "One pair",
             "title_symbol": "◼ ◼",
             "locals": {
@@ -144,7 +143,7 @@
             "id": "twoPair",
             "lim": 12,
             "max": 22,
-            "playable": true,
+            "isPlayable": true,
             "title": "Two pair",
             "title_symbol": "◼ ◼ ◻ ◻",
             "locals": {
@@ -156,7 +155,7 @@
             "id": "threePair",
             "lim": 16,
             "max": 30,
-            "playable": true,
+            "isPlayable": true,
             "title": "Three pair",
             "title_symbol": "◼ ◼ ◻ ◻ ◈ ◈",
             "locals": {
@@ -168,7 +167,7 @@
             "id": "threeOfAKind",
             "lim": 12,
             "max": 18,
-            "playable": true,
+            "isPlayable": true,
             "title": "Three of a kind",
             "title_symbol": "◼ ◼ ◼",
             "locals": {
@@ -180,7 +179,7 @@
             "id": "fourOfAKind",
             "lim": 16,
             "max": 24,
-            "playable": true,
+            "isPlayable": true,
             "title": "Four of a kind",
             "title_symbol": "◼ ◼ ◼ ◼",
             "locals": {
@@ -192,7 +191,7 @@
             "id": "fiveOfAKind",
             "lim": 20,
             "max": 30,
-            "playable": true,
+            "isPlayable": true,
             "title": "Five of a kind",
             "title_symbol": "◼ ◼ ◼ ◼ ◼",
             "locals": {
@@ -204,7 +203,7 @@
             "id": "smallStraight",
             "lim": 15,
             "max": 15,
-            "playable": true,
+            "isPlayable": true,
             "title": "Small Straight",
             "title_symbol": "⚀ ⚁ ⚂ ⚃ ⚄",
             "locals": {
@@ -216,7 +215,7 @@
             "id": "largeStraight",
             "lim": 20,
             "max": 20,
-            "playable": true,
+            "isPlayable": true,
             "title": "Large Straight",
             "title_symbol": "⚁ ⚂ ⚃ ⚄ ⚅",
             "locals": {
@@ -228,7 +227,7 @@
             "id": "fullStraight",
             "lim": 21,
             "max": 21,
-            "playable": true,
+            "isPlayable": true,
             "title": "Full Straight",
             "title_symbol": "⚀ ⚁ ⚂ ⚃ ⚄ ⚅",
             "locals": {
@@ -240,7 +239,7 @@
             "id": "fullHouse",
             "lim": 16,
             "max": 28,
-            "playable": true,
+            "isPlayable": true,
             "title": "Full House",
             "title_symbol": "◼ ◼ ◼ ◻ ◻",
             "locals": {
@@ -252,7 +251,7 @@
             "id": "villa",
             "lim": 21,
             "max": 33,
-            "playable": true,
+            "isPlayable": true,
             "title": "Villa",
             "title_symbol": "◼ ◼ ◼ ◻ ◻ ◻",
             "locals": {
@@ -264,7 +263,7 @@
             "id": "tower",
             "lim": 26,
             "max": 34,
-            "playable": true,
+            "isPlayable": true,
             "title": "Tower",
             "title_symbol": "◼ ◼ ◼ ◼ ◻ ◻",
             "locals": {
@@ -276,7 +275,7 @@
             "id": "chance",
             "lim": 20,
             "max": 30,
-            "playable": true,
+            "isPlayable": true,
             "title": "Chance",
             "title_symbol": "� � � � �",
             "locals": {
@@ -288,7 +287,7 @@
             "id": "yahtzee",
             "lim": 50,
             "max": 50,
-            "playable": true,
+            "isPlayable": true,
             "title": "Yahtzee",
             "title_symbol": "◼ ◼ ◼ ◼ ◼",
             "locals": {
@@ -300,7 +299,7 @@
             "id": "maxi_yahtzee",
             "lim": 100,
             "max": 100,
-            "playable": true,
+            "isPlayable": true,
             "title": "Maxi Yahtzee",
             "title_symbol": "◼ ◼ ◼ ◼ ◼ ◼",
             "locals": {
@@ -311,7 +310,7 @@
             "id": "sum2",
             "lim": 0,
             "max": 423,
-            "sum": true,
+            "isSum": true,
             "sum_rows": "9-23",
             "title": "Lower total",
             "title_symbol": "∑₂",
@@ -323,7 +322,8 @@
             "id": "total",
             "lim": 0,
             "max": 649,
-            "sum": true,
+            "isResult": true,
+            "isSum": true,
             "sum_rows": "1-6,8-23",
             "title": "Grand total",
             "title_symbol": "∑",

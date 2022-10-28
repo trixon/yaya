@@ -39,11 +39,13 @@ public class GameRow {
     private final HashMap<String, String> mLocals = new HashMap<>();
     @SerializedName("max")
     private int mMax = 0;
-    @SerializedName("playable")
+    @SerializedName("isPlayable")
     private boolean mPlayable;
-    @SerializedName("roll_counter")
+    @SerializedName("isResult")
+    private boolean mResult;
+    @SerializedName("isRollCounter")
     private boolean mRollCounter;
-    @SerializedName("sum")
+    @SerializedName("isSum")
     private boolean mSum;
     @SerializedName("sum_rows")
     private String mSumRows;
@@ -100,6 +102,10 @@ public class GameRow {
         return mPlayable;
     }
 
+    public boolean isResult() {
+        return mResult;
+    }
+
     public boolean isRollCounter() {
         return mRollCounter;
     }
@@ -140,6 +146,10 @@ public class GameRow {
 
     public void setPlayable(boolean playable) {
         mPlayable = playable;
+    }
+
+    public void setResult(boolean result) {
+        mResult = result;
     }
 
     public void setRollCounter(boolean rollCounter) {

@@ -5,7 +5,6 @@
     "date": "2022-10-25",
     "dice": 6,
     "rolls": 2,
-    "result_row": 8,
     "default_variant": 0,
     "variants": [
         "STANDARD",
@@ -21,8 +20,8 @@
             "id": "rolls",
             "lim": 0,
             "max": 0,
-            "roll_counter": true,
-            "sum": true,
+            "isRollCounter": true,
+            "isSum": true,
             "title": "Throws",
             "title_symbol": "",
             "locals": {
@@ -34,7 +33,7 @@
             "id": "ones",
             "lim": 2,
             "max": 5,
-            "playable": true,
+            "isPlayable": true,
             "title": "Ones",
             "title_symbol": "⚀",
             "locals": {
@@ -46,7 +45,7 @@
             "id": "twos",
             "lim": 4,
             "max": 10,
-            "playable": true,
+            "isPlayable": true,
             "title": "Twos",
             "title_symbol": "⚁",
             "locals": {
@@ -58,7 +57,7 @@
             "id": "threes",
             "lim": 6,
             "max": 15,
-            "playable": true,
+            "isPlayable": true,
             "title": "Threes",
             "title_symbol": "⚂",
             "locals": {
@@ -70,7 +69,7 @@
             "id": "fours",
             "lim": 8,
             "max": 20,
-            "playable": true,
+            "isPlayable": true,
             "title": "Fours",
             "title_symbol": "⚃",
             "locals": {
@@ -82,7 +81,7 @@
             "id": "fives",
             "lim": 10,
             "max": 25,
-            "playable": true,
+            "isPlayable": true,
             "title": "Fives",
             "title_symbol": "⚄",
             "locals": {
@@ -94,7 +93,7 @@
             "id": "sixes",
             "lim": 12,
             "max": 30,
-            "playable": true,
+            "isPlayable": true,
             "title": "Sixes",
             "title_symbol": "⚅",
             "locals": {
@@ -106,7 +105,7 @@
             "id": "fullStraight",
             "lim": 21,
             "max": 45,
-            "playable": true,
+            "isPlayable": true,
             "title": "Full Straight",
             "title_symbol": "⚀ ⚁ ⚂ ⚃ ⚄ ⚅",
             "locals": {
@@ -117,7 +116,8 @@
             "id": "total",
             "lim": 0,
             "max": 171,
-            "sum": true,
+            "isResult": true,
+            "isSum": true,
             "sum_rows": "1-7",
             "title": "Total",
             "title_symbol": "∑",

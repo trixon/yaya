@@ -41,8 +41,6 @@ public class Rule {
     private int mNumOfDice;
     @SerializedName("rolls")
     private int mNumOfRolls;
-    @SerializedName("result_row")
-    private int mResultRow;
     @SerializedName("rows")
     private GameRows mRows = new GameRows();
     @SerializedName("title")
@@ -108,7 +106,15 @@ public class Rule {
     }
 
     public int getResultRow() {
-        return mResultRow;
+        int row = -1;
+        for (int i = 0; i < mRows.size(); i++) {
+            if (mRows.get(i).isResult()) {
+                row = i;
+                break;
+            }
+        }
+
+        return row;
     }
 
     public GameRows getRows() {
@@ -126,7 +132,6 @@ public class Rule {
             if (variant.getLocalized().equalsIgnoreCase(title)) {
                 result = variant.name().toLowerCase();
             }
-
         }
 
         return result;
@@ -164,10 +169,6 @@ public class Rule {
 
     public void setNumOfRolls(int numOfRolls) {
         mNumOfRolls = numOfRolls;
-    }
-
-    public void setResultRow(int resultRow) {
-        mResultRow = resultRow;
     }
 
     public void setRows(GameRows rows) {

@@ -5,7 +5,6 @@
     "date": "2022-10-25",
     "dice": 6,
     "rolls": 4,
-    "result_row": 3,
     "default_variant": 0,
     "variants": [
         "STANDARD",
@@ -21,8 +20,8 @@
             "id": "rolls",
             "lim": 0,
             "max": 0,
-            "roll_counter": true,
-            "sum": true,
+            "isRollCounter": true,
+            "isSum": true,
             "title": "Throws",
             "title_symbol": "✋",
             "locals": {
@@ -34,7 +33,7 @@
             "id": "onePair",
             "lim": 6,
             "max": 12,
-            "playable": true,
+            "isPlayable": true,
             "title": "One pair",
             "title_symbol": "◼ ◼",
             "locals": {
@@ -46,7 +45,7 @@
             "id": "chance",
             "lim": 8,
             "max": 24,
-            "playable": true,
+            "isPlayable": true,
             "title": "Chance",
             "title_symbol": "� � � � � �",
             "locals": {
@@ -57,9 +56,10 @@
             "id": "total",
             "lim": 0,
             "max": 36,
-            "sum": true,
+            "isResult": true,
+            "isSum": true,
             "sum_rows": "1-2",
-            "title": "Total",
+            "title": "Grand total",
             "title_symbol": "∑",
             "locals": {
                 "title-sv": "Summa"

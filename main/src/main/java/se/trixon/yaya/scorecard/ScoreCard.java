@@ -16,7 +16,6 @@
 package se.trixon.yaya.scorecard;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -390,7 +389,7 @@ public class ScoreCard {
         Collections.sort(mPlayerPositions, pcc);
 
         float reducer = 0.F;
-        Font font = mHeaderColumn.getRows()[mRule.getResultRow()].getLabel().getFont();
+        var font = mHeaderColumn.getRows()[mRule.getResultRow()].getLabel().getFont();
 
         for (var playerColumn : mPlayerPositions) {
             var label = playerColumn.getRows()[mRule.getResultRow()].getLabel();

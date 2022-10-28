@@ -231,7 +231,7 @@ public class PlayerColumn {
                         sum += mRows[rowValue].getValue();
                     }
 
-                    if (row.getRow() == mRule.getResultRow()) {
+                    if (row.getGameRow().isResult()) {
                         row.setValue(sum);
                         mCurrentScore = sum;
                     }
