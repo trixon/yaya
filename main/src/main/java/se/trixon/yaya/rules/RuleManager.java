@@ -82,7 +82,7 @@ public class RuleManager {
         return mRules.stream().map(k -> k.getTitle()).toArray(String[]::new);
     }
 
-    public Rule getType(String id) {
+    public Rule getRule(String id) {
         for (var rule : mRules) {
             if (rule.getId().equalsIgnoreCase(id)) {
                 return rule;

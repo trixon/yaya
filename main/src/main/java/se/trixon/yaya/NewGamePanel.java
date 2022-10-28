@@ -153,7 +153,7 @@ public class NewGamePanel extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void gameComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameComboBoxActionPerformed
-        mRule = mRuleManager.getType(mRuleManager.getIdForIndex(gameComboBox.getSelectedIndex()));
+        mRule = mRuleManager.getRule(mRuleManager.getIdForIndex(gameComboBox.getSelectedIndex()));
         String byLine = NbBundle.getMessage(getClass(), "ByLine", mRule.getAuthor());
         byLineLabel.setText(byLine);
         String[] localizedVariant = mRule.getLocalizedVariants().clone();

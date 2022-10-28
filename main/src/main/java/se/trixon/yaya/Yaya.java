@@ -36,7 +36,7 @@ public class Yaya {
             .create();
 
     public static final String LOG_TITLE = "Yaya";
-    private GamePanel mGamePanel;
+    private YayaPanel mYayaPanel;
 
     public static void errln(String name, String message) {
         new Monitor(name, false, true).errln(message);
@@ -65,12 +65,12 @@ public class Yaya {
     private Yaya() {
     }
 
-    public GamePanel getPanel() {
-        if (mGamePanel == null) {
-            mGamePanel = new GamePanel();
+    public YayaPanel getPanel() {
+        if (mYayaPanel == null) {
+            mYayaPanel = new YayaPanel();
         }
 
-        return mGamePanel;
+        return mYayaPanel;
     }
 
     public void onRequestNewGameStart() {

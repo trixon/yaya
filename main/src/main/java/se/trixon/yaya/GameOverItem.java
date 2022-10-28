@@ -15,8 +15,6 @@
  */
 package se.trixon.yaya;
 
-import se.trixon.yaya.Player;
-
 /**
  *
  * @author Patrik Karlström

@@ -63,7 +63,7 @@ public class ScoreCard {
 
     public ScoreCard() {
         mNumOfPlayers = mOptions.getNumOfPlayers();
-        mRule = mGameDef.getType(mOptions.getRuleId());
+        mRule = mGameDef.getRule(mOptions.getRuleId());
         init();
     }
 
