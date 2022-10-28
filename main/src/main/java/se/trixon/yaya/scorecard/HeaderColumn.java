@@ -70,9 +70,7 @@ public class HeaderColumn {
         initLabelTexts();
 
         mOptions.getPreferences().addPreferenceChangeListener(pce -> {
-            if (pce.getKey().equals(Options.KEY_SHOW_SYMBOLS)) {
-                initLabelTexts();
-            } else if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_TOP_COLUMN)) {
+            if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_TOP_COLUMN)) {
                 setVisibleColumnHiscore(mOptions.isShowingTopColumn());
             } else if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_MAX_COLUMN)) {
                 setVisibleColumnMax(mOptions.isShowingMaxColumn());
@@ -82,15 +80,7 @@ public class HeaderColumn {
 
     private void initLabelTexts() {
         for (int i = 0; i < mRule.getRows().size(); i++) {
-            String text;
-
-            if (mOptions.isShowingSymbols() && !mRule.getRows().get(i).getTitleSymbol().equalsIgnoreCase("")) {
-                text = mRule.getRows().get(i).getTitleSymbol();
-            } else {
-                text = mRule.getRows().get(i).getTitle();
-            }
-
-            mRows[i].getLabel().setText(text);
+            mRows[i].getLabel().setText(mRule.getRows().get(i).getTitle());
         }
     }
 

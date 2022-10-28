@@ -38,7 +38,6 @@ public class Options extends OptionsBase {
     public static final String KEY_RULE_ID = "ruleId";
     public static final String KEY_SHOW_INDICATORS = "showIndicators";
     public static final String KEY_SHOW_MAX_COLUMN = "showMaxColumn";
-    public static final String KEY_SHOW_SYMBOLS = "showSymbols";
     public static final String KEY_SHOW_TOP_COLUMN = "showTopColumn";
     public static final String KEY_THEME = "theme";
     private static final String DEFAULT_GAME_VARIANT = "standard";
@@ -50,7 +49,6 @@ public class Options extends OptionsBase {
     private static final boolean DEFAULT_SHOW_MAX_COLUMN = false;
     private static final boolean DEFAULT_SHOW_TOP_COLUMN = false;
     private static final String DEFAULT_THEME = "Legacy";
-    private static final boolean DEFAULT_USE_SYMBOLS = false;
     private Player[] mPlayers;
 
     public static Options getInstance() {
@@ -120,10 +118,6 @@ public class Options extends OptionsBase {
         return is(KEY_SHOW_MAX_COLUMN, DEFAULT_SHOW_MAX_COLUMN);
     }
 
-    public boolean isShowingSymbols() {
-        return is(KEY_SHOW_SYMBOLS, DEFAULT_USE_SYMBOLS);
-    }
-
     public boolean isShowingTopColumn() {
         return is(KEY_SHOW_TOP_COLUMN, DEFAULT_SHOW_TOP_COLUMN);
     }
@@ -162,10 +156,6 @@ public class Options extends OptionsBase {
 
     public void setShowMaxColumn(boolean state) {
         put(KEY_SHOW_MAX_COLUMN, state);
-    }
-
-    public void setShowSymbols(boolean state) {
-        put(KEY_SHOW_SYMBOLS, state);
     }
 
     public void setShowTopColumn(boolean state) {

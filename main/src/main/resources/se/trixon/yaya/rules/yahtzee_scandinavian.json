@@ -25,7 +25,6 @@
             "isRollCounter": true,
             "isSum": true,
             "title": "Throws",
-            "title_symbol": "",
             "locals": {
                 "title-sv": "Slag"
             }
@@ -37,7 +36,6 @@
             "max": 5,
             "isPlayable": true,
             "title": "Ones",
-            "title_symbol": "⚀",
             "locals": {
                 "title-sv": "Ettor"
             }
@@ -49,7 +47,6 @@
             "max": 10,
             "isPlayable": true,
             "title": "Twos",
-            "title_symbol": "⚁",
             "locals": {
                 "title-sv": "Tvåor"
             }
@@ -61,7 +58,6 @@
             "max": 15,
             "isPlayable": true,
             "title": "Threes",
-            "title_symbol": "⚂",
             "locals": {
                 "title-sv": "Treor"
             }
@@ -73,7 +69,6 @@
             "max": 20,
             "isPlayable": true,
             "title": "Fours",
-            "title_symbol": "⚃",
             "locals": {
                 "title-sv": "Fyror"
             }
@@ -85,7 +80,6 @@
             "max": 25,
             "isPlayable": true,
             "title": "Fives",
-            "title_symbol": "⚄",
             "locals": {
                 "title-sv": "Femmor"
             }
@@ -97,7 +91,6 @@
             "max": 30,
             "isPlayable": true,
             "title": "Sixes",
-            "title_symbol": "⚅",
             "locals": {
                 "title-sv": "Sexor"
             }
@@ -109,7 +102,6 @@
             "isSum": true,
             "sum_rows": "1-6",
             "title": "Upper total",
-            "title_symbol": "∑₁",
             "locals": {
                 "title-sv": "Övre summa"
             }
@@ -122,7 +114,6 @@
             "isSum": true,
             "sum_rows": "1-6",
             "title": "Bonus",
-            "title_symbol": "+",
             "locals": {
                 "title-sv": "Bonus"
             }
@@ -134,7 +125,6 @@
             "max": 12,
             "isPlayable": true,
             "title": "One pair",
-            "title_symbol": "◼ ◼",
             "locals": {
                 "title-sv": "Par"
             }
@@ -146,7 +136,6 @@
             "max": 22,
             "isPlayable": true,
             "title": "Two pair",
-            "title_symbol": "◼ ◼ ◻ ◻",
             "locals": {
                 "title-sv": "Tvåpar"
             }
@@ -158,7 +147,6 @@
             "max": 18,
             "isPlayable": true,
             "title": "Three of a kind",
-            "title_symbol": "◼ ◼ ◼",
             "locals": {
                 "title-sv": "Tretal"
             }
@@ -170,7 +158,6 @@
             "max": 24,
             "isPlayable": true,
             "title": "Four of a kind",
-            "title_symbol": "◼ ◼ ◼ ◼",
             "locals": {
                 "title-sv": "Fyrtal"
             }
@@ -182,7 +169,6 @@
             "max": 15,
             "isPlayable": true,
             "title": "Small Straight",
-            "title_symbol": "⚀ ⚁ ⚂ ⚃ ⚄",
             "locals": {
                 "title-sv": "Liten stege"
             }
@@ -194,7 +180,6 @@
             "max": 20,
             "isPlayable": true,
             "title": "Large Straight",
-            "title_symbol": "⚁ ⚂ ⚃ ⚄ ⚅",
             "locals": {
                 "title-sv": "Stor stege"
             }
@@ -206,7 +191,6 @@
             "max": 28,
             "isPlayable": true,
             "title": "Full House",
-            "title_symbol": "◼ ◼ ◼ ◻ ◻",
             "locals": {
                 "title-sv": "Kåk"
             }
@@ -218,7 +202,6 @@
             "max": 30,
             "isPlayable": true,
             "title": "Chance",
-            "title_symbol": "� � � � �",
             "locals": {
                 "title-sv": "Chans"
             }
@@ -230,7 +213,6 @@
             "max": 50,
             "isPlayable": true,
             "title": "Yahtzee",
-            "title_symbol": "◼ ◼ ◼ ◼ ◼",
             "locals": {
                 "title-sv": "Yatzy"
             }
@@ -242,7 +224,6 @@
             "isSum": true,
             "sum_rows": "9-17",
             "title": "Lower total",
-            "title_symbol": "∑₂",
             "locals": {
                 "title-sv": "Nedre summa"
             }
@@ -255,7 +236,6 @@
             "isSum": true,
             "sum_rows": "1-6,8-17",
             "title": "Grand total",
-            "title_symbol": "∑",
             "locals": {
                 "title-sv": "Summa"
             }

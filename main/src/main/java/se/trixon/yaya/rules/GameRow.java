@@ -52,8 +52,6 @@ public class GameRow {
     private transient TreeSet<Integer> mSumSet;
     @SerializedName("title")
     private String mTitle;
-    @SerializedName("title_symbol")
-    private String mTitleSymbol;
 
     public GameRow() {
     }
@@ -88,10 +86,6 @@ public class GameRow {
 
     public String getTitle() {
         return mLocals.getOrDefault("title" + Yaya.getLanguageSuffix(), mTitle);
-    }
-
-    public String getTitleSymbol() {
-        return mTitleSymbol;
     }
 
     public boolean isBonus() {
@@ -174,10 +168,6 @@ public class GameRow {
 
     public void setTitle(String title) {
         mTitle = title;
-    }
-
-    public void setTitleSymbol(String titleSymbol) {
-        mTitleSymbol = titleSymbol;
     }
 
 }

@@ -37,7 +37,6 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
 
         indicatorsCheckBox.addChangeListener(changeListener);
         maxCheckBox.addChangeListener(changeListener);
-        symbolsCheckBox.addChangeListener(changeListener);
         topCheckBox.addChangeListener(changeListener);
         reverseDirectionCheckBox.addChangeListener(changeListener);
 
@@ -57,7 +56,6 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
         checkboxPanel = new javax.swing.JPanel();
         indicatorsCheckBox = new javax.swing.JCheckBox();
         maxCheckBox = new javax.swing.JCheckBox();
-        symbolsCheckBox = new javax.swing.JCheckBox();
         topCheckBox = new javax.swing.JCheckBox();
         themeLabel = new javax.swing.JLabel();
         themeComboBox = new javax.swing.JComboBox<>();
@@ -70,9 +68,6 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(maxCheckBox, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "OptionsPanel.showMaxCheckBox.text")); // NOI18N
         checkboxPanel.add(maxCheckBox);
-
-        org.openide.awt.Mnemonics.setLocalizedText(symbolsCheckBox, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "OptionsPanel.showSymbolsCheckBox.text")); // NOI18N
-        checkboxPanel.add(symbolsCheckBox);
 
         org.openide.awt.Mnemonics.setLocalizedText(topCheckBox, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "OptionsPanel.showTopCheckBox.text")); // NOI18N
         checkboxPanel.add(topCheckBox);
@@ -130,7 +125,6 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
     void load() {
         indicatorsCheckBox.setSelected(mOptions.isShowingIndicators());
         maxCheckBox.setSelected(mOptions.isShowingMaxColumn());
-        symbolsCheckBox.setSelected(mOptions.isShowingSymbols());
         topCheckBox.setSelected(mOptions.isShowingTopColumn());
         reverseDirectionCheckBox.setSelected(mOptions.isReverseDirection());
         opacitySlider.setValue(mOptions.getOpacity());
@@ -145,7 +139,6 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
     void store() {
         mOptions.setShowIndicators(indicatorsCheckBox.isSelected());
         mOptions.setShowMaxColumn(maxCheckBox.isSelected());
-        mOptions.setShowSymbols(symbolsCheckBox.isSelected());
         mOptions.setShowTopColumn(topCheckBox.isSelected());
         mOptions.setReverseDirection(reverseDirectionCheckBox.isSelected());
         mOptions.setOpacity(opacitySlider.getValue());
@@ -164,7 +157,6 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
     private javax.swing.JLabel opacityLabel;
     private javax.swing.JSlider opacitySlider;
     private javax.swing.JCheckBox reverseDirectionCheckBox;
-    private javax.swing.JCheckBox symbolsCheckBox;
     private javax.swing.JComboBox<String> themeComboBox;
     private javax.swing.JLabel themeLabel;
     private javax.swing.JCheckBox topCheckBox;

@@ -23,7 +23,6 @@
             "isRollCounter": true,
             "isSum": true,
             "title": "Throws",
-            "title_symbol": "",
             "locals": {
                 "title-sv": "Slag"
             }
@@ -35,7 +34,6 @@
             "max": 5,
             "isPlayable": true,
             "title": "Ones",
-            "title_symbol": "⚀",
             "locals": {
                 "title-sv": "Ettor"
             }
@@ -47,7 +45,6 @@
             "max": 10,
             "isPlayable": true,
             "title": "Twos",
-            "title_symbol": "⚁",
             "locals": {
                 "title-sv": "Tvåor"
             }
@@ -59,7 +56,6 @@
             "max": 15,
             "isPlayable": true,
             "title": "Threes",
-            "title_symbol": "⚂",
             "locals": {
                 "title-sv": "Treor"
             }
@@ -71,7 +67,6 @@
             "max": 20,
             "isPlayable": true,
             "title": "Fours",
-            "title_symbol": "⚃",
             "locals": {
                 "title-sv": "Fyror"
             }
@@ -83,7 +78,6 @@
             "max": 25,
             "isPlayable": true,
             "title": "Fives",
-            "title_symbol": "⚄",
             "locals": {
                 "title-sv": "Femmor"
             }
@@ -95,7 +89,6 @@
             "max": 30,
             "isPlayable": true,
             "title": "Sixes",
-            "title_symbol": "⚅",
             "locals": {
                 "title-sv": "Sexor"
             }
@@ -107,7 +100,6 @@
             "max": 45,
             "isPlayable": true,
             "title": "Full Straight",
-            "title_symbol": "⚀ ⚁ ⚂ ⚃ ⚄ ⚅",
             "locals": {
                 "title-sv": "Full stege"
             }
@@ -120,7 +112,6 @@
             "isSum": true,
             "sum_rows": "1-7",
             "title": "Total",
-            "title_symbol": "∑",
             "locals": {
                 "title-sv": "Summa"
             }

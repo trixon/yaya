@@ -23,7 +23,6 @@
             "isRollCounter": true,
             "isSum": true,
             "title": "Throws",
-            "title_symbol": "✋",
             "locals": {
                 "title-sv": "Slag"
             }
@@ -35,7 +34,6 @@
             "max": 12,
             "isPlayable": true,
             "title": "One pair",
-            "title_symbol": "◼ ◼",
             "locals": {
                 "title-sv": "Par"
             }
@@ -47,7 +45,6 @@
             "max": 24,
             "isPlayable": true,
             "title": "Chance",
-            "title_symbol": "� � � � � �",
             "locals": {
                 "title-sv": "Chans"
             }
@@ -60,7 +57,6 @@
             "isSum": true,
             "sum_rows": "1-2",
             "title": "Grand total",
-            "title_symbol": "∑",
             "locals": {
                 "title-sv": "Summa"
             }
