@@ -20,6 +20,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import javax.swing.AbstractAction;
@@ -29,6 +30,8 @@ import javax.swing.JPanel;
 import se.trixon.almond.util.CircularInt;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.GraphicsHelper;
+import se.trixon.yaya.GameOverDialog;
+import se.trixon.yaya.GameOverItem;
 import se.trixon.yaya.Options;
 import se.trixon.yaya.ThemeManager;
 import se.trixon.yaya.rules.Rule;
@@ -44,7 +47,7 @@ public class ScoreCard {
     private int mActivePlayer;
     private final JPanel mBasePanel = new JPanel();
     private CircularInt mCurrentPlayer;
-    private final RuleManager mGameDef = RuleManager.getInstance();
+    private final RuleManager mRuleManager = RuleManager.getInstance();
     private HeaderColumn mHeaderColumn;
     private final int mNumOfPlayers;
     private int mNumOfRolls;
@@ -60,10 +63,11 @@ public class ScoreCard {
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private AbstractAction mUndoAction;
     private JButton mUndoButton;
+    private final GameOverDialog mGameOverDialog = GameOverDialog.getInstance();
 
     public ScoreCard() {
         mNumOfPlayers = mOptions.getNumOfPlayers();
-        mRule = mGameDef.getRule(mOptions.getRuleId());
+        mRule = mRuleManager.getRule(mOptions.getRuleId());
         init();
     }
 
@@ -215,49 +219,15 @@ public class ScoreCard {
     }
 
     private void gameOver() {
+        //TODO Make scorecard fireworks
 
-//        while (!mPlayers.get(mNumOfPlayers - 1).getRowStack().empty()) {
-//
-//            for (PlayerColumn playerColumn : mPlayers) {
-//                int row = playerColumn.getRowStack().pop();
-//            }
-//        }
-//        AGameOver gameOver = new AGameOver();
-//        gameOver.getUI().setPreferredSize(new Dimension(300, 280));
-//        gameOver.getUI().pack();
-//        GridBagLayout gridBagLayout = new GridBagLayout();
-//        JPanel gameOverPanel = new JPanel(gridBagLayout);
-//
-//        GridBagConstraints gridBagConstraints;
-//
-//        Font font = new Font("Dialog", Font.BOLD, 26);
-//        for (PlayerColumn playerColumn : playerPositions) {
-//            JLabel label = new JLabel(playerColumn.getName());
-//            label.setFont(font);
-//
-//            gridBagConstraints = new GridBagConstraints();
-//            gridBagConstraints.gridx = 0;
-//            gridBagConstraints.ipadx = 50;
-//            gridBagConstraints.gridy = GridBagConstraints.RELATIVE;
-//            gridBagConstraints.anchor = GridBagConstraints.LINE_START;
-//
-//            gridBagLayout.setConstraints(label, gridBagConstraints);
-//            gameOverPanel.add(label, gridBagConstraints);
-//
-//            label = new JLabel(Integer.toString(playerColumn.getCurrentScore()));
-//            label.setFont(font);
-//
-//            gridBagConstraints = new GridBagConstraints();
-//            gridBagConstraints.gridx = 1;
-//            gridBagConstraints.gridy = GridBagConstraints.RELATIVE;
-//            gridBagConstraints.anchor = GridBagConstraints.LINE_END;
-//
-//            gridBagLayout.setConstraints(label, gridBagConstraints);
-//            gameOverPanel.add(label, gridBagConstraints);
-//        }
-//
-//        gameOver.setPanel(gameOverPanel);
-//        gameOver.getUI().centerInOwner();
+        var gameOverItems = new ArrayList<GameOverItem>();
+        for (var playerColumn : mPlayerColumns) {
+            var gameOverItem = new GameOverItem(playerColumn.getPlayer(), playerColumn.getCurrentScore());
+            gameOverItems.add(gameOverItem);
+        }
+
+        mGameOverDialog.display(gameOverItems);
     }
 
     private PlayerColumn getActivePlayerColumn() {

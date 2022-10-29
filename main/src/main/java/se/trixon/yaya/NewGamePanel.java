@@ -43,7 +43,6 @@ public class NewGamePanel extends JPanel {
     }
 
     public void load() {
-        //mGameDef.init();
         gameComboBox.setModel(new DefaultComboBoxModel(mRuleManager.getTitles()));
         gameComboBox.setSelectedIndex(mRuleManager.getIndexForId(mOptions.getRuleId()));
         selectPlayersPanel.load();

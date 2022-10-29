@@ -16,16 +16,17 @@
 package se.trixon.yaya;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.StringUtils;
-import se.trixon.yaya.GameOverItem;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
-import se.trixon.almond.nbp.Almond;
+import org.openide.awt.Actions;
 import se.trixon.almond.util.Dict;
-import se.trixon.almond.util.icons.material.MaterialIcon;
+import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.almond.util.swing.dialogs.HtmlPanel;
+import se.trixon.yaya.GameOverItem;
 
 /**
  *
@@ -42,10 +43,10 @@ public class GameOverDialog {
     }
 
     private GameOverDialog() {
-        mNewGameButton = new JButton(MaterialIcon._Av.PLAY_ARROW.getImageIcon(Almond.ICON_LARGE));
-        mQuickNewGameButton = new JButton(MaterialIcon._Av.PLAY_CIRCLE_OUTLINE.getImageIcon(Almond.ICON_LARGE));
+        mNewGameButton = new JButton(Dict.Game.NEW_ROUND.toString() + "…");
+        mQuickNewGameButton = new JButton(Dict.Game.NEW_ROUND.toString());
 
-        JButton[] options = new JButton[]{mNewGameButton, mQuickNewGameButton};
+        var options = new JButton[]{mNewGameButton, mQuickNewGameButton};
         mNotifyDescriptor = new NotifyDescriptor(
                 null,
                 Dict.Game.GAME_OVER.toString(),
@@ -53,7 +54,6 @@ public class GameOverDialog {
                 NotifyDescriptor.DEFAULT_OPTION,
                 options,
                 mQuickNewGameButton);
-
     }
 
     public void display(String s) {
@@ -66,9 +66,11 @@ public class GameOverDialog {
     }
 
     public void display(ArrayList<GameOverItem> gameOverItems) {
-        gameOverItems.sort((o1, o2) -> o2.score().compareTo(o1.score()));
+        gameOverItems.sort(Comparator.comparing(GameOverItem::score).reversed());
 
-        StringBuilder cssBuilder = new StringBuilder("<html>");
+        //TODO Replace with j2html
+        //TODO Mimic Gambas version layout
+        var cssBuilder = new StringBuilder("<html>");
         cssBuilder.append("<head><style>");
         cssBuilder.append("h1 { font-size: x-large; margin-bottom: 0px; }");
         cssBuilder.append("h2 { font-size: large; margin-bottom: 0px; }");
@@ -80,10 +82,10 @@ public class GameOverDialog {
         cssBuilder.append("td { text-align: right; }");
         cssBuilder.append("</style></head>");
 
-        StringBuilder builder = new StringBuilder(cssBuilder);
+        var builder = new StringBuilder(cssBuilder);
         builder.append("<html><table>");
         int position = 0;
-        for (GameOverItem gameOverItem : gameOverItems) {
+        for (var gameOverItem : gameOverItems) {
             final String name = gameOverItem.player().getName();
             final int score = gameOverItem.score();
 
@@ -100,14 +102,16 @@ public class GameOverDialog {
 
     private void display(Object message) {
         mNotifyDescriptor.setMessage(message);
+        SwingHelper.runLaterDelayed(100, () -> {
+            mQuickNewGameButton.requestFocus();
+        });
         Object retVal = DialogDisplayer.getDefault().notify(mNotifyDescriptor);
 
         SwingUtilities.invokeLater(() -> {
             if (retVal == mNewGameButton) {
-//                NbGamesTopComponent nbGamesTopComponent = (NbGamesTopComponent) WindowManager.getDefault().findTopComponent("NbGamesTopComponent");
-//                nbGamesTopComponent.displayNewGameDialog(gameController);
+                Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction").actionPerformed(null);
             } else if (retVal == mQuickNewGameButton) {
-//                gameController.onRequestNewGameStart();
+                Yaya.getInstance().onRequestNewGameStart();
             }
         });
     }
