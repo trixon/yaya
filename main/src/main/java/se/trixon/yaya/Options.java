@@ -37,8 +37,8 @@ public class Options extends OptionsBase {
     public static final String KEY_REVERSE_DIRECTION = "reverseDirection";
     public static final String KEY_RULE_ID = "ruleId";
     public static final String KEY_SHOW_INDICATORS = "showIndicators";
+    public static final String KEY_SHOW_LIM_COLUMN = "showLimColumn";
     public static final String KEY_SHOW_MAX_COLUMN = "showMaxColumn";
-    public static final String KEY_SHOW_TOP_COLUMN = "showTopColumn";
     public static final String KEY_THEME = "theme";
     private static final String DEFAULT_GAME_VARIANT = "standard";
     private static final int DEFAULT_NUM_OF_PLAYERS = 2;
@@ -46,8 +46,8 @@ public class Options extends OptionsBase {
     private static final boolean DEFAULT_REVERSE_DIRECTION = false;
     private static final String DEFAULT_RULE_ID = "default";
     private static final boolean DEFAULT_SHOW_INDICATORS = true;
+    private static final boolean DEFAULT_SHOW_LIM_COLUMN = false;
     private static final boolean DEFAULT_SHOW_MAX_COLUMN = false;
-    private static final boolean DEFAULT_SHOW_TOP_COLUMN = false;
     private static final String DEFAULT_THEME = "Legacy";
     private Player[] mPlayers;
 
@@ -110,16 +110,16 @@ public class Options extends OptionsBase {
         return is(KEY_REVERSE_DIRECTION, DEFAULT_REVERSE_DIRECTION);
     }
 
-    public boolean isShowingIndicators() {
+    public boolean isShowIndicators() {
         return is(KEY_SHOW_INDICATORS, DEFAULT_SHOW_INDICATORS);
     }
 
-    public boolean isShowingMaxColumn() {
-        return is(KEY_SHOW_MAX_COLUMN, DEFAULT_SHOW_MAX_COLUMN);
+    public boolean isShowLimColumn() {
+        return is(KEY_SHOW_LIM_COLUMN, DEFAULT_SHOW_LIM_COLUMN);
     }
 
-    public boolean isShowingTopColumn() {
-        return is(KEY_SHOW_TOP_COLUMN, DEFAULT_SHOW_TOP_COLUMN);
+    public boolean isShowMaxColumn() {
+        return is(KEY_SHOW_MAX_COLUMN, DEFAULT_SHOW_MAX_COLUMN);
     }
 
     public void setFullscreen(boolean value) {
@@ -154,12 +154,12 @@ public class Options extends OptionsBase {
         put(KEY_SHOW_INDICATORS, state);
     }
 
-    public void setShowMaxColumn(boolean state) {
-        put(KEY_SHOW_MAX_COLUMN, state);
+    public void setShowLimColumn(boolean state) {
+        put(KEY_SHOW_LIM_COLUMN, state);
     }
 
-    public void setShowTopColumn(boolean state) {
-        put(KEY_SHOW_TOP_COLUMN, state);
+    public void setShowMaxColumn(boolean state) {
+        put(KEY_SHOW_MAX_COLUMN, state);
     }
 
     public void setTheme(String theme) {

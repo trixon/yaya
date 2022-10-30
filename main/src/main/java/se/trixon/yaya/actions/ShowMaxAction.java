@@ -39,6 +39,6 @@ public final class ShowMaxAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        mOptions.setShowMaxColumn(!mOptions.isShowingMaxColumn());
+        mOptions.setShowMaxColumn(!mOptions.isShowMaxColumn());
     }
 }

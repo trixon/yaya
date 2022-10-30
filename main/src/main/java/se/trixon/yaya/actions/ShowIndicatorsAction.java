@@ -39,6 +39,6 @@ public final class ShowIndicatorsAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        mOptions.setShowIndicators(!mOptions.isShowingIndicators());
+        mOptions.setShowIndicators(!mOptions.isShowIndicators());
     }
 }

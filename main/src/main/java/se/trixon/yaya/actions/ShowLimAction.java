@@ -39,6 +39,6 @@ public final class ShowLimAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        mOptions.setShowTopColumn(!mOptions.isShowingTopColumn());
+        mOptions.setShowLimColumn(!mOptions.isShowLimColumn());
     }
 }

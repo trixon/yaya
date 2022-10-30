@@ -77,11 +77,11 @@ public final class MainTopComponent extends TopComponent {
                 case Options.KEY_FULL_SCREEN ->
                     fullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
                 case Options.KEY_SHOW_INDICATORS ->
-                    indicatorCheckBoxMenuItem.setSelected(mOptions.isShowingIndicators());
-                case Options.KEY_SHOW_TOP_COLUMN ->
-                    limCheckBoxMenuItem.setSelected(mOptions.isShowingTopColumn());
+                    indicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
+                case Options.KEY_SHOW_LIM_COLUMN ->
+                    limCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
                 case Options.KEY_SHOW_MAX_COLUMN ->
-                    maxCheckBoxMenuItem.setSelected(mOptions.isShowingMaxColumn());
+                    maxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
             }
         });
     }
@@ -103,9 +103,9 @@ public final class MainTopComponent extends TopComponent {
         Actions.connect(quitMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.QuitAction"), true);
 
         fullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
-        indicatorCheckBoxMenuItem.setSelected(mOptions.isShowingIndicators());
-        limCheckBoxMenuItem.setSelected(mOptions.isShowingTopColumn());
-        maxCheckBoxMenuItem.setSelected(mOptions.isShowingMaxColumn());
+        indicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
+        limCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
+        maxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
     }
 
     /**
@@ -139,6 +139,7 @@ public final class MainTopComponent extends TopComponent {
 
         org.openide.awt.Mnemonics.setLocalizedText(showMenu, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.showMenu.text")); // NOI18N
 
+        fullscreenCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
         fullscreenCheckBoxMenuItem.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(fullscreenCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.fullscreenCheckBoxMenuItem.text")); // NOI18N
         fullscreenCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -148,6 +149,7 @@ public final class MainTopComponent extends TopComponent {
         });
         showMenu.add(fullscreenCheckBoxMenuItem);
 
+        limCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         limCheckBoxMenuItem.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(limCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.limCheckBoxMenuItem.text")); // NOI18N
         limCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -157,6 +159,7 @@ public final class MainTopComponent extends TopComponent {
         });
         showMenu.add(limCheckBoxMenuItem);
 
+        maxCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
         maxCheckBoxMenuItem.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(maxCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.maxCheckBoxMenuItem.text")); // NOI18N
         maxCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -166,6 +169,7 @@ public final class MainTopComponent extends TopComponent {
         });
         showMenu.add(maxCheckBoxMenuItem);
 
+        indicatorCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         indicatorCheckBoxMenuItem.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(indicatorCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.indicatorCheckBoxMenuItem.text")); // NOI18N
         indicatorCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {

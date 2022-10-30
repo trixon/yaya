@@ -126,7 +126,7 @@ public class ScoreCard {
         mNumOfRolls++;
         getActivePlayerColumn().incNumOfRolls();
         getActivePlayerColumn().parse(values);
-        getActivePlayerColumn().setVisibleIndicators(mOptions.isShowingIndicators());
+        getActivePlayerColumn().setVisibleIndicators(mOptions.isShowIndicators());
     }
 
     public void setEnabledRegister(boolean enabled) {
@@ -146,13 +146,13 @@ public class ScoreCard {
         var activeColor = GraphicsHelper.colorAndMask(mThemeManager.getHeader(), 0xEEEEEE);
 
         mHeaderColumn.getRows()[row].getLabel().setBackground(activeColor);
-        mHeaderColumn.getHiScoreColumn()[row].getLabel().setBackground(activeColor);
+        mHeaderColumn.getLimColumn()[row].getLabel().setBackground(activeColor);
         mHeaderColumn.getMaxColumn()[row].getLabel().setBackground(activeColor);
     }
 
     void hoverRowExited(int row) {
         mHeaderColumn.getRows()[row].getLabel().setBackground(mThemeManager.getHeader());
-        mHeaderColumn.getHiScoreColumn()[row].getLabel().setBackground(mThemeManager.getHeader());
+        mHeaderColumn.getLimColumn()[row].getLabel().setBackground(mThemeManager.getHeader());
         mHeaderColumn.getMaxColumn()[row].getLabel().setBackground(mThemeManager.getHeader());
     }
 
@@ -199,7 +199,7 @@ public class ScoreCard {
             }
 
             mHeaderColumn.getRows()[i].getLabel().setBackground(color);
-            mHeaderColumn.getHiScoreColumn()[i].getLabel().setBackground(color);
+            mHeaderColumn.getLimColumn()[i].getLabel().setBackground(color);
             mHeaderColumn.getMaxColumn()[i].getLabel().setBackground(color);
         }
 
@@ -215,7 +215,7 @@ public class ScoreCard {
             }
         }
 
-        setVisibleIndicators(mOptions.isShowingIndicators());
+        setVisibleIndicators(mOptions.isShowIndicators());
     }
 
     private void gameOver() {
@@ -245,7 +245,7 @@ public class ScoreCard {
 
         mOptions.getPreferences().addPreferenceChangeListener(pce -> {
             if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_INDICATORS)) {
-                setVisibleIndicators(mOptions.isShowingIndicators());
+                setVisibleIndicators(mOptions.isShowIndicators());
             } else if (pce.getKey().equals(Options.KEY_THEME)) {
                 applyColors();
             }
@@ -299,12 +299,12 @@ public class ScoreCard {
             mPanel.add(mHeaderColumn.getRows()[i].getLabel());
 
             gridBagConstraints.gridx = 1;
-            gridBagLayout.setConstraints(mHeaderColumn.getMaxColumn()[i].getLabel(), gridBagConstraints);
-            mPanel.add(mHeaderColumn.getMaxColumn()[i].getLabel());
+            gridBagLayout.setConstraints(mHeaderColumn.getLimColumn()[i].getLabel(), gridBagConstraints);
+            mPanel.add(mHeaderColumn.getLimColumn()[i].getLabel());
 
             gridBagConstraints.gridx = 2;
-            gridBagLayout.setConstraints(mHeaderColumn.getHiScoreColumn()[i].getLabel(), gridBagConstraints);
-            mPanel.add(mHeaderColumn.getHiScoreColumn()[i].getLabel());
+            gridBagLayout.setConstraints(mHeaderColumn.getMaxColumn()[i].getLabel(), gridBagConstraints);
+            mPanel.add(mHeaderColumn.getMaxColumn()[i].getLabel());
         }
 
         int startGridX = 3;
