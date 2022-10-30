@@ -25,7 +25,7 @@ import se.trixon.yaya.Yaya;
  *
  * @author Patrik Karlström
  */
-public class GameRow {
+public class GameCell {
 
     @SerializedName("bonus")
     private boolean mBonus;
@@ -53,7 +53,7 @@ public class GameRow {
     @SerializedName("title")
     private String mTitle;
 
-    public GameRow() {
+    public GameCell() {
     }
 
     public String getFormula() {

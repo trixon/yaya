@@ -15,13 +15,11 @@
  */
 package se.trixon.yaya.scorecard;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -29,7 +27,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import se.trixon.almond.util.CircularInt;
 import se.trixon.almond.util.Dict;
-import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.yaya.GameOverDialog;
 import se.trixon.yaya.GameOverItem;
 import se.trixon.yaya.Options;
@@ -47,8 +44,8 @@ public class ScoreCard {
     private int mActivePlayer;
     private final JPanel mBasePanel = new JPanel();
     private CircularInt mCurrentPlayer;
-    private final RuleManager mRuleManager = RuleManager.getInstance();
-    private HeaderColumn mHeaderColumn;
+    private final GameOverDialog mGameOverDialog = GameOverDialog.getInstance();
+    private Header mHeaderColumn;
     private final int mNumOfPlayers;
     private int mNumOfRolls;
     private int mNumOfRows;
@@ -59,11 +56,11 @@ public class ScoreCard {
     private LinkedList<PlayerColumn> mPlayerPositions;
     private boolean mRegisterable;
     private final Rule mRule;
+    private final RuleManager mRuleManager = RuleManager.getInstance();
     private boolean mShowIndicators;
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private AbstractAction mUndoAction;
     private JButton mUndoButton;
-    private final GameOverDialog mGameOverDialog = GameOverDialog.getInstance();
 
     public ScoreCard() {
         mNumOfPlayers = mOptions.getNumOfPlayers();
@@ -75,7 +72,7 @@ public class ScoreCard {
         return mBasePanel;
     }
 
-    public HeaderColumn getHeaderColumn() {
+    public Header getHeaderColumn() {
         return mHeaderColumn;
     }
 
@@ -142,20 +139,6 @@ public class ScoreCard {
         getActivePlayerColumn().setVisibleIndicators(visible);
     }
 
-    void hoverRowEntered(int row) {
-        var activeColor = GraphicsHelper.colorAndMask(mThemeManager.getHeader(), 0xEEEEEE);
-
-        mHeaderColumn.getRows()[row].getLabel().setBackground(activeColor);
-        mHeaderColumn.getLimColumn()[row].getLabel().setBackground(activeColor);
-        mHeaderColumn.getMaxColumn()[row].getLabel().setBackground(activeColor);
-    }
-
-    void hoverRowExited(int row) {
-        mHeaderColumn.getRows()[row].getLabel().setBackground(mThemeManager.getHeader());
-        mHeaderColumn.getLimColumn()[row].getLabel().setBackground(mThemeManager.getHeader());
-        mHeaderColumn.getMaxColumn()[row].getLabel().setBackground(mThemeManager.getHeader());
-    }
-
     void register() {
         if (mRegisterable) {
             mRegisterable = false;
@@ -189,29 +172,18 @@ public class ScoreCard {
     private void applyColors() {
         mPanel.setBackground(mThemeManager.getScorecard());
         mBasePanel.setBackground(mThemeManager.getBackground());
-        Color color;
 
-        for (int i = 0; i < mNumOfRows; i++) {
-            if (mHeaderColumn.getRows()[i].getGameRow().isSum() || mHeaderColumn.getRows()[i].getGameRow().isBonus()) {
-                color = mThemeManager.getSum();
-            } else {
-                color = mThemeManager.getHeader();
-            }
-
-            mHeaderColumn.getRows()[i].getLabel().setBackground(color);
-            mHeaderColumn.getLimColumn()[i].getLabel().setBackground(color);
-            mHeaderColumn.getMaxColumn()[i].getLabel().setBackground(color);
-        }
+        mHeaderColumn.applyColors();
 
         for (int i = 0; i < mPlayerColumns.size(); i++) {
             for (int j = 0; j < mNumOfRows; j++) {
-                if (mPlayerColumns.get(i).getRows()[j].getGameRow().isSum() || mHeaderColumn.getRows()[j].getGameRow().isBonus()) {
-                    color = mThemeManager.getSum();
-                } else {
-                    color = mThemeManager.getRow();
-                }
-                mPlayerColumns.get(i).getRows()[j].getLabel().setBackground(color);
-                mPlayerColumns.get(i).getRows()[j].getLabel().setCurrentBackgroundColor(color);
+                var row = mPlayerColumns.get(i).getRows()[j];
+                var gameRow = row.getGameCell();
+                boolean sum = gameRow.isSum() || gameRow.isBonus();
+                var color = sum ? mThemeManager.getSum() : mThemeManager.getRow();
+
+                row.getLabel().setBackground(color);
+                row.setCurrentBackgroundColor(color);
             }
         }
 
@@ -236,9 +208,9 @@ public class ScoreCard {
 
     private void init() {
         mPlayerColumns.clear();
-        mHeaderColumn = new HeaderColumn(this, mRule);
+        mHeaderColumn = new Header(this, mRule);
         initActions();
-        mNumOfRows = mRule.getRows().size();
+        mNumOfRows = mRule.getGameColumn().size();
 
         initLayout();
         applyColors();
@@ -274,61 +246,50 @@ public class ScoreCard {
 
         var gridBagLayout = new GridBagLayout();
         mPanel.setLayout(gridBagLayout);
-        GridBagConstraints gridBagConstraints;
 
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = GridBagConstraints.LINE_START;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = GridBagConstraints.BOTH;
-        gridBagLayout.setConstraints(mUndoButton, gridBagConstraints);
+        var gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+
+        gridBagLayout.setConstraints(mUndoButton, gbc);
         mPanel.add(mUndoButton);
 
-        var insets = new Insets(1, 0, 0, 0);
+        gbc.gridy = 1;
+        gbc.gridheight = GridBagConstraints.REMAINDER;
+        gridBagLayout.setConstraints(mHeaderColumn, gbc);
+        mPanel.add(mHeaderColumn);
+        int h = mHeaderColumn.getMaxCellHeight();
+        var insets = new Insets(1, 1, 0, 0);
 
-        for (int i = 0; i < mNumOfRows; i++) {
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 0;
-            gridBagConstraints.anchor = GridBagConstraints.LINE_START;
-            gridBagConstraints.fill = GridBagConstraints.BOTH;
-            gridBagConstraints.insets = insets;
-
-            gridBagConstraints.gridy = i + 1;
-            gridBagLayout.setConstraints(mHeaderColumn.getRows()[i].getLabel(), gridBagConstraints);
-            mPanel.add(mHeaderColumn.getRows()[i].getLabel());
-
-            gridBagConstraints.gridx = 1;
-            gridBagLayout.setConstraints(mHeaderColumn.getLimColumn()[i].getLabel(), gridBagConstraints);
-            mPanel.add(mHeaderColumn.getLimColumn()[i].getLabel());
-
-            gridBagConstraints.gridx = 2;
-            gridBagLayout.setConstraints(mHeaderColumn.getMaxColumn()[i].getLabel(), gridBagConstraints);
-            mPanel.add(mHeaderColumn.getMaxColumn()[i].getLabel());
-        }
-
-        int startGridX = 3;
-        insets.left = 1;
+        int startGridX = 1;
 
         for (int i = 0; i < mNumOfPlayers; i++) {
             mPlayerColumns.add(new PlayerColumn(this, i, mRule));
-            ScoreCardRow[] column = mPlayerColumns.get(i).getRows();
+            Cell[] column = mPlayerColumns.get(i).getRows();
 
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = startGridX + i;
-            gridBagConstraints.anchor = GridBagConstraints.LINE_START;
-            gridBagConstraints.fill = GridBagConstraints.BOTH;
-            gridBagConstraints.gridy = 0;
-            gridBagConstraints.insets = insets;
+            gbc = new GridBagConstraints();
+            gbc.gridx = startGridX + i;
+            gbc.anchor = GridBagConstraints.LINE_START;
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.gridy = 0;
+            gbc.insets = insets;
 
-            gridBagLayout.setConstraints(mPlayerColumns.get(i).getLabel(), gridBagConstraints);
-            mPanel.add(mPlayerColumns.get(i).getLabel());
+            var playerLabel = mPlayerColumns.get(i).getLabel();
+            gridBagLayout.setConstraints(playerLabel, gbc);
+            mPanel.add(playerLabel);
 
             for (int j = 0; j < mNumOfRows; j++) {
-                gridBagConstraints.gridy = j + 1;
+                gbc.gridy = j + 1;
 
-                gridBagLayout.setConstraints(column[j].getLabel(), gridBagConstraints);
-                mPanel.add(column[j].getLabel());
+                var label = column[j].getLabel();
+                var d = label.getPreferredSize();
+                d.height = h;
+                label.setPreferredSize(d);
+                gridBagLayout.setConstraints(label, gbc);
+                mPanel.add(label);
             }
         }
     }
@@ -354,17 +315,17 @@ public class ScoreCard {
     }
 
     private void updatePolePosition() {
-        mPlayerPositions = (LinkedList<PlayerColumn>) mPlayerColumns.clone();
-        var pcc = new PlayerColumnComparator(PlayerColumnComparator.DESCENDING);
-        Collections.sort(mPlayerPositions, pcc);
-
-        float reducer = 0.F;
-        var font = mHeaderColumn.getRows()[mRule.getResultRow()].getLabel().getFont();
-
-        for (var playerColumn : mPlayerPositions) {
-            var label = playerColumn.getRows()[mRule.getResultRow()].getLabel();
-            label.setFont(font.deriveFont((16.0F - reducer)));
-            reducer += 1.0;
-        }
+//        mPlayerPositions = (LinkedList<PlayerColumn>) mPlayerColumns.clone();
+//        var pcc = new PlayerColumnComparator(PlayerColumnComparator.DESCENDING);
+//        Collections.sort(mPlayerPositions, pcc);
+//
+//        float reducer = 0.F;
+//        var font = mHeaderColumn.getRows()[mRule.getResultRow()].getLabel().getFont();
+//
+//        for (var playerColumn : mPlayerPositions) {
+//            var label = playerColumn.getRows()[mRule.getResultRow()].getLabel();
+//            label.setFont(font.deriveFont((16.0F - reducer)));
+//            reducer += 1.0;
+//        }
     }
 }

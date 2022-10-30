@@ -31,12 +31,12 @@ public class PlayerColumn {
     private boolean mActive;
     private int mCurrentScore;
     private LinkedList<Integer> mDice;
-    private final JLabel mLabel = new JLabel("XXX");
+    private final JLabel mLabel = new JLabel("NONAME");
     private int mNumOfRolls;
     private int mPlayOrder;
     private Player mPlayer;
     private final Stack<Integer> mRowStack = new Stack<>();
-    private ScoreCardRow[] mRows;
+    private Cell[] mRows;
     private final Rule mRule;
     private final ScoreCard mScoreCard;
 
@@ -85,7 +85,7 @@ public class PlayerColumn {
         return mRowStack;
     }
 
-    public ScoreCardRow[] getRows() {
+    public Cell[] getRows() {
         return mRows;
     }
 
@@ -109,7 +109,7 @@ public class PlayerColumn {
         mDice = values;
 
         for (var row : mRows) {
-            if (row.getGameRow().isRollCounter()) {
+            if (row.getGameCell().isRollCounter()) {
                 String rolls = Integer.toString(getNumOfRolls());
                 int maxRolls = mRule.getNumOfRolls();
                 if (maxRolls > 0) {
@@ -118,9 +118,9 @@ public class PlayerColumn {
                 row.getLabel().setText(rolls);
             }
 
-            String formula = row.getGameRow().getFormula();
+            String formula = row.getGameCell().getFormula();
             if (!formula.isEmpty() && !row.isRegistered()) {
-                row.setPreview(FormulaParser.parseFormula(formula, mDice, row.getGameRow()));
+                row.setPreview(FormulaParser.parseFormula(formula, mDice, row.getGameCell()));
             }
             row.enableInput();
         }
@@ -137,7 +137,7 @@ public class PlayerColumn {
 
         for (var row : mRows) {
             row.setEnabled(aState);
-            if (row.getGameRow().isRollCounter()) {
+            if (row.getGameCell().isRollCounter()) {
                 row.getLabel().setText(text);
             }
         }
@@ -183,8 +183,8 @@ public class PlayerColumn {
     }
 
     private void init() {
-        var rowsRule = mRule.getRows();
-        mRows = new ScoreCardRow[rowsRule.size()];
+        var rowsRule = mRule.getGameColumn();
+        mRows = new Cell[rowsRule.size()];
         var d = mLabel.getPreferredSize();
         d.width = 90;
         mLabel.setPreferredSize(d);
@@ -193,7 +193,7 @@ public class PlayerColumn {
 
         for (int i = 0; i < mRows.length; i++) {
             var rowRule = rowsRule.get(i);
-            mRows[i] = new ScoreCardRow(mScoreCard, this, rowRule, i);
+            mRows[i] = new Cell(mScoreCard, this, rowRule, i);
 
             if (i == 0) {
                 mRows[i].getLabel().setHorizontalAlignment(SwingConstants.CENTER);
@@ -209,34 +209,34 @@ public class PlayerColumn {
 
     private void updateSums() {
         for (var row : mRows) {
-            if (row.getGameRow().getSumSet() != null) {
-                if (row.getGameRow().isBonus()) {
+            if (row.getGameCell().getSumSet() != null) {
+                if (row.getGameCell().isBonus()) {
                     int sum = 0;
 
-                    for (var rowValue : row.getGameRow().getSumSet()) {
+                    for (var rowValue : row.getGameCell().getSumSet()) {
                         sum += mRows[rowValue].getValue();
                     }
 
-                    if (sum >= row.getGameRow().getLim()) {
-                        int bonus = row.getGameRow().getMax();
+                    if (sum >= row.getGameCell().getLim()) {
+                        int bonus = row.getGameCell().getMax();
                         row.getLabel().setText(Integer.toString(bonus));
                         row.setValue(bonus);
                     }
                 }
 
-                if (row.getGameRow().isSum()) {
+                if (row.getGameCell().isSum()) {
                     int sum = 0;
 
-                    for (var rowValue : row.getGameRow().getSumSet()) {
+                    for (var rowValue : row.getGameCell().getSumSet()) {
                         sum += mRows[rowValue].getValue();
                     }
 
-                    if (row.getGameRow().isResult()) {
+                    if (row.getGameCell().isResult()) {
                         row.setValue(sum);
                         mCurrentScore = sum;
                     }
 
-                    if (!row.getGameRow().isBonus()) {
+                    if (!row.getGameCell().isBonus()) {
                         row.getLabel().setText(Integer.toString(sum));
                     }
                 }

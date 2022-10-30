@@ -21,7 +21,7 @@ package se.trixon.yaya.rules;
  */
 import java.util.ArrayList;
 
-public class GameRows extends ArrayList<GameRow> {
+public class GameColumn extends ArrayList<GameCell> {
 
     public Integer[] getLim() {
         return stream().map(k -> k.getLim()).toArray(Integer[]::new);

@@ -18,7 +18,7 @@ package se.trixon.yaya.scorecard;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.TreeSet;
-import se.trixon.yaya.rules.GameRow;
+import se.trixon.yaya.rules.GameCell;
 
 /**
  *
@@ -28,11 +28,11 @@ public class FormulaParser {
 
     private static final LinkedList<Integer> sArgList = new LinkedList<>();
     private static LinkedList<Integer> sDiceList;
-    private static GameRow sGameRow;
+    private static GameCell sGameCell;
 
-    public static int parseFormula(String formulaString, LinkedList<Integer> values, GameRow gameRow) {
+    public static int parseFormula(String formulaString, LinkedList<Integer> values, GameCell gameCell) {
         sDiceList = values;
-        sGameRow = gameRow;
+        sGameCell = gameCell;
         int result = -1;
         String[] parseString = formulaString.split(" ");
         String command = parseString[0];
@@ -70,8 +70,8 @@ public class FormulaParser {
             cnt = Collections.frequency(sDiceList, i);
             if (cnt >= numOfDuplicates) {
                 result = numOfDuplicates * i;
-                if (sGameRow.getMax() == sGameRow.getLim()) {
-                    result = sGameRow.getMax();
+                if (sGameCell.getMax() == sGameCell.getLim()) {
+                    result = sGameCell.getMax();
                 }
                 break;
             }
@@ -152,12 +152,12 @@ public class FormulaParser {
             }
 
             if (sortedSet.size() > sizeOfStraight) {
-                if (setSum >= sGameRow.getLim()) {
-                    result = sGameRow.getMax();
+                if (setSum >= sGameCell.getLim()) {
+                    result = sGameCell.getMax();
                 }
             } else {
-                if (setSum == sGameRow.getLim()) {
-                    result = sGameRow.getMax();
+                if (setSum == sGameCell.getLim()) {
+                    result = sGameCell.getMax();
                 }
             }
         }

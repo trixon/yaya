@@ -129,10 +129,10 @@ public class YayaPanel extends JPanel implements Observer {
         mScoreCard.newGame();
         mDiceBoard.newTurn();
 
-        for (int i = 0; i < mScoreCard.getHeaderColumn().getRows().length; i++) {
-            var row = mScoreCard.getHeaderColumn().getRows()[i];
-            System.out.println("%d\t%s".formatted(i, row.getLabel().getText()));
-        }
+//        for (int i = 0; i < mScoreCard.getHeaderColumn().getRows().length; i++) {
+//            var row = mScoreCard.getHeaderColumn().getRows()[i];
+////            System.out.println("%d\t%s".formatted(i, row.getLabel().getText()));
+//        }
     }
 
     private void initDiceBoard() {

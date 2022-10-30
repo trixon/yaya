@@ -42,7 +42,7 @@ public class Rule {
     @SerializedName("rolls")
     private int mNumOfRolls;
     @SerializedName("rows")
-    private GameRows mRows = new GameRows();
+    private GameColumn mGameColumn = new GameColumn();
     @SerializedName("title")
     private String mTitle;
     @SerializedName("variants")
@@ -107,8 +107,8 @@ public class Rule {
 
     public int getResultRow() {
         int row = -1;
-        for (int i = 0; i < mRows.size(); i++) {
-            if (mRows.get(i).isResult()) {
+        for (int i = 0; i < mGameColumn.size(); i++) {
+            if (mGameColumn.get(i).isResult()) {
                 row = i;
                 break;
             }
@@ -117,8 +117,8 @@ public class Rule {
         return row;
     }
 
-    public GameRows getRows() {
-        return mRows;
+    public GameColumn getGameColumn() {
+        return mGameColumn;
     }
 
     public String getTitle() {
@@ -142,7 +142,7 @@ public class Rule {
     }
 
     public void postLoad() {
-        mRows.forEach(row -> {
+        mGameColumn.forEach(row -> {
             row.postLoad();
         });
     }
@@ -171,8 +171,8 @@ public class Rule {
         mNumOfRolls = numOfRolls;
     }
 
-    public void setRows(GameRows rows) {
-        mRows = rows;
+    public void setGameColumn(GameColumn gameColumn) {
+        mGameColumn = gameColumn;
     }
 
     public void setTitle(String title) {
