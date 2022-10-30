@@ -71,6 +71,19 @@ public final class MainTopComponent extends TopComponent {
         } else {
             mYaya.onRequestNewGameStart();
         }
+
+        mOptions.getPreferences().addPreferenceChangeListener(pce -> {
+            switch (pce.getKey()) {
+                case Options.KEY_FULL_SCREEN ->
+                    fullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+                case Options.KEY_SHOW_INDICATORS ->
+                    indicatorCheckBoxMenuItem.setSelected(mOptions.isShowingIndicators());
+                case Options.KEY_SHOW_TOP_COLUMN ->
+                    limCheckBoxMenuItem.setSelected(mOptions.isShowingTopColumn());
+                case Options.KEY_SHOW_MAX_COLUMN ->
+                    maxCheckBoxMenuItem.setSelected(mOptions.isShowingMaxColumn());
+            }
+        });
     }
 
     private void createUI() {
@@ -84,11 +97,15 @@ public final class MainTopComponent extends TopComponent {
 
         Actions.connect(newMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction"), true);
         Actions.connect(undoMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.UndoAction"), true);
-        Actions.connect(fullscreenCheckBoxMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.FullscreenAction"), true);
         Actions.connect(optionsMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.OptionsAction"), true);
         Actions.connect(aboutMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.AboutAction"), true);
         Actions.connect(helpMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.HelpAction"), true);
         Actions.connect(quitMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.QuitAction"), true);
+
+        fullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+        indicatorCheckBoxMenuItem.setSelected(mOptions.isShowingIndicators());
+        limCheckBoxMenuItem.setSelected(mOptions.isShowingTopColumn());
+        maxCheckBoxMenuItem.setSelected(mOptions.isShowingMaxColumn());
     }
 
     /**
@@ -103,7 +120,11 @@ public final class MainTopComponent extends TopComponent {
         newMenuItem = new javax.swing.JMenuItem();
         undoMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        showMenu = new javax.swing.JMenu();
         fullscreenCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        limCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        maxCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        indicatorCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         optionsMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         helpMenuItem = new javax.swing.JMenuItem();
@@ -116,8 +137,45 @@ public final class MainTopComponent extends TopComponent {
         popupMenu.add(undoMenuItem);
         popupMenu.add(jSeparator1);
 
+        org.openide.awt.Mnemonics.setLocalizedText(showMenu, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.showMenu.text")); // NOI18N
+
         fullscreenCheckBoxMenuItem.setSelected(true);
-        popupMenu.add(fullscreenCheckBoxMenuItem);
+        org.openide.awt.Mnemonics.setLocalizedText(fullscreenCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.fullscreenCheckBoxMenuItem.text")); // NOI18N
+        fullscreenCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fullscreenCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
+        showMenu.add(fullscreenCheckBoxMenuItem);
+
+        limCheckBoxMenuItem.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(limCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.limCheckBoxMenuItem.text")); // NOI18N
+        limCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
+        showMenu.add(limCheckBoxMenuItem);
+
+        maxCheckBoxMenuItem.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(maxCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.maxCheckBoxMenuItem.text")); // NOI18N
+        maxCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maxCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
+        showMenu.add(maxCheckBoxMenuItem);
+
+        indicatorCheckBoxMenuItem.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(indicatorCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.indicatorCheckBoxMenuItem.text")); // NOI18N
+        indicatorCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                indicatorCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
+        showMenu.add(indicatorCheckBoxMenuItem);
+
+        popupMenu.add(showMenu);
         popupMenu.add(optionsMenuItem);
         popupMenu.add(jSeparator2);
         popupMenu.add(helpMenuItem);
@@ -131,18 +189,38 @@ public final class MainTopComponent extends TopComponent {
         add(mainPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void indicatorCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indicatorCheckBoxMenuItemActionPerformed
+        Actions.forID("Yaya", "se.trixon.yaya.actions.ShowIndicatorsAction").actionPerformed(evt);
+    }//GEN-LAST:event_indicatorCheckBoxMenuItemActionPerformed
+
+    private void fullscreenCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullscreenCheckBoxMenuItemActionPerformed
+        Actions.forID("Yaya", "se.trixon.yaya.actions.FullscreenAction").actionPerformed(evt);
+    }//GEN-LAST:event_fullscreenCheckBoxMenuItemActionPerformed
+
+    private void limCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limCheckBoxMenuItemActionPerformed
+        Actions.forID("Yaya", "se.trixon.yaya.actions.ShowLimAction").actionPerformed(evt);
+    }//GEN-LAST:event_limCheckBoxMenuItemActionPerformed
+
+    private void maxCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxCheckBoxMenuItemActionPerformed
+        Actions.forID("Yaya", "se.trixon.yaya.actions.ShowMaxAction").actionPerformed(evt);
+    }//GEN-LAST:event_maxCheckBoxMenuItemActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JCheckBoxMenuItem fullscreenCheckBoxMenuItem;
     private javax.swing.JMenuItem helpMenuItem;
+    private javax.swing.JCheckBoxMenuItem indicatorCheckBoxMenuItem;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JCheckBoxMenuItem limCheckBoxMenuItem;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JCheckBoxMenuItem maxCheckBoxMenuItem;
     private javax.swing.JMenuItem newMenuItem;
     private javax.swing.JMenuItem optionsMenuItem;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JMenuItem quitMenuItem;
+    private javax.swing.JMenu showMenu;
     private javax.swing.JMenuItem undoMenuItem;
     // End of variables declaration//GEN-END:variables
 

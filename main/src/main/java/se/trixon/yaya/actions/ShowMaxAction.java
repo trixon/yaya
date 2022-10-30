@@ -17,37 +17,28 @@ package se.trixon.yaya.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.apache.commons.lang3.SystemUtils;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
-import org.openide.awt.Actions;
-import se.trixon.almond.nbp.Almond;
 import se.trixon.yaya.Options;
 
 @ActionID(
         category = "Yaya",
-        id = "se.trixon.yaya.actions.FullscreenAction"
+        id = "se.trixon.yaya.actions.ShowMaxAction"
 )
 @ActionRegistration(
-        displayName = "CTL_FullscreenAction"
+        displayName = "CTL_ShowMaxAction"
 )
 @ActionReferences({
-    @ActionReference(path = "Shortcuts", name = "F11")
+    @ActionReference(path = "Shortcuts", name = "F6")
 })
-public final class FullscreenAction implements ActionListener {
+public final class ShowMaxAction implements ActionListener {
 
     private final Options mOptions = Options.getInstance();
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (SystemUtils.IS_OS_MAC) {
-            Actions.forID("Almond", "se.trixon.almond.nbp.osx.actions.ToggleFullScreenAction").actionPerformed(null);
-        } else {
-            Actions.forID("Window", "org.netbeans.core.windows.actions.ToggleFullScreenAction").actionPerformed(null);
-        }
-
-        mOptions.setFullscreen(Almond.getFrame().isUndecorated());
+        mOptions.setShowMaxColumn(!mOptions.isShowingMaxColumn());
     }
 }
