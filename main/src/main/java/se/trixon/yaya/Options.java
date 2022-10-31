@@ -42,7 +42,7 @@ public class Options extends OptionsBase {
     public static final String KEY_THEME = "theme";
     private static final String DEFAULT_GAME_VARIANT = "standard";
     private static final int DEFAULT_NUM_OF_PLAYERS = 2;
-    private static final int DEFAULT_OPACITY = 255;
+    private static final int DEFAULT_OPACITY = 64;
     private static final boolean DEFAULT_REVERSE_DIRECTION = false;
     private static final String DEFAULT_RULE_ID = "default";
     private static final boolean DEFAULT_SHOW_INDICATORS = true;

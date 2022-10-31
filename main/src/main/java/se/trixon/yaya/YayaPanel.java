@@ -187,7 +187,7 @@ public class YayaPanel extends JPanel implements Observer {
 
     private void initScoreCard() {
         mScoreCard.getObservable().addObserver(this);
-        add(mScoreCard.getCard(), BorderLayout.CENTER);
+        add(mScoreCard.getPanel(), BorderLayout.CENTER);
     }
 
 }

@@ -16,6 +16,8 @@
 package se.trixon.yaya.scorecard;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -28,7 +30,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import org.apache.commons.lang3.StringUtils;
 import se.trixon.almond.util.CircularInt;
+import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.almond.util.icons.material.swing.MaterialIcon;
 import se.trixon.yaya.GameOverDialog;
 import se.trixon.yaya.GameOverItem;
@@ -45,8 +49,8 @@ import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
 public class ScoreCard {
 
     private int mActivePlayer;
-    private final JPanel mBasePanel = new JPanel();
     private CircularInt mCurrentPlayer;
+    private final JPanel mFillerPanel = new JPanel();
     private final GameOverDialog mGameOverDialog = GameOverDialog.getInstance();
     private Header mHeaderColumn;
     private final int mNumOfPlayers;
@@ -60,6 +64,7 @@ public class ScoreCard {
     private boolean mRegisterable;
     private final Rule mRule;
     private final RuleManager mRuleManager = RuleManager.getInstance();
+    private final JPanel mScoreCardPanel = new JPanel();
     private boolean mShowIndicators;
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private AbstractAction mUndoAction;
@@ -69,10 +74,6 @@ public class ScoreCard {
         mNumOfPlayers = mOptions.getNumOfPlayers();
         mRule = mRuleManager.getRule(mOptions.getRuleId());
         init();
-    }
-
-    public JPanel getCard() {
-        return mBasePanel;
     }
 
     public Header getHeaderColumn() {
@@ -85,6 +86,10 @@ public class ScoreCard {
 
     public ScoreCardObservable getObservable() {
         return mObservable;
+    }
+
+    public JPanel getPanel() {
+        return mPanel;
     }
 
     public AbstractAction getUndoAction() {
@@ -180,8 +185,9 @@ public class ScoreCard {
     }
 
     private void applyColors() {
-        mPanel.setBackground(mThemeManager.getScorecard());
-        mBasePanel.setBackground(mThemeManager.getBackground());
+        mScoreCardPanel.setBackground(mThemeManager.getScorecard());
+        mPanel.setBackground(mThemeManager.getBackground());
+        mFillerPanel.setBackground(GraphicsHelper.colorAddAlpha(Color.BLACK, mOptions.getOpacity()));
 
         var imageIcon = MaterialIcon._Content.UNDO.getImageIcon(24, mThemeManager.getUndoIcon());
         mUndoButton.setIcon(imageIcon);
@@ -201,6 +207,9 @@ public class ScoreCard {
         }
 
         setVisibleIndicators(mOptions.isShowIndicators());
+
+        mPanel.revalidate();
+        mPanel.repaint();
     }
 
     private void gameOver() {
@@ -231,7 +240,7 @@ public class ScoreCard {
         mOptions.getPreferences().addPreferenceChangeListener(pce -> {
             if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_INDICATORS)) {
                 setVisibleIndicators(mOptions.isShowIndicators());
-            } else if (pce.getKey().equals(Options.KEY_THEME)) {
+            } else if (StringUtils.equalsAny(pce.getKey(), Options.KEY_THEME, Options.KEY_OPACITY)) {
                 applyColors();
             }
         });
@@ -253,14 +262,20 @@ public class ScoreCard {
     }
 
     private void initLayout() {
-        mBasePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        mBasePanel.add(mPanel);
+        mPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        mBasePanel.setOpaque(false);
-        mPanel.setOpaque(true);
+        mFillerPanel.setOpaque(true);
+        mFillerPanel.setPreferredSize(new Dimension(1, 1000));
+        var borderPanel = new JPanel(new BorderLayout());
+        borderPanel.setOpaque(false);
+        borderPanel.add(mScoreCardPanel, BorderLayout.CENTER);
+        borderPanel.add(mFillerPanel, BorderLayout.SOUTH);
+        mPanel.add(borderPanel);
+        mPanel.setOpaque(false);
+        mScoreCardPanel.setOpaque(true);
 
         var gridBagLayout = new GridBagLayout();
-        mPanel.setLayout(gridBagLayout);
+        mScoreCardPanel.setLayout(gridBagLayout);
 
         var gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -276,12 +291,12 @@ public class ScoreCard {
         panel.add(mUndoButton, BorderLayout.WEST);
         panel.add(titleLabel, BorderLayout.CENTER);
         gridBagLayout.setConstraints(panel, gbc);
-        mPanel.add(panel);
+        mScoreCardPanel.add(panel);
 
         gbc.gridy = 1;
         gbc.gridheight = GridBagConstraints.REMAINDER;
         gridBagLayout.setConstraints(mHeaderColumn, gbc);
-        mPanel.add(mHeaderColumn);
+        mScoreCardPanel.add(mHeaderColumn);
         int h = mHeaderColumn.getMaxCellHeight();
         var insets = new Insets(1, 1, 0, 0);
 
@@ -300,7 +315,7 @@ public class ScoreCard {
 
             var playerLabel = mPlayerColumns.get(i).getLabel();
             gridBagLayout.setConstraints(playerLabel, gbc);
-            mPanel.add(playerLabel);
+            mScoreCardPanel.add(playerLabel);
 
             for (int j = 0; j < mNumOfRows; j++) {
                 gbc.gridy = j + 1;
@@ -310,7 +325,7 @@ public class ScoreCard {
                 d.height = h;
                 label.setPreferredSize(d);
                 gridBagLayout.setConstraints(label, gbc);
-                mPanel.add(label);
+                mScoreCardPanel.add(label);
             }
         }
     }
