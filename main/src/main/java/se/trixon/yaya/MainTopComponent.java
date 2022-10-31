@@ -96,7 +96,6 @@ public final class MainTopComponent extends TopComponent {
         addMouseListener(popupListener);
 
         Actions.connect(newMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction"), true);
-        Actions.connect(undoMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.UndoAction"), true);
         Actions.connect(optionsMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.OptionsAction"), true);
         Actions.connect(aboutMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.AboutAction"), true);
         Actions.connect(helpMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.HelpAction"), true);
@@ -118,7 +117,6 @@ public final class MainTopComponent extends TopComponent {
 
         popupMenu = new javax.swing.JPopupMenu();
         newMenuItem = new javax.swing.JMenuItem();
-        undoMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         showMenu = new javax.swing.JMenu();
         fullscreenCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
@@ -134,7 +132,6 @@ public final class MainTopComponent extends TopComponent {
         mainPanel = new javax.swing.JPanel();
 
         popupMenu.add(newMenuItem);
-        popupMenu.add(undoMenuItem);
         popupMenu.add(jSeparator1);
 
         org.openide.awt.Mnemonics.setLocalizedText(showMenu, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.showMenu.text")); // NOI18N
@@ -225,7 +222,6 @@ public final class MainTopComponent extends TopComponent {
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JMenu showMenu;
-    private javax.swing.JMenuItem undoMenuItem;
     // End of variables declaration//GEN-END:variables
 
     void writeProperties(java.util.Properties p) {

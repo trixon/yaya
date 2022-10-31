@@ -15,6 +15,7 @@
  */
 package se.trixon.yaya.scorecard;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -24,9 +25,11 @@ import java.util.LinkedList;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import se.trixon.almond.util.CircularInt;
-import se.trixon.almond.util.Dict;
+import se.trixon.almond.util.icons.material.swing.MaterialIcon;
 import se.trixon.yaya.GameOverDialog;
 import se.trixon.yaya.GameOverItem;
 import se.trixon.yaya.Options;
@@ -139,6 +142,13 @@ public class ScoreCard {
         getActivePlayerColumn().setVisibleIndicators(visible);
     }
 
+    public void undo() {
+        if (mUndoAction.isEnabled()) {
+            mUndoAction.setEnabled(false);
+            actionPerformedUndo();
+        }
+    }
+
     void register() {
         if (mRegisterable) {
             mRegisterable = false;
@@ -172,6 +182,9 @@ public class ScoreCard {
     private void applyColors() {
         mPanel.setBackground(mThemeManager.getScorecard());
         mBasePanel.setBackground(mThemeManager.getBackground());
+
+        var imageIcon = MaterialIcon._Content.UNDO.getImageIcon(24, mThemeManager.getUndoIcon());
+        mUndoButton.setIcon(imageIcon);
 
         mHeaderColumn.applyColors();
 
@@ -225,7 +238,7 @@ public class ScoreCard {
     }
 
     private void initActions() {
-        mUndoAction = new AbstractAction(Dict.UNDO.toString()) {
+        mUndoAction = new AbstractAction("") {
 
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -233,8 +246,10 @@ public class ScoreCard {
                 actionPerformedUndo();
             }
         };
+
         mUndoAction.setEnabled(false);
         mUndoButton = new JButton(mUndoAction);
+        mUndoButton.setBorderPainted(false);
     }
 
     private void initLayout() {
@@ -254,8 +269,14 @@ public class ScoreCard {
         gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.BOTH;
 
-        gridBagLayout.setConstraints(mUndoButton, gbc);
-        mPanel.add(mUndoButton);
+        var panel = new JPanel(new BorderLayout());
+        var titleLabel = new JLabel(mRule.getTitle());
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        panel.add(mUndoButton, BorderLayout.WEST);
+        panel.add(titleLabel, BorderLayout.CENTER);
+        gridBagLayout.setConstraints(panel, gbc);
+        mPanel.add(panel);
 
         gbc.gridy = 1;
         gbc.gridheight = GridBagConstraints.REMAINDER;

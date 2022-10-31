@@ -31,6 +31,7 @@ public class Theme {
     private Color mRow;
     private Color mScorecard;
     private Color mSum;
+    private Color mUndoIcon;
 
     public Theme(String name) {
         mName = name;
@@ -68,6 +69,10 @@ public class Theme {
         return mSum;
     }
 
+    public Color getUndoIcon() {
+        return mUndoIcon;
+    }
+
     public void setBackground(Color background) {
         mBackground = background;
     }
@@ -98,6 +103,10 @@ public class Theme {
 
     public void setSum(Color sum) {
         mSum = sum;
+    }
+
+    public void setUndoIcon(Color undoIcon) {
+        mUndoIcon = undoIcon;
     }
 
 }

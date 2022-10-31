@@ -38,12 +38,13 @@ import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
  */
 public class YayaPanel extends JPanel implements Observer {
 
-    private DiceBoard mDiceBoard;
-    private boolean mRollable = true;
-    private ScoreCard mScoreCard;
-    private final Options mOptions = Options.getInstance();
-    private Rule mRule;
     private BufferedImage mBackgroundImage;
+
+    private DiceBoard mDiceBoard;
+    private final Options mOptions = Options.getInstance();
+    private boolean mRollable = true;
+    private Rule mRule;
+    private ScoreCard mScoreCard;
 
     /**
      * Creates new form YayaPanel
@@ -61,27 +62,57 @@ public class YayaPanel extends JPanel implements Observer {
         }
     }
 
+    public BufferedImage getBackgroundImage() {
+        return mBackgroundImage;
+    }
+
     public String getGameTitle() {
         return mRule.getTitle();
+    }
+
+    public void newGame() {
+//        if (numOfPlayers != settings.getNumOfPlayers()) {
+//            numOfPlayers = settings.getNumOfPlayers();
+//            initRule(settings.getRule());
+//        }
+        initGame();
+        mScoreCard.newGame();
+        mDiceBoard.newTurn();
+
+//        for (int i = 0; i < mScoreCard.getHeaderColumn().getRows().length; i++) {
+//            var row = mScoreCard.getHeaderColumn().getRows()[i];
+////            System.out.println("%d\t%s".formatted(i, row.getLabel().getText()));
+//        }
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        var g2 = (Graphics2D) g;
+        if (mBackgroundImage != null) {
+            for (int i = 0; i < (getHeight() / mBackgroundImage.getHeight()) + 1; i++) {
+                if (getWidth() < mBackgroundImage.getWidth()) {
+                    g2.drawImage(mBackgroundImage, 0, i * mBackgroundImage.getHeight(), null);
+                } else {
+                    g2.drawImage(mBackgroundImage, 0, i * mBackgroundImage.getHeight(), getWidth(), mBackgroundImage.getHeight(), null);
+                }
+            }
+        }
+
+        super.paint(g);
+        g2.dispose();
+    }
+
+    public void setBackgroundImage(BufferedImage backgroundImage) {
+        mBackgroundImage = backgroundImage;
+    }
+
+    public void undo() {
+        mScoreCard.undo();
     }
 
     @Override
     public void update(Graphics g) {
         paint(g);
-    }
-
-    private void init() {
-        addHierarchyBoundsListener(new HierarchyBoundsListener() {
-
-            @Override
-            public void ancestorMoved(HierarchyEvent evt) {
-            }
-
-            @Override
-            public void ancestorResized(HierarchyEvent evt) {
-                centerInParent();
-            }
-        });
     }
 
     @Override
@@ -114,25 +145,24 @@ public class YayaPanel extends JPanel implements Observer {
         }
     }
 
+    private void init() {
+        addHierarchyBoundsListener(new HierarchyBoundsListener() {
+
+            @Override
+            public void ancestorMoved(HierarchyEvent evt) {
+            }
+
+            @Override
+            public void ancestorResized(HierarchyEvent evt) {
+                centerInParent();
+            }
+        });
+    }
+
     private void initComponents() {
         setBackground(new java.awt.Color(204, 255, 153));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
-    }
-
-    public void newGame() {
-//        if (numOfPlayers != settings.getNumOfPlayers()) {
-//            numOfPlayers = settings.getNumOfPlayers();
-//            initRule(settings.getRule());
-//        }
-        initGame();
-        mScoreCard.newGame();
-        mDiceBoard.newTurn();
-
-//        for (int i = 0; i < mScoreCard.getHeaderColumn().getRows().length; i++) {
-//            var row = mScoreCard.getHeaderColumn().getRows()[i];
-////            System.out.println("%d\t%s".formatted(i, row.getLabel().getText()));
-//        }
     }
 
     private void initDiceBoard() {
@@ -160,28 +190,4 @@ public class YayaPanel extends JPanel implements Observer {
         add(mScoreCard.getCard(), BorderLayout.CENTER);
     }
 
-    public BufferedImage getBackgroundImage() {
-        return mBackgroundImage;
-    }
-
-    public void setBackgroundImage(BufferedImage backgroundImage) {
-        mBackgroundImage = backgroundImage;
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        var g2 = (Graphics2D) g;
-        if (mBackgroundImage != null) {
-            for (int i = 0; i < (getHeight() / mBackgroundImage.getHeight()) + 1; i++) {
-                if (getWidth() < mBackgroundImage.getWidth()) {
-                    g2.drawImage(mBackgroundImage, 0, i * mBackgroundImage.getHeight(), null);
-                } else {
-                    g2.drawImage(mBackgroundImage, 0, i * mBackgroundImage.getHeight(), getWidth(), mBackgroundImage.getHeight(), null);
-                }
-            }
-        }
-
-        super.paint(g);
-        g2.dispose();
-    }
 }

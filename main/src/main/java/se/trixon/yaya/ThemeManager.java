@@ -35,23 +35,13 @@ public class ThemeManager {
         initThemes();
     }
 
-    public Theme getTheme(String name) {
-        for (var theme : mItems) {
-            if (theme.getName().equalsIgnoreCase(name)) {
-                return theme;
-            }
-        }
-
-        return mItems.get(0);
+    public Color getBackground() {
+        return getCurrentTheme().getBackground();
     }
 
     public Theme getCurrentTheme() {
 //        return mItems.get(0);
         return getTheme(mOptions.getTheme());
-    }
-
-    public Color getBackground() {
-        return getCurrentTheme().getBackground();
     }
 
     public Color getHeader() {
@@ -82,6 +72,20 @@ public class ThemeManager {
         return getCurrentTheme().getSum();
     }
 
+    public Theme getTheme(String name) {
+        for (var theme : mItems) {
+            if (theme.getName().equalsIgnoreCase(name)) {
+                return theme;
+            }
+        }
+
+        return mItems.get(0);
+    }
+
+    public Color getUndoIcon() {
+        return getCurrentTheme().getUndoIcon();
+    }
+
     private void initThemes() {
         var legacy = new Theme("Legacy");
         legacy.setBackground(Color.decode("#333333"));
@@ -91,6 +95,7 @@ public class ThemeManager {
         legacy.setRow(Color.decode("#FFFFFF"));
         legacy.setScorecard(Color.decode("#666666"));
         legacy.setSum(Color.decode("#FFFF00"));
+        legacy.setUndoIcon(Color.RED);
         mItems.add(legacy);
 
         var solarized = new Theme("Solarized");
@@ -101,6 +106,7 @@ public class ThemeManager {
         solarized.setRow(Color.decode("#fdf6e3"));
         solarized.setScorecard(Color.decode("#666666"));
         solarized.setSum(Color.decode("#073642"));
+        solarized.setUndoIcon(Color.YELLOW);
         mItems.add(solarized);
 
     }

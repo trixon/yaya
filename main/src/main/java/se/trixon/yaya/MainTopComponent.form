@@ -31,8 +31,6 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="newMenuItem">
         </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="undoMenuItem">
-        </MenuItem>
         <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
         </Component>
         <Menu class="javax.swing.JMenu" name="showMenu">
