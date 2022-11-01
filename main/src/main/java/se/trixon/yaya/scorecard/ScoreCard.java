@@ -32,6 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import org.apache.commons.lang3.StringUtils;
 import se.trixon.almond.util.CircularInt;
+import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.almond.util.icons.material.swing.MaterialIcon;
 import se.trixon.yaya.GameOverDialog;
@@ -259,6 +260,7 @@ public class ScoreCard {
         mUndoAction.setEnabled(false);
         mUndoButton = new JButton(mUndoAction);
         mUndoButton.setBorderPainted(false);
+        mUndoButton.setToolTipText(Dict.UNDO.toString());
     }
 
     private void initLayout() {
@@ -286,6 +288,7 @@ public class ScoreCard {
 
         var panel = new JPanel(new BorderLayout());
         var titleLabel = new JLabel(mRule.getTitle());
+        titleLabel.setPreferredSize(new Dimension(250, 1));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         panel.add(mUndoButton, BorderLayout.WEST);

@@ -105,6 +105,9 @@ public class Header extends JPanel {
     }
 
     private void init() {
+        mLimPanel.setVisible(mOptions.isShowLimColumn());
+        mMaxPanel.setVisible(mOptions.isShowMaxColumn());
+
         initRows();
         initLayout();
 
@@ -144,6 +147,7 @@ public class Header extends JPanel {
             gbc.anchor = GridBagConstraints.LINE_START;
             gbc.fill = GridBagConstraints.BOTH;
             gbc.insets = insets;
+            gbc.weightx = 1.0;
 
             titleGridBagLayout.setConstraints(mTitleColumn[i].getLabel(), gbc);
             mTitlePanel.add(mTitleColumn[i].getLabel());
