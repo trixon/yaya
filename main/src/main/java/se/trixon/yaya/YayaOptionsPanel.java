@@ -44,13 +44,7 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        opacityLabel = new javax.swing.JLabel();
-        opacitySlider = new javax.swing.JSlider();
         reverseDirectionCheckBox = new javax.swing.JCheckBox();
-
-        org.openide.awt.Mnemonics.setLocalizedText(opacityLabel, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "YayaOptionsPanel.opacityLabel.text")); // NOI18N
-
-        opacitySlider.setMaximum(255);
 
         org.openide.awt.Mnemonics.setLocalizedText(reverseDirectionCheckBox, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "YayaOptionsPanel.reverseDirectionCheckBox.text")); // NOI18N
 
@@ -60,23 +54,13 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(108, 108, 108)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(opacityLabel)
-                            .addComponent(opacitySlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(reverseDirectionCheckBox))
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addComponent(reverseDirectionCheckBox)
+                .addContainerGap(303, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(81, 81, 81)
-                .addComponent(opacityLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(opacitySlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(155, 155, 155)
                 .addComponent(reverseDirectionCheckBox)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -84,13 +68,10 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
 
     void load() {
         reverseDirectionCheckBox.setSelected(mOptions.isReverseDirection());
-        opacitySlider.setValue(mOptions.getOpacity());
-
     }
 
     void store() {
         mOptions.setReverseDirection(reverseDirectionCheckBox.isSelected());
-        mOptions.setOpacity(opacitySlider.getValue());
     }
 
     boolean valid() {
@@ -99,8 +80,6 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel opacityLabel;
-    private javax.swing.JSlider opacitySlider;
     private javax.swing.JCheckBox reverseDirectionCheckBox;
     // End of variables declaration//GEN-END:variables
 }
