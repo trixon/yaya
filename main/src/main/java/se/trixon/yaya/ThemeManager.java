@@ -15,8 +15,11 @@
  */
 package se.trixon.yaya;
 
-import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Comparator;
+import org.openide.util.Lookup;
+import se.trixon.yaya.themes.Theme;
+import se.trixon.yaya.themes.DefaultTheme;
 
 /**
  *
@@ -24,91 +27,46 @@ import java.util.ArrayList;
  */
 public class ThemeManager {
 
-    private final ArrayList<Theme> mItems = new ArrayList<>();
+    private final ArrayList<Theme> mItems;
     private final Options mOptions = Options.getInstance();
+    private Theme mTheme;
 
     public static ThemeManager getInstance() {
         return Holder.INSTANCE;
     }
 
     private ThemeManager() {
-        initThemes();
-    }
+        mItems = new ArrayList<>(Lookup.getDefault().lookupAll(Theme.class));
+        mItems.sort(Comparator.comparing(Theme::getName));
 
-    public Color getBackground() {
-        return getCurrentTheme().getBackground();
-    }
-
-    public Theme getCurrentTheme() {
-//        return mItems.get(0);
-        return getTheme(mOptions.getTheme());
-    }
-
-    public Color getHeader() {
-        return getCurrentTheme().getHeader();
-    }
-
-    public Color getIndicatorHi() {
-        return getCurrentTheme().getIndicatorHi();
-    }
-
-    public Color getIndicatorLo() {
-        return getCurrentTheme().getIndicatorLo();
+        loadTheme();
     }
 
     public ArrayList<Theme> getItems() {
         return mItems;
     }
 
-    public Color getRow() {
-        return getCurrentTheme().getRow();
+    public Theme getTheme() {
+        return mTheme;
     }
 
-    public Color getScorecard() {
-        return getCurrentTheme().getScorecard();
+    public void setTheme(Theme theme) {
+        mTheme = theme;
     }
 
-    public Color getSum() {
-        return getCurrentTheme().getSum();
-    }
+    private void loadTheme() {
+        mTheme = null;
 
-    public Theme getTheme(String name) {
         for (var theme : mItems) {
-            if (theme.getName().equalsIgnoreCase(name)) {
-                return theme;
+            if (theme.getId().equalsIgnoreCase(mOptions.getThemeId())) {
+                mTheme = theme;
+                break;
             }
         }
 
-        return mItems.get(0);
-    }
-
-    public Color getUndoIcon() {
-        return getCurrentTheme().getUndoIcon();
-    }
-
-    private void initThemes() {
-        var legacy = new Theme("Legacy");
-        legacy.setBackground(Color.decode("#333333"));
-        legacy.setHeader(Color.decode("#FFC800"));
-        legacy.setIndicatorHi(Color.decode("#BBEEBB"));
-        legacy.setIndicatorLo(Color.decode("#EEBBBB"));
-        legacy.setRow(Color.decode("#FFFFFF"));
-        legacy.setScorecard(Color.decode("#666666"));
-        legacy.setSum(Color.decode("#FFFF00"));
-        legacy.setUndoIcon(Color.RED);
-        mItems.add(legacy);
-
-        var solarized = new Theme("Solarized");
-        solarized.setBackground(Color.decode("#333333"));
-        solarized.setHeader(Color.decode("#b58900"));
-        solarized.setIndicatorHi(Color.decode("#859900"));
-        solarized.setIndicatorLo(Color.decode("#dc322f"));
-        solarized.setRow(Color.decode("#fdf6e3"));
-        solarized.setScorecard(Color.decode("#666666"));
-        solarized.setSum(Color.decode("#073642"));
-        solarized.setUndoIcon(Color.YELLOW);
-        mItems.add(solarized);
-
+        if (mTheme == null) {
+            mTheme = new DefaultTheme();
+        }
     }
 
     private static class Holder {

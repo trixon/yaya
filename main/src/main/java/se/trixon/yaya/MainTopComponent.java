@@ -17,6 +17,8 @@ package se.trixon.yaya;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButtonMenuItem;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -52,6 +54,7 @@ import se.trixon.almond.util.swing.SwingHelper;
 public final class MainTopComponent extends TopComponent {
 
     private final Options mOptions = Options.getInstance();
+    private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private final Yaya mYaya = Yaya.getInstance();
 
     public MainTopComponent() {
@@ -63,8 +66,9 @@ public final class MainTopComponent extends TopComponent {
 
         createUI();
 
-        int startCounter = PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
-        if (startCounter == 1) {
+        PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
+        int gameStartCounter = mOptions.getPreferences().getInt(Options.KEY_GAME_START_COUNTER, 0);
+        if (gameStartCounter == 0) {
             SwingHelper.runLaterDelayed(200, () -> {
                 Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction").actionPerformed(null);
             });
@@ -94,6 +98,7 @@ public final class MainTopComponent extends TopComponent {
 
         var popupListener = new PopupListener();
         addMouseListener(popupListener);
+        mYaya.getPanel().addMouseListener(popupListener);
 
         Actions.connect(newMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction"), true);
         Actions.connect(optionsMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.OptionsAction"), true);
@@ -105,6 +110,18 @@ public final class MainTopComponent extends TopComponent {
         indicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
         limCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
         maxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
+
+        var buttonGroup = new ButtonGroup();
+        for (var theme : mThemeManager.getItems()) {
+            var radioButtonMenuItem = new JRadioButtonMenuItem(theme.getName());
+            radioButtonMenuItem.addActionListener(actionEvent -> {
+                mThemeManager.setTheme(theme);
+                mOptions.setThemeId(theme.getId());
+            });
+            buttonGroup.add(radioButtonMenuItem);
+            colorsMenu.add(radioButtonMenuItem);
+            radioButtonMenuItem.setSelected(mOptions.getThemeId().equalsIgnoreCase(theme.getId()));
+        }
     }
 
     /**
@@ -123,6 +140,7 @@ public final class MainTopComponent extends TopComponent {
         limCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         maxCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         indicatorCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        colorsMenu = new javax.swing.JMenu();
         optionsMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         helpMenuItem = new javax.swing.JMenuItem();
@@ -177,6 +195,9 @@ public final class MainTopComponent extends TopComponent {
         showMenu.add(indicatorCheckBoxMenuItem);
 
         popupMenu.add(showMenu);
+
+        org.openide.awt.Mnemonics.setLocalizedText(colorsMenu, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.colorsMenu.text")); // NOI18N
+        popupMenu.add(colorsMenu);
         popupMenu.add(optionsMenuItem);
         popupMenu.add(jSeparator2);
         popupMenu.add(helpMenuItem);
@@ -208,6 +229,7 @@ public final class MainTopComponent extends TopComponent {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JMenu colorsMenu;
     private javax.swing.JCheckBoxMenuItem fullscreenCheckBoxMenuItem;
     private javax.swing.JMenuItem helpMenuItem;
     private javax.swing.JCheckBoxMenuItem indicatorCheckBoxMenuItem;

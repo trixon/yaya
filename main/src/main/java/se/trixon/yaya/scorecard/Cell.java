@@ -70,7 +70,7 @@ public class Cell {
     public void clearPreview() {
         if (isPlayable() && !isRegistered()) {
             mLabel.setText("");
-            setCurrentBackgroundColor(mThemeManager.getRow());
+            setCurrentBackgroundColor(mThemeManager.getTheme().getRow());
             setBackground();
         }
     }
@@ -134,7 +134,7 @@ public class Cell {
 
     public void newGame() {
         mRegistered = false;
-        setCurrentBackgroundColor(mThemeManager.getRow());
+        setCurrentBackgroundColor(mThemeManager.getTheme().getRow());
         mLabel.setText("");
         mPreview = 0;
         mValue = 0;
@@ -158,16 +158,18 @@ public class Cell {
     }
 
     public void setEnabled(boolean aState) {
+        var theme = mThemeManager.getTheme();
+
         if (mGameCell.isPlayable()) {
             mLabel.setFont(mLabel.getFont().deriveFont(Font.PLAIN));
-            setCurrentBackgroundColor(mThemeManager.getRow());
+            setCurrentBackgroundColor(theme.getRow());
         }
 
         if (aState) {
             if (mGameCell.isSum() || mGameCell.isBonus()) {
-                mLabel.setBackground(mThemeManager.getSum());
+                mLabel.setBackground(theme.getSum());
             } else {
-                mLabel.setBackground(mThemeManager.getRow());
+                mLabel.setBackground(theme.getRow());
             }
 
             if (mGameCell.isRollCounter()) {
@@ -177,9 +179,9 @@ public class Cell {
             enableHover();
         } else {
             if (mGameCell.isSum() || mGameCell.isBonus()) {
-                mLabel.setBackground(GraphicsHelper.colorAndMask(mThemeManager.getSum(), COLOR_MASK));
+                mLabel.setBackground(GraphicsHelper.colorAndMask(theme.getSum(), COLOR_MASK));
             } else {
-                mLabel.setBackground(GraphicsHelper.colorAndMask(mThemeManager.getRow(), COLOR_MASK));
+                mLabel.setBackground(GraphicsHelper.colorAndMask(theme.getRow(), COLOR_MASK));
             }
 
             if (mGameCell.isRollCounter()) {
@@ -226,18 +228,20 @@ public class Cell {
 
         String text = "";
 
+        var theme = mThemeManager.getTheme();
+
         if (visible) {
             text = Integer.toString(mPreview);
             mLabel.setFont(mLabel.getFont().deriveFont(Font.BOLD));
             mLabel.setHorizontalAlignment(SwingConstants.LEADING);
 
             if (mPreview < mGameCell.getLim()) {
-                setCurrentBackgroundColor(mThemeManager.getIndicatorLo());
+                setCurrentBackgroundColor(theme.getIndicatorLo());
             } else {
-                setCurrentBackgroundColor(mThemeManager.getIndicatorHi());
+                setCurrentBackgroundColor(theme.getIndicatorHi());
             }
         } else {
-            setCurrentBackgroundColor(mThemeManager.getRow());
+            setCurrentBackgroundColor(theme.getRow());
         }
 
         mLabel.setText(text);

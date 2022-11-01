@@ -15,14 +15,12 @@
  */
 package se.trixon.yaya;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ChangeListener;
 
 final class YayaOptionsPanel extends javax.swing.JPanel {
 
     private final YayaOptionsPanelController mController;
     private final Options mOptions = Options.getInstance();
-    private final ThemeManager mThemeManager = ThemeManager.getInstance();
 
     YayaOptionsPanel(YayaOptionsPanelController controller) {
         mController = controller;
@@ -36,10 +34,6 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
         };
 
         reverseDirectionCheckBox.addChangeListener(changeListener);
-
-        themeComboBox.addItemListener(itemEvent -> {
-            mController.changed();
-        });
     }
 
     /**
@@ -50,13 +44,9 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        themeLabel = new javax.swing.JLabel();
-        themeComboBox = new javax.swing.JComboBox<>();
         opacityLabel = new javax.swing.JLabel();
         opacitySlider = new javax.swing.JSlider();
         reverseDirectionCheckBox = new javax.swing.JCheckBox();
-
-        org.openide.awt.Mnemonics.setLocalizedText(themeLabel, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "YayaOptionsPanel.themeLabel.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(opacityLabel, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "YayaOptionsPanel.opacityLabel.text")); // NOI18N
 
@@ -72,10 +62,7 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(themeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(themeLabel))
-                        .addGap(18, 18, 18)
+                        .addGap(108, 108, 108)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(opacityLabel)
                             .addComponent(opacitySlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -86,13 +73,9 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(81, 81, 81)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(themeLabel)
-                    .addComponent(opacityLabel))
+                .addComponent(opacityLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(themeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(opacitySlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(opacitySlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(reverseDirectionCheckBox)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -103,17 +86,11 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
         reverseDirectionCheckBox.setSelected(mOptions.isReverseDirection());
         opacitySlider.setValue(mOptions.getOpacity());
 
-        var items = mThemeManager.getItems().stream().map(t -> t.getName()).toArray(String[]::new);
-        var themeModel = new DefaultComboBoxModel<>(items);
-        themeComboBox.setModel(themeModel);
-
-        themeComboBox.setSelectedItem(mOptions.getTheme());
     }
 
     void store() {
         mOptions.setReverseDirection(reverseDirectionCheckBox.isSelected());
         mOptions.setOpacity(opacitySlider.getValue());
-        mOptions.setTheme((String) themeComboBox.getSelectedItem());
     }
 
     boolean valid() {
@@ -125,7 +102,5 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
     private javax.swing.JLabel opacityLabel;
     private javax.swing.JSlider opacitySlider;
     private javax.swing.JCheckBox reverseDirectionCheckBox;
-    private javax.swing.JComboBox<String> themeComboBox;
-    private javax.swing.JLabel themeLabel;
     // End of variables declaration//GEN-END:variables
 }

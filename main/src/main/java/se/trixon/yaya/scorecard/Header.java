@@ -25,6 +25,7 @@ import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.yaya.Options;
 import se.trixon.yaya.ThemeManager;
 import se.trixon.yaya.rules.Rule;
+import se.trixon.yaya.themes.Theme;
 
 /**
  *
@@ -45,6 +46,7 @@ public class Header extends JPanel {
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private Cell[] mTitleColumn;
     private final JPanel mTitlePanel = new JPanel();
+    private Theme mTheme;
 
     public Header(ScoreCard scoreCard, Rule rule) {
         mRule = rule;
@@ -53,9 +55,11 @@ public class Header extends JPanel {
     }
 
     void applyColors() {
+        mTheme = mThemeManager.getTheme();
+
         for (int i = 0; i < mNumOfRows; i++) {
             boolean sum = mTitleColumn[i].getGameCell().isSum() || mTitleColumn[i].getGameCell().isBonus();
-            var color = sum ? mThemeManager.getSum() : mThemeManager.getHeader();
+            var color = sum ? mTheme.getSum() : mTheme.getHeader();
 
             mTitleColumn[i].getLabel().setBackground(color);
             mLimColumn[i].getLabel().setBackground(color);
@@ -91,7 +95,7 @@ public class Header extends JPanel {
     }
 
     void hoverRowEntered(int row) {
-        var color = GraphicsHelper.colorAndMask(mThemeManager.getHeader(), 0xEEEEEE);
+        var color = GraphicsHelper.colorAndMask(mTheme.getHeader(), 0xEEEEEE);
 
         mTitleColumn[row].getLabel().setBackground(color);
         mLimColumn[row].getLabel().setBackground(color);
@@ -99,9 +103,9 @@ public class Header extends JPanel {
     }
 
     void hoverRowExited(int row) {
-        mTitleColumn[row].getLabel().setBackground(mThemeManager.getHeader());
-        mLimColumn[row].getLabel().setBackground(mThemeManager.getHeader());
-        mMaxColumn[row].getLabel().setBackground(mThemeManager.getHeader());
+        mTitleColumn[row].getLabel().setBackground(mTheme.getHeader());
+        mLimColumn[row].getLabel().setBackground(mTheme.getHeader());
+        mMaxColumn[row].getLabel().setBackground(mTheme.getHeader());
     }
 
     private void init() {

@@ -30,6 +30,7 @@ public class Options extends OptionsBase {
 
     public static final String DEFAULT_PLAYERS = "Ask;Embla;Ask;Embla;Ask;Embla;Ask;Embla";
     public static final String DEFAULT_PLAYERS_ALL = "Ask;Embla";
+    public static final String KEY_GAME_START_COUNTER = "game.start_counter";
     public static final String KEY_NUM_OF_PLAYERS = "numOfPlayers";
     public static final String KEY_OPACITY = "opacity";
     public static final String KEY_PLAYERS = "players";
@@ -48,7 +49,7 @@ public class Options extends OptionsBase {
     private static final boolean DEFAULT_SHOW_INDICATORS = true;
     private static final boolean DEFAULT_SHOW_LIM_COLUMN = false;
     private static final boolean DEFAULT_SHOW_MAX_COLUMN = false;
-    private static final String DEFAULT_THEME = "Legacy";
+    private static final String DEFAULT_THEME = "default";
     private Player[] mPlayers;
 
     public static Options getInstance() {
@@ -98,7 +99,7 @@ public class Options extends OptionsBase {
         return get(KEY_RULE_ID, DEFAULT_RULE_ID);
     }
 
-    public String getTheme() {
+    public String getThemeId() {
         return get(KEY_THEME, DEFAULT_THEME);
     }
 
@@ -162,7 +163,7 @@ public class Options extends OptionsBase {
         put(KEY_SHOW_MAX_COLUMN, state);
     }
 
-    public void setTheme(String theme) {
+    public void setThemeId(String theme) {
         put(KEY_THEME, theme);
     }
 

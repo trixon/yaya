@@ -42,6 +42,7 @@ import se.trixon.yaya.ThemeManager;
 import se.trixon.yaya.rules.Rule;
 import se.trixon.yaya.rules.RuleManager;
 import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
+import se.trixon.yaya.themes.Theme;
 
 /**
  *
@@ -70,6 +71,7 @@ public class ScoreCard {
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private AbstractAction mUndoAction;
     private JButton mUndoButton;
+    private Theme mTheme;
 
     public ScoreCard() {
         mNumOfPlayers = mOptions.getNumOfPlayers();
@@ -186,11 +188,12 @@ public class ScoreCard {
     }
 
     private void applyColors() {
-        mScoreCardPanel.setBackground(mThemeManager.getScorecard());
-        mPanel.setBackground(mThemeManager.getBackground());
+        mTheme = mThemeManager.getTheme();
+        mScoreCardPanel.setBackground(mTheme.getScorecard());
+        mPanel.setBackground(mTheme.getBackground());
         mFillerPanel.setBackground(GraphicsHelper.colorAddAlpha(Color.BLACK, mOptions.getOpacity()));
 
-        var imageIcon = MaterialIcon._Content.UNDO.getImageIcon(24, mThemeManager.getUndoIcon());
+        var imageIcon = MaterialIcon._Content.UNDO.getImageIcon(24, mTheme.getUndoIcon());
         mUndoButton.setIcon(imageIcon);
 
         mHeaderColumn.applyColors();
@@ -200,7 +203,7 @@ public class ScoreCard {
                 var row = mPlayerColumns.get(i).getRows()[j];
                 var gameRow = row.getGameCell();
                 boolean sum = gameRow.isSum() || gameRow.isBonus();
-                var color = sum ? mThemeManager.getSum() : mThemeManager.getRow();
+                var color = sum ? mTheme.getSum() : mTheme.getRow();
 
                 row.getLabel().setBackground(color);
                 row.setCurrentBackgroundColor(color);

@@ -25,6 +25,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import se.trixon.almond.util.PrefsHelper;
 import se.trixon.yaya.dice.DiceBoard;
 import se.trixon.yaya.dice.DiceBoard.RollEvent;
 import se.trixon.yaya.rules.Rule;
@@ -71,6 +72,8 @@ public class YayaPanel extends JPanel implements Observer {
     }
 
     public void newGame() {
+        PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_GAME_START_COUNTER);
+
 //        if (numOfPlayers != settings.getNumOfPlayers()) {
 //            numOfPlayers = settings.getNumOfPlayers();
 //            initRule(settings.getRule());
