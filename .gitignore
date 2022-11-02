@@ -24,3 +24,6 @@ hs_err_pid*
 /branding/target/
 /main/target/
 /application/target/
+!/branding/src/main/nbm-branding/core/core.jar/
+!/branding/src/main/nbm-branding/modules/org-netbeans-core-windows.jar/
+!/branding/src/main/nbm-branding/modules/org-netbeans-core.jar/
