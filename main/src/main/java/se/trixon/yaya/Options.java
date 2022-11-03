@@ -30,6 +30,7 @@ public class Options extends OptionsBase {
 
     public static final String DEFAULT_PLAYERS = "Ask;Embla;Ask;Embla;Ask;Embla;Ask;Embla";
     public static final String DEFAULT_PLAYERS_ALL = "Ask;Embla";
+    public static final String KEY_FONT_SIZE = "font.size";
     public static final String KEY_GAME_START_COUNTER = "game.start_counter";
     public static final String KEY_NUM_OF_PLAYERS = "numOfPlayers";
     public static final String KEY_OPACITY = "opacity";
@@ -41,6 +42,7 @@ public class Options extends OptionsBase {
     public static final String KEY_SHOW_LIM_COLUMN = "showLimColumn";
     public static final String KEY_SHOW_MAX_COLUMN = "showMaxColumn";
     public static final String KEY_THEME = "theme";
+    private static final int DEFAULT_FONT_SIZE = 12;
     private static final String DEFAULT_GAME_VARIANT = "standard";
     private static final int DEFAULT_NUM_OF_PLAYERS = 2;
     private static final int DEFAULT_OPACITY = 64;
@@ -73,6 +75,10 @@ public class Options extends OptionsBase {
         }
 
         return players;
+    }
+
+    public int getFontSize() {
+        return getInt(KEY_FONT_SIZE, DEFAULT_FONT_SIZE);
     }
 
     public String getGameVariant(String type) {
@@ -121,6 +127,10 @@ public class Options extends OptionsBase {
 
     public boolean isShowMaxColumn() {
         return is(KEY_SHOW_MAX_COLUMN, DEFAULT_SHOW_MAX_COLUMN);
+    }
+
+    public void setFontSize(int size) {
+        put(KEY_FONT_SIZE, size);
     }
 
     public void setFullscreen(boolean value) {

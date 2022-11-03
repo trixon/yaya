@@ -49,7 +49,7 @@ public class Cell {
 
     Cell(ScoreCard scoreCard, PlayerColumn playerColumn, GameCell gameCell, int row) {
         mScoreCard = scoreCard;
-        mHeaderColumn = mScoreCard.getHeaderColumn();
+        mHeaderColumn = mScoreCard.getHeader();
         mPlayerColumn = playerColumn;
         mGameCell = gameCell;
         mRow = row;
@@ -59,7 +59,7 @@ public class Cell {
 
     Cell(ScoreCard scoreCard, GameCell gameRow, int row, boolean isHeader) {
         mScoreCard = scoreCard;
-        mHeaderColumn = mScoreCard.getHeaderColumn();
+        mHeaderColumn = mScoreCard.getHeader();
         mGameCell = gameRow;
         mRow = row;
         mHeader = isHeader;

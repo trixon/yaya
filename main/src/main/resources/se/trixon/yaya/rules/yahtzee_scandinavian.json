@@ -4,7 +4,7 @@
     "title": "Yahtzee (Scandinavian)",
     "date": "2022-10-25",
     "dice": 5,
-    "rolls": 33,
+    "rolls": 3,
     "default_variant": 0,
     "variants": [
         "STANDARD",

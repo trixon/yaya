@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.Stack;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import se.trixon.yaya.Options;
 import se.trixon.yaya.Player;
 import se.trixon.yaya.rules.Rule;
 
@@ -33,6 +34,7 @@ public class PlayerColumn {
     private LinkedList<Integer> mDice;
     private final JLabel mLabel = new JLabel("NONAME");
     private int mNumOfRolls;
+    private final Options mOptions = Options.getInstance();
     private int mPlayOrder;
     private Player mPlayer;
     private final Stack<Integer> mRowStack = new Stack<>();
@@ -186,7 +188,7 @@ public class PlayerColumn {
         var rowsRule = mRule.getGameColumn();
         mRows = new Cell[rowsRule.size()];
         var d = mLabel.getPreferredSize();
-        d.width = 90;
+        d.width = 80 / 12 * mOptions.getFontSize();
         mLabel.setPreferredSize(d);
         mLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mLabel.setOpaque(true);

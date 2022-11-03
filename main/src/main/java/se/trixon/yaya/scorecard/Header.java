@@ -15,11 +15,6 @@
  */
 package se.trixon.yaya.scorecard;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.yaya.Options;
@@ -31,27 +26,36 @@ import se.trixon.yaya.themes.Theme;
  *
  * @author Patrik Karlström
  */
-public class Header extends JPanel {
+public class Header {
 
     private Cell[] mLimColumn;
-    private final JPanel mLimPanel = new JPanel();
     private Integer[] mLimValues;
     private Cell[] mMaxColumn;
-    private final JPanel mMaxPanel = new JPanel();
     private Integer[] mMaxValues;
     private int mNumOfRows;
     private final Options mOptions = Options.getInstance();
     private final Rule mRule;
     private final ScoreCard mScoreCard;
+    private Theme mTheme;
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private Cell[] mTitleColumn;
-    private final JPanel mTitlePanel = new JPanel();
-    private Theme mTheme;
 
     public Header(ScoreCard scoreCard, Rule rule) {
         mRule = rule;
         mScoreCard = scoreCard;
         init();
+    }
+
+    public Cell[] getLimColumn() {
+        return mLimColumn;
+    }
+
+    public Cell[] getMaxColumn() {
+        return mMaxColumn;
+    }
+
+    public Cell[] getTitleColumn() {
+        return mTitleColumn;
     }
 
     void applyColors() {
@@ -65,33 +69,6 @@ public class Header extends JPanel {
             mLimColumn[i].getLabel().setBackground(color);
             mMaxColumn[i].getLabel().setBackground(color);
         }
-    }
-
-    int getMaxCellHeight() {
-        int maxHeight = Integer.MIN_VALUE;
-        for (int i = 0; i < mTitleColumn.length; i++) {
-            maxHeight = Math.max(maxHeight, mTitleColumn[i].getLabel().getPreferredSize().height);
-            maxHeight = Math.max(maxHeight, mLimColumn[i].getLabel().getPreferredSize().height);
-            maxHeight = Math.max(maxHeight, mMaxColumn[i].getLabel().getPreferredSize().height);
-        }
-
-        for (var scoreCardRow : mTitleColumn) {
-            var d = scoreCardRow.getLabel().getPreferredSize();
-            d.height = maxHeight;
-            scoreCardRow.getLabel().setPreferredSize(d);
-        }
-        for (var scoreCardRow : mLimColumn) {
-            var d = scoreCardRow.getLabel().getPreferredSize();
-            d.height = maxHeight;
-            scoreCardRow.getLabel().setPreferredSize(d);
-        }
-        for (var scoreCardRow : mMaxColumn) {
-            var d = scoreCardRow.getLabel().getPreferredSize();
-            d.height = maxHeight;
-            scoreCardRow.getLabel().setPreferredSize(d);
-        }
-
-        return maxHeight;
     }
 
     void hoverRowEntered(int row) {
@@ -109,63 +86,18 @@ public class Header extends JPanel {
     }
 
     private void init() {
-        mLimPanel.setVisible(mOptions.isShowLimColumn());
-        mMaxPanel.setVisible(mOptions.isShowMaxColumn());
-
         initRows();
-        initLayout();
+
+        setVisible(mOptions.isShowLimColumn(), mLimColumn);
+        setVisible(mOptions.isShowMaxColumn(), mMaxColumn);
 
         mOptions.getPreferences().addPreferenceChangeListener(pce -> {
             if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_LIM_COLUMN)) {
-                mLimPanel.setVisible(mOptions.isShowLimColumn());
+                setVisible(mOptions.isShowLimColumn(), mLimColumn);
             } else if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_MAX_COLUMN)) {
-                mMaxPanel.setVisible(mOptions.isShowMaxColumn());
+                setVisible(mOptions.isShowMaxColumn(), mMaxColumn);
             }
         });
-    }
-
-    private void initLayout() {
-        setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-
-        var titleGridBagLayout = new GridBagLayout();
-        var limGridBagLayout = new GridBagLayout();
-        var maxGridBagLayout = new GridBagLayout();
-
-        mTitlePanel.setLayout(titleGridBagLayout);
-        mLimPanel.setLayout(limGridBagLayout);
-        mMaxPanel.setLayout(maxGridBagLayout);
-
-        var gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridwidth = 3;
-        gbc.fill = GridBagConstraints.BOTH;
-
-        var insets = new Insets(1, 0, 0, 0);
-
-        for (int i = 0; i < mNumOfRows; i++) {
-            gbc = new GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = i;
-            gbc.anchor = GridBagConstraints.LINE_START;
-            gbc.fill = GridBagConstraints.BOTH;
-            gbc.insets = insets;
-            gbc.weightx = 1.0;
-
-            titleGridBagLayout.setConstraints(mTitleColumn[i].getLabel(), gbc);
-            mTitlePanel.add(mTitleColumn[i].getLabel());
-
-            limGridBagLayout.setConstraints(mLimColumn[i].getLabel(), gbc);
-            mLimPanel.add(mLimColumn[i].getLabel());
-
-            maxGridBagLayout.setConstraints(mMaxColumn[i].getLabel(), gbc);
-            mMaxPanel.add(mMaxColumn[i].getLabel());
-        }
-
-        add(mTitlePanel);
-        add(mLimPanel);
-        add(mMaxPanel);
     }
 
     private void initRows() {
@@ -200,8 +132,11 @@ public class Header extends JPanel {
             maxLabel.setToolTipText(toolTip);
             limLabel.setToolTipText(toolTip);
         }
+    }
 
-        int row = mRule.getResultRow();
-        mTitleColumn[row].getLabel().setFont(mTitleColumn[row].getLabel().getFont().deriveFont((16.0F)));
+    private void setVisible(boolean visible, Cell[] cells) {
+        for (var cell : cells) {
+            cell.getLabel().setVisible(visible);
+        }
     }
 }

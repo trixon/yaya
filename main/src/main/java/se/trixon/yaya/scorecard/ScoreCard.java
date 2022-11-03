@@ -17,6 +17,7 @@ package se.trixon.yaya.scorecard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -54,7 +55,7 @@ public class ScoreCard {
     private CircularInt mCurrentPlayer;
     private final JPanel mFillerPanel = new JPanel();
     private final GameOverDialog mGameOverDialog = GameOverDialog.getInstance();
-    private Header mHeaderColumn;
+    private Header mHeader;
     private final int mNumOfPlayers;
     private int mNumOfRolls;
     private int mNumOfRows;
@@ -68,10 +69,10 @@ public class ScoreCard {
     private final RuleManager mRuleManager = RuleManager.getInstance();
     private final JPanel mScoreCardPanel = new JPanel();
     private boolean mShowIndicators;
+    private Theme mTheme;
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private AbstractAction mUndoAction;
     private JButton mUndoButton;
-    private Theme mTheme;
 
     public ScoreCard() {
         mNumOfPlayers = mOptions.getNumOfPlayers();
@@ -79,8 +80,22 @@ public class ScoreCard {
         init();
     }
 
-    public Header getHeaderColumn() {
-        return mHeaderColumn;
+    public void applyFontSize(Container container, float size) {
+        for (var component : container.getComponents()) {
+            if (component instanceof JLabel label) {
+                label.setFont(label.getFont().deriveFont(size));
+                var d = label.getPreferredSize();
+                d.height = (int) (size * 1.2);
+                d.width = 1;
+                label.setMinimumSize(d);
+            } else if (component instanceof Container subContainer) {
+                applyFontSize(subContainer, size);
+            }
+        }
+    }
+
+    public Header getHeader() {
+        return mHeader;
     }
 
     public int getNumOfRolls() {
@@ -193,10 +208,8 @@ public class ScoreCard {
         mPanel.setBackground(mTheme.getBackground());
         mFillerPanel.setBackground(GraphicsHelper.colorAddAlpha(Color.BLACK, mOptions.getOpacity()));
 
-        var imageIcon = MaterialIcon._Content.UNDO.getImageIcon(24, mTheme.getUndoIcon());
-        mUndoButton.setIcon(imageIcon);
-
-        mHeaderColumn.applyColors();
+        applyUndoButtonStyle();
+        mHeader.applyColors();
 
         for (int i = 0; i < mPlayerColumns.size(); i++) {
             for (int j = 0; j < mNumOfRows; j++) {
@@ -214,6 +227,11 @@ public class ScoreCard {
 
         mPanel.revalidate();
         mPanel.repaint();
+    }
+
+    private void applyUndoButtonStyle() {
+        var imageIcon = MaterialIcon._Content.UNDO.getImageIcon(mOptions.getFontSize(), mTheme.getUndoIcon());
+        mUndoButton.setIcon(imageIcon);
     }
 
     private void gameOver() {
@@ -234,18 +252,22 @@ public class ScoreCard {
 
     private void init() {
         mPlayerColumns.clear();
-        mHeaderColumn = new Header(this, mRule);
+        mHeader = new Header(this, mRule);
         initActions();
         mNumOfRows = mRule.getGameColumn().size();
 
         initLayout();
         applyColors();
+        applyFontSize(mPanel, mOptions.getFontSize());
 
         mOptions.getPreferences().addPreferenceChangeListener(pce -> {
             if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_INDICATORS)) {
                 setVisibleIndicators(mOptions.isShowIndicators());
             } else if (StringUtils.equalsAny(pce.getKey(), Options.KEY_THEME, Options.KEY_OPACITY)) {
                 applyColors();
+            } else if (pce.getKey().equalsIgnoreCase(Options.KEY_FONT_SIZE)) {
+                applyFontSize(mPanel, mOptions.getFontSize());
+                applyUndoButtonStyle();
             }
         });
     }
@@ -279,58 +301,76 @@ public class ScoreCard {
         mPanel.setOpaque(false);
         mScoreCardPanel.setOpaque(true);
 
-        var gridBagLayout = new GridBagLayout();
-        mScoreCardPanel.setLayout(gridBagLayout);
+        var layout = new GridBagLayout();
+        mScoreCardPanel.setLayout(layout);
 
-        var gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.gridwidth = 1;
-        gbc.fill = GridBagConstraints.BOTH;
+        var constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.LINE_START;
+        constraints.gridwidth = 3;
+        constraints.fill = GridBagConstraints.BOTH;
 
-        var panel = new JPanel(new BorderLayout());
-        var titleLabel = new JLabel(mRule.getTitle());
-        titleLabel.setPreferredSize(new Dimension(250, 1));
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        var undoPanel = new JPanel(new BorderLayout());
+        var gameTitleLabel = new JLabel(mRule.getTitle());
+        gameTitleLabel.setPreferredSize(new Dimension(200 / 12 * mOptions.getFontSize(), 1));
+        gameTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        panel.add(mUndoButton, BorderLayout.WEST);
-        panel.add(titleLabel, BorderLayout.CENTER);
-        gridBagLayout.setConstraints(panel, gbc);
-        mScoreCardPanel.add(panel);
+        undoPanel.add(mUndoButton, BorderLayout.WEST);
+        undoPanel.add(gameTitleLabel, BorderLayout.CENTER);
 
-        gbc.gridy = 1;
-        gbc.gridheight = GridBagConstraints.REMAINDER;
-        gridBagLayout.setConstraints(mHeaderColumn, gbc);
-        mScoreCardPanel.add(mHeaderColumn);
-        int h = mHeaderColumn.getMaxCellHeight();
+        layout.setConstraints(undoPanel, constraints);
+        mScoreCardPanel.add(undoPanel);
+
         var insets = new Insets(1, 1, 0, 0);
+        constraints.gridwidth = 1;
+        constraints.anchor = GridBagConstraints.LINE_START;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.insets = insets;
 
-        int startGridX = 1;
+        for (int i = 0; i < mNumOfRows; i++) {
+            constraints.gridy = i + 1;
 
+            constraints.gridx = 0;
+            constraints.weightx = 1.0;
+            var titleLabel = mHeader.getTitleColumn()[i].getLabel();
+            layout.setConstraints(titleLabel, constraints);
+            mScoreCardPanel.add(titleLabel);
+            constraints.weightx = 0.0;
+
+            constraints.gridx = 1;
+            var limLabel = mHeader.getLimColumn()[i].getLabel();
+            layout.setConstraints(limLabel, constraints);
+            mScoreCardPanel.add(limLabel);
+
+            constraints.gridx = 2;
+            var maxLabel = mHeader.getMaxColumn()[i].getLabel();
+            layout.setConstraints(maxLabel, constraints);
+            mScoreCardPanel.add(maxLabel);
+        }
+
+        int startGridX = 3;
+
+        constraints = new GridBagConstraints();
         for (int i = 0; i < mNumOfPlayers; i++) {
             mPlayerColumns.add(new PlayerColumn(this, i, mRule));
             Cell[] column = mPlayerColumns.get(i).getRows();
 
-            gbc = new GridBagConstraints();
-            gbc.gridx = startGridX + i;
-            gbc.anchor = GridBagConstraints.LINE_START;
-            gbc.fill = GridBagConstraints.BOTH;
-            gbc.gridy = 0;
-            gbc.insets = insets;
+            constraints.gridx = startGridX + i;
+            constraints.anchor = GridBagConstraints.LINE_START;
+            constraints.fill = GridBagConstraints.BOTH;
+            constraints.gridy = 0;
+            constraints.insets = insets;
 
             var playerLabel = mPlayerColumns.get(i).getLabel();
-            gridBagLayout.setConstraints(playerLabel, gbc);
+            layout.setConstraints(playerLabel, constraints);
             mScoreCardPanel.add(playerLabel);
 
             for (int j = 0; j < mNumOfRows; j++) {
-                gbc.gridy = j + 1;
+                constraints.gridy = j + 1;
 
                 var label = column[j].getLabel();
-                var d = label.getPreferredSize();
-                d.height = h;
-                label.setPreferredSize(d);
-                gridBagLayout.setConstraints(label, gbc);
+                layout.setConstraints(label, constraints);
                 mScoreCardPanel.add(label);
             }
         }
@@ -362,7 +402,7 @@ public class ScoreCard {
 //        Collections.sort(mPlayerPositions, pcc);
 //
 //        float reducer = 0.F;
-//        var font = mHeaderColumn.getRows()[mRule.getResultRow()].getLabel().getFont();
+//        var font = mHeader.getRows()[mRule.getResultRow()].getLabel().getFont();
 //
 //        for (var playerColumn : mPlayerPositions) {
 //            var label = playerColumn.getRows()[mRule.getResultRow()].getLabel();

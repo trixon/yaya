@@ -18,6 +18,7 @@ package se.trixon.yaya;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ButtonGroup;
+import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -28,6 +29,7 @@ import org.openide.util.NbBundle.Messages;
 import org.openide.windows.TopComponent;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.PrefsHelper;
+import se.trixon.almond.util.swing.DelayedResetRunner;
 import se.trixon.almond.util.swing.SwingHelper;
 
 /**
@@ -126,10 +128,28 @@ public final class MainTopComponent extends TopComponent {
         }
 
         var opacitySlider = new JSlider(0, 255, mOptions.getOpacity());
-        opacitySlider.addChangeListener(changeEvent -> {
+        var opacityResetRunner = new DelayedResetRunner(50, () -> {
             mOptions.setOpacity(opacitySlider.getValue());
         });
+
+        opacitySlider.addChangeListener(changeEvent -> {
+            opacityResetRunner.reset();
+        });
         showMenu.add(opacitySlider);
+
+        var fontMenuItem = new JMenuItem(Dict.SIZE.toString());
+        fontMenuItem.setEnabled(false);
+        showMenu.add(fontMenuItem);
+
+        var fontSlider = new JSlider(8, 72, mOptions.getFontSize());
+        var fontResetRunner = new DelayedResetRunner(50, () -> {
+            mOptions.setFontSize(fontSlider.getValue());
+        });
+
+        fontSlider.addChangeListener(changeEvent -> {
+            fontResetRunner.reset();
+        });
+        showMenu.add(fontSlider);
     }
 
     /**
