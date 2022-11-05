@@ -55,6 +55,7 @@ public class ScoreCard {
     private CircularInt mCurrentPlayer;
     private final JPanel mFillerPanel = new JPanel();
     private final GameOverDialog mGameOverDialog = GameOverDialog.getInstance();
+    private JLabel mGameTitleLabel;
     private Header mHeader;
     private final int mNumOfPlayers;
     private int mNumOfRolls;
@@ -73,25 +74,12 @@ public class ScoreCard {
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private AbstractAction mUndoAction;
     private JButton mUndoButton;
+    private JPanel mUndoPanel;
 
     public ScoreCard() {
         mNumOfPlayers = mOptions.getNumOfPlayers();
         mRule = mRuleManager.getRule(mOptions.getRuleId());
         init();
-    }
-
-    public void applyFontSize(Container container, float size) {
-        for (var component : container.getComponents()) {
-            if (component instanceof JLabel label) {
-                label.setFont(label.getFont().deriveFont(size));
-                var d = label.getPreferredSize();
-                d.height = (int) (size * 1.2);
-                d.width = 1;
-                label.setMinimumSize(d);
-            } else if (component instanceof Container subContainer) {
-                applyFontSize(subContainer, size);
-            }
-        }
     }
 
     public Header getHeader() {
@@ -206,20 +194,31 @@ public class ScoreCard {
         mTheme = mThemeManager.getTheme();
         mScoreCardPanel.setBackground(mTheme.getScorecard());
         mPanel.setBackground(mTheme.getBackground());
+        mUndoPanel.setBackground(mTheme.getBgHeaderRow());
+        mGameTitleLabel.setForeground(mTheme.getFgHeaderRow());
         mFillerPanel.setBackground(GraphicsHelper.colorAddAlpha(Color.BLACK, mOptions.getOpacity()));
 
         applyUndoButtonStyle();
         mHeader.applyColors();
 
         for (int i = 0; i < mPlayerColumns.size(); i++) {
+            var playerLabel = mPlayerColumns.get(i).getLabel();
+            playerLabel.setBackground(mTheme.getBgHeaderRow());
+            playerLabel.setForeground(mTheme.getFgHeaderRow());
+
             for (int j = 0; j < mNumOfRows; j++) {
                 var row = mPlayerColumns.get(i).getRows()[j];
                 var gameRow = row.getGameCell();
                 boolean sum = gameRow.isSum() || gameRow.isBonus();
-                var color = sum ? mTheme.getSum() : mTheme.getRow();
+                var colorBG = sum ? mTheme.getBgHeaderSum() : mTheme.getBgScoreCell();
+                var colorFG = sum ? mTheme.getFgHeaderSum() : mTheme.getFgScoreCell();
 
-                row.getLabel().setBackground(color);
-                row.setCurrentBackgroundColor(color);
+                colorBG = GraphicsHelper.colorAddAlpha(colorBG, mTheme.getAlpha());
+
+                var label = row.getLabel();
+                label.setBackground(colorBG);
+                label.setForeground(colorFG);
+                row.setCurrentBackgroundColor(colorBG);
             }
         }
 
@@ -227,6 +226,20 @@ public class ScoreCard {
 
         mPanel.revalidate();
         mPanel.repaint();
+    }
+
+    private void applyFontSize(Container container, float size) {
+        for (var component : container.getComponents()) {
+            if (component instanceof JLabel label) {
+                label.setFont(label.getFont().deriveFont(size));
+                var d = label.getPreferredSize();
+                d.height = (int) (size * 1.2);
+                d.width = 1;
+                label.setMinimumSize(d);
+            } else if (component instanceof Container subContainer) {
+                applyFontSize(subContainer, size);
+            }
+        }
     }
 
     private void applyUndoButtonStyle() {
@@ -285,6 +298,7 @@ public class ScoreCard {
         mUndoAction.setEnabled(false);
         mUndoButton = new JButton(mUndoAction);
         mUndoButton.setBorderPainted(false);
+        mUndoButton.setContentAreaFilled(false);
         mUndoButton.setToolTipText(Dict.UNDO.toString());
     }
 
@@ -298,35 +312,37 @@ public class ScoreCard {
         borderPanel.add(mScoreCardPanel, BorderLayout.CENTER);
         borderPanel.add(mFillerPanel, BorderLayout.SOUTH);
         mPanel.add(borderPanel);
-        mPanel.setOpaque(false);
-        mScoreCardPanel.setOpaque(true);
+        mPanel.setOpaque(false);//TODO Add this as an option to toggle wooden structure
+        mScoreCardPanel.setOpaque(false);
 
         var layout = new GridBagLayout();
         mScoreCardPanel.setLayout(layout);
 
         var constraints = new GridBagConstraints();
+        var headerInsets = new Insets(1, 0, 0, 0);
+        var zeroInsets = new Insets(0, 0, 0, 0);
+        var cellInsets = new Insets(1, 1, 0, 0);
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.LINE_START;
         constraints.gridwidth = 3;
         constraints.fill = GridBagConstraints.BOTH;
 
-        var undoPanel = new JPanel(new BorderLayout());
-        var gameTitleLabel = new JLabel(mRule.getTitle());
-        gameTitleLabel.setPreferredSize(new Dimension(200 / 12 * mOptions.getFontSize(), 1));
-        gameTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        mUndoPanel = new JPanel(new BorderLayout());
+        mGameTitleLabel = new JLabel(mRule.getTitle());
+        mGameTitleLabel.setPreferredSize(new Dimension(200 / 12 * mOptions.getFontSize(), 1));
+        mGameTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        undoPanel.add(mUndoButton, BorderLayout.WEST);
-        undoPanel.add(gameTitleLabel, BorderLayout.CENTER);
+        mUndoPanel.add(mUndoButton, BorderLayout.WEST);
+        mUndoPanel.add(mGameTitleLabel, BorderLayout.CENTER);
 
-        layout.setConstraints(undoPanel, constraints);
-        mScoreCardPanel.add(undoPanel);
+        layout.setConstraints(mUndoPanel, constraints);
+        mScoreCardPanel.add(mUndoPanel);
 
-        var insets = new Insets(1, 1, 0, 0);
         constraints.gridwidth = 1;
         constraints.anchor = GridBagConstraints.LINE_START;
         constraints.fill = GridBagConstraints.BOTH;
-        constraints.insets = insets;
+        constraints.insets = headerInsets;
 
         for (int i = 0; i < mNumOfRows; i++) {
             constraints.gridy = i + 1;
@@ -360,15 +376,15 @@ public class ScoreCard {
             constraints.anchor = GridBagConstraints.LINE_START;
             constraints.fill = GridBagConstraints.BOTH;
             constraints.gridy = 0;
-            constraints.insets = insets;
+            constraints.insets = zeroInsets;
 
             var playerLabel = mPlayerColumns.get(i).getLabel();
             layout.setConstraints(playerLabel, constraints);
             mScoreCardPanel.add(playerLabel);
 
+            constraints.insets = cellInsets;
             for (int j = 0; j < mNumOfRows; j++) {
                 constraints.gridy = j + 1;
-
                 var label = column[j].getLabel();
                 layout.setConstraints(label, constraints);
                 mScoreCardPanel.add(label);

@@ -63,16 +63,21 @@ public class Header {
 
         for (int i = 0; i < mNumOfRows; i++) {
             boolean sum = mTitleColumn[i].getGameCell().isSum() || mTitleColumn[i].getGameCell().isBonus();
-            var color = sum ? mTheme.getSum() : mTheme.getHeader();
+            var colorBG = sum ? mTheme.getBgHeaderSum() : mTheme.getBgHeaderColumn();
+            var colorFG = sum ? mTheme.getFgHeaderSum() : mTheme.getFgHeaderColumn();
+            colorBG = GraphicsHelper.colorAddAlpha(colorBG, mTheme.getAlpha());
 
-            mTitleColumn[i].getLabel().setBackground(color);
-            mLimColumn[i].getLabel().setBackground(color);
-            mMaxColumn[i].getLabel().setBackground(color);
+            mTitleColumn[i].getLabel().setBackground(colorBG);
+            mTitleColumn[i].getLabel().setForeground(colorFG);
+            mLimColumn[i].getLabel().setBackground(colorBG);
+            mLimColumn[i].getLabel().setForeground(colorFG);
+            mMaxColumn[i].getLabel().setBackground(colorBG);
+            mMaxColumn[i].getLabel().setForeground(colorFG);
         }
     }
 
     void hoverRowEntered(int row) {
-        var color = GraphicsHelper.colorAndMask(mTheme.getHeader(), 0xEEEEEE);
+        var color = GraphicsHelper.colorAndMask(mTheme.getBgHeaderColumn(), 0xEEEEEE);
 
         mTitleColumn[row].getLabel().setBackground(color);
         mLimColumn[row].getLabel().setBackground(color);
@@ -80,9 +85,9 @@ public class Header {
     }
 
     void hoverRowExited(int row) {
-        mTitleColumn[row].getLabel().setBackground(mTheme.getHeader());
-        mLimColumn[row].getLabel().setBackground(mTheme.getHeader());
-        mMaxColumn[row].getLabel().setBackground(mTheme.getHeader());
+        mTitleColumn[row].getLabel().setBackground(mTheme.getBgHeaderColumn());
+        mLimColumn[row].getLabel().setBackground(mTheme.getBgHeaderColumn());
+        mMaxColumn[row].getLabel().setBackground(mTheme.getBgHeaderColumn());
     }
 
     private void init() {
@@ -127,10 +132,10 @@ public class Header {
             var limLabel = mLimColumn[i].getLabel();
             limLabel.setText(Integer.toString(mLimValues[i]));
 
-            String toolTip = "<html><h1>%s</h1></html>".formatted(Integer.toString(mLimValues[i]));
-            titleLabel.setToolTipText(toolTip);
-            maxLabel.setToolTipText(toolTip);
-            limLabel.setToolTipText(toolTip);
+//            String toolTip = "<html><h1>%s</h1></html>".formatted(Integer.toString(mLimValues[i]));
+//            titleLabel.setToolTipText(toolTip);
+//            maxLabel.setToolTipText(toolTip);
+//            limLabel.setToolTipText(toolTip);
         }
     }
 

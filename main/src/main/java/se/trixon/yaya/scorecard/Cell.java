@@ -70,7 +70,7 @@ public class Cell {
     public void clearPreview() {
         if (isPlayable() && !isRegistered()) {
             mLabel.setText("");
-            setCurrentBackgroundColor(mThemeManager.getTheme().getRow());
+            setCurrentBackgroundColor(mThemeManager.getTheme().getBgScoreCell());
             setBackground();
         }
     }
@@ -134,7 +134,7 @@ public class Cell {
 
     public void newGame() {
         mRegistered = false;
-        setCurrentBackgroundColor(mThemeManager.getTheme().getRow());
+        setCurrentBackgroundColor(mThemeManager.getTheme().getBgScoreCell());
         mLabel.setText("");
         mPreview = 0;
         mValue = 0;
@@ -162,14 +162,14 @@ public class Cell {
 
         if (mGameCell.isPlayable()) {
             mLabel.setFont(mLabel.getFont().deriveFont(Font.PLAIN));
-            setCurrentBackgroundColor(theme.getRow());
+            setCurrentBackgroundColor(theme.getBgScoreCell());
         }
 
         if (aState) {
             if (mGameCell.isSum() || mGameCell.isBonus()) {
-                mLabel.setBackground(theme.getSum());
+                mLabel.setBackground(theme.getBgHeaderSum());
             } else {
-                mLabel.setBackground(theme.getRow());
+                mLabel.setBackground(theme.getBgScoreCell());
             }
 
             if (mGameCell.isRollCounter()) {
@@ -179,9 +179,9 @@ public class Cell {
             enableHover();
         } else {
             if (mGameCell.isSum() || mGameCell.isBonus()) {
-                mLabel.setBackground(GraphicsHelper.colorAndMask(theme.getSum(), COLOR_MASK));
+                mLabel.setBackground(GraphicsHelper.colorAndMask(theme.getBgHeaderSum(), COLOR_MASK));
             } else {
-                mLabel.setBackground(GraphicsHelper.colorAndMask(theme.getRow(), COLOR_MASK));
+                mLabel.setBackground(GraphicsHelper.colorAndMask(theme.getBgScoreCell(), COLOR_MASK));
             }
 
             if (mGameCell.isRollCounter()) {
@@ -241,7 +241,7 @@ public class Cell {
                 setCurrentBackgroundColor(theme.getIndicatorHi());
             }
         } else {
-            setCurrentBackgroundColor(theme.getRow());
+            setCurrentBackgroundColor(theme.getBgScoreCell());
         }
 
         mLabel.setText(text);

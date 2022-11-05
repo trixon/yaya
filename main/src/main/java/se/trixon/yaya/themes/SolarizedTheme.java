@@ -29,12 +29,17 @@ public class SolarizedTheme extends Theme {
 
     @Override
     public Color getBackground() {
-        return Color.decode("#333333");
+        return Color.decode("#3333FF");
     }
 
     @Override
-    public Color getHeader() {
+    public Color getBgHeaderColumn() {
         return Color.decode("#b58900");
+    }
+
+    @Override
+    public Color getFgHeaderColumn() {
+        return mForeground;
     }
 
     @Override
@@ -58,17 +63,17 @@ public class SolarizedTheme extends Theme {
     }
 
     @Override
-    public Color getRow() {
+    public Color getBgScoreCell() {
         return Color.decode("#fdf6e3");
     }
 
     @Override
     public Color getScorecard() {
-        return Color.decode("#666666");
+        return Color.decode("#FF6666");
     }
 
     @Override
-    public Color getSum() {
+    public Color getBgHeaderSum() {
         return Color.decode("#073642");
     }
 

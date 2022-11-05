@@ -38,12 +38,17 @@ public class BlackTheme extends Theme {
     }
 
     @Override
-    public Color getHeader() {
+    public Color getBgHeaderColumn() {
         return Color.BLUE;
     }
 
     @Override
-    public Color getRow() {
+    public Color getFgHeaderColumn() {
+        return mForeground;
+    }
+
+    @Override
+    public Color getBgScoreCell() {
         return Color.BLACK;
     }
 

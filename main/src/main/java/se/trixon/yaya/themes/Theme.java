@@ -23,12 +23,52 @@ import java.awt.Color;
  */
 public abstract class Theme {
 
+    protected Color mForeground = Color.BLACK;
+
+    public int getAlpha() {
+        return 150;
+    }
+
+    /**
+     * The background color of the windows upper section, usually covered by the
+     * wooden surface
+     *
+     * @return
+     */
     public Color getBackground() {
         return Color.decode("#333333");
     }
 
-    public Color getHeader() {
-        return Color.decode("#FFC800");
+    public Color getBgHeaderColumn() {
+        return Color.decode("#fdf5e6");
+    }
+
+    public Color getBgHeaderRow() {
+        return Color.decode("#8b4513");
+    }
+
+    public Color getBgHeaderSum() {
+        return Color.decode("#c19a6b");
+    }
+
+    public Color getBgScoreCell() {
+        return Color.WHITE;
+    }
+
+    public Color getFgHeaderColumn() {
+        return mForeground;
+    }
+
+    public Color getFgHeaderRow() {
+        return Color.lightGray;
+    }
+
+    public Color getFgHeaderSum() {
+        return mForeground;
+    }
+
+    public Color getFgScoreCell() {
+        return mForeground;
     }
 
     public abstract String getId();
@@ -43,20 +83,16 @@ public abstract class Theme {
 
     public abstract String getName();
 
-    public Color getRow() {
-        return Color.decode("#FFFFFF");
-    }
-
+    /**
+     * The background color behind the scorecard, mostly invisible
+     *
+     * @return
+     */
     public Color getScorecard() {
         return Color.decode("#666666");
-    }
-
-    public Color getSum() {
-        return Color.decode("#FFFF00");
     }
 
     public Color getUndoIcon() {
         return Color.RED;
     }
-
 }
