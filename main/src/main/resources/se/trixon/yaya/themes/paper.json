@@ -1,0 +1,25 @@
+{
+    "id": "paper",
+    "name": "Plain paper",
+    "locals": {
+        "name-sv": "Enkelt papper"
+    },
+    "isOpagueScorecard": false,
+    "isOpagueWindow": false,
+    "BG_HeaderColumn": "DDFFFFFF",
+    "BG_HeaderRow": "DD000000",
+    "BG_HeaderSum": "DDEEEEEE",
+    "BG_ScoreCell": "DDFFFFFF",
+    "BG_IndicatorHi": "DDBBEEBB",
+    "BG_IndicatorLo": "DDEEBBBB",
+    "BG_Scorecard": "FF666666",
+    "BG_ScorecardFiller": "44000000",
+    "BG_Window": "ff333333",
+    "FG_HeaderColumn": "FF000000",
+    "FG_HeaderRow": "FFCCCCCC",
+    "FG_HeaderSum": "FF000000",
+    "FG_ScoreCell": "FF000000",
+    "FG_IndicatorHi": "FF000000",
+    "FG_IndicatorLo": "FF000000",
+    "ICON_Undo": "FFFF0000"
+}
