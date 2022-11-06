@@ -45,6 +45,8 @@ public class GameCell {
     private boolean mResult;
     @SerializedName("isRollCounter")
     private boolean mRollCounter;
+    @SerializedName("section")
+    private GameSection mSection;
     @SerializedName("isSum")
     private boolean mSum;
     @SerializedName("sum_rows")
@@ -74,6 +76,10 @@ public class GameCell {
 
     public int getMax() {
         return mMax;
+    }
+
+    public GameSection getSection() {
+        return mSection;
     }
 
     public String getSumRows() {
@@ -148,6 +154,10 @@ public class GameCell {
 
     public void setRollCounter(boolean rollCounter) {
         mRollCounter = rollCounter;
+    }
+
+    public void setSection(GameSection section) {
+        mSection = section;
     }
 
     public void setSum(boolean sum) {

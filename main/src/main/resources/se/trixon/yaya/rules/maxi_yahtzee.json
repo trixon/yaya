@@ -30,6 +30,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 1",
             "id": "ones",
             "lim": 3,
@@ -41,6 +42,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 2",
             "id": "twos",
             "lim": 6,
@@ -52,6 +54,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 3",
             "id": "threes",
             "lim": 9,
@@ -63,6 +66,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 4",
             "id": "fours",
             "lim": 12,
@@ -74,6 +78,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 5",
             "id": "fives",
             "lim": 15,
@@ -85,6 +90,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 6",
             "id": "sixes",
             "lim": 18,
@@ -118,6 +124,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "duplicates 2",
             "id": "onePair",
             "lim": 6,
@@ -129,6 +136,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "pair 2",
             "id": "twoPair",
             "lim": 12,
@@ -140,6 +148,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "pair 3",
             "id": "threePair",
             "lim": 16,
@@ -151,6 +160,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "duplicates 3",
             "id": "threeOfAKind",
             "lim": 12,
@@ -162,6 +172,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "duplicates 4",
             "id": "fourOfAKind",
             "lim": 16,
@@ -173,6 +184,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "duplicates 5",
             "id": "fiveOfAKind",
             "lim": 20,
@@ -184,6 +196,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "straight 5",
             "id": "smallStraight",
             "lim": 15,
@@ -195,6 +208,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "straight 5",
             "id": "largeStraight",
             "lim": 20,
@@ -206,6 +220,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "straight 6",
             "id": "fullStraight",
             "lim": 21,
@@ -217,6 +232,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "house 3 2",
             "id": "fullHouse",
             "lim": 16,
@@ -228,6 +244,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "house 3 3",
             "id": "villa",
             "lim": 21,
@@ -239,6 +256,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "house 4 2",
             "id": "tower",
             "lim": 26,
@@ -250,6 +268,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "sum",
             "id": "chance",
             "lim": 20,
@@ -261,6 +280,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "duplicates 5",
             "id": "yahtzee",
             "lim": 50,
@@ -272,6 +292,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "duplicates 6",
             "id": "maxi_yahtzee",
             "lim": 100,

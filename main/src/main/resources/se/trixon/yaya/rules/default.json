@@ -30,6 +30,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 1",
             "id": "ones",
             "lim": 3,
@@ -41,6 +42,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 2",
             "id": "twos",
             "lim": 6,
@@ -52,6 +54,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 3",
             "id": "threes",
             "lim": 9,
@@ -63,6 +66,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 4",
             "id": "fours",
             "lim": 12,
@@ -74,6 +78,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 5",
             "id": "fives",
             "lim": 15,
@@ -85,6 +90,7 @@
             }
         },
         {
+            "section": "UPPER",
             "formula": "sum 6",
             "id": "sixes",
             "lim": 18,
@@ -119,6 +125,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "duplicates 3",
             "id": "threeOfAKind",
             "lim": 12,
@@ -130,6 +137,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "duplicates 4",
             "id": "fourOfAKind",
             "lim": 16,
@@ -141,6 +149,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "straight 5",
             "id": "smallStraight",
             "lim": 15,
@@ -152,6 +161,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "straight 5",
             "id": "largeStraight",
             "lim": 20,
@@ -163,6 +173,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "house 3 2",
             "id": "fullHouse",
             "lim": 16,
@@ -174,6 +185,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "sum",
             "id": "chance",
             "lim": 20,
@@ -185,6 +197,7 @@
             }
         },
         {
+            "section": "LOWER",
             "formula": "duplicates 5",
             "id": "yahtzee",
             "lim": 50,
