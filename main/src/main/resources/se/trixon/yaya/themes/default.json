@@ -1,0 +1,25 @@
+{
+    "id": "default",
+    "name": "Default",
+    "locals": {
+        "name-sv": "Standard"
+    },
+    "isOpagueScorecard": false,
+    "isOpagueWindow": false,
+    "BG_HeaderColumn": "88fdf5e6",
+    "BG_HeaderRow": "888b4513",
+    "BG_HeaderSum": "88c19a6b",
+    "BG_ScoreCell": "AAFFFFFF",
+    "BG_IndicatorHi": "AABBEEBB",
+    "BG_IndicatorLo": "AAEEBBBB",
+    "BG_Scorecard": "FF666666",
+    "BG_ScorecardFiller": "44000000",
+    "BG_Window": "ff333333",
+    "FG_HeaderColumn": "FF000000",
+    "FG_HeaderRow": "FFCCCCCC",
+    "FG_HeaderSum": "FF000000",
+    "FG_ScoreCell": "FF000000",
+    "FG_IndicatorHi": "FF000000",
+    "FG_IndicatorLo": "FF000000",
+    "ICON_Undo": "FFFF0000"
+}

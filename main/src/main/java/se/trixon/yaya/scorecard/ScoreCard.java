@@ -16,7 +16,6 @@
 package se.trixon.yaya.scorecard;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -34,7 +33,6 @@ import javax.swing.SwingConstants;
 import org.apache.commons.lang3.StringUtils;
 import se.trixon.almond.util.CircularInt;
 import se.trixon.almond.util.Dict;
-import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.almond.util.icons.material.swing.MaterialIcon;
 import se.trixon.yaya.GameOverDialog;
 import se.trixon.yaya.GameOverItem;
@@ -130,6 +128,8 @@ public class ScoreCard {
 
     public void newRoll() {
         getActivePlayerColumn().clearPreview();
+        mScoreCardPanel.revalidate();
+        mScoreCardPanel.repaint();
     }
 
     public void parseDice(LinkedList<Integer> values) {
@@ -138,6 +138,8 @@ public class ScoreCard {
         getActivePlayerColumn().incNumOfRolls();
         getActivePlayerColumn().parse(values);
         getActivePlayerColumn().setVisibleIndicators(mOptions.isShowIndicators());
+        mScoreCardPanel.revalidate();
+        mScoreCardPanel.repaint();
     }
 
     public void setEnabledRegister(boolean enabled) {
@@ -192,11 +194,14 @@ public class ScoreCard {
 
     private void applyColors() {
         mTheme = mThemeManager.getTheme();
-        mScoreCardPanel.setBackground(mTheme.getScorecard());
-        mPanel.setBackground(mTheme.getBackground());
+
+        mPanel.setOpaque(mTheme.isOpaqueWindow());
+        mScoreCardPanel.setOpaque(mTheme.isOpaqueScorecard());
+        mScoreCardPanel.setBackground(mTheme.getBgScorecard());
+        mPanel.setBackground(mTheme.getBgWindow());
         mUndoPanel.setBackground(mTheme.getBgHeaderRow());
         mGameTitleLabel.setForeground(mTheme.getFgHeaderRow());
-        mFillerPanel.setBackground(GraphicsHelper.colorAddAlpha(Color.BLACK, mOptions.getOpacity()));
+        mFillerPanel.setBackground(mTheme.getBgScorecardFiller());
 
         applyUndoButtonStyle();
         mHeader.applyColors();
@@ -212,8 +217,6 @@ public class ScoreCard {
                 boolean sum = gameRow.isSum() || gameRow.isBonus();
                 var colorBG = sum ? mTheme.getBgHeaderSum() : mTheme.getBgScoreCell();
                 var colorFG = sum ? mTheme.getFgHeaderSum() : mTheme.getFgScoreCell();
-
-                colorBG = GraphicsHelper.colorAddAlpha(colorBG, mTheme.getAlpha());
 
                 var label = row.getLabel();
                 label.setBackground(colorBG);
@@ -243,7 +246,7 @@ public class ScoreCard {
     }
 
     private void applyUndoButtonStyle() {
-        var imageIcon = MaterialIcon._Content.UNDO.getImageIcon(mOptions.getFontSize(), mTheme.getUndoIcon());
+        var imageIcon = MaterialIcon._Content.UNDO.getImageIcon(mOptions.getFontSize(), mTheme.getIconUndo());
         mUndoButton.setIcon(imageIcon);
     }
 
@@ -276,7 +279,7 @@ public class ScoreCard {
         mOptions.getPreferences().addPreferenceChangeListener(pce -> {
             if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_INDICATORS)) {
                 setVisibleIndicators(mOptions.isShowIndicators());
-            } else if (StringUtils.equalsAny(pce.getKey(), Options.KEY_THEME, Options.KEY_OPACITY)) {
+            } else if (StringUtils.equalsAny(pce.getKey(), Options.KEY_THEME)) {
                 applyColors();
             } else if (pce.getKey().equalsIgnoreCase(Options.KEY_FONT_SIZE)) {
                 applyFontSize(mPanel, mOptions.getFontSize());
@@ -312,8 +315,6 @@ public class ScoreCard {
         borderPanel.add(mScoreCardPanel, BorderLayout.CENTER);
         borderPanel.add(mFillerPanel, BorderLayout.SOUTH);
         mPanel.add(borderPanel);
-        mPanel.setOpaque(false);//TODO Add this as an option to toggle wooden structure
-        mScoreCardPanel.setOpaque(false);
 
         var layout = new GridBagLayout();
         mScoreCardPanel.setLayout(layout);

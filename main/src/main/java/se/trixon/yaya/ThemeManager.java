@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import org.openide.util.Lookup;
 import se.trixon.yaya.themes.Theme;
-import se.trixon.yaya.themes.DefaultTheme;
+import se.trixon.yaya.themes.ThemeProvider;
+import se.trixon.yaya.themes.ThemeProviderDefault;
 
 /**
  *
@@ -27,7 +28,7 @@ import se.trixon.yaya.themes.DefaultTheme;
  */
 public class ThemeManager {
 
-    private final ArrayList<Theme> mItems;
+    private final ArrayList<Theme> mItems = new ArrayList<>();
     private final Options mOptions = Options.getInstance();
     private Theme mTheme;
 
@@ -36,7 +37,11 @@ public class ThemeManager {
     }
 
     private ThemeManager() {
-        mItems = new ArrayList<>(Lookup.getDefault().lookupAll(Theme.class));
+        for (var themeProvider : Lookup.getDefault().lookupAll(ThemeProvider.class)) {
+            Yaya.outln(Yaya.LOG_TITLE, "Found Theme in %s.".formatted(themeProvider.getId()));
+            mItems.add(themeProvider.load());
+        }
+
         mItems.sort(Comparator.comparing(Theme::getName));
 
         loadTheme();
@@ -65,7 +70,7 @@ public class ThemeManager {
         }
 
         if (mTheme == null) {
-            mTheme = new DefaultTheme();
+            mTheme = new ThemeProviderDefault().load();
         }
     }
 

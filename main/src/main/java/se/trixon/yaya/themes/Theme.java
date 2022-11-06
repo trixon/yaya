@@ -15,18 +15,95 @@
  */
 package se.trixon.yaya.themes;
 
+import com.google.gson.annotations.SerializedName;
 import java.awt.Color;
+import java.util.HashMap;
+import se.trixon.yaya.Yaya;
 
 /**
  *
  * @author Patrik Karlström <patrik@trixon.se>
  */
-public abstract class Theme {
+public class Theme {
 
-    protected Color mForeground = Color.BLACK;
+    @SerializedName("BG_HeaderColumn")
+    private Color mBgHeaderColumn;
+    @SerializedName("BG_HeaderRow")
+    private Color mBgHeaderRow;
+    @SerializedName("BG_HeaderSum")
+    private Color mBgHeaderSum;
+    @SerializedName("BG_IndicatorHi")
+    private Color mBgIndicatorHi;
+    @SerializedName("BG_IndicatorLo")
+    private Color mBgIndicatorLo;
+    @SerializedName("BG_ScoreCell")
+    private Color mBgScoreCell;
+    @SerializedName("BG_Scorecard")
+    private Color mBgScorecard;
+    @SerializedName("BG_ScorecardFiller")
+    private Color mBgScorecardFiller;
+    @SerializedName("BG_Window")
+    private Color mBgWindow;
+    @SerializedName("FG_HeaderColumn")
+    private Color mFgHeaderColumn;
+    @SerializedName("FG_HeaderRow")
+    private Color mFgHeaderRow;
+    @SerializedName("FG_HeaderSum")
+    private Color mFgHeaderSum;
+    @SerializedName("FG_IndicatorHi")
+    private Color mFgIndicatorHi;
+    @SerializedName("FG_IndicatorLo")
+    private Color mFgIndicatorLo;
+    @SerializedName("FG_ScoreCell")
+    private Color mFgScoreCell;
+    @SerializedName("ICON_Undo")
+    private Color mIconUndo;
+    @SerializedName("id")
+    private String mId;
+    @SerializedName("locals")
+    private final HashMap<String, String> mLocals = new HashMap<>();
+    @SerializedName("name")
+    private String mName;
+    @SerializedName("isOpagueScorecard")
+    private boolean mOpaqueScorecard;
+    @SerializedName("isOpagueWindow")
+    private boolean mOpaqueWindow;
 
-    public int getAlpha() {
-        return 150;
+    public Color getBgHeaderColumn() {
+        return mBgHeaderColumn;
+    }
+
+    public Color getBgHeaderRow() {
+        return mBgHeaderRow;
+    }
+
+    public Color getBgHeaderSum() {
+        return mBgHeaderSum;
+    }
+
+    public Color getBgIndicatorHi() {
+        return mBgIndicatorHi;
+    }
+
+    public Color getBgIndicatorLo() {
+        return mBgIndicatorLo;
+    }
+
+    public Color getBgScoreCell() {
+        return mBgScoreCell;
+    }
+
+    /**
+     * The background color behind the scorecard, mostly invisible
+     *
+     * @return
+     */
+    public Color getBgScorecard() {
+        return mBgScorecard;
+    }
+
+    public Color getBgScorecardFiller() {
+        return mBgScorecardFiller;
     }
 
     /**
@@ -35,64 +112,55 @@ public abstract class Theme {
      *
      * @return
      */
-    public Color getBackground() {
-        return Color.decode("#333333");
-    }
-
-    public Color getBgHeaderColumn() {
-        return Color.decode("#fdf5e6");
-    }
-
-    public Color getBgHeaderRow() {
-        return Color.decode("#8b4513");
-    }
-
-    public Color getBgHeaderSum() {
-        return Color.decode("#c19a6b");
-    }
-
-    public Color getBgScoreCell() {
-        return Color.WHITE;
+    public Color getBgWindow() {
+        return mBgWindow;
     }
 
     public Color getFgHeaderColumn() {
-        return mForeground;
+        return mFgHeaderColumn;
     }
 
     public Color getFgHeaderRow() {
-        return Color.lightGray;
+        return mFgHeaderRow;
     }
 
     public Color getFgHeaderSum() {
-        return mForeground;
+        return mFgHeaderSum;
+    }
+
+    public Color getFgIndicatorHi() {
+        return mFgIndicatorHi;
+    }
+
+    public Color getFgIndicatorLo() {
+        return mFgIndicatorLo;
     }
 
     public Color getFgScoreCell() {
-        return mForeground;
+        return mFgScoreCell;
     }
 
-    public abstract String getId();
-
-    public Color getIndicatorHi() {
-        return Color.decode("#BBEEBB");
+    public Color getIconUndo() {
+        return mIconUndo;
     }
 
-    public Color getIndicatorLo() {
-        return Color.decode("#EEBBBB");
+    public String getId() {
+        return mId;
     }
 
-    public abstract String getName();
-
-    /**
-     * The background color behind the scorecard, mostly invisible
-     *
-     * @return
-     */
-    public Color getScorecard() {
-        return Color.decode("#666666");
+    public HashMap<String, String> getLocals() {
+        return mLocals;
     }
 
-    public Color getUndoIcon() {
-        return Color.RED;
+    public String getName() {
+        return mLocals.getOrDefault("name" + Yaya.getLanguageSuffix(), mName);
+    }
+
+    public boolean isOpaqueScorecard() {
+        return mOpaqueScorecard;
+    }
+
+    public boolean isOpaqueWindow() {
+        return mOpaqueWindow;
     }
 }

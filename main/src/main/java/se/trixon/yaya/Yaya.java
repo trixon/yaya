@@ -17,11 +17,13 @@ package se.trixon.yaya;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
 import org.openide.util.ImageUtilities;
 import se.trixon.almond.nbp.Monitor;
 import se.trixon.almond.util.SystemHelper;
+import se.trixon.almond.util.gson_adapter.AwtColorAdapter;
 
 /**
  *
@@ -33,6 +35,7 @@ public class Yaya {
             .setVersion(1.0)
             .serializeNulls()
             .setPrettyPrinting()
+            .registerTypeAdapter(Color.class, new AwtColorAdapter())
             .create();
 
     public static final String LOG_TITLE = "Yaya";

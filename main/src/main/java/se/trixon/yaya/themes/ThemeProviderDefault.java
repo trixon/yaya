@@ -15,41 +15,16 @@
  */
 package se.trixon.yaya.themes;
 
-import java.awt.Color;
-import org.openide.util.NbBundle;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author Patrik Karlström <patrik@trixon.se>
  */
-@NbBundle.Messages("THEME_Black=Black")
-@ServiceProvider(service = Theme.class)
-public class BlackTheme extends Theme {
+@ServiceProvider(service = ThemeProvider.class)
+public class ThemeProviderDefault extends ThemeProvider {
 
-    @Override
-    public String getId() {
-        return "black";
+    public ThemeProviderDefault() {
+        super("default.json");
     }
-
-    @Override
-    public String getName() {
-        return Bundle.THEME_Black();
-    }
-
-    @Override
-    public Color getBgHeaderColumn() {
-        return Color.BLUE;
-    }
-
-    @Override
-    public Color getFgHeaderColumn() {
-        return mForeground;
-    }
-
-    @Override
-    public Color getBgScoreCell() {
-        return Color.BLACK;
-    }
-
 }

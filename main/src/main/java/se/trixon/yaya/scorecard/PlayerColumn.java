@@ -118,6 +118,8 @@ public class PlayerColumn {
                     rolls += " (" + mScoreCard.getNumOfRolls() + "/" + maxRolls + ")";
                 }
                 row.getLabel().setText(rolls);
+                row.getLabel().revalidate();
+                row.getLabel().repaint();
             }
 
             String formula = row.getGameCell().getFormula();

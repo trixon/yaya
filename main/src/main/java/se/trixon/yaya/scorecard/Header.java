@@ -65,12 +65,13 @@ public class Header {
             boolean sum = mTitleColumn[i].getGameCell().isSum() || mTitleColumn[i].getGameCell().isBonus();
             var colorBG = sum ? mTheme.getBgHeaderSum() : mTheme.getBgHeaderColumn();
             var colorFG = sum ? mTheme.getFgHeaderSum() : mTheme.getFgHeaderColumn();
-            colorBG = GraphicsHelper.colorAddAlpha(colorBG, mTheme.getAlpha());
 
             mTitleColumn[i].getLabel().setBackground(colorBG);
             mTitleColumn[i].getLabel().setForeground(colorFG);
+
             mLimColumn[i].getLabel().setBackground(colorBG);
             mLimColumn[i].getLabel().setForeground(colorFG);
+
             mMaxColumn[i].getLabel().setBackground(colorBG);
             mMaxColumn[i].getLabel().setForeground(colorFG);
         }
@@ -82,12 +83,18 @@ public class Header {
         mTitleColumn[row].getLabel().setBackground(color);
         mLimColumn[row].getLabel().setBackground(color);
         mMaxColumn[row].getLabel().setBackground(color);
+
+        mTitleColumn[row].getLabel().getParent().revalidate();
+        mTitleColumn[row].getLabel().getParent().repaint();
     }
 
     void hoverRowExited(int row) {
         mTitleColumn[row].getLabel().setBackground(mTheme.getBgHeaderColumn());
         mLimColumn[row].getLabel().setBackground(mTheme.getBgHeaderColumn());
         mMaxColumn[row].getLabel().setBackground(mTheme.getBgHeaderColumn());
+
+        mTitleColumn[row].getLabel().getParent().revalidate();
+        mTitleColumn[row].getLabel().getParent().repaint();
     }
 
     private void init() {

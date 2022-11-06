@@ -15,25 +15,16 @@
  */
 package se.trixon.yaya.themes;
 
-import org.openide.util.NbBundle;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author Patrik Karlström <patrik@trixon.se>
  */
-@NbBundle.Messages("THEME_Default=Default")
-@ServiceProvider(service = Theme.class)
-public class DefaultTheme extends Theme {
+@ServiceProvider(service = ThemeProvider.class)
+public class ThemeProviderTron extends ThemeProvider {
 
-    @Override
-    public String getId() {
-        return "default";
+    public ThemeProviderTron() {
+        super("tron.json");
     }
-
-    @Override
-    public String getName() {
-        return Bundle.THEME_Default();
-    }
-
 }

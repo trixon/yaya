@@ -127,16 +127,6 @@ public final class MainTopComponent extends TopComponent {
             radioButtonMenuItem.setSelected(mOptions.getThemeId().equalsIgnoreCase(theme.getId()));
         }
 
-        var opacitySlider = new JSlider(0, 255, mOptions.getOpacity());
-        var opacityResetRunner = new DelayedResetRunner(50, () -> {
-            mOptions.setOpacity(opacitySlider.getValue());
-        });
-
-        opacitySlider.addChangeListener(changeEvent -> {
-            opacityResetRunner.reset();
-        });
-        showMenu.add(opacitySlider);
-
         var fontMenuItem = new JMenuItem(Dict.SIZE.toString());
         fontMenuItem.setEnabled(false);
         showMenu.add(fontMenuItem);
@@ -168,7 +158,6 @@ public final class MainTopComponent extends TopComponent {
         limCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         maxCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         indicatorCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
-        opacityMenuItem = new javax.swing.JMenuItem();
         colorsMenu = new javax.swing.JMenu();
         optionsMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -223,10 +212,6 @@ public final class MainTopComponent extends TopComponent {
         });
         showMenu.add(indicatorCheckBoxMenuItem);
 
-        org.openide.awt.Mnemonics.setLocalizedText(opacityMenuItem, Dict.OPACITY.toString());
-        opacityMenuItem.setEnabled(false);
-        showMenu.add(opacityMenuItem);
-
         popupMenu.add(showMenu);
 
         org.openide.awt.Mnemonics.setLocalizedText(colorsMenu, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.colorsMenu.text")); // NOI18N
@@ -273,7 +258,6 @@ public final class MainTopComponent extends TopComponent {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JCheckBoxMenuItem maxCheckBoxMenuItem;
     private javax.swing.JMenuItem newMenuItem;
-    private javax.swing.JMenuItem opacityMenuItem;
     private javax.swing.JMenuItem optionsMenuItem;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JMenuItem quitMenuItem;

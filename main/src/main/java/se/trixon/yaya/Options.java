@@ -33,7 +33,6 @@ public class Options extends OptionsBase {
     public static final String KEY_FONT_SIZE = "font.size";
     public static final String KEY_GAME_START_COUNTER = "game.start_counter";
     public static final String KEY_NUM_OF_PLAYERS = "numOfPlayers";
-    public static final String KEY_OPACITY = "opacity";
     public static final String KEY_PLAYERS = "players";
     public static final String KEY_PLAYERS_ALL = "players.all";
     public static final String KEY_REVERSE_DIRECTION = "reverseDirection";
@@ -45,7 +44,6 @@ public class Options extends OptionsBase {
     private static final int DEFAULT_FONT_SIZE = 12;
     private static final String DEFAULT_GAME_VARIANT = "standard";
     private static final int DEFAULT_NUM_OF_PLAYERS = 2;
-    private static final int DEFAULT_OPACITY = 64;
     private static final boolean DEFAULT_REVERSE_DIRECTION = false;
     private static final String DEFAULT_RULE_ID = "default";
     private static final boolean DEFAULT_SHOW_INDICATORS = true;
@@ -87,10 +85,6 @@ public class Options extends OptionsBase {
 
     public int getNumOfPlayers() {
         return getInt(KEY_NUM_OF_PLAYERS, DEFAULT_NUM_OF_PLAYERS);
-    }
-
-    public int getOpacity() {
-        return getInt(KEY_OPACITY, DEFAULT_OPACITY);
     }
 
     public Player[] getPlayers() {
@@ -143,10 +137,6 @@ public class Options extends OptionsBase {
 
     public void setNumOfPlayers(int players) {
         put(KEY_NUM_OF_PLAYERS, players);
-    }
-
-    public void setOpacity(int value) {
-        put(KEY_OPACITY, value);
     }
 
     public void setPlayers(Player[] players) {

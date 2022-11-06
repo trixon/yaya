@@ -1,0 +1,25 @@
+{
+    "id": "tron",
+    "name": "Tron",
+    "locals": {
+        "name-sv": "Tron"
+    },
+    "isOpagueScorecard": true,
+    "isOpagueWindow": true,
+    "BG_HeaderColumn": "FF303030",
+    "BG_HeaderRow": "FFC724B1",
+    "BG_HeaderSum": "FF44D62C",
+    "BG_ScoreCell": "FFFFFFFF",
+    "BG_IndicatorHi": "FFBBEEBB",
+    "BG_IndicatorLo": "FFEEBBBB",
+    "BG_Scorecard": "FF00FFFF",
+    "BG_ScorecardFiller": "00000000",
+    "BG_Window": "FF000033",
+    "FG_HeaderColumn": "FF5555FF",
+    "FG_HeaderRow": "FFCCCCCC",
+    "FG_HeaderSum": "FF000000",
+    "FG_ScoreCell": "FF000000",
+    "FG_IndicatorHi": "FF000000",
+    "FG_IndicatorLo": "FF000000",
+    "ICON_Undo": "FFFF0000"
+}

@@ -236,9 +236,9 @@ public class Cell {
             mLabel.setHorizontalAlignment(SwingConstants.LEADING);
 
             if (mPreview < mGameCell.getLim()) {
-                setCurrentBackgroundColor(theme.getIndicatorLo());
+                setCurrentBackgroundColor(theme.getBgIndicatorLo());
             } else {
-                setCurrentBackgroundColor(theme.getIndicatorHi());
+                setCurrentBackgroundColor(theme.getBgIndicatorHi());
             }
         } else {
             setCurrentBackgroundColor(theme.getBgScoreCell());
