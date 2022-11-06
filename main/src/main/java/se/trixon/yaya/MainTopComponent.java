@@ -75,6 +75,7 @@ public final class MainTopComponent extends TopComponent {
         int gameStartCounter = mOptions.getPreferences().getInt(Options.KEY_GAME_START_COUNTER, 0);
         if (gameStartCounter == 0) {
             SwingHelper.runLaterDelayed(200, () -> {
+                Actions.forID("Yaya", "se.trixon.yaya.actions.HelpAction").actionPerformed(null);
                 Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction").actionPerformed(null);
             });
         } else {
