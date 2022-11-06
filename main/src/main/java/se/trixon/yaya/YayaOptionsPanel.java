@@ -15,8 +15,6 @@
  */
 package se.trixon.yaya;
 
-import javax.swing.event.ChangeListener;
-
 final class YayaOptionsPanel extends javax.swing.JPanel {
 
     private final YayaOptionsPanelController mController;
@@ -25,15 +23,6 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
     YayaOptionsPanel(YayaOptionsPanelController controller) {
         mController = controller;
         initComponents();
-        ChangeListener changeListener = changeEvent -> {
-            boolean changed = reverseDirectionCheckBox.isSelected() != mOptions.isReverseDirection();
-
-            if (changed) {
-            }
-            mController.changed();
-        };
-
-        reverseDirectionCheckBox.addChangeListener(changeListener);
     }
 
     /**
@@ -44,34 +33,22 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        reverseDirectionCheckBox = new javax.swing.JCheckBox();
-
-        org.openide.awt.Mnemonics.setLocalizedText(reverseDirectionCheckBox, org.openide.util.NbBundle.getMessage(YayaOptionsPanel.class, "YayaOptionsPanel.reverseDirectionCheckBox.text")); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(reverseDirectionCheckBox)
-                .addContainerGap(303, Short.MAX_VALUE))
+            .addGap(0, 543, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(155, 155, 155)
-                .addComponent(reverseDirectionCheckBox)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 192, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     void load() {
-        reverseDirectionCheckBox.setSelected(mOptions.isReverseDirection());
     }
 
     void store() {
-        mOptions.setReverseDirection(reverseDirectionCheckBox.isSelected());
     }
 
     boolean valid() {
@@ -80,6 +57,5 @@ final class YayaOptionsPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox reverseDirectionCheckBox;
     // End of variables declaration//GEN-END:variables
 }

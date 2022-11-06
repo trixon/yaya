@@ -18,6 +18,7 @@ package se.trixon.yaya;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
@@ -115,6 +116,8 @@ public final class MainTopComponent extends TopComponent {
         limCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
         maxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
 
+        reverseDiceDirectionCheckBoxMenuItem.setSelected(mOptions.isReverseDirection());
+
         var buttonGroup = new ButtonGroup();
         for (var theme : mThemeManager.getItems()) {
             var radioButtonMenuItem = new JRadioButtonMenuItem(theme.getName());
@@ -129,7 +132,7 @@ public final class MainTopComponent extends TopComponent {
 
         var fontMenuItem = new JMenuItem(Dict.SIZE.toString());
         fontMenuItem.setEnabled(false);
-        showMenu.add(fontMenuItem);
+        scorecardMenu.add(fontMenuItem);
 
         var fontSlider = new JSlider(8, 72, mOptions.getFontSize());
         var fontResetRunner = new DelayedResetRunner(50, () -> {
@@ -139,7 +142,9 @@ public final class MainTopComponent extends TopComponent {
         fontSlider.addChangeListener(changeEvent -> {
             fontResetRunner.reset();
         });
-        showMenu.add(fontSlider);
+        scorecardMenu.add(fontSlider);
+
+        optionsMenuItem.setVisible(false);
     }
 
     /**
@@ -153,12 +158,14 @@ public final class MainTopComponent extends TopComponent {
         popupMenu = new javax.swing.JPopupMenu();
         newMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        showMenu = new javax.swing.JMenu();
-        fullscreenCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        scorecardMenu = new javax.swing.JMenu();
+        colorsMenu = new javax.swing.JMenu();
         limCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         maxCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         indicatorCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
-        colorsMenu = new javax.swing.JMenu();
+        diceMenu = new javax.swing.JMenu();
+        reverseDiceDirectionCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
+        fullscreenCheckBoxMenuItem = new javax.swing.JCheckBoxMenuItem();
         optionsMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         helpMenuItem = new javax.swing.JMenuItem();
@@ -170,17 +177,10 @@ public final class MainTopComponent extends TopComponent {
         popupMenu.add(newMenuItem);
         popupMenu.add(jSeparator1);
 
-        org.openide.awt.Mnemonics.setLocalizedText(showMenu, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.showMenu.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(scorecardMenu, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.scorecardMenu.text")); // NOI18N
 
-        fullscreenCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
-        fullscreenCheckBoxMenuItem.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(fullscreenCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.fullscreenCheckBoxMenuItem.text")); // NOI18N
-        fullscreenCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fullscreenCheckBoxMenuItemActionPerformed(evt);
-            }
-        });
-        showMenu.add(fullscreenCheckBoxMenuItem);
+        org.openide.awt.Mnemonics.setLocalizedText(colorsMenu, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.colorsMenu.text")); // NOI18N
+        scorecardMenu.add(colorsMenu);
 
         limCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         limCheckBoxMenuItem.setSelected(true);
@@ -190,7 +190,7 @@ public final class MainTopComponent extends TopComponent {
                 limCheckBoxMenuItemActionPerformed(evt);
             }
         });
-        showMenu.add(limCheckBoxMenuItem);
+        scorecardMenu.add(limCheckBoxMenuItem);
 
         maxCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
         maxCheckBoxMenuItem.setSelected(true);
@@ -200,7 +200,7 @@ public final class MainTopComponent extends TopComponent {
                 maxCheckBoxMenuItemActionPerformed(evt);
             }
         });
-        showMenu.add(maxCheckBoxMenuItem);
+        scorecardMenu.add(maxCheckBoxMenuItem);
 
         indicatorCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         indicatorCheckBoxMenuItem.setSelected(true);
@@ -210,12 +210,32 @@ public final class MainTopComponent extends TopComponent {
                 indicatorCheckBoxMenuItemActionPerformed(evt);
             }
         });
-        showMenu.add(indicatorCheckBoxMenuItem);
+        scorecardMenu.add(indicatorCheckBoxMenuItem);
 
-        popupMenu.add(showMenu);
+        popupMenu.add(scorecardMenu);
 
-        org.openide.awt.Mnemonics.setLocalizedText(colorsMenu, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.colorsMenu.text")); // NOI18N
-        popupMenu.add(colorsMenu);
+        org.openide.awt.Mnemonics.setLocalizedText(diceMenu, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.diceMenu.text")); // NOI18N
+
+        reverseDiceDirectionCheckBoxMenuItem.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(reverseDiceDirectionCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.reverseDiceDirectionCheckBoxMenuItem.text")); // NOI18N
+        reverseDiceDirectionCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reverseDiceDirectionCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
+        diceMenu.add(reverseDiceDirectionCheckBoxMenuItem);
+
+        popupMenu.add(diceMenu);
+
+        fullscreenCheckBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
+        fullscreenCheckBoxMenuItem.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(fullscreenCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.fullscreenCheckBoxMenuItem.text")); // NOI18N
+        fullscreenCheckBoxMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fullscreenCheckBoxMenuItemActionPerformed(evt);
+            }
+        });
+        popupMenu.add(fullscreenCheckBoxMenuItem);
         popupMenu.add(optionsMenuItem);
         popupMenu.add(jSeparator2);
         popupMenu.add(helpMenuItem);
@@ -245,9 +265,14 @@ public final class MainTopComponent extends TopComponent {
         Actions.forID("Yaya", "se.trixon.yaya.actions.ShowMaxAction").actionPerformed(evt);
     }//GEN-LAST:event_maxCheckBoxMenuItemActionPerformed
 
+    private void reverseDiceDirectionCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reverseDiceDirectionCheckBoxMenuItemActionPerformed
+        mOptions.setReverseDirection(((JCheckBoxMenuItem) evt.getSource()).isSelected());
+    }//GEN-LAST:event_reverseDiceDirectionCheckBoxMenuItemActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenu colorsMenu;
+    private javax.swing.JMenu diceMenu;
     private javax.swing.JCheckBoxMenuItem fullscreenCheckBoxMenuItem;
     private javax.swing.JMenuItem helpMenuItem;
     private javax.swing.JCheckBoxMenuItem indicatorCheckBoxMenuItem;
@@ -261,7 +286,8 @@ public final class MainTopComponent extends TopComponent {
     private javax.swing.JMenuItem optionsMenuItem;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JMenuItem quitMenuItem;
-    private javax.swing.JMenu showMenu;
+    private javax.swing.JCheckBoxMenuItem reverseDiceDirectionCheckBoxMenuItem;
+    private javax.swing.JMenu scorecardMenu;
     // End of variables declaration//GEN-END:variables
 
     void writeProperties(java.util.Properties p) {

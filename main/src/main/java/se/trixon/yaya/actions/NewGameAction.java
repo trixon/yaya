@@ -37,7 +37,7 @@ import se.trixon.yaya.Yaya;
         displayName = "#CTL_NewGameAction"
 )
 @ActionReferences({
-    @ActionReference(path = "Shortcuts", name = "D-N")
+    @ActionReference(path = "Shortcuts", name = "N")
 })
 @Messages("CTL_NewGameAction=New game")
 public final class NewGameAction implements ActionListener {

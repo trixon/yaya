@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +18,6 @@ package se.trixon.yaya.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.openide.awt.ActionID;
-import org.openide.awt.ActionReference;
-import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.awt.Actions;
 import org.openide.util.NbBundle.Messages;
@@ -31,9 +29,9 @@ import org.openide.util.NbBundle.Messages;
 @ActionRegistration(
         displayName = "#CTL_OptionsAction"
 )
-@ActionReferences({
-    @ActionReference(path = "Shortcuts", name = "D-COMMA")
-})
+//@ActionReferences({
+//    @ActionReference(path = "Shortcuts", name = "D-COMMA")
+//})
 @Messages("CTL_OptionsAction=Options")
 public final class OptionsAction implements ActionListener {
 
