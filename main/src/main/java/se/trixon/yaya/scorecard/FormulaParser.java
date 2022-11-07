@@ -115,6 +115,50 @@ public class FormulaParser {
         return result;
     }
 
+    private int calcSequence(int sizeOfSequence) {
+        var diceValues = new ArrayList<>(new TreeSet<>(mDiceValues));
+        var setOfLists = new TreeSet<ArrayList<Integer>>((o1, o2) -> {
+            return o2.size() - o1.size();
+        });
+
+        var list = new ArrayList<Integer>();
+
+        for (int i = 0; i < diceValues.size() - 1; i++) {
+            if (diceValues.get(i) == diceValues.get(i + 1) - 1) {
+                list.add(diceValues.get(i));
+            } else {
+                if (!list.isEmpty()) {
+                    setOfLists.add(list);
+                    list = new ArrayList<>();
+                }
+            }
+        }
+
+        if (!list.isEmpty()) {
+            int lastDiceValue = diceValues.get(diceValues.size() - 1);
+            int lastListValue = list.get(list.size() - 1);
+            if (lastDiceValue == lastListValue + 1) {
+                list.add(lastDiceValue);
+            }
+            setOfLists.add(list);
+        }
+
+        int score = 0;
+
+        if (!setOfLists.isEmpty()) {
+            var largestSequence = setOfLists.first();
+            if (largestSequence.size() >= sizeOfSequence) {
+                if (mArgList.size() > 3) {
+                    score = Integer.parseInt(mArgList.get(3));
+                } else {
+                    score = calcSumTotal(largestSequence);
+                }
+            }
+        }
+
+        return score;
+    }
+
     private int calcSum(int arg0, int arg1) {
         int sum = calcSumTotal(mDiceValues);
         int size = mArgList.size();
@@ -261,6 +305,9 @@ public class FormulaParser {
 
             case PAIR ->
                 result = calcPair(arg0);
+
+            case SEQUENCE ->
+                result = calcSequence(arg0);
 
             case STRAIGHT ->
                 result = getStraight(arg0);

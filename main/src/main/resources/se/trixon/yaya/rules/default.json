@@ -150,10 +150,10 @@
         },
         {
             "section": "LOWER",
-            "formula": "straight 5",
+            "formula": "sequence 4 0 0 30",
             "id": "smallStraight",
-            "lim": 15,
-            "max": 15,
+            "lim": 30,
+            "max": 30,
             "isPlayable": true,
             "title": "Small Straight",
             "locals": {
@@ -162,10 +162,10 @@
         },
         {
             "section": "LOWER",
-            "formula": "straight 5",
+            "formula": "sequence 5 0 0 40",
             "id": "largeStraight",
-            "lim": 20,
-            "max": 20,
+            "lim": 40,
+            "max": 40,
             "isPlayable": true,
             "title": "Large Straight",
             "locals": {
