@@ -31,7 +31,6 @@ public class PlayerColumn {
 
     private boolean mActive;
     private int mCurrentScore;
-    private ArrayList<Integer> mDice;
     private final JLabel mLabel = new JLabel("NONAME");
     private int mNumOfRolls;
     private final Options mOptions = Options.getInstance();
@@ -108,9 +107,7 @@ public class PlayerColumn {
         setRollCounterLabel();
     }
 
-    public void parse(ArrayList<Integer> values) {
-        mDice = values;
-
+    public void parse(ArrayList<Integer> diceValues) {
         for (var row : mRows) {
             var gameCell = row.getGameCell();
 
@@ -126,7 +123,7 @@ public class PlayerColumn {
             }
 
             if (!gameCell.getFormula().isEmpty() && !row.isRegistered()) {
-                row.setPreview(mFormulaParser.parseFormula(mDice, gameCell));
+                row.setPreview(mFormulaParser.parseFormula(diceValues, gameCell));
             }
             row.enableInput();
         }

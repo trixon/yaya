@@ -131,11 +131,11 @@ public class ScoreCard {
         mScoreCardPanel.repaint();
     }
 
-    public void parseDice(ArrayList<Integer> values) {
+    public void parseDice(ArrayList<Integer> diceValues) {
         setEnabledRegister(true);
         mNumOfRolls++;
         getActivePlayerColumn().incNumOfRolls();
-        getActivePlayerColumn().parse(values);
+        getActivePlayerColumn().parse(diceValues);
         getActivePlayerColumn().setVisibleIndicators(mOptions.isShowIndicators());
         mScoreCardPanel.revalidate();
         mScoreCardPanel.repaint();

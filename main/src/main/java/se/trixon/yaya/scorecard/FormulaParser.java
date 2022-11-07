@@ -16,7 +16,9 @@
 package se.trixon.yaya.scorecard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.TreeSet;
 import se.trixon.yaya.rules.GameCell;
 
@@ -26,15 +28,15 @@ import se.trixon.yaya.rules.GameCell;
  */
 public class FormulaParser {
 
-    private final ArrayList<Integer> mArgList = new ArrayList<>();
-    private ArrayList<Integer> mDiceList;
+    private final ArrayList<String> mArgList = new ArrayList<>();
+    private ArrayList<Integer> mDiceValues;
     private GameCell mGameCell;
 
     public FormulaParser() {
     }
 
-    public int parseFormula(ArrayList<Integer> values, GameCell gameCell) {
-        mDiceList = values;
+    public int parseFormula(ArrayList<Integer> diceValues, GameCell gameCell) {
+        mDiceValues = diceValues;
         mGameCell = gameCell;
 
         var formulaString = mGameCell.getFormula();
@@ -43,11 +45,12 @@ public class FormulaParser {
         mArgList.clear();
 
         for (int i = 1; i < parseString.length; i++) {
-            mArgList.add(Integer.valueOf(parseString[i]));
+            mArgList.add(parseString[i]);
         }
 
         int result = -1;
         try {
+            System.out.println(">%s<".formatted(command));
             var formula = Formula.valueOf(command.toUpperCase());
             result = processFormula(formula);
         } catch (IllegalArgumentException e) {
@@ -57,8 +60,22 @@ public class FormulaParser {
         return result;
     }
 
+    private int calcEquals() {
+        var diceValues = new ArrayList<>(mDiceValues);
+        Collections.sort(diceValues);
+        var values = new ArrayList<>(Arrays.stream(mArgList.get(0).split(",")).map(Integer::parseInt).sorted().toList());
+
+        for (int i = 0; i < values.size(); i++) {
+            if (!Objects.equals(values.get(i), diceValues.get(i))) {
+                return 0;
+            }
+        }
+
+        return Integer.parseInt(mArgList.get(1));
+    }
+
     private int getDuplicates(int numOfDuplicates, int face) {
-        int freq = Collections.frequency(mDiceList, face);
+        int freq = Collections.frequency(mDiceValues, face);
         int result = 0;
         if (freq >= numOfDuplicates) {
             result = numOfDuplicates * face;
@@ -72,7 +89,7 @@ public class FormulaParser {
         int cnt;
 
         for (int i = 6; i > 0; i--) {
-            cnt = Collections.frequency(mDiceList, i);
+            cnt = Collections.frequency(mDiceValues, i);
             if (cnt >= numOfDuplicates) {
                 result = numOfDuplicates * i;
                 if (mGameCell.getMax() == mGameCell.getLim()) {
@@ -145,7 +162,7 @@ public class FormulaParser {
         int result = 0;
         var sortedSet = new TreeSet<Integer>();
 
-        for (var integer : mDiceList) {
+        for (var integer : mDiceValues) {
             sortedSet.add(integer);
         }
 
@@ -172,37 +189,53 @@ public class FormulaParser {
 
     private int getSum() {
         int result = 0;
-        for (int face : mDiceList) {
+        for (int face : mDiceValues) {
             result += face;
         }
         return result;
     }
 
     private int getSumOf(int face) {
-        return face * Collections.frequency(mDiceList, face);
+        return face * Collections.frequency(mDiceValues, face);
     }
 
     private int processFormula(Formula formula) {
         int result = -1;
+        int arg0 = -1;
+        int arg1 = -1;
+
+        if (!mArgList.isEmpty()) {
+            try {
+                arg0 = Integer.parseInt(mArgList.get(0));
+            } catch (IllegalArgumentException e) {
+                //nvm it's ok
+            }
+            if (mArgList.size() > 1) {
+                arg1 = Integer.parseInt(mArgList.get(1));
+            }
+        }
 
         switch (formula) {
+            case EQUALS ->
+                result = calcEquals();
+
             case DUPLICATES ->
-                result = getDuplicates(mArgList.get(0));
+                result = getDuplicates(arg0);
 
             case HOUSE ->
-                result = getHouse(mArgList.get(0), mArgList.get(1));
+                result = getHouse(arg0, arg1);
 
             case PAIR ->
-                result = getPair(mArgList.get(0));
+                result = getPair(arg0);
 
             case STRAIGHT ->
-                result = getStraight(mArgList.get(0));
+                result = getStraight(arg0);
 
             case SUM -> {
                 if (mArgList.isEmpty()) {
                     result = getSum();
                 } else {
-                    result = getSumOf(mArgList.get(0));
+                    result = getSumOf(arg0);
                 }
             }
         }
@@ -211,11 +244,14 @@ public class FormulaParser {
     }
 
     public enum Formula {
-
+        CRAG,
         DUPLICATES,
+        EQUALS,
         HOUSE,
         PAIR,
+        SEQUENCE,
         STRAIGHT,
         SUM,
+        SUM_N,
     }
 }

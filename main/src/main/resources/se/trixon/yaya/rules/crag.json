@@ -5,8 +5,8 @@
     "locals": {
         "title-sv": "Klippan"
     },
-    "numOfDice": 3,
-    "numOfRolls": 2,
+    "dice": 3,
+    "rolls": 99,
     "defaultVariant": 0,
     "variants": [
         "STANDARD",
@@ -18,6 +18,8 @@
     "rows": [
         {
             "id": "rolls",
+            "lim": 0,
+            "max": 26,
             "title": "Throws",
             "isSum": true,
             "isRollCounter": true,
@@ -173,6 +175,7 @@
             "title": "Grand total",
             "isSum": true,
             "isResult": true,
+            "lim": 0,
             "max": 171,
             "sum_rows": "1-13",
             "locals": {
