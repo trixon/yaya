@@ -33,7 +33,7 @@
             "isPlayable": true,
             "lim": 50,
             "max": 50,
-            "formula": "crag 50",
+            "formula": "custom_crag 50",
             "locals": {
                 "title-sv": "Klippan"
             }

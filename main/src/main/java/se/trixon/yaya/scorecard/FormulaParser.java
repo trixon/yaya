@@ -59,6 +59,24 @@ public class FormulaParser {
         return result;
     }
 
+    private int calcCustomCrag(int score) {
+        if (calcPair(1) > 0 && calcSumTotal(mDiceValues) == 13) {
+            return score;
+        } else {
+            return 0;
+        }
+    }
+
+    private int calcDuplicates(int numOfDuplicates, int face) {
+        int freq = Collections.frequency(mDiceValues, face);
+        int result = 0;
+        if (freq >= numOfDuplicates) {
+            result = numOfDuplicates * face;
+        }
+
+        return result;
+    }
+
     private int calcEquals() {
         var diceValues = new ArrayList<>(mDiceValues);
         Collections.sort(diceValues);
@@ -73,6 +91,30 @@ public class FormulaParser {
         return Integer.parseInt(mArgList.get(1));
     }
 
+    private int calcPair(int numOfPairs) {
+        int result = 0;
+        int pairCounter = 0;
+        int startFace = 6;
+
+        for (int i = 0; i < numOfPairs; i++) {
+            for (int j = startFace; j > 0; j--) {
+                int pairSum = calcDuplicates(2, j);
+                if (pairSum > 0) {
+                    result += pairSum;
+                    pairCounter++;
+                    startFace = j - 1;
+                    break;
+                }
+            }
+        }
+
+        if (pairCounter < numOfPairs) {
+            result = 0;
+        }
+
+        return result;
+    }
+
     private int calcSum(int arg0, int arg1) {
         int sum = calcSumTotal(mDiceValues);
         int size = mArgList.size();
@@ -85,7 +127,7 @@ public class FormulaParser {
             return arg1;
         }
 
-        return -1;
+        return 0;
     }
 
     private int calcSumN(int numOfDuplicates) {
@@ -107,16 +149,6 @@ public class FormulaParser {
 
     private int calcSumTotal(ArrayList<Integer> values) {
         return values.stream().mapToInt(Integer::intValue).sum();
-    }
-
-    private int getDuplicates(int numOfDuplicates, int face) {
-        int freq = Collections.frequency(mDiceValues, face);
-        int result = 0;
-        if (freq >= numOfDuplicates) {
-            result = numOfDuplicates * face;
-        }
-
-        return result;
     }
 
     private int getDuplicates(int numOfDuplicates) {
@@ -169,30 +201,6 @@ public class FormulaParser {
         return result;
     }
 
-    private int getPair(int numOfPairs) {
-        int result = 0;
-        int pairCounter = 0;
-        int startFace = 6;
-
-        for (int i = 0; i < numOfPairs; i++) {
-            for (int j = startFace; j > 0; j--) {
-                int pairSum = getDuplicates(2, j);
-                if (pairSum > 0) {
-                    result += pairSum;
-                    pairCounter++;
-                    startFace = j - 1;
-                    break;
-                }
-            }
-        }
-
-        if (pairCounter < numOfPairs) {
-            result = 0;
-        }
-
-        return result;
-    }
-
     private int getStraight(int sizeOfStraight) {
         int result = 0;
         var sortedSet = new TreeSet<Integer>();
@@ -239,17 +247,20 @@ public class FormulaParser {
         }
 
         switch (formula) {
-            case EQUALS ->
-                result = calcEquals();
+            case CUSTOM_CRAG ->
+                result = calcCustomCrag(arg0);
 
             case DUPLICATES ->
                 result = getDuplicates(arg0);
+
+            case EQUALS ->
+                result = calcEquals();
 
             case HOUSE ->
                 result = getHouse(arg0, arg1);
 
             case PAIR ->
-                result = getPair(arg0);
+                result = calcPair(arg0);
 
             case STRAIGHT ->
                 result = getStraight(arg0);
@@ -265,7 +276,7 @@ public class FormulaParser {
     }
 
     public enum Formula {
-        CRAG,
+        CUSTOM_CRAG,
         DUPLICATES,
         EQUALS,
         HOUSE,
