@@ -1,0 +1,25 @@
+{
+    "id": "legacy",
+    "name": "Legacy",
+    "locals": {
+        "name-sv": "Legat"
+    },
+    "isOpagueScorecard": false,
+    "isOpagueWindow": false,
+    "BG_HeaderColumn": "FFffc71f",
+    "BG_HeaderRow": "FF444444",
+    "BG_HeaderSum": "FFFFFF00",
+    "BG_ScoreCell": "FFFFFFFF",
+    "BG_IndicatorHi": "FFaaffaa",
+    "BG_IndicatorLo": "FFffaaaa",
+    "BG_Scorecard": "FFFFFFFF",
+    "BG_ScorecardFiller": "44000000",
+    "BG_Window": "FF000033",
+    "FG_HeaderColumn": "FF000000",
+    "FG_HeaderRow": "FFeac423",
+    "FG_HeaderSum": "FF000000",
+    "FG_ScoreCell": "FF000000",
+    "FG_IndicatorHi": "00000000",
+    "FG_IndicatorLo": "00000000",
+    "ICON_Undo": "FFeac423"
+}
