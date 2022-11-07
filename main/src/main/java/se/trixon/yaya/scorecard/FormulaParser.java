@@ -50,7 +50,6 @@ public class FormulaParser {
 
         int result = -1;
         try {
-            System.out.println(">%s<".formatted(command));
             var formula = Formula.valueOf(command.toUpperCase());
             result = processFormula(formula);
         } catch (IllegalArgumentException e) {
@@ -72,6 +71,42 @@ public class FormulaParser {
         }
 
         return Integer.parseInt(mArgList.get(1));
+    }
+
+    private int calcSum(int arg0, int arg1) {
+        int sum = calcSumTotal(mDiceValues);
+        int size = mArgList.size();
+
+        if (size == 0) {
+            return sum;
+        } else if (size == 1) {
+            return calcSumOf(arg0);
+        } else if (size == 2 && arg0 == sum) {
+            return arg1;
+        }
+
+        return -1;
+    }
+
+    private int calcSumN(int numOfDuplicates) {
+        int freq = 0;
+        for (int i = 1; i < 7; i++) {
+            freq = Math.max(freq, Collections.frequency(mDiceValues, i));
+        }
+
+        if (freq >= numOfDuplicates) {
+            return calcSumTotal(mDiceValues);
+        } else {
+            return 0;
+        }
+    }
+
+    private int calcSumOf(int face) {
+        return face * Collections.frequency(mDiceValues, face);
+    }
+
+    private int calcSumTotal(ArrayList<Integer> values) {
+        return values.stream().mapToInt(Integer::intValue).sum();
     }
 
     private int getDuplicates(int numOfDuplicates, int face) {
@@ -109,7 +144,7 @@ public class FormulaParser {
         var minorList = new ArrayList<Integer>();
 
         for (int i = 6; i > 0; i--) {
-            int sum = getSumOf(i);
+            int sum = calcSumOf(i);
             int freq = sum / i;
 
             if (freq >= majorPart) {
@@ -187,18 +222,6 @@ public class FormulaParser {
         return result;
     }
 
-    private int getSum() {
-        int result = 0;
-        for (int face : mDiceValues) {
-            result += face;
-        }
-        return result;
-    }
-
-    private int getSumOf(int face) {
-        return face * Collections.frequency(mDiceValues, face);
-    }
-
     private int processFormula(Formula formula) {
         int result = -1;
         int arg0 = -1;
@@ -231,13 +254,11 @@ public class FormulaParser {
             case STRAIGHT ->
                 result = getStraight(arg0);
 
-            case SUM -> {
-                if (mArgList.isEmpty()) {
-                    result = getSum();
-                } else {
-                    result = getSumOf(arg0);
-                }
-            }
+            case SUM ->
+                result = calcSum(arg0, arg1);
+
+            case SUM_N ->
+                result = calcSumN(arg0);
         }
 
         return result;
