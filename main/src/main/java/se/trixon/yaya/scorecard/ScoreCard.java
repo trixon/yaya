@@ -23,7 +23,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -61,8 +60,8 @@ public class ScoreCard {
     private final ScoreCardObservable mObservable = new ScoreCardObservable();
     private final Options mOptions = Options.getInstance();
     private final JPanel mPanel = new JPanel();
-    private final LinkedList<PlayerColumn> mPlayerColumns = new LinkedList<>();
-    private LinkedList<PlayerColumn> mPlayerPositions;
+    private final ArrayList<PlayerColumn> mPlayerColumns = new ArrayList<>();
+    private ArrayList<PlayerColumn> mPlayerPositions;
     private boolean mRegisterable;
     private final Rule mRule;
     private final RuleManager mRuleManager = RuleManager.getInstance();
@@ -132,7 +131,7 @@ public class ScoreCard {
         mScoreCardPanel.repaint();
     }
 
-    public void parseDice(LinkedList<Integer> values) {
+    public void parseDice(ArrayList<Integer> values) {
         setEnabledRegister(true);
         mNumOfRolls++;
         getActivePlayerColumn().incNumOfRolls();
@@ -414,7 +413,7 @@ public class ScoreCard {
     }
 
     private void updatePolePosition() {
-//        mPlayerPositions = (LinkedList<PlayerColumn>) mPlayerColumns.clone();
+//        mPlayerPositions = (ArrayList<PlayerColumn>) mPlayerColumns.clone();
 //        var pcc = new PlayerColumnComparator(PlayerColumnComparator.DESCENDING);
 //        Collections.sort(mPlayerPositions, pcc);
 //

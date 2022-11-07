@@ -15,8 +15,8 @@
  */
 package se.trixon.yaya.scorecard;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.TreeSet;
 import se.trixon.yaya.rules.GameCell;
 
@@ -26,22 +26,27 @@ import se.trixon.yaya.rules.GameCell;
  */
 public class FormulaParser {
 
-    private static final LinkedList<Integer> sArgList = new LinkedList<>();
-    private static LinkedList<Integer> sDiceList;
-    private static GameCell sGameCell;
+    private final ArrayList<Integer> mArgList = new ArrayList<>();
+    private ArrayList<Integer> mDiceList;
+    private GameCell mGameCell;
 
-    public static int parseFormula(String formulaString, LinkedList<Integer> values, GameCell gameCell) {
-        sDiceList = values;
-        sGameCell = gameCell;
-        int result = -1;
-        String[] parseString = formulaString.split(" ");
-        String command = parseString[0];
-        sArgList.clear();
+    public FormulaParser() {
+    }
+
+    public int parseFormula(ArrayList<Integer> values, GameCell gameCell) {
+        mDiceList = values;
+        mGameCell = gameCell;
+
+        var formulaString = mGameCell.getFormula();
+        var parseString = formulaString.split(" ");
+        var command = parseString[0];
+        mArgList.clear();
 
         for (int i = 1; i < parseString.length; i++) {
-            sArgList.add(Integer.valueOf(parseString[i]));
+            mArgList.add(Integer.valueOf(parseString[i]));
         }
 
+        int result = -1;
         try {
             var formula = Formula.valueOf(command.toUpperCase());
             result = processFormula(formula);
@@ -52,8 +57,8 @@ public class FormulaParser {
         return result;
     }
 
-    private static int getDuplicates(int numOfDuplicates, int face) {
-        int freq = Collections.frequency(sDiceList, face);
+    private int getDuplicates(int numOfDuplicates, int face) {
+        int freq = Collections.frequency(mDiceList, face);
         int result = 0;
         if (freq >= numOfDuplicates) {
             result = numOfDuplicates * face;
@@ -62,16 +67,16 @@ public class FormulaParser {
         return result;
     }
 
-    private static int getDuplicates(int numOfDuplicates) {
+    private int getDuplicates(int numOfDuplicates) {
         int result = 0;
         int cnt;
 
         for (int i = 6; i > 0; i--) {
-            cnt = Collections.frequency(sDiceList, i);
+            cnt = Collections.frequency(mDiceList, i);
             if (cnt >= numOfDuplicates) {
                 result = numOfDuplicates * i;
-                if (sGameCell.getMax() == sGameCell.getLim()) {
-                    result = sGameCell.getMax();
+                if (mGameCell.getMax() == mGameCell.getLim()) {
+                    result = mGameCell.getMax();
                 }
                 break;
             }
@@ -80,11 +85,11 @@ public class FormulaParser {
         return result;
     }
 
-    private static int getHouse(int majorPart, int minorPart) {
+    private int getHouse(int majorPart, int minorPart) {
         int result = 0;
 
-        var majorList = new LinkedList<Integer>();
-        var minorList = new LinkedList<Integer>();
+        var majorList = new ArrayList<Integer>();
+        var minorList = new ArrayList<Integer>();
 
         for (int i = 6; i > 0; i--) {
             int sum = getSumOf(i);
@@ -112,7 +117,7 @@ public class FormulaParser {
         return result;
     }
 
-    private static int getPair(int numOfPairs) {
+    private int getPair(int numOfPairs) {
         int result = 0;
         int pairCounter = 0;
         int startFace = 6;
@@ -136,11 +141,11 @@ public class FormulaParser {
         return result;
     }
 
-    private static int getStraight(int sizeOfStraight) {
+    private int getStraight(int sizeOfStraight) {
         int result = 0;
         var sortedSet = new TreeSet<Integer>();
 
-        for (var integer : sDiceList) {
+        for (var integer : mDiceList) {
             sortedSet.add(integer);
         }
 
@@ -152,12 +157,12 @@ public class FormulaParser {
             }
 
             if (sortedSet.size() > sizeOfStraight) {
-                if (setSum >= sGameCell.getLim()) {
-                    result = sGameCell.getMax();
+                if (setSum >= mGameCell.getLim()) {
+                    result = mGameCell.getMax();
                 }
             } else {
-                if (setSum == sGameCell.getLim()) {
-                    result = sGameCell.getMax();
+                if (setSum == mGameCell.getLim()) {
+                    result = mGameCell.getMax();
                 }
             }
         }
@@ -165,47 +170,44 @@ public class FormulaParser {
         return result;
     }
 
-    private static int getSum() {
+    private int getSum() {
         int result = 0;
-        for (int face : sDiceList) {
+        for (int face : mDiceList) {
             result += face;
         }
         return result;
     }
 
-    private static int getSumOf(int face) {
-        return face * Collections.frequency(sDiceList, face);
+    private int getSumOf(int face) {
+        return face * Collections.frequency(mDiceList, face);
     }
 
-    private static int processFormula(Formula formula) {
+    private int processFormula(Formula formula) {
         int result = -1;
 
         switch (formula) {
             case DUPLICATES ->
-                result = getDuplicates(sArgList.get(0));
+                result = getDuplicates(mArgList.get(0));
 
             case HOUSE ->
-                result = getHouse(sArgList.get(0), sArgList.get(1));
+                result = getHouse(mArgList.get(0), mArgList.get(1));
 
             case PAIR ->
-                result = getPair(sArgList.get(0));
+                result = getPair(mArgList.get(0));
 
             case STRAIGHT ->
-                result = getStraight(sArgList.get(0));
+                result = getStraight(mArgList.get(0));
 
             case SUM -> {
-                if (sArgList.isEmpty()) {
+                if (mArgList.isEmpty()) {
                     result = getSum();
                 } else {
-                    result = getSumOf(sArgList.get(0));
+                    result = getSumOf(mArgList.get(0));
                 }
             }
         }
 
         return result;
-    }
-
-    private FormulaParser() {
     }
 
     public enum Formula {

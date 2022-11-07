@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  */
 package se.trixon.yaya.dice;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Observable;
 import javax.swing.JPanel;
 import se.trixon.yaya.Player.Handedness;
@@ -26,7 +26,7 @@ import se.trixon.yaya.Player.Handedness;
  */
 public class DiceBoard extends Observable {
 
-    private final LinkedList<Die> mDice;
+    private final ArrayList<Die> mDice;
     private final DiceBoardPanel mDiceBoardPanel;
     private boolean mDiceOnFloor = false;
     private Thread mDieWatcherThread;
@@ -41,7 +41,7 @@ public class DiceBoard extends Observable {
     public DiceBoard(int numOfDice) {
         mRoller = new Roller(this);
         mPainter = new Painter(this);
-        mDice = new LinkedList<>();
+        mDice = new ArrayList<>();
         mDiceBoardPanel = new DiceBoardPanel();
         setNumOfDice(numOfDice);
         init();
@@ -65,31 +65,18 @@ public class DiceBoard extends Observable {
     }
 
     public synchronized int getNumOfSelectedDice() {
-        int result = 0;
+        int selectionCount = (int) mDice.stream().filter(die -> die.isSelected()).count();
+        mRoller.setImage(selectionCount);
 
-        for (Die die : mDice) {
-            if (die.isSelected()) {
-                result++;
-            }
-        }
-
-        mRoller.setImage(result);
-
-        return result;
+        return selectionCount;
     }
 
     public JPanel getPanel() {
         return mDiceBoardPanel;
     }
 
-    public LinkedList<Integer> getValues() {
-        LinkedList<Integer> values = new LinkedList<>();
-
-        mDice.forEach((die) -> {
-            values.add(die.getValue());
-        });
-
-        return values;
+    public ArrayList<Integer> getValues() {
+        return new ArrayList<>(mDice.stream().map(d -> d.getValue()).toList());
     }
 
     public void newTurn() {
@@ -108,7 +95,7 @@ public class DiceBoard extends Observable {
         mRoller.roll();
         mDiceOnFloor = false;
 
-        mDice.forEach((die) -> {
+        mDice.forEach(die -> {
             die.roll();
         });
 
@@ -118,7 +105,7 @@ public class DiceBoard extends Observable {
     }
 
     public void setDiceTofloor(int frequency) {
-        mDice.forEach((die) -> {
+        mDice.forEach(die -> {
             die.setDiceTofloor(frequency);
         });
     }
@@ -139,7 +126,7 @@ public class DiceBoard extends Observable {
         mPainter.setRollable(false);
         mPainter.setSelectable(false);
 
-        mDice.forEach((die) -> {
+        mDice.forEach(die -> {
             die.setVisible(true);
             die.setEnabled(false);
         });
@@ -149,33 +136,7 @@ public class DiceBoard extends Observable {
         notifyObservers(RollEvent.POST_ROLL);
     }
 
-    private void endOfTurn() {
-        mDice.forEach((die) -> {
-            die.park();
-            die.setEnabled(false);
-        });
-    }
-
-    private void init() {
-        mDiceBoardPanel.add(mPainter);
-    }
-
-    private void reset() {
-        mDice.forEach((die) -> {
-            die.reset();
-        });
-    }
-
-    private void setNumOfDice(int numOfDice) {
-        mNumOfDice = numOfDice;
-        mDice.clear();
-
-        for (int i = 0; i < numOfDice; i++) {
-            mDice.add(new Die(this, i));
-        }
-    }
-
-    LinkedList<Die> getDice() {
+    ArrayList<Die> getDice() {
         return mDice;
     }
 
@@ -225,6 +186,32 @@ public class DiceBoard extends Observable {
         mDiceOnFloor = diceOnFloor;
     }
 
+    private void endOfTurn() {
+        mDice.forEach(die -> {
+            die.park();
+            die.setEnabled(false);
+        });
+    }
+
+    private void init() {
+        mDiceBoardPanel.add(mPainter);
+    }
+
+    private void reset() {
+        mDice.forEach(die -> {
+            die.reset();
+        });
+    }
+
+    private void setNumOfDice(int numOfDice) {
+        mNumOfDice = numOfDice;
+        mDice.clear();
+
+        for (int i = 0; i < numOfDice; i++) {
+            mDice.add(new Die(this, i));
+        }
+    }
+
     public enum RollEvent {
 
         PRE_ROLL,
@@ -235,7 +222,7 @@ public class DiceBoard extends Observable {
 
         @Override
         public void run() {
-            mDice.forEach((die) -> {
+            mDice.forEach(die -> {
                 try {
                     die.getAnimator().join();
                 } catch (InterruptedException ex) {

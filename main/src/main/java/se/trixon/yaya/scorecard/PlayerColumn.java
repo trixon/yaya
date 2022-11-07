@@ -15,7 +15,7 @@
  */
 package se.trixon.yaya.scorecard;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Stack;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -31,7 +31,7 @@ public class PlayerColumn {
 
     private boolean mActive;
     private int mCurrentScore;
-    private LinkedList<Integer> mDice;
+    private ArrayList<Integer> mDice;
     private final JLabel mLabel = new JLabel("NONAME");
     private int mNumOfRolls;
     private final Options mOptions = Options.getInstance();
@@ -41,6 +41,7 @@ public class PlayerColumn {
     private Cell[] mRows;
     private final Rule mRule;
     private final ScoreCard mScoreCard;
+    private final FormulaParser mFormulaParser = new FormulaParser();
 
     public PlayerColumn(ScoreCard scoreCard, int playOrder, Rule rule) {
         mScoreCard = scoreCard;
@@ -107,11 +108,13 @@ public class PlayerColumn {
         setRollCounterLabel();
     }
 
-    public void parse(LinkedList<Integer> values) {
+    public void parse(ArrayList<Integer> values) {
         mDice = values;
 
         for (var row : mRows) {
-            if (row.getGameCell().isRollCounter()) {
+            var gameCell = row.getGameCell();
+
+            if (gameCell.isRollCounter()) {
                 String rolls = Integer.toString(getNumOfRolls());
                 int maxRolls = mRule.getNumOfRolls();
                 if (maxRolls > 0) {
@@ -122,9 +125,8 @@ public class PlayerColumn {
                 row.getLabel().repaint();
             }
 
-            String formula = row.getGameCell().getFormula();
-            if (!formula.isEmpty() && !row.isRegistered()) {
-                row.setPreview(FormulaParser.parseFormula(formula, mDice, row.getGameCell()));
+            if (!gameCell.getFormula().isEmpty() && !row.isRegistered()) {
+                row.setPreview(mFormulaParser.parseFormula(mDice, gameCell));
             }
             row.enableInput();
         }
@@ -138,7 +140,7 @@ public class PlayerColumn {
     public void setEnabled(boolean aState) {
         mActive = aState;
         String text = (mNumOfRolls == 0) ? "0" : Integer.toString(mNumOfRolls);
-
+        //TODO Implement variants
         for (var row : mRows) {
             row.setEnabled(aState);
             if (row.getGameCell().isRollCounter()) {
