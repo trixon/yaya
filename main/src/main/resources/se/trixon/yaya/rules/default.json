@@ -126,7 +126,7 @@
         },
         {
             "section": "LOWER",
-            "formula": "duplicates 3",
+            "formula": "sum_n 3",
             "id": "threeOfAKind",
             "lim": 12,
             "max": 18,
@@ -138,7 +138,7 @@
         },
         {
             "section": "LOWER",
-            "formula": "duplicates 4",
+            "formula": "sum_n 4",
             "id": "fourOfAKind",
             "lim": 16,
             "max": 24,
@@ -176,8 +176,8 @@
             "section": "LOWER",
             "formula": "house 3 2",
             "id": "fullHouse",
-            "lim": 16,
-            "max": 28,
+            "lim": 25,
+            "max": 25,
             "isPlayable": true,
             "title": "Full House",
             "locals": {

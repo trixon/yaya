@@ -91,6 +91,42 @@ public class FormulaParser {
         return Integer.parseInt(mArgList.get(1));
     }
 
+    private int calcHouse(int majorPart, int minorPart) {
+        int result = 0;
+
+        var majorList = new ArrayList<Integer>();
+        var minorList = new ArrayList<Integer>();
+
+        for (int i = 6; i > 0; i--) {
+            int sum = calcSumOf(i);
+            int freq = sum / i;
+
+            if (freq >= majorPart) {
+                if (!majorList.isEmpty()) {
+                    if (i > Collections.max(majorList)) {
+                        majorList.add(i);
+                    }
+                } else {
+                    majorList.add(i);
+                }
+            }
+
+            if ((freq >= minorPart) && (majorList.indexOf(i) == -1)) {
+                minorList.add(i);
+            }
+        }
+
+        if (!majorList.isEmpty() && !minorList.isEmpty()) {
+            if (mGameCell.getLim() == mGameCell.getMax()) {
+                result = mGameCell.getMax();
+            } else {
+                result = majorPart * Collections.max(majorList) + minorPart * Collections.max(minorList);
+            }
+        }
+
+        return result;
+    }
+
     private int calcPair(int numOfPairs) {
         int result = 0;
         int pairCounter = 0;
@@ -213,38 +249,6 @@ public class FormulaParser {
         return result;
     }
 
-    private int getHouse(int majorPart, int minorPart) {
-        int result = 0;
-
-        var majorList = new ArrayList<Integer>();
-        var minorList = new ArrayList<Integer>();
-
-        for (int i = 6; i > 0; i--) {
-            int sum = calcSumOf(i);
-            int freq = sum / i;
-
-            if (freq >= majorPart) {
-                if (!majorList.isEmpty()) {
-                    if (i > Collections.max(majorList)) {
-                        majorList.add(i);
-                    }
-                } else {
-                    majorList.add(i);
-                }
-            }
-
-            if ((freq >= minorPart) && (majorList.indexOf(i) == -1)) {
-                minorList.add(i);
-            }
-        }
-
-        if (!majorList.isEmpty() && !minorList.isEmpty()) {
-            result = majorPart * Collections.max(majorList) + minorPart * Collections.max(minorList);
-        }
-
-        return result;
-    }
-
     private int getStraight(int sizeOfStraight) {
         int result = 0;
         var sortedSet = new TreeSet<Integer>();
@@ -301,7 +305,7 @@ public class FormulaParser {
                 result = calcEquals();
 
             case HOUSE ->
-                result = getHouse(arg0, arg1);
+                result = calcHouse(arg0, arg1);
 
             case PAIR ->
                 result = calcPair(arg0);
