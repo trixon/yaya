@@ -19,149 +19,165 @@
         {
             "id": "rolls",
             "title": "Throws",
-            "title-sv": "Slag",
             "isSum": true,
-            "isRollCounter": true
+            "isRollCounter": true,
+            "locals": {
+                "title-sv": "Slag"
+            }
         },
         {
             "id": "crag",
             "title": "Crag",
-            "title-sv": "Klippan",
-            "titleSym": "◼ ◼ ◻=13",
             "isPlayable": true,
             "lim": 50,
             "max": 50,
-            "formula": "crag 50"
+            "formula": "crag 50",
+            "locals": {
+                "title-sv": "Klippan"
+            }
         },
         {
             "id": "thirteen",
             "title": "thirteen",
-            "title-sv": "Tretton",
-            "titleSym": "� � �=13",
             "isPlayable": true,
             "lim": 26,
             "max": 26,
-            "formula": "sum 13 26"
+            "formula": "sum 13 26",
+            "locals": {
+                "title-sv": "Tretton"
+            }
         },
         {
             "id": "high_straight",
             "title": "High Straight",
-            "title-sv": "Hög stege",
-            "titleSym": "⚃ ⚄ ⚅",
             "isPlayable": true,
             "lim": 20,
             "max": 20,
-            "formula": "equals 4,5,6 20"
+            "formula": "equals 4,5,6 20",
+            "locals": {
+                "title-sv": "Hög stege"
+            }
         },
         {
             "id": "low_straight",
             "title": "Low Straight",
-            "title-sv": "Låg stege",
-            "titleSym": "⚀ ⚁ ⚂",
             "isPlayable": true,
             "lim": 20,
             "max": 20,
-            "formula": "equals 1,2,3 20"
+            "formula": "equals 1,2,3 20",
+            "locals": {
+                "title-sv": "Låg stege"
+            }
         },
         {
             "id": "even_straight",
             "title": "Even Straight",
-            "title-sv": "Jämn stege",
-            "titleSym": "⚁ ⚃ ⚅",
             "isPlayable": true,
             "lim": 20,
             "max": 20,
-            "formula": "equals 2,4,6 20"
+            "formula": "equals 2,4,6 20",
+            "locals": {
+                "title-sv": "Jämn stege"
+            }
         },
         {
             "id": "odd_straight",
             "title": "Odd Straight",
-            "title-sv": "Udda stege",
-            "titleSym": "⚀ ⚂ ⚄",
             "isPlayable": true,
             "lim": 20,
             "max": 20,
-            "formula": "equals 1,3,5 20"
+            "formula": "equals 1,3,5 20",
+            "locals": {
+                "title-sv": "Udda stege"
+            }
         },
         {
             "id": "triple",
             "title": "Triple",
-            "title-sv": "Trippel",
-            "titleSym": "◼ ◼ ◼",
             "isPlayable": true,
             "lim": 12,
             "max": 18,
-            "formula": "sum_n 3"
+            "formula": "sum_n 3",
+            "locals": {
+                "title-sv": "Trippel"
+            }
         },
         {
             "id": "sixes",
             "title": "Sixes",
-            "title-sv": "Sexor",
-            "titleSym": "⚅",
             "isPlayable": true,
             "lim": 12,
             "max": 30,
-            "formula": "sum 6"
+            "formula": "sum 6",
+            "locals": {
+                "title-sv": "Sexor"
+            }
         },
         {
             "id": "fives",
             "title": "Fives",
-            "title-sv": "Femmor",
-            "titleSym": "⚄",
             "isPlayable": true,
             "lim": 10,
             "max": 25,
-            "formula": "sum 5"
+            "formula": "sum 5",
+            "locals": {
+                "title-sv": "Femmor"
+            }
         },
         {
             "id": "fours",
             "title": "Fours",
-            "title-sv": "Fyror",
-            "titleSym": "⚃",
             "isPlayable": true,
             "lim": 8,
             "max": 20,
-            "formula": "sum 4"
+            "formula": "sum 4",
+            "locals": {
+                "title-sv": "Fyror"
+            }
         },
         {
             "id": "threes",
             "title": "Threes",
-            "title-sv": "Treor",
-            "titleSym": "⚂",
             "isPlayable": true,
             "lim": 6,
             "max": 15,
-            "formula": "sum 3"
+            "formula": "sum 3",
+            "locals": {
+                "title-sv": "Treor"
+            }
         },
         {
             "id": "twos",
             "title": "Twos",
-            "title-sv": "Tvåor",
-            "titleSym": "⚁",
             "isPlayable": true,
             "lim": 4,
             "max": 10,
-            "formula": "sum 2"
+            "formula": "sum 2",
+            "locals": {
+                "title-sv": "Tvåor"
+            }
         },
         {
             "id": "ones",
             "title": "Ones",
-            "title-sv": "Ettor",
-            "titleSym": "⚀",
             "isPlayable": true,
             "lim": 2,
             "max": 5,
-            "formula": "sum 1"
+            "formula": "sum 1",
+            "locals": {
+                "title-sv": "Ettor"
+            }
         },
         {
             "id": "total",
             "title": "Grand total",
-            "title-sv": "Totalsumma",
-            "titleSym": "∑",
             "isSum": true,
             "isResult": true,
             "max": 171,
-            "sum_rows": "2-14"
+            "sum_rows": "1-13",
+            "locals": {
+                "title-sv": "Totalsumma"
+            }
         }
     ]
 }
