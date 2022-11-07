@@ -14,9 +14,6 @@
         "LOWER_UPPER",
         "RANDOM"
     ],
-    "locals": {
-        "title-sv": "Yatzy"
-    },
     "rows": [
         {
             "id": "rolls",
@@ -36,9 +33,9 @@
             "lim": 3,
             "max": 5,
             "isPlayable": true,
-            "title": "Ones",
+            "title": "Aces",
             "locals": {
-                "title-sv": "Ettor"
+                "title-sv": "Ess"
             }
         },
         {

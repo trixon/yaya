@@ -1,7 +1,7 @@
 {
     "id": "se.trixon.yaya.rules.maxi_yahtzee",
     "author": "Patrik Karlström",
-    "title": "Maxi Yahtzee",
+    "title": "Maxi Yatzy",
     "date": "2022-10-25",
     "dice": 6,
     "rolls": 33,
@@ -14,9 +14,6 @@
         "LOWER_UPPER",
         "RANDOM"
     ],
-    "locals": {
-        "title-sv": "Maxi-Yatzy"
-    },
     "rows": [
         {
             "id": "rolls",

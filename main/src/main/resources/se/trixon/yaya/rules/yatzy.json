@@ -1,7 +1,7 @@
 {
     "id": "se.trixon.yaya.rules.yahtzee_scandinavian",
     "author": "Patrik Karlström",
-    "title": "Yahtzee (Scandinavian)",
+    "title": "Yatzy",
     "date": "2022-10-25",
     "dice": 5,
     "rolls": 3,
@@ -14,9 +14,6 @@
         "LOWER_UPPER",
         "RANDOM"
     ],
-    "locals": {
-        "title-sv": "Yatzy (Skandinavisk)"
-    },
     "rows": [
         {
             "id": "rolls",
