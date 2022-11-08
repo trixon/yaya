@@ -88,48 +88,49 @@ public final class HelpAction implements ActionListener {
             var desc = args;
 
             if (gameCell.isRollCounter()) {
-                desc = "The roll counter";
-            } else if (StringUtils.startsWith(args, "sum ")) {
+                desc = mBundle.getString("help_rule_counter");
+                continue;
+            } else if (StringUtils.startsWith(args, "sum ")) { //NOI18N
                 var arg = StringUtils.split(args);
                 if (arg.length == 2) {
-                    desc = "The sum of all %s".formatted(gameCell.getTitle().toLowerCase(Locale.getDefault()));
+                    desc = mBundle.getString("help_rule_sum_all").formatted(gameCell.getTitle().toLowerCase(Locale.getDefault()));
                 } else {
-                    desc = "%s points for a total of %s".formatted(arg[2], arg[1]);
+                    desc = mBundle.getString("help_rule_sum_fixed").formatted(arg[2], arg[1]);
                 }
-            } else if (StringUtils.startsWith(args, "sum_n ")) {
+            } else if (StringUtils.startsWith(args, "sum_n ")) { //NOI18N
                 var arg = StringUtils.split(args);
-                desc = "The sum of all dice when at least %s are the same".formatted(arg[1]);
-            } else if (StringUtils.startsWith(args, "sequence ")) {
+                desc = mBundle.getString("help_rule_sumn").formatted(arg[1]);
+            } else if (StringUtils.startsWith(args, "sequence ")) { //NOI18N
                 var arg = StringUtils.split(args);
-                desc = "%s points for a sequence of at least %s".formatted(arg[4], arg[1]);
+                desc = mBundle.getString("help_rule_sequence").formatted(arg[4], arg[1]);
             } else if (gameCell.isBonus()) {
-                desc = "%d points if the sum of rows %s is greater than %d".formatted(gameCell.getMax(), gameCell.getSumRows(), gameCell.getLim());
+                desc = mBundle.getString("help_rule_bonus").formatted(gameCell.getMax(), gameCell.getSumRows(), gameCell.getLim());
             } else if (!gameCell.isBonus() && !gameCell.isRollCounter() && gameCell.isSum()) {
-                desc = "The sum of rows %s".formatted(gameCell.getSumRows().replace(",", " & "));
-            } else if (StringUtils.startsWith(args, "duplicates ")) {
+                desc = mBundle.getString("help_rule_sum_of_rows").formatted(gameCell.getSumRows().replace(",", " & "));
+            } else if (StringUtils.startsWith(args, "duplicates ")) { //NOI18N
                 if (gameCell.getMax() == gameCell.getLim()) {
-                    desc = "%d points if %s dice are showing the same number".formatted(gameCell.getMax(), StringUtils.split(args)[1]);
+                    desc = mBundle.getString("help_rule_duplicates_fixed").formatted(gameCell.getMax(), StringUtils.split(args)[1]);
                 } else {
-                    desc = "The sum of %s dice showing the same number".formatted(StringUtils.split(args)[1]);
+                    desc = mBundle.getString("help_rule_duplicates").formatted(StringUtils.split(args)[1]);
                 }
-            } else if (StringUtils.startsWith(args, "pair ")) {
-                desc = "The sum of dice in %s different pairs".formatted(StringUtils.split(args)[1]);
-            } else if (StringUtils.startsWith(args, "straight ")) {
-                desc = "The sum of dice in sequence %s".formatted(gameCell.getSumRows());
-            } else if (StringUtils.startsWith(args, "house ")) {
+            } else if (StringUtils.startsWith(args, "pair ")) { //NOI18N
+                desc = mBundle.getString("help_rule_pair").formatted(StringUtils.split(args)[1]);
+            } else if (StringUtils.startsWith(args, "straight ")) { //NOI18N
+                desc = mBundle.getString("help_rule_straight").formatted(gameCell.getSumRows());
+            } else if (StringUtils.startsWith(args, "house ")) { //NOI18N
                 var arg = StringUtils.split(args);
                 if (gameCell.getMax() == gameCell.getLim()) {
-                    desc = "%d points if a set of %s and a different set of %s".formatted(gameCell.getMax(), arg[1], arg[2]);
+                    desc = mBundle.getString("help_rule_house_fixed").formatted(gameCell.getMax(), arg[1], arg[2]);
                 } else {
-                    desc = "The sum of dice in a set of %s and a different set of %s".formatted(arg[1], arg[2]);
+                    desc = mBundle.getString("help_rule_house").formatted(arg[1], arg[2]);
                 }
-            } else if (StringUtils.equals(args, "sum")) {
-                desc = "The sum of all dice";
-            } else if (StringUtils.startsWith(args, "custom_crag")) {
-                desc = "%s points for a total of 13 and a pair".formatted(StringUtils.split(args)[1]);
-            } else if (StringUtils.startsWith(args, "equals")) {
+            } else if (StringUtils.equals(args, "sum")) { //NOI18N
+                desc = mBundle.getString("help_rule_sum");
+            } else if (StringUtils.startsWith(args, "custom_crag")) { //NOI18N
+                desc = mBundle.getString("help_rule_custom_crag").formatted(StringUtils.split(args)[1]);
+            } else if (StringUtils.startsWith(args, "equals")) { //NOI18N
                 var arg = StringUtils.split(args);
-                desc = "%s points for %s".formatted(arg[2], arg[1]);
+                desc = mBundle.getString("help_rule_equals").formatted(arg[2], arg[1]);
             }
 
             var max = Integer.toString(gameCell.getMax());
@@ -159,9 +160,9 @@ public final class HelpAction implements ActionListener {
                         hr(),
                         table(
                                 tr(
-                                        th(Dict.NAME.toString()),
-                                        th("Max"),
-                                        th("Score")
+                                        th(mBundle.getString("help_rule_header_row")),
+                                        th(mBundle.getString("help_rule_header_max")),
+                                        th(mBundle.getString("help_rule_header_score"))
                                 ),
                                 tbody(
                                         each(cellRules, cellRule

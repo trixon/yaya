@@ -94,9 +94,9 @@
             }
         },
         {
-            "formula": "straight 6",
+            "formula": "equals 1,2,3,4,5,6 45",
             "id": "fullStraight",
-            "lim": 21,
+            "lim": 45,
             "max": 45,
             "isPlayable": true,
             "sum_rows": "1-2-3-4-5-6",
