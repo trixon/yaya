@@ -4,7 +4,7 @@
     "title": "Straight",
     "date": "2022-10-25",
     "dice": 6,
-    "rolls": 2,
+    "rolls": 99,
     "default_variant": 0,
     "variants": [
         "STANDARD",

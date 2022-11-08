@@ -125,8 +125,8 @@
             "section": "LOWER",
             "formula": "sum_n 3",
             "id": "threeOfAKind",
-            "lim": 12,
-            "max": 18,
+            "lim": 18,
+            "max": 36,
             "isPlayable": true,
             "title": "Three of a kind",
             "locals": {
@@ -137,8 +137,8 @@
             "section": "LOWER",
             "formula": "sum_n 4",
             "id": "fourOfAKind",
-            "lim": 16,
-            "max": 24,
+            "lim": 18,
+            "max": 36,
             "isPlayable": true,
             "title": "Four of a kind",
             "locals": {

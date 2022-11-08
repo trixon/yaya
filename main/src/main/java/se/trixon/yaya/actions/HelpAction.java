@@ -96,6 +96,12 @@ public final class HelpAction implements ActionListener {
                 } else {
                     desc = "%s points for a total of %s".formatted(arg[2], arg[1]);
                 }
+            } else if (StringUtils.startsWith(args, "sum_n ")) {
+                var arg = StringUtils.split(args);
+                desc = "The sum of all dice when at least %s are the same".formatted(arg[1]);
+            } else if (StringUtils.startsWith(args, "sequence ")) {
+                var arg = StringUtils.split(args);
+                desc = "%s points for a sequence of at least %s".formatted(arg[4], arg[1]);
             } else if (gameCell.isBonus()) {
                 desc = "%d points if the sum of rows %s is greater than %d".formatted(gameCell.getMax(), gameCell.getSumRows(), gameCell.getLim());
             } else if (!gameCell.isBonus() && !gameCell.isRollCounter() && gameCell.isSum()) {
@@ -107,12 +113,16 @@ public final class HelpAction implements ActionListener {
                     desc = "The sum of %s dice showing the same number".formatted(StringUtils.split(args)[1]);
                 }
             } else if (StringUtils.startsWith(args, "pair ")) {
-                desc = "The sum of dice in %s different pairs of dice".formatted(StringUtils.split(args)[1]);
+                desc = "The sum of dice in %s different pairs".formatted(StringUtils.split(args)[1]);
             } else if (StringUtils.startsWith(args, "straight ")) {
-                desc = "The sum of all dice for sequence %s".formatted(gameCell.getSumRows());
+                desc = "The sum of dice in sequence %s".formatted(gameCell.getSumRows());
             } else if (StringUtils.startsWith(args, "house ")) {
                 var arg = StringUtils.split(args);
-                desc = "The sum of all dice for a set of %s and a different %s".formatted(arg[1], arg[2]);
+                if (gameCell.getMax() == gameCell.getLim()) {
+                    desc = "%d points if a set of %s and a different set of %s".formatted(gameCell.getMax(), arg[1], arg[2]);
+                } else {
+                    desc = "The sum of dice in a set of %s and a different set of %s".formatted(arg[1], arg[2]);
+                }
             } else if (StringUtils.equals(args, "sum")) {
                 desc = "The sum of all dice";
             } else if (StringUtils.startsWith(args, "custom_crag")) {
