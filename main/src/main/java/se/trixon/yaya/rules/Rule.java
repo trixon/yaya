@@ -137,13 +137,22 @@ public class Rule {
         return result;
     }
 
-    public String[] getVariants() {
+    public String[] getVariantsArray() {
         return mVariants.toArray(String[]::new);
+    }
+
+    public ArrayList<GameVariant> getVariants() {
+        return mVariants;
     }
 
     public void postLoad() {
         mGameColumn.forEach(row -> {
             row.postLoad();
+
+            if (row.isRollCounter()) {
+                int max = (int) (getNumOfRolls() * getGameColumn().stream().filter(g -> g.isPlayable()).count());
+                row.setMax(max);
+            }
         });
     }
 

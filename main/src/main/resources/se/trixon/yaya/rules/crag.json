@@ -94,17 +94,6 @@
             }
         },
         {
-            "id": "triple",
-            "title": "Triple",
-            "isPlayable": true,
-            "lim": 12,
-            "max": 18,
-            "formula": "sum_n 3",
-            "locals": {
-                "title-sv": "Trippel"
-            }
-        },
-        {
             "id": "sixes",
             "title": "Sixes",
             "isPlayable": true,
@@ -177,7 +166,7 @@
             "isResult": true,
             "lim": 0,
             "max": 171,
-            "sum_rows": "1-13",
+            "sum_rows": "1-12",
             "locals": {
                 "title-sv": "Totalsumma"
             }

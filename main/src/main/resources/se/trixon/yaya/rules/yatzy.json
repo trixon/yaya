@@ -4,7 +4,7 @@
     "title": "Yatzy",
     "date": "2022-10-25",
     "dice": 5,
-    "rolls": 3,
+    "rolls": 99,
     "default_variant": 0,
     "variants": [
         "STANDARD",
@@ -176,6 +176,7 @@
             "lim": 15,
             "max": 15,
             "isPlayable": true,
+            "sum_rows": "1-2-3-4-5",
             "title": "Small Straight",
             "locals": {
                 "title-sv": "Liten stege"
@@ -188,6 +189,7 @@
             "lim": 20,
             "max": 20,
             "isPlayable": true,
+            "sum_rows": "2-3-4-5-6",
             "title": "Large Straight",
             "locals": {
                 "title-sv": "Stor stege"

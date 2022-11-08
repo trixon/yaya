@@ -118,6 +118,7 @@
             "lim": 63,
             "max": 35,
             "isSum": true,
+            "sum_rows": "1-6",
             "title": "Bonus",
             "locals": {
                 "title-sv": "Bonus"
@@ -154,6 +155,7 @@
             "lim": 25,
             "max": 25,
             "isPlayable": true,
+            "sum_rows": "1-2-3-4-5",
             "title": "Small Straight",
             "locals": {
                 "title-sv": "Liten stege"
@@ -166,6 +168,7 @@
             "lim": 30,
             "max": 30,
             "isPlayable": true,
+            "sum_rows": "2-3-4-5-6",
             "title": "Large Straight",
             "locals": {
                 "title-sv": "Stor stege"

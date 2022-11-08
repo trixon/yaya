@@ -115,6 +115,7 @@
             "lim": 84,
             "max": 100,
             "isSum": true,
+            "sum_rows": "1-6",
             "title": "Bonus",
             "locals": {
                 "title-sv": "Bonus"
@@ -199,6 +200,7 @@
             "lim": 15,
             "max": 15,
             "isPlayable": true,
+            "sum_rows": "1-2-3-4-5",
             "title": "Small Straight",
             "locals": {
                 "title-sv": "Liten stege"
@@ -211,6 +213,7 @@
             "lim": 20,
             "max": 20,
             "isPlayable": true,
+            "sum_rows": "2-3-4-5-6",
             "title": "Large Straight",
             "locals": {
                 "title-sv": "Stor stege"
@@ -223,6 +226,7 @@
             "lim": 21,
             "max": 21,
             "isPlayable": true,
+            "sum_rows": "1-2-3-4-5-6",
             "title": "Full Straight",
             "locals": {
                 "title-sv": "Full stege"
@@ -278,34 +282,22 @@
         },
         {
             "section": "LOWER",
-            "formula": "duplicates 5",
-            "id": "yahtzee",
-            "lim": 50,
-            "max": 50,
-            "isPlayable": true,
-            "title": "Yahtzee",
-            "locals": {
-                "title-sv": "Yatzy"
-            }
-        },
-        {
-            "section": "LOWER",
             "formula": "duplicates 6",
             "id": "maxi_yahtzee",
             "lim": 100,
             "max": 100,
             "isPlayable": true,
-            "title": "Maxi Yahtzee",
+            "title": "Maxi Yatzy",
             "locals": {
-                "title-sv": "Maxi-Yatzy"
+                "title-sv": "Maxi Yatzy"
             }
         },
         {
             "id": "sum2",
             "lim": 0,
-            "max": 423,
+            "max": 373,
             "isSum": true,
-            "sum_rows": "9-23",
+            "sum_rows": "9-22",
             "title": "Lower total",
             "locals": {
                 "title-sv": "Nedre summa"
@@ -314,10 +306,10 @@
         {
             "id": "total",
             "lim": 0,
-            "max": 649,
+            "max": 599,
             "isResult": true,
             "isSum": true,
-            "sum_rows": "1-6,8-23",
+            "sum_rows": "1-6,8-22",
             "title": "Grand total",
             "locals": {
                 "title-sv": "Summa"

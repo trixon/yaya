@@ -212,34 +212,35 @@ public class PlayerColumn {
 
     private void updateSums() {
         for (var row : mRows) {
-            if (row.getGameCell().getSumSet() != null) {
-                if (row.getGameCell().isBonus()) {
+            var gameCell = row.getGameCell();
+            if (gameCell.getSumSet() != null && gameCell.isSum()) {
+                if (gameCell.isBonus()) {
                     int sum = 0;
 
-                    for (var rowValue : row.getGameCell().getSumSet()) {
+                    for (var rowValue : gameCell.getSumSet()) {
                         sum += mRows[rowValue].getValue();
                     }
 
-                    if (sum >= row.getGameCell().getLim()) {
-                        int bonus = row.getGameCell().getMax();
+                    if (sum >= gameCell.getLim()) {
+                        int bonus = gameCell.getMax();
                         row.getLabel().setText(Integer.toString(bonus));
                         row.setValue(bonus);
                     }
                 }
 
-                if (row.getGameCell().isSum()) {
+                if (gameCell.isSum()) {
                     int sum = 0;
 
-                    for (var rowValue : row.getGameCell().getSumSet()) {
+                    for (var rowValue : gameCell.getSumSet()) {
                         sum += mRows[rowValue].getValue();
                     }
 
-                    if (row.getGameCell().isResult()) {
+                    if (gameCell.isResult()) {
                         row.setValue(sum);
                         mCurrentScore = sum;
                     }
 
-                    if (!row.getGameCell().isBonus()) {
+                    if (!gameCell.isBonus()) {
                         row.getLabel().setText(Integer.toString(sum));
                     }
                 }
