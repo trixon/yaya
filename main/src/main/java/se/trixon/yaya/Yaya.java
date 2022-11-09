@@ -20,8 +20,8 @@ import com.google.gson.GsonBuilder;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
+import javax.swing.JFrame;
 import org.openide.util.ImageUtilities;
-import se.trixon.almond.nbp.Monitor;
 import se.trixon.almond.util.SystemHelper;
 import se.trixon.almond.util.gson_adapter.AwtColorAdapter;
 
@@ -39,10 +39,11 @@ public class Yaya {
             .create();
 
     public static final String LOG_TITLE = "Yaya";
+    private JFrame mFrame;
     private YayaPanel mYayaPanel;
 
     public static void errln(String name, String message) {
-        new Monitor(name, false, true).errln(message);
+        System.err.println(message);
     }
 
     public static BufferedImage getImage(Class c, String imagePath) {
@@ -62,10 +63,14 @@ public class Yaya {
     }
 
     public static void outln(String name, String message) {
-        new Monitor(name, false, true).outln(message);
+        System.out.println(message);
     }
 
     private Yaya() {
+    }
+
+    public JFrame getFrame() {
+        return mFrame;
     }
 
     public YayaPanel getPanel() {
@@ -78,6 +83,10 @@ public class Yaya {
 
     public void onRequestNewGameStart() {
         getPanel().newGame();
+    }
+
+    public void setFrame(JFrame frame) {
+        this.mFrame = frame;
     }
 
     private static class Holder {

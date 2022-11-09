@@ -15,21 +15,15 @@
  */
 package se.trixon.yaya;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.awt.EventQueue;
 import java.util.prefs.BackingStoreException;
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import org.openide.awt.Actions;
-import org.openide.awt.HtmlBrowser;
 import org.openide.modules.OnStart;
 import org.openide.util.Exceptions;
 import org.openide.util.NbPreferences;
-import org.openide.windows.WindowManager;
-import se.trixon.almond.nbp.Almond;
 import se.trixon.almond.nbp.dialogs.NbOptionalDialog;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
+import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.rules.RuleManager;
 
 /**
@@ -42,11 +36,7 @@ public class DoOnStart implements Runnable {
     private final Options mOptions = Options.getInstance();
 
     static {
-        UIManager.put("NbMainWindow.showCustomBackground", Boolean.TRUE);
-        System.setProperty("netbeans.winsys.status_line.path", "");
-        System.setProperty("netbeans.winsys.no_help_in_dialogs", "true");
-        System.setProperty("netbeans.winsys.no_toolbars", "true");
-
+//        FlatDarkLaf.setup();
         try {
             var key = "laf";
             var defaultLAF = "com.formdev.flatlaf.FlatDarkLaf";
@@ -62,24 +52,19 @@ public class DoOnStart implements Runnable {
     @Override
     public void run() {
         boolean fullscreen = mOptions.isFullscreen();
-        RuleManager.getInstance().init();
+        SystemHelper.runLaterDelayed(100, () -> {
+            EventQueue.invokeLater(() -> {
+                RuleManager.getInstance().init();
+                var frame = new MainTopComponent();
+                frame.setVisible(true);
+                Yaya.getInstance().setFrame(frame);
 
-        SystemHelper.setDesktopBrowser(url -> {
-            try {
-                HtmlBrowser.URLDisplayer.getDefault().showURL(new URL(url));
-            } catch (MalformedURLException ex) {
-                Exceptions.printStackTrace(ex);
-            }
-        });
-
-        var windowManager = WindowManager.getDefault();
-        windowManager.invokeWhenUIReady(() -> {
-            var frame = (JFrame) windowManager.getMainWindow();
-            Almond.setFrame(frame);
-
-            if (fullscreen) {
-                Actions.forID("Window", "org.netbeans.core.windows.actions.ToggleFullScreenAction").actionPerformed(null);
-            }
+                try {
+                    SwingHelper.frameStateRestore(NbPreferences.forModule(DoOnStart.class), frame, 800, 600);
+                } catch (BackingStoreException ex) {
+                    Exceptions.printStackTrace(ex);
+                }
+            });
         });
     }
 

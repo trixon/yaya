@@ -19,44 +19,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
-import org.netbeans.api.settings.ConvertAsProperties;
-import org.openide.awt.ActionID;
-import org.openide.awt.ActionReference;
 import org.openide.awt.Actions;
-import org.openide.util.NbBundle.Messages;
-import org.openide.windows.TopComponent;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.swing.DelayedResetRunner;
 import se.trixon.almond.util.swing.SwingHelper;
 
-/**
- * Top component which displays something.
- */
-@ConvertAsProperties(
-        dtd = "-//se.trixon.yaya//Main//EN",
-        autostore = false
-)
-@TopComponent.Description(
-        preferredID = "MainTopComponent",
-        //iconBase="SET/PATH/TO/ICON/HERE",
-        persistenceType = TopComponent.PERSISTENCE_ALWAYS
-)
-@TopComponent.Registration(mode = "editor", openAtStartup = true, position = 0)
-@ActionID(category = "Window", id = "se.trixon.yaya.MainTopComponent")
-@ActionReference(path = "Menu/Window" /*, position = 333 */)
-@TopComponent.OpenActionRegistration(
-        displayName = "#CTL_MainAction",
-        preferredID = "MainTopComponent"
-)
-@Messages({
-    "CTL_MainAction=Yaya",
-    "CTL_MainTopComponent=Yaya"
-})
-public final class MainTopComponent extends TopComponent {
+public final class MainTopComponent extends JFrame {
 
     private final Options mOptions = Options.getInstance();
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
@@ -64,10 +37,6 @@ public final class MainTopComponent extends TopComponent {
 
     public MainTopComponent() {
         initComponents();
-        setName(Bundle.CTL_MainTopComponent());
-        putClientProperty(TopComponent.PROP_CLOSING_DISABLED, Boolean.TRUE);
-        putClientProperty(TopComponent.PROP_DRAGGING_DISABLED, Boolean.TRUE);
-        putClientProperty(TopComponent.PROP_UNDOCKING_DISABLED, Boolean.TRUE);
 
         createUI();
 
@@ -244,10 +213,17 @@ public final class MainTopComponent extends TopComponent {
         popupMenu.add(jSeparator3);
         popupMenu.add(quitMenuItem);
 
-        setLayout(new java.awt.BorderLayout());
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle(org.openide.util.NbBundle.getMessage(MainTopComponent.class, "MainTopComponent.title")); // NOI18N
+        setMinimumSize(new java.awt.Dimension(100, 50));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         mainPanel.setLayout(new java.awt.GridLayout(1, 0));
-        add(mainPanel, java.awt.BorderLayout.CENTER);
+        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void indicatorCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indicatorCheckBoxMenuItemActionPerformed
@@ -269,6 +245,10 @@ public final class MainTopComponent extends TopComponent {
     private void reverseDiceDirectionCheckBoxMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reverseDiceDirectionCheckBoxMenuItemActionPerformed
         mOptions.setReverseDirection(((JCheckBoxMenuItem) evt.getSource()).isSelected());
     }//GEN-LAST:event_reverseDiceDirectionCheckBoxMenuItemActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        SwingHelper.frameStateSave(mOptions.getPreferences(), this);
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
