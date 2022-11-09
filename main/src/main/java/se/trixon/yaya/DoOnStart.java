@@ -55,7 +55,7 @@ public class DoOnStart implements Runnable {
         SystemHelper.runLaterDelayed(100, () -> {
             EventQueue.invokeLater(() -> {
                 RuleManager.getInstance().init();
-                var frame = new MainTopComponent();
+                var frame = new MainFrame();
                 frame.setVisible(true);
                 Yaya.getInstance().setFrame(frame);
 
