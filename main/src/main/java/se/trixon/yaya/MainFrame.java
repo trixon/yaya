@@ -15,8 +15,9 @@
  */
 package se.trixon.yaya;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -42,31 +43,29 @@ import se.trixon.almond.util.swing.SwingHelper;
 
 public final class MainFrame extends JFrame {
 
-    private JMenuItem aboutMenuItem;
-    private JMenu colorsMenu;
-    private JMenu diceMenu;
-    private JCheckBoxMenuItem fullscreenCheckBoxMenuItem;
-    private JMenuItem helpMenuItem;
-    private JCheckBoxMenuItem indicatorCheckBoxMenuItem;
-    private JPopupMenu.Separator jSeparator1;
-    private JPopupMenu.Separator jSeparator2;
-    private JPopupMenu.Separator jSeparator3;
-    private JCheckBoxMenuItem limCheckBoxMenuItem;
+    private JMenuItem mAboutMenuItem;
+    private JMenu mColorsMenu;
+    private JMenu mDiceMenu;
+    private JCheckBoxMenuItem mFullscreenCheckBoxMenuItem;
+    private JMenuItem mHelpMenuItem;
+    private JCheckBoxMenuItem mIndicatorCheckBoxMenuItem;
+    private JCheckBoxMenuItem mLimCheckBoxMenuItem;
+    private JPanel mMainPanel;
+    private JCheckBoxMenuItem mMaxCheckBoxMenuItem;
+    private JMenuItem mNewMenuItem;
     private final Options mOptions = Options.getInstance();
+    private JMenuItem mOptionsMenuItem;
+    private JPopupMenu mPopupMenu;
+    private JMenuItem mQuitMenuItem;
+    private JCheckBoxMenuItem mReverseDiceDirectionCheckBoxMenuItem;
+    private JMenu mScorecardMenu;
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private final Yaya mYaya = Yaya.getInstance();
-    private JPanel mainPanel;
-    private JCheckBoxMenuItem maxCheckBoxMenuItem;
-    private JMenuItem newMenuItem;
-    private JMenuItem optionsMenuItem;
-    private JPopupMenu popupMenu;
-    private JMenuItem quitMenuItem;
-    private JCheckBoxMenuItem reverseDiceDirectionCheckBoxMenuItem;
-    private JMenu scorecardMenu;
 
     public MainFrame() {
         initComponents();
-
+        initMenu();
+        initListeners();
         createUI();
 
         PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
@@ -83,39 +82,39 @@ public final class MainFrame extends JFrame {
         mOptions.getPreferences().addPreferenceChangeListener(pce -> {
             switch (pce.getKey()) {
                 case Options.KEY_FULL_SCREEN ->
-                    fullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+                    mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
                 case Options.KEY_SHOW_INDICATORS ->
-                    indicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
+                    mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
                 case Options.KEY_SHOW_LIM_COLUMN ->
-                    limCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
+                    mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
                 case Options.KEY_SHOW_MAX_COLUMN ->
-                    maxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
+                    mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
             }
         });
     }
 
     private void createUI() {
-        mainPanel.removeAll();
-        mainPanel.add(mYaya.getPanel());
-        mainPanel.repaint();
-        mainPanel.revalidate();
+        mMainPanel.removeAll();
+        mMainPanel.add(mYaya.getPanel());
+        mMainPanel.repaint();
+        mMainPanel.revalidate();
 
         var popupListener = new PopupListener();
         addMouseListener(popupListener);
         mYaya.getPanel().addMouseListener(popupListener);
 
-        Actions.connect(newMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction"), true);
-        Actions.connect(optionsMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.OptionsAction"), true);
-        Actions.connect(aboutMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.AboutAction"), true);
-        Actions.connect(helpMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.HelpAction"), true);
-        Actions.connect(quitMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.QuitAction"), true);
+        Actions.connect(mNewMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction"), true);
+        Actions.connect(mOptionsMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.OptionsAction"), true);
+        Actions.connect(mAboutMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.AboutAction"), true);
+        Actions.connect(mHelpMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.HelpAction"), true);
+        Actions.connect(mQuitMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.QuitAction"), true);
 
-        fullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
-        indicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
-        limCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
-        maxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
+        mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+        mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
+        mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
+        mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
 
-        reverseDiceDirectionCheckBoxMenuItem.setSelected(mOptions.isReverseDirection());
+        mReverseDiceDirectionCheckBoxMenuItem.setSelected(mOptions.isReverseDirection());
 
         var buttonGroup = new ButtonGroup();
         for (var theme : mThemeManager.getItems()) {
@@ -125,13 +124,13 @@ public final class MainFrame extends JFrame {
                 mOptions.setThemeId(theme.getId());
             });
             buttonGroup.add(radioButtonMenuItem);
-            colorsMenu.add(radioButtonMenuItem);
+            mColorsMenu.add(radioButtonMenuItem);
             radioButtonMenuItem.setSelected(mOptions.getThemeId().equalsIgnoreCase(theme.getId()));
         }
 
         var fontMenuItem = new JMenuItem(Dict.SIZE.toString());
         fontMenuItem.setEnabled(false);
-        scorecardMenu.add(fontMenuItem);
+        mScorecardMenu.add(fontMenuItem);
 
         var fontSlider = new JSlider(8, 72, mOptions.getFontSize());
         var fontResetRunner = new DelayedResetRunner(50, () -> {
@@ -141,9 +140,9 @@ public final class MainFrame extends JFrame {
         fontSlider.addChangeListener(changeEvent -> {
             fontResetRunner.reset();
         });
-        scorecardMenu.add(fontSlider);
+        mScorecardMenu.add(fontSlider);
 
-        optionsMenuItem.setVisible(false);
+        mOptionsMenuItem.setVisible(false);
     }
 
     private void formWindowClosing(WindowEvent evt) {
@@ -160,106 +159,105 @@ public final class MainFrame extends JFrame {
     }
 
     private void initComponents() {
-
-        popupMenu = new JPopupMenu();
-        newMenuItem = new JMenuItem();
-        jSeparator1 = new JPopupMenu.Separator();
-        scorecardMenu = new JMenu();
-        colorsMenu = new JMenu();
-        limCheckBoxMenuItem = new JCheckBoxMenuItem();
-        maxCheckBoxMenuItem = new JCheckBoxMenuItem();
-        indicatorCheckBoxMenuItem = new JCheckBoxMenuItem();
-        diceMenu = new JMenu();
-        reverseDiceDirectionCheckBoxMenuItem = new JCheckBoxMenuItem();
-        fullscreenCheckBoxMenuItem = new JCheckBoxMenuItem();
-        optionsMenuItem = new JMenuItem();
-        jSeparator2 = new JPopupMenu.Separator();
-        helpMenuItem = new JMenuItem();
-        aboutMenuItem = new JMenuItem();
-        jSeparator3 = new JPopupMenu.Separator();
-        quitMenuItem = new JMenuItem();
-        mainPanel = new JPanel();
-
-        popupMenu.add(newMenuItem);
-        popupMenu.add(jSeparator1);
-
-        org.openide.awt.Mnemonics.setLocalizedText(scorecardMenu, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.scorecardMenu.text")); // NOI18N
-
-        org.openide.awt.Mnemonics.setLocalizedText(colorsMenu, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.colorsMenu.text")); // NOI18N
-        scorecardMenu.add(colorsMenu);
-
-        limCheckBoxMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-        limCheckBoxMenuItem.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(limCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.limCheckBoxMenuItem.text")); // NOI18N
-        limCheckBoxMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                limCheckBoxMenuItemActionPerformed(evt);
-            }
-        });
-        scorecardMenu.add(limCheckBoxMenuItem);
-
-        maxCheckBoxMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
-        maxCheckBoxMenuItem.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(maxCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.maxCheckBoxMenuItem.text")); // NOI18N
-        maxCheckBoxMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                maxCheckBoxMenuItemActionPerformed(evt);
-            }
-        });
-        scorecardMenu.add(maxCheckBoxMenuItem);
-
-        indicatorCheckBoxMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
-        indicatorCheckBoxMenuItem.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(indicatorCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.indicatorCheckBoxMenuItem.text")); // NOI18N
-        indicatorCheckBoxMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                indicatorCheckBoxMenuItemActionPerformed(evt);
-            }
-        });
-        scorecardMenu.add(indicatorCheckBoxMenuItem);
-
-        popupMenu.add(scorecardMenu);
-
-        org.openide.awt.Mnemonics.setLocalizedText(diceMenu, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.diceMenu.text")); // NOI18N
-
-        reverseDiceDirectionCheckBoxMenuItem.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(reverseDiceDirectionCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.reverseDiceDirectionCheckBoxMenuItem.text")); // NOI18N
-        reverseDiceDirectionCheckBoxMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                reverseDiceDirectionCheckBoxMenuItemActionPerformed(evt);
-            }
-        });
-        diceMenu.add(reverseDiceDirectionCheckBoxMenuItem);
-
-        popupMenu.add(diceMenu);
-
-        fullscreenCheckBoxMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0));
-        fullscreenCheckBoxMenuItem.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(fullscreenCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.fullscreenCheckBoxMenuItem.text")); // NOI18N
-        fullscreenCheckBoxMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                fullscreenCheckBoxMenuItemActionPerformed(evt);
-            }
-        });
-        popupMenu.add(fullscreenCheckBoxMenuItem);
-        popupMenu.add(optionsMenuItem);
-        popupMenu.add(jSeparator2);
-        popupMenu.add(helpMenuItem);
-        popupMenu.add(aboutMenuItem);
-        popupMenu.add(jSeparator3);
-        popupMenu.add(quitMenuItem);
+        mMainPanel = new JPanel();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.title")); // NOI18N
-        setMinimumSize(new java.awt.Dimension(100, 50));
+        setMinimumSize(new Dimension(100, 50));
+
+        mMainPanel.setLayout(new BorderLayout());
+        getContentPane().add(mMainPanel, BorderLayout.CENTER);
+    }
+
+    private void initListeners() {
+        mLimCheckBoxMenuItem.addActionListener(actionEvent -> {
+            limCheckBoxMenuItemActionPerformed(actionEvent);
+        });
+
+        mMaxCheckBoxMenuItem.addActionListener(actionEvent -> {
+            maxCheckBoxMenuItemActionPerformed(actionEvent);
+        });
+
+        mIndicatorCheckBoxMenuItem.addActionListener(actionEvent -> {
+            indicatorCheckBoxMenuItemActionPerformed(actionEvent);
+        });
+
+        mReverseDiceDirectionCheckBoxMenuItem.addActionListener(actionEvent -> {
+            reverseDiceDirectionCheckBoxMenuItemActionPerformed(actionEvent);
+        });
+
+        mFullscreenCheckBoxMenuItem.addActionListener(actionEvent -> {
+            fullscreenCheckBoxMenuItemActionPerformed(actionEvent);
+        });
+
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
+    }
 
-        mainPanel.setLayout(new java.awt.GridLayout(1, 0));
-        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
+    private void initMenu() {
+        mPopupMenu = new JPopupMenu();
+        mNewMenuItem = new JMenuItem();
+        mScorecardMenu = new JMenu();
+        mColorsMenu = new JMenu();
+        mLimCheckBoxMenuItem = new JCheckBoxMenuItem();
+        mMaxCheckBoxMenuItem = new JCheckBoxMenuItem();
+        mIndicatorCheckBoxMenuItem = new JCheckBoxMenuItem();
+        mDiceMenu = new JMenu();
+        mReverseDiceDirectionCheckBoxMenuItem = new JCheckBoxMenuItem();
+        mFullscreenCheckBoxMenuItem = new JCheckBoxMenuItem();
+        mOptionsMenuItem = new JMenuItem();
+        mHelpMenuItem = new JMenuItem();
+        mAboutMenuItem = new JMenuItem();
+        mQuitMenuItem = new JMenuItem();
+
+        mPopupMenu.add(mNewMenuItem);
+        mPopupMenu.add(new JPopupMenu.Separator());
+
+        org.openide.awt.Mnemonics.setLocalizedText(mScorecardMenu, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.scorecardMenu.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(mColorsMenu, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.colorsMenu.text")); // NOI18N
+        mScorecardMenu.add(mColorsMenu);
+
+        mLimCheckBoxMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+        mLimCheckBoxMenuItem.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(mLimCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.limCheckBoxMenuItem.text")); // NOI18N
+        mScorecardMenu.add(mLimCheckBoxMenuItem);
+
+        mMaxCheckBoxMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
+        mMaxCheckBoxMenuItem.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(mMaxCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.maxCheckBoxMenuItem.text")); // NOI18N
+        mScorecardMenu.add(mMaxCheckBoxMenuItem);
+
+        mIndicatorCheckBoxMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
+        mIndicatorCheckBoxMenuItem.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(mIndicatorCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.indicatorCheckBoxMenuItem.text")); // NOI18N
+        mScorecardMenu.add(mIndicatorCheckBoxMenuItem);
+
+        mPopupMenu.add(mScorecardMenu);
+
+        org.openide.awt.Mnemonics.setLocalizedText(mDiceMenu, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.diceMenu.text")); // NOI18N
+
+        mReverseDiceDirectionCheckBoxMenuItem.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(mReverseDiceDirectionCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.reverseDiceDirectionCheckBoxMenuItem.text")); // NOI18N
+        mDiceMenu.add(mReverseDiceDirectionCheckBoxMenuItem);
+
+        mPopupMenu.add(mDiceMenu);
+
+        mFullscreenCheckBoxMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0));
+        mFullscreenCheckBoxMenuItem.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(mFullscreenCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.fullscreenCheckBoxMenuItem.text")); // NOI18N
+
+        mPopupMenu.add(mFullscreenCheckBoxMenuItem);
+        mPopupMenu.add(mOptionsMenuItem);
+        mPopupMenu.add(new JPopupMenu.Separator());
+        mPopupMenu.add(mHelpMenuItem);
+        mPopupMenu.add(mAboutMenuItem);
+        mPopupMenu.add(new JPopupMenu.Separator());
+        mPopupMenu.add(mQuitMenuItem);
     }
 
     private void limCheckBoxMenuItemActionPerformed(ActionEvent evt) {
@@ -288,7 +286,7 @@ public final class MainFrame extends JFrame {
 
         private void maybeShowPopup(MouseEvent e) {
             if (e.isPopupTrigger()) {
-                popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                mPopupMenu.show(e.getComponent(), e.getX(), e.getY());
             }
         }
     }
