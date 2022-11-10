@@ -18,12 +18,11 @@ package se.trixon.yaya;
 import java.awt.EventQueue;
 import java.util.prefs.BackingStoreException;
 import org.openide.modules.OnStart;
-import org.openide.util.Exceptions;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.nbp.dialogs.NbOptionalDialog;
+import se.trixon.almond.util.AlmondUI;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
-import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.rules.RuleManager;
 
 /**
@@ -54,16 +53,11 @@ public class DoOnStart implements Runnable {
         boolean fullscreen = mOptions.isFullscreen();
         SystemHelper.runLaterDelayed(100, () -> {
             EventQueue.invokeLater(() -> {
+                var preferences = NbPreferences.forModule(DoOnStart.class);
                 RuleManager.getInstance().init();
                 var frame = new MainFrame();
+                AlmondUI.getInstance().addWindowWatcher(preferences, frame);
                 frame.setVisible(true);
-                Yaya.getInstance().setFrame(frame);
-
-                try {
-                    SwingHelper.frameStateRestore(NbPreferences.forModule(DoOnStart.class), frame, 800, 600);
-                } catch (BackingStoreException ex) {
-                    Exceptions.printStackTrace(ex);
-                }
             });
         });
     }
