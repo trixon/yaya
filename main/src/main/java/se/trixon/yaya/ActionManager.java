@@ -53,12 +53,22 @@ public class ActionManager extends AlmondActionManager {
         mAppListeners.add(appListener);
     }
 
-    public ActionManager init(ActionMap actionMap, InputMap inputMap) {
+    public void init(ActionMap actionMap, InputMap inputMap) {
         mActionMap = actionMap;
         mInputMap = inputMap;
         AlmondAction action;
         KeyStroke keyStroke;
         int commandMask = SystemHelper.getCommandMask();
+
+        //new
+        keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_N, commandMask);
+        action = createAction(Dict.Game.NEW_ROUND.toString());
+        initAction(action, NEW, keyStroke, null, true);
+
+        //undo
+        keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, commandMask);
+        action = createAction(Dict.UNDO.toString());
+        initAction(action, UNDO, keyStroke, null, true);
 
         //fullscreen
         keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0);
@@ -80,12 +90,15 @@ public class ActionManager extends AlmondActionManager {
         action = createAction(mBundle.getString("MainFrame.indicatorCheckBoxMenuItem.text"));
         initAction(action, SHOW_INDICATORS, keyStroke, null, true);
 
+        //help
+        keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
+        action = createAction(Dict.HELP.toString());
+        initAction(action, HELP, keyStroke, null, true);
+
         //quit
         keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_Q, commandMask);
         action = createAction(Dict.QUIT.toString());
         initAction(action, QUIT, keyStroke, null, true);
-
-        return this;
     }
 
     private AlmondAction createAction(String name) {

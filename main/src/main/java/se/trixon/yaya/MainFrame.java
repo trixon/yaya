@@ -28,6 +28,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
@@ -35,7 +36,6 @@ import javax.swing.JSlider;
 import javax.swing.WindowConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.openide.LifecycleManager;
-import org.openide.awt.Actions;
 import se.trixon.almond.util.AlmondAction;
 import se.trixon.almond.util.AlmondUI;
 import se.trixon.almond.util.Dict;
@@ -45,12 +45,13 @@ import se.trixon.almond.util.SystemHelper;
 import se.trixon.almond.util.swing.AboutModel;
 import se.trixon.almond.util.swing.DelayedResetRunner;
 import se.trixon.almond.util.swing.SwingHelper;
+import se.trixon.almond.util.swing.dialogs.HtmlPanel;
 import se.trixon.almond.util.swing.dialogs.about.AboutPanel;
 
 public final class MainFrame extends JFrame {
 
     private JMenuItem mAboutMenuItem;
-    private ActionManager mActionManager;
+    private ActionManager mActionManager = ActionManager.getInstance();
     private final AlmondUI mAlmondUI = AlmondUI.getInstance();
     private JMenu mColorsMenu;
     private JMenu mDiceMenu;
@@ -60,6 +61,7 @@ public final class MainFrame extends JFrame {
     private JCheckBoxMenuItem mLimCheckBoxMenuItem;
     private JPanel mMainPanel;
     private JCheckBoxMenuItem mMaxCheckBoxMenuItem;
+    private final NewGamePanel mNewGamePanel = new NewGamePanel();
     private JMenuItem mNewMenuItem;
     private final Options mOptions = Options.getInstance();
     private JPopupMenu mPopupMenu;
@@ -80,8 +82,8 @@ public final class MainFrame extends JFrame {
         int gameStartCounter = mOptions.getPreferences().getInt(Options.KEY_GAME_START_COUNTER, 0);
         if (gameStartCounter == 0) {
             SwingHelper.runLaterDelayed(200, () -> {
-                Actions.forID("Yaya", "se.trixon.yaya.actions.HelpAction").actionPerformed(null);
-                Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction").actionPerformed(null);
+                mActionManager.getAction(ActionManager.HELP).actionPerformed(null);
+                mActionManager.getAction(ActionManager.NEW).actionPerformed(null);
             });
         } else {
             mYaya.onRequestNewGameStart();
@@ -107,12 +109,11 @@ public final class MainFrame extends JFrame {
         mMainPanel.repaint();
         mMainPanel.revalidate();
 
+        mNewGamePanel.setPreferredSize(SwingHelper.getUIScaledDim(400, 400));
+
         var popupListener = new PopupListener();
         addMouseListener(popupListener);
         mYaya.getPanel().addMouseListener(popupListener);
-
-        Actions.connect(mNewMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction"), true);
-        Actions.connect(mHelpMenuItem, Actions.forID("Yaya", "se.trixon.yaya.actions.HelpAction"), true);
 
         mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
         mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
@@ -148,6 +149,25 @@ public final class MainFrame extends JFrame {
         mScorecardMenu.add(fontSlider);
     }
 
+    private void displayHelp() {
+        var htmlPanel = new HtmlPanel(new Help().getHelp());
+        htmlPanel.setPreferredSize(new Dimension(680, 740));
+        String[] buttons = {Dict.CLOSE.toString()};
+
+        JOptionPane.showOptionDialog(this, htmlPanel, Dict.HELP.toString(), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, Dict.CLOSE.toString());
+    }
+
+    private void displayNewGame() {
+        mNewGamePanel.load();
+
+        String[] buttons = {Dict.CANCEL.toString(), Dict.PLAY.toString()};
+        var result = JOptionPane.showOptionDialog(this, mNewGamePanel, Dict.PLAY.toString(), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, Dict.PLAY.toString());
+        if (result == 1) {
+            mNewGamePanel.save();
+            mYaya.onRequestNewGameStart();
+        }
+    }
+
     private void initActions() {
         //about
         var pomInfo = new PomInfo(MainFrame.class, "se.trixon", "yaya");
@@ -158,13 +178,15 @@ public final class MainFrame extends JFrame {
         var action = AboutPanel.getAction(MainFrame.this, aboutPanel);
         getRootPane().getActionMap().put(ActionManager.ABOUT, action);
 
-        mActionManager = ActionManager.getInstance().init(getRootPane().getActionMap(), getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
+        mActionManager.init(getRootPane().getActionMap(), getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
 
+        mNewMenuItem.setAction(mActionManager.getAction(ActionManager.NEW));
         mFullscreenCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.FULLSCREEN));
         mLimCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.SHOW_LIM));
         mMaxCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.SHOW_MAX));
         mIndicatorCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.SHOW_INDICATORS));
         mAboutMenuItem.setAction(action);
+        mHelpMenuItem.setAction(mActionManager.getAction(ActionManager.HELP));
         mQuitMenuItem.setAction(mActionManager.getAction(ActionManager.QUIT));
     }
 
@@ -183,16 +205,8 @@ public final class MainFrame extends JFrame {
         mActionManager.addAppListener((action, actionEvent) -> {
             var actionId = StringUtils.defaultString((String) action.getValue(AlmondAction.ALMOND_KEY), "");
             switch (actionId) {
-                case ActionManager.NEW -> {
-                }
-
-                case ActionManager.FULLSCREEN -> {
-                }
-
-                case ActionManager.QUIT -> {
-//                    MainFrame.this.setVisible(false);
-                    LifecycleManager.getDefault().exit();
-                }
+                case ActionManager.NEW ->
+                    displayNewGame();
 
                 case ActionManager.SHOW_LIM ->
                     mOptions.setShowLimColumn(!mOptions.isShowLimColumn());
@@ -202,6 +216,22 @@ public final class MainFrame extends JFrame {
 
                 case ActionManager.SHOW_INDICATORS ->
                     mOptions.setShowIndicators(!mOptions.isShowIndicators());
+
+                case ActionManager.FULLSCREEN -> {
+                }
+
+                case ActionManager.UNDO -> {
+                    mYaya.getPanel().undo();
+                }
+
+                case ActionManager.HELP -> {
+                    displayHelp();
+                }
+
+                case ActionManager.QUIT -> {
+//                    MainFrame.this.setVisible(false);
+                    LifecycleManager.getDefault().exit();
+                }
 
                 default ->
                     System.out.println("Unhandled action: " + actionId);
