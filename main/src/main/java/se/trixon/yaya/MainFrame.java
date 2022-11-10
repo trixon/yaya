@@ -17,7 +17,6 @@ package se.trixon.yaya;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -36,6 +35,8 @@ import javax.swing.JSlider;
 import javax.swing.WindowConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.openide.LifecycleManager;
+import org.openide.awt.Mnemonics;
+import org.openide.util.NbBundle;
 import se.trixon.almond.util.AlmondAction;
 import se.trixon.almond.util.AlmondUI;
 import se.trixon.almond.util.Dict;
@@ -72,11 +73,8 @@ public final class MainFrame extends JFrame {
     private final Yaya mYaya = Yaya.getInstance();
 
     public MainFrame() {
-        initComponents();
-        initMenu();
-        initActions();
-        initListeners();
         createUI();
+        loadSettings();
 
         PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
         int gameStartCounter = mOptions.getPreferences().getInt(Options.KEY_GAME_START_COUNTER, 0);
@@ -88,65 +86,24 @@ public final class MainFrame extends JFrame {
         } else {
             mYaya.onRequestNewGameStart();
         }
-
-        mOptions.getPreferences().addPreferenceChangeListener(pce -> {
-            switch (pce.getKey()) {
-                case Options.KEY_FULL_SCREEN ->
-                    mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
-                case Options.KEY_SHOW_INDICATORS ->
-                    mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
-                case Options.KEY_SHOW_LIM_COLUMN ->
-                    mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
-                case Options.KEY_SHOW_MAX_COLUMN ->
-                    mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
-            }
-        });
     }
 
     private void createUI() {
-        mMainPanel.removeAll();
-        mMainPanel.add(mYaya.getPanel());
-        mMainPanel.repaint();
-        mMainPanel.revalidate();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle(org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.title")); // NOI18N
+        setMinimumSize(new Dimension(100, 50));
 
+        mMainPanel = new JPanel(new BorderLayout());
+        mMainPanel.add(mYaya.getPanel(), BorderLayout.CENTER);
+//        mMainPanel.repaint();
+//        mMainPanel.revalidate();
+
+        getContentPane().add(mMainPanel, BorderLayout.CENTER);
         mNewGamePanel.setPreferredSize(SwingHelper.getUIScaledDim(400, 400));
 
-        var popupListener = new PopupListener();
-        addMouseListener(popupListener);
-        mYaya.getPanel().addMouseListener(popupListener);
-
-        mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
-        mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
-        mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
-        mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
-
-        mReverseDiceDirectionCheckBoxMenuItem.setSelected(mOptions.isReverseDirection());
-
-        var buttonGroup = new ButtonGroup();
-        for (var theme : mThemeManager.getItems()) {
-            var radioButtonMenuItem = new JRadioButtonMenuItem(theme.getName());
-            radioButtonMenuItem.addActionListener(actionEvent -> {
-                mThemeManager.setTheme(theme);
-                mOptions.setThemeId(theme.getId());
-            });
-            buttonGroup.add(radioButtonMenuItem);
-            mColorsMenu.add(radioButtonMenuItem);
-            radioButtonMenuItem.setSelected(mOptions.getThemeId().equalsIgnoreCase(theme.getId()));
-        }
-
-        var fontMenuItem = new JMenuItem(Dict.SIZE.toString());
-        fontMenuItem.setEnabled(false);
-        mScorecardMenu.add(fontMenuItem);
-
-        var fontSlider = new JSlider(8, 72, mOptions.getFontSize());
-        var fontResetRunner = new DelayedResetRunner(50, () -> {
-            mOptions.setFontSize(fontSlider.getValue());
-        });
-
-        fontSlider.addChangeListener(changeEvent -> {
-            fontResetRunner.reset();
-        });
-        mScorecardMenu.add(fontSlider);
+        initMenu();
+        initActions();
+        initListeners();
     }
 
     private void displayHelp() {
@@ -190,17 +147,6 @@ public final class MainFrame extends JFrame {
         mQuitMenuItem.setAction(mActionManager.getAction(ActionManager.QUIT));
     }
 
-    private void initComponents() {
-        mMainPanel = new JPanel();
-
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.title")); // NOI18N
-        setMinimumSize(new Dimension(100, 50));
-
-        mMainPanel.setLayout(new BorderLayout());
-        getContentPane().add(mMainPanel, BorderLayout.CENTER);
-    }
-
     private void initListeners() {
         mActionManager.addAppListener((action, actionEvent) -> {
             var actionId = StringUtils.defaultString((String) action.getValue(AlmondAction.ALMOND_KEY), "");
@@ -238,9 +184,26 @@ public final class MainFrame extends JFrame {
             }
         });
 
-        mReverseDiceDirectionCheckBoxMenuItem.addActionListener(actionEvent -> {
-            reverseDiceDirectionCheckBoxMenuItemActionPerformed(actionEvent);
+        mOptions.getPreferences().addPreferenceChangeListener(pce -> {
+            switch (pce.getKey()) {
+                case Options.KEY_FULL_SCREEN ->
+                    mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+                case Options.KEY_SHOW_INDICATORS ->
+                    mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
+                case Options.KEY_SHOW_LIM_COLUMN ->
+                    mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
+                case Options.KEY_SHOW_MAX_COLUMN ->
+                    mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
+            }
         });
+
+        mReverseDiceDirectionCheckBoxMenuItem.addActionListener(actionEvent -> {
+            mOptions.setReverseDirection(mReverseDiceDirectionCheckBoxMenuItem.isSelected());
+        });
+
+        var popupListener = new PopupListener();
+        addMouseListener(popupListener);
+        mYaya.getPanel().addMouseListener(popupListener);
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -266,10 +229,10 @@ public final class MainFrame extends JFrame {
         mAboutMenuItem = new JMenuItem();
         mQuitMenuItem = new JMenuItem();
 
-        org.openide.awt.Mnemonics.setLocalizedText(mScorecardMenu, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.scorecardMenu.text")); // NOI18N
-        org.openide.awt.Mnemonics.setLocalizedText(mColorsMenu, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.colorsMenu.text")); // NOI18N
-        org.openide.awt.Mnemonics.setLocalizedText(mDiceMenu, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.diceMenu.text")); // NOI18N
-        org.openide.awt.Mnemonics.setLocalizedText(mReverseDiceDirectionCheckBoxMenuItem, org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.reverseDiceDirectionCheckBoxMenuItem.text")); // NOI18N
+        Mnemonics.setLocalizedText(mScorecardMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.scorecardMenu.text")); // NOI18N
+        Mnemonics.setLocalizedText(mColorsMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.colorsMenu.text")); // NOI18N
+        Mnemonics.setLocalizedText(mDiceMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.diceMenu.text")); // NOI18N
+        Mnemonics.setLocalizedText(mReverseDiceDirectionCheckBoxMenuItem, NbBundle.getMessage(MainFrame.class, "MainFrame.reverseDiceDirectionCheckBoxMenuItem.text")); // NOI18N
 
         mPopupMenu.add(mNewMenuItem);
         mPopupMenu.add(new JPopupMenu.Separator());
@@ -286,10 +249,42 @@ public final class MainFrame extends JFrame {
         mPopupMenu.add(mAboutMenuItem);
         mPopupMenu.add(new JPopupMenu.Separator());
         mPopupMenu.add(mQuitMenuItem);
+
+        var buttonGroup = new ButtonGroup();
+        for (var theme : mThemeManager.getItems()) {
+            var radioButtonMenuItem = new JRadioButtonMenuItem(theme.getName());
+            radioButtonMenuItem.addActionListener(actionEvent -> {
+                mThemeManager.setTheme(theme);
+                mOptions.setThemeId(theme.getId());
+            });
+            buttonGroup.add(radioButtonMenuItem);
+            mColorsMenu.add(radioButtonMenuItem);
+            radioButtonMenuItem.setSelected(mOptions.getThemeId().equalsIgnoreCase(theme.getId()));
+        }
+
+        var fontMenuItem = new JMenuItem(Dict.SIZE.toString());
+        fontMenuItem.setEnabled(false);
+        mScorecardMenu.add(fontMenuItem);
+
+        var fontSlider = new JSlider(8, 72, mOptions.getFontSize());
+        var fontResetRunner = new DelayedResetRunner(50, () -> {
+            mOptions.setFontSize(fontSlider.getValue());
+        });
+
+        fontSlider.addChangeListener(changeEvent -> {
+            fontResetRunner.reset();
+        });
+
+        mScorecardMenu.add(fontSlider);
     }
 
-    private void reverseDiceDirectionCheckBoxMenuItemActionPerformed(ActionEvent evt) {
-        mOptions.setReverseDirection(((JCheckBoxMenuItem) evt.getSource()).isSelected());
+    private void loadSettings() {
+        mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+        mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
+        mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
+        mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
+
+        mReverseDiceDirectionCheckBoxMenuItem.setSelected(mOptions.isReverseDirection());
     }
 
     class PopupListener extends MouseAdapter {
