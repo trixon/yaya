@@ -1,2 +1,2 @@
-# yaya
-Yet another Yahtzee
+# Yaya
+Yet Another Yahtzeeesque Application

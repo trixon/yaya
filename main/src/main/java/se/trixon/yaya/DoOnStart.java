@@ -52,15 +52,17 @@ public class DoOnStart implements Runnable {
     @Override
     public void run() {
         boolean fullscreen = mOptions.isFullscreen();
-        EventQueue.invokeLater(() -> {
-            var preferences = NbPreferences.forModule(DoOnStart.class);
-            RuleManager.getInstance().init();
-            var frame = new MainFrame();
-            AlmondUI.getInstance().addWindowWatcher(preferences, frame);
-            SwingHelper.setFullScreen(fullscreen ? frame : null);
-            frame.setVisible(true);
-            SystemHelper.runLaterDelayed(500, () -> {
-                System.out.println("\n\nHey Yaya user! FYI, the warnings above are harmless. :)");
+        SystemHelper.runLaterDelayed(100, () -> {
+            EventQueue.invokeLater(() -> {
+                var preferences = NbPreferences.forModule(DoOnStart.class);
+                RuleManager.getInstance().init();
+                var frame = new MainFrame();
+                AlmondUI.getInstance().addWindowWatcher(preferences, frame);
+                SwingHelper.setFullScreen(fullscreen ? frame : null);
+                frame.setVisible(true);
+                SystemHelper.runLaterDelayed(200, () -> {
+                    System.out.println("\n\nHey Yaya user! FYI, the warnings above are harmless. :)");
+                });
             });
         });
     }

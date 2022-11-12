@@ -50,6 +50,7 @@ public abstract class RuleProvider {
             return IOUtils.toString(inputStream, "UTF-8");
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
+            System.out.println("Caused by: " + mId);
         }
 
         return "";

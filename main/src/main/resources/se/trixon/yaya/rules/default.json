@@ -1,7 +1,7 @@
 {
     "id": "default",
     "author": "Patrik Karlström",
-    "title": "Yahtzee",
+    "title": "Yaya",
     "date": "2022-10-25",
     "dice": 5,
     "rolls": 33,
@@ -196,14 +196,11 @@
         {
             "section": "LOWER",
             "formula": "duplicates 5",
-            "id": "yahtzee",
+            "id": "yaya",
             "lim": 50,
             "max": 50,
             "isPlayable": true,
-            "title": "Yahtzee",
-            "locals": {
-                "title-sv": "Yatzy"
-            }
+            "title": "Yaya"
         },
         {
             "id": "sum2",

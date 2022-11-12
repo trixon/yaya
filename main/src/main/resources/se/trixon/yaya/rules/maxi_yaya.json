@@ -1,7 +1,7 @@
 {
-    "id": "se.trixon.yaya.rules.maxi_yahtzee",
+    "id": "se.trixon.yaya.rules.maxi_yaya",
     "author": "Patrik Karlström",
-    "title": "Maxi Yatzy",
+    "title": "Maxi Yaya",
     "date": "2022-10-25",
     "dice": 6,
     "rolls": 33,
@@ -283,13 +283,13 @@
         {
             "section": "LOWER",
             "formula": "duplicates 6",
-            "id": "maxi_yahtzee",
+            "id": "maxi_yaya",
             "lim": 100,
             "max": 100,
             "isPlayable": true,
-            "title": "Maxi Yatzy",
+            "title": "Maxi Yaya",
             "locals": {
-                "title-sv": "Maxi Yatzy"
+                "title-sv": "Maxi Yaya"
             }
         },
         {
