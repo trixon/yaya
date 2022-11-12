@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import org.openide.util.Lookup;
-import se.trixon.yaya.Yaya;
 
 /**
  *
@@ -97,7 +96,6 @@ public class RuleManager {
         mRules = new ArrayList<>();
 
         for (var ruleProvider : Lookup.getDefault().lookupAll(RuleProvider.class)) {
-            Yaya.outln(Yaya.LOG_TITLE, String.format("Found GameLoader in %s.", ruleProvider.getId()));
             mRules.add(ruleProvider.load());
         }
 

@@ -38,7 +38,6 @@ public class ThemeManager {
 
     private ThemeManager() {
         for (var themeProvider : Lookup.getDefault().lookupAll(ThemeProvider.class)) {
-            Yaya.outln(Yaya.LOG_TITLE, "Found Theme in %s.".formatted(themeProvider.getId()));
             mItems.add(themeProvider.load());
         }
 
