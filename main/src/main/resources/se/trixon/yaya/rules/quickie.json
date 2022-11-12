@@ -1,65 +1,65 @@
-{
-    "id": "se.trixon.yaya.rules.quickie",
+{ 
     "author": "Patrik Karlström",
-    "title": "Quickie",
     "date": "2022-10-25",
-    "dice": 6,
-    "rolls": 4,
     "default_variant": 0,
-    "variants": [
+    "dice": 6,
+    "id": "se.trixon.yaya.rules.quickie",
+    "locals": {
+        "title-sv": "Snabben"
+    },
+    "rolls": 4,
+    "title": "Quickie",
+    "variants": [ 
         "STANDARD",
         "DOWNWARDS",
         "UPWARDS",
         "RANDOM"
     ],
-    "locals": {
-        "title-sv": "Snabben"
-    },
-    "rows": [
-        {
+    "rows": [ 
+        { 
             "id": "rolls",
-            "lim": 0,
-            "max": 0,
             "isRollCounter": true,
             "isSum": true,
-            "title": "Throws",
+            "lim": 0,
             "locals": {
                 "title-sv": "Slag"
-            }
+            },
+            "max": 0,
+            "title": "Throws"
         },
-        {
+        { 
             "formula": "duplicates 2",
             "id": "onePair",
-            "lim": 6,
-            "max": 12,
             "isPlayable": true,
-            "title": "One pair",
+            "lim": 6,
             "locals": {
                 "title-sv": "Par"
-            }
+            },
+            "max": 12,
+            "title": "One pair"
         },
-        {
+        { 
             "formula": "sum",
             "id": "chance",
-            "lim": 18,
-            "max": 36,
             "isPlayable": true,
-            "title": "Chance",
+            "lim": 18,
             "locals": {
                 "title-sv": "Chans"
-            }
+            },
+            "max": 36,
+            "title": "Chance"
         },
-        {
+        { 
             "id": "total",
-            "lim": 0,
-            "max": 48,
             "isResult": true,
             "isSum": true,
-            "sum_rows": "1-2",
-            "title": "Grand total",
+            "lim": 0,
             "locals": {
                 "title-sv": "Summa"
-            }
+            },
+            "max": 48,
+            "sum_rows": "1-2",
+            "title": "Grand total"
         }
     ]
 }

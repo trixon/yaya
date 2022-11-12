@@ -1,175 +1,175 @@
-{
-    "id": "se.trixon.yaya.rules.crag",
+{ 
     "author": "Patrik Karlström",
-    "title": "Crag",
+    "date": "2022-10-25",
+    "defaultVariant": 0,
+    "dice": 3,
+    "id": "se.trixon.yaya.rules.crag",
     "locals": {
         "title-sv": "Klippan"
     },
-    "dice": 3,
     "rolls": 99,
-    "defaultVariant": 0,
-    "variants": [
+    "title": "Crag",
+    "variants": [ 
         "STANDARD",
         "DOWNWARDS",
         "UPWARDS",
         "RANDOM"
     ],
-    "date": "2022-10-25",
-    "rows": [
-        {
+    "rows": [ 
+        { 
             "id": "rolls",
-            "lim": 0,
-            "max": 26,
-            "title": "Throws",
-            "isSum": true,
             "isRollCounter": true,
+            "isSum": true,
+            "lim": 0,
             "locals": {
                 "title-sv": "Slag"
-            }
+            },
+            "max": 26,
+            "title": "Throws"
         },
-        {
+        { 
+            "formula": "custom_crag 50",
             "id": "crag",
-            "title": "Crag",
             "isPlayable": true,
             "lim": 50,
-            "max": 50,
-            "formula": "custom_crag 50",
             "locals": {
                 "title-sv": "Klippan"
-            }
+            },
+            "max": 50,
+            "title": "Crag"
         },
-        {
+        { 
+            "formula": "sum 13 26",
             "id": "thirteen",
-            "title": "thirteen",
             "isPlayable": true,
             "lim": 26,
-            "max": 26,
-            "formula": "sum 13 26",
             "locals": {
                 "title-sv": "Tretton"
-            }
+            },
+            "max": 26,
+            "title": "thirteen"
         },
-        {
+        { 
+            "formula": "equals 4,5,6 20",
             "id": "high_straight",
-            "title": "High Straight",
             "isPlayable": true,
             "lim": 20,
-            "max": 20,
-            "formula": "equals 4,5,6 20",
             "locals": {
                 "title-sv": "Hög stege"
-            }
+            },
+            "max": 20,
+            "title": "High Straight"
         },
-        {
+        { 
+            "formula": "equals 1,2,3 20",
             "id": "low_straight",
-            "title": "Low Straight",
             "isPlayable": true,
             "lim": 20,
-            "max": 20,
-            "formula": "equals 1,2,3 20",
             "locals": {
                 "title-sv": "Låg stege"
-            }
+            },
+            "max": 20,
+            "title": "Low Straight"
         },
-        {
+        { 
+            "formula": "equals 2,4,6 20",
             "id": "even_straight",
-            "title": "Even Straight",
             "isPlayable": true,
             "lim": 20,
-            "max": 20,
-            "formula": "equals 2,4,6 20",
             "locals": {
                 "title-sv": "Jämn stege"
-            }
+            },
+            "max": 20,
+            "title": "Even Straight"
         },
-        {
+        { 
+            "formula": "equals 1,3,5 20",
             "id": "odd_straight",
-            "title": "Odd Straight",
             "isPlayable": true,
             "lim": 20,
-            "max": 20,
-            "formula": "equals 1,3,5 20",
             "locals": {
                 "title-sv": "Udda stege"
-            }
+            },
+            "max": 20,
+            "title": "Odd Straight"
         },
-        {
+        { 
+            "formula": "sum 6",
             "id": "sixes",
-            "title": "Sixes",
             "isPlayable": true,
             "lim": 12,
-            "max": 30,
-            "formula": "sum 6",
             "locals": {
                 "title-sv": "Sexor"
-            }
+            },
+            "max": 30,
+            "title": "Sixes"
         },
-        {
+        { 
+            "formula": "sum 5",
             "id": "fives",
-            "title": "Fives",
             "isPlayable": true,
             "lim": 10,
-            "max": 25,
-            "formula": "sum 5",
             "locals": {
                 "title-sv": "Femmor"
-            }
+            },
+            "max": 25,
+            "title": "Fives"
         },
-        {
+        { 
+            "formula": "sum 4",
             "id": "fours",
-            "title": "Fours",
             "isPlayable": true,
             "lim": 8,
-            "max": 20,
-            "formula": "sum 4",
             "locals": {
                 "title-sv": "Fyror"
-            }
+            },
+            "max": 20,
+            "title": "Fours"
         },
-        {
+        { 
+            "formula": "sum 3",
             "id": "threes",
-            "title": "Threes",
             "isPlayable": true,
             "lim": 6,
-            "max": 15,
-            "formula": "sum 3",
             "locals": {
                 "title-sv": "Treor"
-            }
+            },
+            "max": 15,
+            "title": "Threes"
         },
-        {
+        { 
+            "formula": "sum 2",
             "id": "twos",
-            "title": "Twos",
             "isPlayable": true,
             "lim": 4,
-            "max": 10,
-            "formula": "sum 2",
             "locals": {
                 "title-sv": "Tvåor"
-            }
+            },
+            "max": 10,
+            "title": "Twos"
         },
-        {
+        { 
+            "formula": "sum 1",
             "id": "ones",
-            "title": "Ones",
             "isPlayable": true,
             "lim": 2,
-            "max": 5,
-            "formula": "sum 1",
             "locals": {
                 "title-sv": "Ettor"
-            }
+            },
+            "max": 5,
+            "title": "Ones"
         },
-        {
+        { 
             "id": "total",
-            "title": "Grand total",
-            "isSum": true,
             "isResult": true,
+            "isSum": true,
             "lim": 0,
-            "max": 171,
-            "sum_rows": "1-12",
             "locals": {
                 "title-sv": "Totalsumma"
-            }
+            },
+            "max": 171,
+            "sum_rows": "1-12",
+            "title": "Grand total"
         }
     ]
 }

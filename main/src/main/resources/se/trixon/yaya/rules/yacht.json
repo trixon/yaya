@@ -1,12 +1,15 @@
-{
-    "id": "se.trixon.yaya.rules.yacht",
+{ 
     "author": "Patrik Karlström",
-    "title": "Yacht",
     "date": "2022-10-25",
-    "dice": 5,
-    "rolls": 99,
     "default_variant": 0,
-    "variants": [
+    "dice": 5,
+    "id": "se.trixon.yaya.rules.yacht",
+    "locals": {
+        "title-sv": "Jakt"
+    },
+    "rolls": 99,
+    "title": "Yacht",
+    "variants": [ 
         "STANDARD",
         "DOWNWARDS",
         "UPWARDS",
@@ -14,224 +17,221 @@
         "LOWER_UPPER",
         "RANDOM"
     ],
-    "locals": {
-        "title-sv": "Jakt"
-    },
-    "rows": [
-        {
+    "rows": [ 
+        { 
             "id": "rolls",
-            "lim": 0,
-            "max": 0,
             "isRollCounter": true,
             "isSum": true,
-            "title": "Throws",
+            "lim": 0,
             "locals": {
                 "title-sv": "Slag"
-            }
+            },
+            "max": 0,
+            "title": "Throws"
         },
-        {
-            "section": "UPPER",
+        { 
             "formula": "sum 1",
             "id": "ones",
-            "lim": 3,
-            "max": 5,
             "isPlayable": true,
-            "title": "Ones",
+            "lim": 3,
             "locals": {
                 "title-sv": "Ettor"
-            }
-        },
-        {
+            },
+            "max": 5,
             "section": "UPPER",
+            "title": "Ones"
+        },
+        { 
             "formula": "sum 2",
             "id": "twos",
-            "lim": 6,
-            "max": 10,
             "isPlayable": true,
-            "title": "Twos",
+            "lim": 6,
             "locals": {
                 "title-sv": "Tvåor"
-            }
-        },
-        {
+            },
+            "max": 10,
             "section": "UPPER",
+            "title": "Twos"
+        },
+        { 
             "formula": "sum 3",
             "id": "threes",
-            "lim": 9,
-            "max": 15,
             "isPlayable": true,
-            "title": "Threes",
+            "lim": 9,
             "locals": {
                 "title-sv": "Treor"
-            }
-        },
-        {
+            },
+            "max": 15,
             "section": "UPPER",
+            "title": "Threes"
+        },
+        { 
             "formula": "sum 4",
             "id": "fours",
-            "lim": 12,
-            "max": 20,
             "isPlayable": true,
-            "title": "Fours",
+            "lim": 12,
             "locals": {
                 "title-sv": "Fyror"
-            }
-        },
-        {
+            },
+            "max": 20,
             "section": "UPPER",
+            "title": "Fours"
+        },
+        { 
             "formula": "sum 5",
             "id": "fives",
-            "lim": 15,
-            "max": 25,
             "isPlayable": true,
-            "title": "Fives",
+            "lim": 15,
             "locals": {
                 "title-sv": "Femmor"
-            }
-        },
-        {
+            },
+            "max": 25,
             "section": "UPPER",
+            "title": "Fives"
+        },
+        { 
             "formula": "sum 6",
             "id": "sixes",
-            "lim": 18,
-            "max": 30,
             "isPlayable": true,
-            "title": "Sixes",
+            "lim": 18,
             "locals": {
                 "title-sv": "Sexor"
-            }
+            },
+            "max": 30,
+            "section": "UPPER",
+            "title": "Sixes"
         },
-        {
+        { 
             "id": "sum1",
-            "lim": 0,
-            "max": 105,
             "isSum": true,
-            "sum_rows": "1-6",
-            "title": "Upper total",
+            "lim": 0,
             "locals": {
                 "title-sv": "Övre summa"
-            }
+            },
+            "max": 105,
+            "sum_rows": "1-6",
+            "title": "Upper total"
         },
-        {
+        { 
             "bonus": true,
             "id": "bonus",
-            "lim": 63,
-            "max": 35,
             "isSum": true,
-            "sum_rows": "1-6",
-            "title": "Bonus",
+            "lim": 63,
             "locals": {
                 "title-sv": "Bonus"
-            }
+            },
+            "max": 35,
+            "sum_rows": "1-6",
+            "title": "Bonus"
         },
-        {
-            "section": "LOWER",
+        { 
             "formula": "duplicates 3",
             "id": "threeOfAKind",
-            "lim": 12,
-            "max": 18,
             "isPlayable": true,
-            "title": "Three of a kind",
+            "lim": 12,
             "locals": {
                 "title-sv": "Tretal"
-            }
-        },
-        {
+            },
+            "max": 18,
             "section": "LOWER",
+            "title": "Three of a kind"
+        },
+        { 
             "formula": "duplicates 4",
             "id": "fourOfAKind",
-            "lim": 16,
-            "max": 24,
             "isPlayable": true,
-            "title": "Four of a kind",
+            "lim": 16,
             "locals": {
                 "title-sv": "Fyrtal"
-            }
-        },
-        {
+            },
+            "max": 24,
             "section": "LOWER",
+            "title": "Four of a kind"
+        },
+        { 
             "formula": "straight 4",
             "id": "smallStraight",
-            "lim": 25,
-            "max": 25,
             "isPlayable": true,
-            "sum_rows": "1-2-3-4-5",
-            "title": "Small Straight",
+            "lim": 25,
             "locals": {
                 "title-sv": "Liten stege"
-            }
-        },
-        {
+            },
+            "max": 25,
             "section": "LOWER",
+            "sum_rows": "1-2-3-4-5",
+            "title": "Small Straight"
+        },
+        { 
             "formula": "straight 5",
             "id": "largeStraight",
-            "lim": 30,
-            "max": 30,
             "isPlayable": true,
-            "sum_rows": "2-3-4-5-6",
-            "title": "Large Straight",
+            "lim": 30,
             "locals": {
                 "title-sv": "Stor stege"
-            }
-        },
-        {
+            },
+            "max": 30,
             "section": "LOWER",
+            "sum_rows": "2-3-4-5-6",
+            "title": "Large Straight"
+        },
+        { 
             "formula": "house 3 2",
             "id": "fullHouse",
-            "lim": 40,
-            "max": 40,
             "isPlayable": true,
-            "title": "Full House",
+            "lim": 40,
             "locals": {
                 "title-sv": "Kåk"
-            }
-        },
-        {
+            },
+            "max": 40,
             "section": "LOWER",
+            "title": "Full House"
+        },
+        { 
             "formula": "duplicates 5",
             "id": "the_yacht",
-            "lim": 50,
-            "max": 50,
             "isPlayable": true,
-            "title": "The Yacht",
+            "lim": 50,
             "locals": {
                 "title-sv": "Jakten"
-            }
-        },
-        {
+            },
+            "max": 50,
             "section": "LOWER",
+            "title": "The Yacht"
+        },
+        { 
             "formula": "sum",
             "id": "chance",
-            "lim": 20,
-            "max": 30,
             "isPlayable": true,
-            "title": "Choice",
+            "lim": 20,
             "locals": {
                 "title-sv": "Val"
-            }
+            },
+            "max": 30,
+            "section": "LOWER",
+            "title": "Choice"
         },
-        {
+        { 
             "id": "sum2",
-            "lim": 0,
-            "max": 219,
             "isSum": true,
-            "sum_rows": "9-15",
-            "title": "Lower total",
+            "lim": 0,
             "locals": {
                 "title-sv": "Nedre summa"
-            }
+            },
+            "max": 219,
+            "sum_rows": "9-15",
+            "title": "Lower total"
         },
-        {
+        { 
             "id": "total",
-            "lim": 0,
-            "max": 374,
             "isResult": true,
             "isSum": true,
-            "sum_rows": "1-6,8-15",
-            "title": "Grand total",
+            "lim": 0,
             "locals": {
                 "title-sv": "Summa"
-            }
+            },
+            "max": 374,
+            "sum_rows": "1-6,8-15",
+            "title": "Grand total"
         }
     ]
 }

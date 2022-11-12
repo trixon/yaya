@@ -1,121 +1,121 @@
-{
-    "id": "se.trixon.yaya.rules.straight",
+{ 
     "author": "Patrik Karlström",
-    "title": "Straight",
     "date": "2022-10-25",
-    "dice": 6,
-    "rolls": 99,
     "default_variant": 0,
-    "variants": [
+    "dice": 6,
+    "id": "se.trixon.yaya.rules.straight",
+    "locals": {
+        "title-sv": "Stegen"
+    },
+    "rolls": 99,
+    "title": "Straight",
+    "variants": [ 
         "STANDARD",
         "DOWNWARDS",
         "UPWARDS",
         "RANDOM"
     ],
-    "locals": {
-        "title-sv": "Stegen"
-    },
-    "rows": [
-        {
+    "rows": [ 
+        { 
             "id": "rolls",
-            "lim": 0,
-            "max": 0,
             "isRollCounter": true,
             "isSum": true,
-            "title": "Throws",
+            "lim": 0,
             "locals": {
                 "title-sv": "Slag"
-            }
+            },
+            "max": 0,
+            "title": "Throws"
         },
-        {
+        { 
             "formula": "sum 1",
             "id": "ones",
-            "lim": 2,
-            "max": 5,
             "isPlayable": true,
-            "title": "Ones",
+            "lim": 2,
             "locals": {
                 "title-sv": "Ettor"
-            }
+            },
+            "max": 5,
+            "title": "Ones"
         },
-        {
+        { 
             "formula": "sum 2",
             "id": "twos",
-            "lim": 4,
-            "max": 10,
             "isPlayable": true,
-            "title": "Twos",
+            "lim": 4,
             "locals": {
                 "title-sv": "Tvåor"
-            }
+            },
+            "max": 10,
+            "title": "Twos"
         },
-        {
+        { 
             "formula": "sum 3",
             "id": "threes",
-            "lim": 6,
-            "max": 15,
             "isPlayable": true,
-            "title": "Threes",
+            "lim": 6,
             "locals": {
                 "title-sv": "Treor"
-            }
+            },
+            "max": 15,
+            "title": "Threes"
         },
-        {
+        { 
             "formula": "sum 4",
             "id": "fours",
-            "lim": 8,
-            "max": 20,
             "isPlayable": true,
-            "title": "Fours",
+            "lim": 8,
             "locals": {
                 "title-sv": "Fyror"
-            }
+            },
+            "max": 20,
+            "title": "Fours"
         },
-        {
+        { 
             "formula": "sum 5",
             "id": "fives",
-            "lim": 10,
-            "max": 25,
             "isPlayable": true,
-            "title": "Fives",
+            "lim": 10,
             "locals": {
                 "title-sv": "Femmor"
-            }
+            },
+            "max": 25,
+            "title": "Fives"
         },
-        {
+        { 
             "formula": "sum 6",
             "id": "sixes",
-            "lim": 12,
-            "max": 30,
             "isPlayable": true,
-            "title": "Sixes",
+            "lim": 12,
             "locals": {
                 "title-sv": "Sexor"
-            }
+            },
+            "max": 30,
+            "title": "Sixes"
         },
-        {
+        { 
             "formula": "equals 1,2,3,4,5,6 45",
             "id": "fullStraight",
-            "lim": 45,
-            "max": 45,
             "isPlayable": true,
-            "sum_rows": "1-2-3-4-5-6",
-            "title": "Full Straight",
+            "lim": 45,
             "locals": {
                 "title-sv": "Full stege"
-            }
+            },
+            "max": 45,
+            "sum_rows": "1-2-3-4-5-6",
+            "title": "Full Straight"
         },
-        {
+        { 
             "id": "total",
-            "lim": 0,
-            "max": 171,
             "isResult": true,
             "isSum": true,
-            "sum_rows": "1-7",
-            "title": "Total",
+            "lim": 0,
             "locals": {
                 "title-sv": "Summa"
-            }
+            },
+            "max": 171,
+            "sum_rows": "1-7",
+            "title": "Total"
         }
     ]
 }
