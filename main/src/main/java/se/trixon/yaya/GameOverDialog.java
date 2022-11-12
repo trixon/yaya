@@ -17,12 +17,8 @@ package se.trixon.yaya;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import javax.swing.JButton;
-import javax.swing.SwingUtilities;
-import org.apache.commons.lang3.StringUtils;
-import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
-import org.openide.awt.Actions;
+import javax.swing.JOptionPane;
+import se.trixon.almond.util.AlmondUI;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.almond.util.swing.dialogs.HtmlPanel;
@@ -34,35 +30,16 @@ import se.trixon.yaya.GameOverItem;
  */
 public class GameOverDialog {
 
-    private final JButton mNewGameButton;
-    private final NotifyDescriptor mNotifyDescriptor;
-    private final JButton mQuickNewGameButton;
+    private final HtmlPanel mHtmlPanel = new HtmlPanel();
+    private final Yaya mYaya = Yaya.getInstance();
 
     public static GameOverDialog getInstance() {
         return Holder.INSTANCE;
     }
 
     private GameOverDialog() {
-        mNewGameButton = new JButton(Dict.Game.NEW_ROUND.toString() + "…");
-        mQuickNewGameButton = new JButton(Dict.Game.NEW_ROUND.toString());
-
-        var options = new JButton[]{mNewGameButton, mQuickNewGameButton};
-        mNotifyDescriptor = new NotifyDescriptor(
-                null,
-                Dict.Game.GAME_OVER.toString(),
-                NotifyDescriptor.PLAIN_MESSAGE,
-                NotifyDescriptor.DEFAULT_OPTION,
-                options,
-                mQuickNewGameButton);
-    }
-
-    public void display(String s) {
-        Object message = s;
-        if (StringUtils.startsWithIgnoreCase(s, "<html>")) {
-            message = new HtmlPanel(s.toString());
-        }
-
-        display((Object) message);
+        mHtmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(680, 740));
+        mHtmlPanel.getScrollPane().setBorder(null);
     }
 
     public void display(ArrayList<GameOverItem> gameOverItems) {
@@ -100,20 +77,19 @@ public class GameOverDialog {
         display(builder.toString());
     }
 
-    private void display(Object message) {
-        mNotifyDescriptor.setMessage(message);
-        SwingHelper.runLaterDelayed(100, () -> {
-            mQuickNewGameButton.requestFocus();
-        });
-        Object retVal = DialogDisplayer.getDefault().notify(mNotifyDescriptor);
+    private void display(String message) {
+        mHtmlPanel.setHtml(message);
+        var newDialog = Dict.Game.NEW_ROUND.toString() + "…";
+        var newQuick = Dict.Game.NEW_ROUND.toString();
 
-        SwingUtilities.invokeLater(() -> {
-            if (retVal == mNewGameButton) {
-                Actions.forID("Yaya", "se.trixon.yaya.actions.NewGameAction").actionPerformed(null);
-            } else if (retVal == mQuickNewGameButton) {
-                Yaya.getInstance().onRequestNewGameStart();
-            }
-        });
+        var buttons = new String[]{newDialog, newQuick};
+        var result = JOptionPane.showOptionDialog(AlmondUI.getInstance().getFrame(), mHtmlPanel, newQuick, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, newQuick);
+
+        if (result == 0) {
+            ActionManager.getInstance().getAction(ActionManager.NEW).actionPerformed(null);
+        } else if (result == 1) {
+            mYaya.onRequestNewGameStart();
+        }
     }
 
     private static class Holder {

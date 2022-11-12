@@ -36,6 +36,11 @@
         <!--NetBeans-->
         <dependency>
             <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-modules</artifactId>
+            <version>${netbeans.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-awt</artifactId>
             <version>${netbeans.version}</version>
         </dependency>
@@ -46,27 +51,18 @@
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-dialogs</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util</artifactId>
             <version>${netbeans.version}</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-libs-flatlaf</artifactId>
+            <artifactId>org-openide-util-ui</artifactId>
             <version>${netbeans.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-swing-laf-flatlaf</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
+            <!--Remove this dependency when FlatLaf is working without it-->
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-explorer</artifactId>
+            <artifactId>org-netbeans-modules-options-api</artifactId>
             <version>${netbeans.version}</version>
         </dependency>
 
@@ -84,21 +80,7 @@
                     <groupId>org.apache.commons</groupId>
                     <artifactId>commons-csv</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>org.apache.commons</groupId>
-                    <artifactId>commons-text</artifactId>
-                </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>se.trixon.almond</groupId>
-            <artifactId>almond-nbp</artifactId>
-            <version>${almond.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>se.trixon.almond</groupId>
-            <artifactId>almond-nbp-core</artifactId>
-            <version>${almond.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -116,9 +98,9 @@
             <version>1.6.0</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <version>1.10.0</version>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>2.6</version>
         </dependency>
     </dependencies>
 

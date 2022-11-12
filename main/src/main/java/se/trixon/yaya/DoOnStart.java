@@ -19,7 +19,6 @@ import java.awt.EventQueue;
 import java.util.prefs.BackingStoreException;
 import org.openide.modules.OnStart;
 import org.openide.util.NbPreferences;
-import se.trixon.almond.nbp.dialogs.NbOptionalDialog;
 import se.trixon.almond.util.AlmondUI;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
@@ -36,7 +35,6 @@ public class DoOnStart implements Runnable {
     private final Options mOptions = Options.getInstance();
 
     static {
-//        FlatDarkLaf.setup();
         try {
             var key = "laf";
             var defaultLAF = "com.formdev.flatlaf.FlatDarkLaf";
@@ -45,19 +43,18 @@ public class DoOnStart implements Runnable {
         } catch (BackingStoreException ex) {
             //Exceptions.printStackTrace(ex);
         }
-
-        NbOptionalDialog.setPreferences(NbPreferences.forModule(NbOptionalDialog.class).node("optionalDialogState"));
     }
 
     @Override
     public void run() {
-        boolean fullscreen = mOptions.isFullscreen();
+        var fullscreen = mOptions.isFullscreen();
         SystemHelper.runLaterDelayed(100, () -> {
             EventQueue.invokeLater(() -> {
                 var preferences = NbPreferences.forModule(DoOnStart.class);
                 RuleManager.getInstance().init();
                 var frame = new MainFrame();
-                AlmondUI.getInstance().addWindowWatcher(preferences, frame);
+                var almondUI = AlmondUI.getInstance();
+                almondUI.addWindowWatcher(preferences, frame);
                 SwingHelper.setFullScreen(fullscreen ? frame : null);
                 frame.setVisible(true);
                 SystemHelper.runLaterDelayed(200, () -> {
