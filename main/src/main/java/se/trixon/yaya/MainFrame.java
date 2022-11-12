@@ -20,6 +20,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.prefs.BackingStoreException;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
@@ -37,7 +38,9 @@ import javax.swing.border.EmptyBorder;
 import org.apache.commons.lang3.StringUtils;
 import org.openide.LifecycleManager;
 import org.openide.awt.Mnemonics;
+import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
+import org.openide.util.NbPreferences;
 import se.trixon.almond.util.AlmondAction;
 import se.trixon.almond.util.AlmondUI;
 import se.trixon.almond.util.Dict;
@@ -179,7 +182,8 @@ public final class MainFrame extends JFrame {
 
                 case ActionManager.QUIT -> {
 //                    MainFrame.this.setVisible(false);
-                    LifecycleManager.getDefault().exit();
+                    processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+
                 }
 
                 default ->
@@ -211,8 +215,15 @@ public final class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
-                SwingHelper.frameStateSave(mOptions.getPreferences(), MainFrame.this);
-                mActionManager.getAction(ActionManager.QUIT).actionPerformed(null);
+                if (!mOptions.isFullscreen()) {
+                    SwingHelper.frameStateSave(mOptions.getPreferences(), MainFrame.this);
+                    try {
+                        NbPreferences.forModule(Options.class).sync();
+                    } catch (BackingStoreException ex) {
+                        Exceptions.printStackTrace(ex);
+                    }
+                }
+                LifecycleManager.getDefault().exit();
             }
         });
     }
@@ -282,7 +293,7 @@ public final class MainFrame extends JFrame {
     }
 
     private void loadSettings() {
-        mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+//        mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
         mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
         mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
         mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());

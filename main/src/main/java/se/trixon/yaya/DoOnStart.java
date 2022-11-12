@@ -22,7 +22,6 @@ import org.openide.util.NbPreferences;
 import se.trixon.almond.util.AlmondUI;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
-import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.rules.RuleManager;
 
 /**
@@ -31,8 +30,6 @@ import se.trixon.yaya.rules.RuleManager;
  */
 @OnStart
 public class DoOnStart implements Runnable {
-
-    private final Options mOptions = Options.getInstance();
 
     static {
         try {
@@ -47,16 +44,15 @@ public class DoOnStart implements Runnable {
 
     @Override
     public void run() {
-        var fullscreen = mOptions.isFullscreen();
         SystemHelper.runLaterDelayed(100, () -> {
             EventQueue.invokeLater(() -> {
                 var preferences = NbPreferences.forModule(DoOnStart.class);
                 RuleManager.getInstance().init();
                 var frame = new MainFrame();
                 var almondUI = AlmondUI.getInstance();
-                almondUI.addWindowWatcher(preferences, frame);
-                SwingHelper.setFullScreen(fullscreen ? frame : null);
+//                SwingHelper.setFullScreen(mOptions.isFullscreen() ? frame : null);
                 frame.setVisible(true);
+                almondUI.addWindowWatcher(preferences, frame);
                 SystemHelper.runLaterDelayed(200, () -> {
                     System.out.println("\n\nHey Yaya user! FYI, the warnings above are harmless. :)");
                 });
