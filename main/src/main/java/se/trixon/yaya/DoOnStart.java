@@ -23,6 +23,7 @@ import se.trixon.almond.nbp.dialogs.NbOptionalDialog;
 import se.trixon.almond.util.AlmondUI;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
+import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.rules.RuleManager;
 
 /**
@@ -57,6 +58,7 @@ public class DoOnStart implements Runnable {
                 RuleManager.getInstance().init();
                 var frame = new MainFrame();
                 AlmondUI.getInstance().addWindowWatcher(preferences, frame);
+                SwingHelper.setFullScreen(fullscreen ? frame : null);
                 frame.setVisible(true);
             });
         });

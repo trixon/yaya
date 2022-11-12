@@ -15,6 +15,7 @@
  */
 package se.trixon.yaya;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
@@ -74,6 +75,7 @@ public class ActionManager extends AlmondActionManager {
         keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0);
         action = createAction(Dict.FULL_SCREEN.toString());
         initAction(action, FULLSCREEN, keyStroke, null, true);
+        action.setEnabled(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().isFullScreenSupported());
 
         //show lim
         keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);

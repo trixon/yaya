@@ -165,6 +165,8 @@ public final class MainFrame extends JFrame {
                     mOptions.setShowIndicators(!mOptions.isShowIndicators());
 
                 case ActionManager.FULLSCREEN -> {
+                    mOptions.setFullscreen(!mOptions.isFullscreen());
+                    SwingHelper.setFullScreen(mOptions.isFullscreen() ? this : null);
                 }
 
                 case ActionManager.UNDO -> {
