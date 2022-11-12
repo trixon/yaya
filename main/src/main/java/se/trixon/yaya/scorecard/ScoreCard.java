@@ -245,7 +245,7 @@ public class ScoreCard {
     }
 
     private void applyUndoButtonStyle() {
-        var imageIcon = MaterialIcon._Content.UNDO.getImageIcon(mOptions.getFontSize(), mTheme.getIconUndo());
+        var imageIcon = MaterialIcon._Content.UNDO.getImageIcon(mOptions.getScaledFontSize(), mTheme.getIconUndo());
         mUndoButton.setIcon(imageIcon);
     }
 
@@ -273,7 +273,7 @@ public class ScoreCard {
 
         initLayout();
         applyColors();
-        applyFontSize(mPanel, mOptions.getFontSize());
+        applyFontSize(mPanel, mOptions.getScaledFontSize());
 
         mOptions.getPreferences().addPreferenceChangeListener(pce -> {
             if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_INDICATORS)) {
@@ -281,7 +281,7 @@ public class ScoreCard {
             } else if (StringUtils.equalsAny(pce.getKey(), Options.KEY_THEME)) {
                 applyColors();
             } else if (pce.getKey().equalsIgnoreCase(Options.KEY_FONT_SIZE)) {
-                applyFontSize(mPanel, mOptions.getFontSize());
+                applyFontSize(mPanel, mOptions.getScaledFontSize());
                 applyUndoButtonStyle();
             }
         });
@@ -330,7 +330,7 @@ public class ScoreCard {
 
         mUndoPanel = new JPanel(new BorderLayout());
         mGameTitleLabel = new JLabel(mRule.getTitle());
-        mGameTitleLabel.setPreferredSize(new Dimension(200 / 12 * mOptions.getFontSize(), 1));
+        mGameTitleLabel.setPreferredSize(new Dimension(200 / 12 * mOptions.getScaledFontSize(), 1));
         mGameTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         mUndoPanel.add(mUndoButton, BorderLayout.WEST);

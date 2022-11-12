@@ -20,6 +20,7 @@ import org.openide.util.NbPreferences;
 import se.trixon.almond.util.OptionsBase;
 import static se.trixon.almond.util.OptionsBase.DEFAULT_FULL_SCREEN;
 import static se.trixon.almond.util.OptionsBase.KEY_FULL_SCREEN;
+import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.rules.GameVariant;
 
 /**
@@ -97,6 +98,10 @@ public class Options extends OptionsBase {
 
     public String getRuleId() {
         return get(KEY_RULE_ID, DEFAULT_RULE_ID);
+    }
+
+    public int getScaledFontSize() {
+        return SwingHelper.getUIScaled(getFontSize());
     }
 
     public String getThemeId() {

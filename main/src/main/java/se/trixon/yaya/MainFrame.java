@@ -16,7 +16,6 @@
 package se.trixon.yaya;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -32,7 +31,9 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
 import org.apache.commons.lang3.StringUtils;
 import org.openide.LifecycleManager;
 import org.openide.awt.Mnemonics;
@@ -91,15 +92,12 @@ public final class MainFrame extends JFrame {
     private void createUI() {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.title")); // NOI18N
-        setMinimumSize(new Dimension(100, 50));
+        setMinimumSize(SwingHelper.getUIScaledDim(100, 50));
 
         mMainPanel = new JPanel(new BorderLayout());
         mMainPanel.add(mYaya.getPanel(), BorderLayout.CENTER);
-//        mMainPanel.repaint();
-//        mMainPanel.revalidate();
 
         getContentPane().add(mMainPanel, BorderLayout.CENTER);
-        mNewGamePanel.setPreferredSize(SwingHelper.getUIScaledDim(400, 400));
 
         initMenu();
         initActions();
@@ -108,17 +106,20 @@ public final class MainFrame extends JFrame {
 
     private void displayHelp() {
         var htmlPanel = new HtmlPanel(new Help().getHelp());
-        htmlPanel.setPreferredSize(new Dimension(680, 740));
+        htmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(680, 740));
+        htmlPanel.getScrollPane().setBorder(null);
         String[] buttons = {Dict.CLOSE.toString()};
-
+        var defaultBorder = (EmptyBorder) UIManager.get("OptionPane.border");
+        UIManager.put("OptionPane.border", new EmptyBorder(0, 0, 0, 0));
         JOptionPane.showOptionDialog(this, htmlPanel, Dict.HELP.toString(), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, Dict.CLOSE.toString());
+        UIManager.put("OptionPane.border", defaultBorder);
     }
 
     private void displayNewGame() {
         mNewGamePanel.load();
 
         String[] buttons = {Dict.CANCEL.toString(), Dict.PLAY.toString()};
-        var result = JOptionPane.showOptionDialog(this, mNewGamePanel, Dict.PLAY.toString(), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, Dict.PLAY.toString());
+        var result = JOptionPane.showOptionDialog(this, mNewGamePanel, Dict.Game.NEW_ROUND.toString(), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, Dict.PLAY.toString());
         if (result == 1) {
             mNewGamePanel.save();
             mYaya.onRequestNewGameStart();

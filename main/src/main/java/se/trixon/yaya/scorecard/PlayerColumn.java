@@ -189,7 +189,7 @@ public class PlayerColumn {
         var rowsRule = mRule.getGameColumn();
         mRows = new Cell[rowsRule.size()];
         var d = mLabel.getPreferredSize();
-        d.width = 80 / 12 * mOptions.getFontSize();
+        d.width = 80 / 12 * mOptions.getScaledFontSize();
         mLabel.setPreferredSize(d);
         mLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mLabel.setOpaque(true);

@@ -61,7 +61,7 @@ public class ActionManager extends AlmondActionManager {
         int commandMask = SystemHelper.getCommandMask();
 
         //new
-        keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_N, commandMask);
+        keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_N, 0);
         action = createAction(Dict.Game.NEW_ROUND.toString());
         initAction(action, NEW, keyStroke, null, true);
 

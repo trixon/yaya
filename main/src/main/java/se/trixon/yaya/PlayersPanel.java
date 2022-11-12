@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.SpinnerNumberModel;
 import org.apache.commons.lang3.StringUtils;
 import se.trixon.almond.util.Dict;
+import se.trixon.almond.util.swing.SwingHelper;
 
 /**
  *
@@ -96,7 +97,7 @@ public class PlayersPanel extends javax.swing.JPanel {
             mNameComboBoxes[i] = new JComboBox<>();
             parent = (i & 1) == 0 ? leftPanel : rightPanel;
             parent.add(mNameComboBoxes[i]);
-            parent.add(Box.createVerticalStrut(4));
+            parent.add(Box.createVerticalStrut(SwingHelper.getUIScaled(8)));
         }
 
         initCombos();
@@ -106,7 +107,7 @@ public class PlayersPanel extends javax.swing.JPanel {
         var names = StringUtils.split(mOptions.get(Options.KEY_PLAYERS_ALL, Options.DEFAULT_PLAYERS_ALL), ";");
 
         for (var comboBox : mNameComboBoxes) {
-            comboBox.setModel(new DefaultComboBoxModel<String>(names));
+            comboBox.setModel(new DefaultComboBoxModel<>(names));
             comboBox.setEditable(true);
         }
     }
@@ -127,7 +128,6 @@ public class PlayersPanel extends javax.swing.JPanel {
         mainPanel = new javax.swing.JPanel();
         leftPanel = new javax.swing.JPanel();
         rightPanel = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -141,7 +141,6 @@ public class PlayersPanel extends javax.swing.JPanel {
 
         numberSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 8, 1));
         numberSpinner.setMinimumSize(new java.awt.Dimension(64, 26));
-        numberSpinner.setPreferredSize(new java.awt.Dimension(64, 26));
         numberSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 numberSpinnerStateChanged(evt);
@@ -180,26 +179,8 @@ public class PlayersPanel extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(16, 0, 0, 0);
         add(mainPanel, gridBagConstraints);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.weighty = 1.0;
-        add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void numberSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_numberSpinnerStateChanged
@@ -226,7 +207,6 @@ public class PlayersPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_shuffleButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel leftPanel;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JSpinner numberSpinner;

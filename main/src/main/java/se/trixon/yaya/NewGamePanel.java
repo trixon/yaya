@@ -79,8 +79,6 @@ public class NewGamePanel extends JPanel {
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
         setEnabled(false);
-        setMinimumSize(new java.awt.Dimension(300, 261));
-        setPreferredSize(new java.awt.Dimension(300, 377));
         setLayout(new java.awt.GridBagLayout());
 
         gameLabel.setFont(gameLabel.getFont().deriveFont(gameLabel.getFont().getStyle() | java.awt.Font.BOLD, gameLabel.getFont().getSize()+4));
@@ -103,7 +101,7 @@ public class NewGamePanel extends JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         add(gameComboBox, gridBagConstraints);
 
-        byLineLabel.setFont(new java.awt.Font("Lucida Grande", 2, 13)); // NOI18N
+        byLineLabel.setFont(byLineLabel.getFont().deriveFont((byLineLabel.getFont().getStyle() | java.awt.Font.ITALIC), byLineLabel.getFont().getSize()-4));
         org.openide.awt.Mnemonics.setLocalizedText(byLineLabel, "byLine"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
