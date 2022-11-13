@@ -4,7 +4,7 @@
     "default_variant": 0,
     "dice": 6,
     "id": "se.trixon.yaya.rules.maxi_yaya",
-    "rolls": 33,
+    "rolls": 3,
     "title": "Maxi Yaya",
     "variants": [ 
         "STANDARD",

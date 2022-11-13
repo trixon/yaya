@@ -4,7 +4,7 @@
     "default_variant": 0,
     "dice": 5,
     "id": "se.trixon.yaya.rules.yaya",
-    "rolls": 33,
+    "rolls": 3,
     "title": "Yaya",
     "variants": [ 
         "STANDARD",
