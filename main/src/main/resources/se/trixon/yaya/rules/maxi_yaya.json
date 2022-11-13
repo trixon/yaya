@@ -299,7 +299,7 @@
             "locals": {
                 "title-sv": "Nedre summa"
             },
-            "max": 373,
+            "max": 417,
             "sum_rows": "9-22",
             "title": "Lower total"
         },
@@ -311,7 +311,7 @@
             "locals": {
                 "title-sv": "Summa"
             },
-            "max": 599,
+            "max": 643,
             "sum_rows": "1-6,8-22",
             "title": "Grand total"
         }

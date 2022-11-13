@@ -31,6 +31,7 @@ public class Options extends OptionsBase {
 
     public static final String DEFAULT_PLAYERS = "Ask;Embla;Ask;Embla;Ask;Embla;Ask;Embla";
     public static final String DEFAULT_PLAYERS_ALL = "Ask;Embla";
+    public static final String DEFAULT_RULE_ID = "se.trixon.yaya.rules.yaya_scandinavian";
     public static final String KEY_FONT_SIZE = "font.size";
     public static final String KEY_GAME_START_COUNTER = "game.start_counter";
     public static final String KEY_NUM_OF_PLAYERS = "numOfPlayers";
@@ -46,7 +47,6 @@ public class Options extends OptionsBase {
     private static final String DEFAULT_GAME_VARIANT = "standard";
     private static final int DEFAULT_NUM_OF_PLAYERS = 2;
     private static final boolean DEFAULT_REVERSE_DIRECTION = false;
-    private static final String DEFAULT_RULE_ID = "se.trixon.yaya.rules.yaya_scandinavian";
     private static final boolean DEFAULT_SHOW_INDICATORS = true;
     private static final boolean DEFAULT_SHOW_LIM_COLUMN = false;
     private static final boolean DEFAULT_SHOW_MAX_COLUMN = false;

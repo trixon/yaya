@@ -33,6 +33,8 @@ public class Rule {
     private String mDate;
     @SerializedName("default_variant")
     private int mDefaultVariant;
+    @SerializedName("rows")
+    private GameColumn mGameColumn = new GameColumn();
     @SerializedName("id")
     private String mId;
     @SerializedName("locals")
@@ -41,10 +43,10 @@ public class Rule {
     private int mNumOfDice;
     @SerializedName("rolls")
     private int mNumOfRolls;
-    @SerializedName("rows")
-    private GameColumn mGameColumn = new GameColumn();
+    private int mResultRow;
     @SerializedName("title")
     private String mTitle;
+    private int mTotalScore;
     @SerializedName("variants")
     private ArrayList<GameVariant> mVariants;
 
@@ -61,6 +63,10 @@ public class Rule {
 
     public int getDefaultVariant() {
         return mDefaultVariant;
+    }
+
+    public GameColumn getGameColumn() {
+        return mGameColumn;
     }
 
     public String getId() {
@@ -106,23 +112,15 @@ public class Rule {
     }
 
     public int getResultRow() {
-        int row = -1;
-        for (int i = 0; i < mGameColumn.size(); i++) {
-            if (mGameColumn.get(i).isResult()) {
-                row = i;
-                break;
-            }
-        }
-
-        return row;
-    }
-
-    public GameColumn getGameColumn() {
-        return mGameColumn;
+        return mResultRow;
     }
 
     public String getTitle() {
         return mLocals.getOrDefault("title" + Yaya.getLanguageSuffix(), mTitle);
+    }
+
+    public int getTotalScore() {
+        return mTotalScore;
     }
 
     public String getVariantByTitle(String title) {
@@ -137,23 +135,35 @@ public class Rule {
         return result;
     }
 
-    public String[] getVariantsArray() {
-        return mVariants.toArray(String[]::new);
-    }
-
     public ArrayList<GameVariant> getVariants() {
         return mVariants;
     }
 
+    public String[] getVariantsArray() {
+        return mVariants.toArray(String[]::new);
+    }
+
     public void postLoad() {
-        mGameColumn.forEach(row -> {
+        mTotalScore = 0;
+        mResultRow = -1;
+
+        for (int i = 0; i < mGameColumn.size(); i++) {
+            var row = mGameColumn.get(i);
             row.postLoad();
 
             if (row.isRollCounter()) {
                 int max = (int) (getNumOfRolls() * getGameColumn().stream().filter(g -> g.isPlayable()).count());
                 row.setMax(max);
             }
-        });
+
+            if (row.isPlayable() || row.isBonus()) {
+                mTotalScore += row.getMax();
+            }
+
+            if (row.isResult()) {
+                mResultRow = i;
+            }
+        }
     }
 
     public void setAuthor(String author) {
@@ -168,6 +178,10 @@ public class Rule {
         mDefaultVariant = defaultVariant;
     }
 
+    public void setGameColumn(GameColumn gameColumn) {
+        mGameColumn = gameColumn;
+    }
+
     public void setId(String id) {
         mId = id;
     }
@@ -178,10 +192,6 @@ public class Rule {
 
     public void setNumOfRolls(int numOfRolls) {
         mNumOfRolls = numOfRolls;
-    }
-
-    public void setGameColumn(GameColumn gameColumn) {
-        mGameColumn = gameColumn;
     }
 
     public void setTitle(String title) {

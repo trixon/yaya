@@ -125,11 +125,11 @@
             "formula": "sum_n 3",
             "id": "threeOfAKind",
             "isPlayable": true,
-            "lim": 18,
+            "lim": 15,
             "locals": {
                 "title-sv": "Tretal"
             },
-            "max": 36,
+            "max": 30,
             "section": "LOWER",
             "title": "Three of a kind"
         },
@@ -137,11 +137,11 @@
             "formula": "sum_n 4",
             "id": "fourOfAKind",
             "isPlayable": true,
-            "lim": 18,
+            "lim": 15,
             "locals": {
                 "title-sv": "Fyrtal"
             },
-            "max": 36,
+            "max": 30,
             "section": "LOWER",
             "title": "Four of a kind"
         },
@@ -209,7 +209,7 @@
             "locals": {
                 "title-sv": "Nedre summa"
             },
-            "max": 219,
+            "max": 235,
             "sum_rows": "9-15",
             "title": "Lower total"
         },
@@ -221,7 +221,7 @@
             "locals": {
                 "title-sv": "Summa"
             },
-            "max": 374,
+            "max": 375,
             "sum_rows": "1-6,8-15",
             "title": "Grand total"
         }

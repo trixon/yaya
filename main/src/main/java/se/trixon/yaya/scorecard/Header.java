@@ -133,17 +133,28 @@ public class Header {
             titleLabel.setHorizontalAlignment(SwingConstants.LEADING);
             titleLabel.setText(mRule.getGameColumn().get(i).getTitle());
 
-            var maxLabel = mMaxColumn[i].getLabel();
-            maxLabel.setText(Integer.toString(mMaxValues[i]));
-
             var limLabel = mLimColumn[i].getLabel();
-            limLabel.setText(Integer.toString(mLimValues[i]));
+            var maxLabel = mMaxColumn[i].getLabel();
 
+            var lim = Integer.toString(mLimValues[i]);
+            var max = Integer.toString(mMaxValues[i]);
+
+            if (gameRow.isRollCounter()) {
+                lim = "Lim";
+                max = "Max";
+            } else if (gameRow.isSum() && !gameRow.isBonus()) {
+                lim = "";
+            }
+
+            limLabel.setText(lim);
+            maxLabel.setText(max);
 //            String toolTip = "<html><h1>%s</h1></html>".formatted(Integer.toString(mLimValues[i]));
 //            titleLabel.setToolTipText(toolTip);
 //            maxLabel.setToolTipText(toolTip);
 //            limLabel.setToolTipText(toolTip);
         }
+
+        mMaxColumn[mRule.getResultRow()].getLabel().setText(Integer.toString(mRule.getTotalScore()));
     }
 
     private void setVisible(boolean visible, Cell[] cells) {

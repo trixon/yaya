@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import org.openide.util.Lookup;
+import se.trixon.yaya.Options;
 
 /**
  *
@@ -61,7 +62,7 @@ public class RuleManager {
         }
 
         if (index == -1) {
-            index = getIndexForId("default");
+            index = getIndexForId(Options.DEFAULT_RULE_ID);
         }
 
         return index;

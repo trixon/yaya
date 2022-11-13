@@ -35,7 +35,7 @@
             "locals": {
                 "title-sv": "Ettor"
             },
-            "max": 5,
+            "max": 6,
             "title": "Ones"
         },
         { 
@@ -46,7 +46,7 @@
             "locals": {
                 "title-sv": "Tvåor"
             },
-            "max": 10,
+            "max": 12,
             "title": "Twos"
         },
         { 
@@ -57,7 +57,7 @@
             "locals": {
                 "title-sv": "Treor"
             },
-            "max": 15,
+            "max": 18,
             "title": "Threes"
         },
         { 
@@ -68,7 +68,7 @@
             "locals": {
                 "title-sv": "Fyror"
             },
-            "max": 20,
+            "max": 24,
             "title": "Fours"
         },
         { 
@@ -79,7 +79,7 @@
             "locals": {
                 "title-sv": "Femmor"
             },
-            "max": 25,
+            "max": 30,
             "title": "Fives"
         },
         { 
@@ -90,7 +90,7 @@
             "locals": {
                 "title-sv": "Sexor"
             },
-            "max": 30,
+            "max": 36,
             "title": "Sixes"
         },
         { 
