@@ -35,6 +35,7 @@ public class Cell {
 
     private final int COLOR_MASK = 0xEEEEEE;
     private Color mCurrentBackgroundColor;
+    private Color mCurrentForegroundColor;
     private final GameCell mGameCell;
     private boolean mHeader = false;
     private final Header mHeaderColumn;
@@ -71,7 +72,8 @@ public class Cell {
         if (isPlayable() && !isRegistered()) {
             mLabel.setText("");
             setCurrentBackgroundColor(mThemeManager.getTheme().getBgScoreCell());
-            setBackground();
+            setCurrentForegroundColor(mThemeManager.getTheme().getFgScoreCell());
+            setColors();
         }
     }
 
@@ -112,10 +114,6 @@ public class Cell {
         return mLabel;
     }
 
-    public int getRow() {
-        return mRow;
-    }
-
     public int getValue() {
         return mValue;
     }
@@ -135,6 +133,7 @@ public class Cell {
     public void newGame() {
         mRegistered = false;
         setCurrentBackgroundColor(mThemeManager.getTheme().getBgScoreCell());
+        setCurrentForegroundColor(mThemeManager.getTheme().getFgScoreCell());
         mLabel.setText("");
         mPreview = 0;
         mValue = 0;
@@ -144,17 +143,12 @@ public class Cell {
         }
     }
 
-    public void register() {
-        mValue = mPreview;
-        mRegistered = true;
-    }
-
-    public void setBackground() {
-        mLabel.setBackground(mCurrentBackgroundColor);
-    }
-
     public void setCurrentBackgroundColor(Color color) {
         mCurrentBackgroundColor = color;
+    }
+
+    public void setCurrentForegroundColor(Color color) {
+        mCurrentForegroundColor = color;
     }
 
     public void setEnabled(boolean aState) {
@@ -163,6 +157,7 @@ public class Cell {
         if (mGameCell.isPlayable()) {
             mLabel.setFont(mLabel.getFont().deriveFont(Font.PLAIN));
             setCurrentBackgroundColor(theme.getBgScoreCell());
+            setCurrentForegroundColor(theme.getFgScoreCell());
         }
 
         if (aState) {
@@ -170,6 +165,7 @@ public class Cell {
                 mLabel.setBackground(theme.getBgHeaderSum());
             } else {
                 mLabel.setBackground(theme.getBgScoreCell());
+                mLabel.setForeground(theme.getFgScoreCell());
             }
 
             if (mGameCell.isRollCounter()) {
@@ -182,6 +178,7 @@ public class Cell {
                 mLabel.setBackground(GraphicsHelper.colorAndMask(theme.getBgHeaderSum(), COLOR_MASK));
             } else {
                 mLabel.setBackground(GraphicsHelper.colorAndMask(theme.getBgScoreCell(), COLOR_MASK));
+                mLabel.setForeground(theme.getFgScoreCell());
             }
 
             if (mGameCell.isRollCounter()) {
@@ -237,15 +234,22 @@ public class Cell {
 
             if (mPreview < mGameCell.getLim()) {
                 setCurrentBackgroundColor(theme.getBgIndicatorLo());
+                setCurrentForegroundColor(theme.getFgIndicatorLo());
             } else {
                 setCurrentBackgroundColor(theme.getBgIndicatorHi());
+                setCurrentForegroundColor(theme.getFgIndicatorHi());
             }
         } else {
             setCurrentBackgroundColor(theme.getBgScoreCell());
+            setCurrentForegroundColor(theme.getFgScoreCell());
         }
 
         mLabel.setText(text);
-        setBackground();
+        setColors();
+    }
+
+    private int getRow() {
+        return mRow;
     }
 
     private void init() {
@@ -260,11 +264,13 @@ public class Cell {
 
     private void mouseEnteredEvent(MouseEvent evt) {
         mLabel.setBackground(GraphicsHelper.colorAndMask(mCurrentBackgroundColor, COLOR_MASK));
+        mLabel.setForeground(mCurrentForegroundColor);
         mHeaderColumn.hoverRowEntered(mRow);
     }
 
     private void mouseExitedEvent(MouseEvent evt) {
         mLabel.setBackground(mCurrentBackgroundColor);
+        mLabel.setForeground(mCurrentForegroundColor);
         mHeaderColumn.hoverRowExited(mRow);
     }
 
@@ -283,5 +289,15 @@ public class Cell {
             mPlayerColumn.setText();
             mScoreCard.register();
         }
+    }
+
+    private void register() {
+        mValue = mPreview;
+        mRegistered = true;
+    }
+
+    private void setColors() {
+        mLabel.setBackground(mCurrentBackgroundColor);
+        mLabel.setForeground(mCurrentForegroundColor);
     }
 }
