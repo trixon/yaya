@@ -111,11 +111,13 @@ public class NewGamePanel extends JPanel {
         add(byLineLabel, gridBagConstraints);
 
         variantLabel.setLabelFor(variantComboBox);
-        org.openide.awt.Mnemonics.setLocalizedText(variantLabel, Dict.Game.VARIANT.toString());
+        org.openide.awt.Mnemonics.setLocalizedText(variantLabel, org.openide.util.NbBundle.getMessage(NewGamePanel.class, "NewGamePanel.variantLabel.text")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         add(variantLabel, gridBagConstraints);
+
+        variantComboBox.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
