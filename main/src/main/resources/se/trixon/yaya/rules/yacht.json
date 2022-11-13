@@ -13,8 +13,6 @@
         "STANDARD",
         "DOWNWARDS",
         "UPWARDS",
-        "UPPER_LOWER",
-        "LOWER_UPPER",
         "RANDOM"
     ],
     "rows": [ 
@@ -102,39 +100,16 @@
             "title": "Sixes"
         },
         { 
-            "id": "sum1",
-            "isSum": true,
-            "lim": 0,
-            "locals": {
-                "title-sv": "Övre summa"
-            },
-            "max": 105,
-            "sum_rows": "1-6",
-            "title": "Upper total"
-        },
-        { 
-            "bonus": true,
-            "id": "bonus",
-            "isSum": true,
-            "lim": 63,
-            "locals": {
-                "title-sv": "Bonus"
-            },
-            "max": 35,
-            "sum_rows": "1-6",
-            "title": "Bonus"
-        },
-        { 
-            "formula": "duplicates 3",
-            "id": "threeOfAKind",
+            "formula": "house 3 2",
+            "id": "fullHouse",
             "isPlayable": true,
-            "lim": 12,
+            "lim": 25,
             "locals": {
-                "title-sv": "Tretal"
+                "title-sv": "Kåk"
             },
-            "max": 18,
+            "max": 25,
             "section": "LOWER",
-            "title": "Three of a kind"
+            "title": "Full House"
         },
         { 
             "formula": "duplicates 4",
@@ -149,20 +124,20 @@
             "title": "Four of a kind"
         },
         { 
-            "formula": "straight 4",
+            "formula": "equals 1,2,3,4,5 30",
             "id": "smallStraight",
             "isPlayable": true,
-            "lim": 25,
+            "lim": 30,
             "locals": {
                 "title-sv": "Liten stege"
             },
-            "max": 25,
+            "max": 30,
             "section": "LOWER",
             "sum_rows": "1-2-3-4-5",
             "title": "Small Straight"
         },
         { 
-            "formula": "straight 5",
+            "formula": "equals 2,3,4,5,6 30",
             "id": "largeStraight",
             "isPlayable": true,
             "lim": 30,
@@ -173,30 +148,6 @@
             "section": "LOWER",
             "sum_rows": "2-3-4-5-6",
             "title": "Large Straight"
-        },
-        { 
-            "formula": "house 3 2",
-            "id": "fullHouse",
-            "isPlayable": true,
-            "lim": 40,
-            "locals": {
-                "title-sv": "Kåk"
-            },
-            "max": 40,
-            "section": "LOWER",
-            "title": "Full House"
-        },
-        { 
-            "formula": "duplicates 5",
-            "id": "the_yacht",
-            "isPlayable": true,
-            "lim": 50,
-            "locals": {
-                "title-sv": "Jakten"
-            },
-            "max": 50,
-            "section": "LOWER",
-            "title": "The Yacht"
         },
         { 
             "formula": "sum",
@@ -211,15 +162,16 @@
             "title": "Choice"
         },
         { 
-            "id": "sum2",
-            "isSum": true,
-            "lim": 0,
+            "formula": "duplicates 5",
+            "id": "the_yacht",
+            "isPlayable": true,
+            "lim": 50,
             "locals": {
-                "title-sv": "Nedre summa"
+                "title-sv": "Jakten"
             },
-            "max": 219,
-            "sum_rows": "9-15",
-            "title": "Lower total"
+            "max": 50,
+            "section": "LOWER",
+            "title": "The Yacht"
         },
         { 
             "id": "total",
@@ -230,7 +182,7 @@
                 "title-sv": "Summa"
             },
             "max": 374,
-            "sum_rows": "1-6,8-15",
+            "sum_rows": "1-12",
             "title": "Grand total"
         }
     ]
