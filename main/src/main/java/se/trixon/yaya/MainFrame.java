@@ -16,6 +16,7 @@
 package se.trixon.yaya;
 
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -79,6 +80,7 @@ public final class MainFrame extends JFrame {
     public MainFrame() {
         createUI();
         loadSettings();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo.png")));
 
         PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
         int gameStartCounter = mOptions.getPreferences().getInt(Options.KEY_GAME_START_COUNTER, 0);
@@ -131,7 +133,8 @@ public final class MainFrame extends JFrame {
 
     private void initActions() {
         //about
-        var pomInfo = new PomInfo(MainFrame.class, "se.trixon", "yaya");
+        var pomInfo = new PomInfo(MainFrame.class, "se.trixon.yaya", "main");
+
         var aboutModel = new AboutModel(SystemHelper.getBundle(MainFrame.class, "about"), SystemHelper.getResourceAsImageIcon(MainFrame.class, "logo.png"));
 
         aboutModel.setAppVersion(pomInfo.getVersion());
@@ -181,9 +184,7 @@ public final class MainFrame extends JFrame {
                 }
 
                 case ActionManager.QUIT -> {
-//                    MainFrame.this.setVisible(false);
                     processWindowEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-
                 }
 
                 default ->

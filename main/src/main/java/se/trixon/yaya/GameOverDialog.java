@@ -38,7 +38,7 @@ public class GameOverDialog {
     }
 
     private GameOverDialog() {
-        mHtmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(680, 740));
+        mHtmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(400, 400));
         mHtmlPanel.getScrollPane().setBorder(null);
     }
 
@@ -83,7 +83,7 @@ public class GameOverDialog {
         var newQuick = Dict.Game.NEW_ROUND.toString();
 
         var buttons = new String[]{newDialog, newQuick};
-        var result = JOptionPane.showOptionDialog(AlmondUI.getInstance().getFrame(), mHtmlPanel, newQuick, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, newQuick);
+        var result = JOptionPane.showOptionDialog(AlmondUI.getInstance().getFrame(), mHtmlPanel, Dict.Game.GAME_OVER.toString(), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, newQuick);
 
         if (result == 0) {
             ActionManager.getInstance().getAction(ActionManager.NEW).actionPerformed(null);

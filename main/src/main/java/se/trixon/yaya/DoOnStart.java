@@ -31,6 +31,8 @@ import se.trixon.yaya.rules.RuleManager;
 @OnStart
 public class DoOnStart implements Runnable {
 
+    private final Options mOptions = Options.getInstance();
+
     static {
         try {
             var key = "laf";
@@ -44,7 +46,9 @@ public class DoOnStart implements Runnable {
 
     @Override
     public void run() {
-        SystemHelper.runLaterDelayed(100, () -> {
+        mOptions.setFullscreen(false);
+
+        SystemHelper.runLaterDelayed(300, () -> {
             EventQueue.invokeLater(() -> {
                 var preferences = NbPreferences.forModule(DoOnStart.class);
                 RuleManager.getInstance().init();
