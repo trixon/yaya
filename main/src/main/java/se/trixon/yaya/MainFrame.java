@@ -21,6 +21,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.prefs.BackingStoreException;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
@@ -39,6 +41,7 @@ import javax.swing.border.EmptyBorder;
 import org.apache.commons.lang3.StringUtils;
 import org.openide.LifecycleManager;
 import org.openide.awt.Mnemonics;
+import org.openide.modules.Modules;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
 import org.openide.util.NbPreferences;
@@ -134,10 +137,11 @@ public final class MainFrame extends JFrame {
     private void initActions() {
         //about
         var pomInfo = new PomInfo(MainFrame.class, "se.trixon.yaya", "main");
-
         var aboutModel = new AboutModel(SystemHelper.getBundle(MainFrame.class, "about"), SystemHelper.getResourceAsImageIcon(MainFrame.class, "logo.png"));
-
+        var moduleInfo = Modules.getDefault().ownerOf(MainFrame.class);
+        var localDateTime = LocalDateTime.parse(moduleInfo.getBuildVersion(), DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
         aboutModel.setAppVersion(pomInfo.getVersion());
+        aboutModel.setAppDate(localDateTime.toLocalDate().toString());
         var aboutPanel = new AboutPanel(aboutModel);
         var action = AboutPanel.getAction(MainFrame.this, aboutPanel);
         getRootPane().getActionMap().put(ActionManager.ABOUT, action);
