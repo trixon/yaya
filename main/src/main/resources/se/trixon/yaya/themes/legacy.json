@@ -19,7 +19,7 @@
     "FG_HeaderRow": "FFeac423",
     "FG_HeaderSum": "FF000000",
     "FG_ScoreCell": "FF000000",
-    "FG_IndicatorHi": "00000000",
-    "FG_IndicatorLo": "00000000",
+    "FG_IndicatorHi": "FF000000",
+    "FG_IndicatorLo": "FF000000",
     "ICON_Undo": "FFeac423"
 }
