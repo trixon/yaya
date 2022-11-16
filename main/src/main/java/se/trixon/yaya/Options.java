@@ -29,11 +29,14 @@ import se.trixon.yaya.rules.GameVariant;
  */
 public class Options extends OptionsBase {
 
+    public static final boolean DEFAULT_NIGHT_MODE = true;
+
     public static final String DEFAULT_PLAYERS = "Ask;Embla;Ask;Embla;Ask;Embla;Ask;Embla";
     public static final String DEFAULT_PLAYERS_ALL = "Ask;Embla";
     public static final String DEFAULT_RULE_ID = "se.trixon.yaya.rules.yaya_scandinavian";
     public static final String KEY_FONT_SIZE = "font.size";
     public static final String KEY_GAME_START_COUNTER = "game.start_counter";
+    public static final String KEY_NIGHT_MODE = "nightMode";
     public static final String KEY_NUM_OF_PLAYERS = "numOfPlayers";
     public static final String KEY_PLAYERS = "players";
     public static final String KEY_PLAYERS_ALL = "players.all";
@@ -112,6 +115,10 @@ public class Options extends OptionsBase {
         return is(KEY_FULL_SCREEN, DEFAULT_FULL_SCREEN);
     }
 
+    public boolean isNightMode() {
+        return is(KEY_NIGHT_MODE, DEFAULT_NIGHT_MODE);
+    }
+
     public boolean isReverseDirection() {
         return is(KEY_REVERSE_DIRECTION, DEFAULT_REVERSE_DIRECTION);
     }
@@ -138,6 +145,10 @@ public class Options extends OptionsBase {
 
     public void setGameVariant(String type, String variant) {
         put(GameVariant.PREFIX + type, variant);
+    }
+
+    public void setNightMode(boolean value) {
+        put(KEY_NIGHT_MODE, value);
     }
 
     public void setNumOfPlayers(int players) {

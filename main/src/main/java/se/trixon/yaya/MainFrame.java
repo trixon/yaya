@@ -16,11 +16,13 @@
 package se.trixon.yaya;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashSet;
 import java.util.prefs.BackingStoreException;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
@@ -33,7 +35,9 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import org.apache.commons.lang3.StringUtils;
@@ -70,12 +74,15 @@ public final class MainFrame extends JFrame {
     private JCheckBoxMenuItem mMaxCheckBoxMenuItem;
     private final NewGamePanel mNewGamePanel = new NewGamePanel();
     private JMenuItem mNewMenuItem;
+    private JCheckBoxMenuItem mNightModeCheckBoxMenuItem;
     private final Options mOptions = Options.getInstance();
     private JPopupMenu mPopupMenu;
     private JMenuItem mQuitMenuItem;
     private JCheckBoxMenuItem mReverseDiceDirectionCheckBoxMenuItem;
     private JMenu mScorecardMenu;
+    private JMenu mSystemMenu;
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
+    private HashSet<Component> mUIComponents = new HashSet<>();
     private final Yaya mYaya = Yaya.getInstance();
 
     public MainFrame() {
@@ -104,6 +111,9 @@ public final class MainFrame extends JFrame {
         mMainPanel.add(mYaya.getPanel(), BorderLayout.CENTER);
 
         getContentPane().add(mMainPanel, BorderLayout.CENTER);
+
+        mUIComponents.add(this);
+        mUIComponents.add(mNewGamePanel);
 
         initMenu();
         initActions();
@@ -141,11 +151,13 @@ public final class MainFrame extends JFrame {
         var aboutPanel = new AboutPanel(aboutModel);
         var action = AboutPanel.getAction(MainFrame.this, aboutPanel);
         getRootPane().getActionMap().put(ActionManager.ABOUT, action);
+        mUIComponents.add(aboutPanel);
 
         mActionManager.init(getRootPane().getActionMap(), getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
 
         mNewMenuItem.setAction(mActionManager.getAction(ActionManager.NEW));
         mFullscreenCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.FULLSCREEN));
+        mNightModeCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.NIGHT_MODE));
         mLimCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.SHOW_LIM));
         mMaxCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.SHOW_MAX));
         mIndicatorCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.SHOW_INDICATORS));
@@ -175,6 +187,29 @@ public final class MainFrame extends JFrame {
                     SwingHelper.setFullScreen(mOptions.isFullscreen() ? this : null);
                 }
 
+                case ActionManager.NIGHT_MODE -> {
+                    String laf;
+                    mOptions.setNightMode(!mOptions.isNightMode());
+                    if (mOptions.isNightMode()) {
+                        laf = "com.formdev.flatlaf.FlatDarkLaf";
+                    } else {
+                        laf = "com.formdev.flatlaf.FlatLightLaf";
+                    }
+                    var key = "laf";
+
+                    var preferences = NbPreferences.root().node("laf");
+                    preferences.put(key, laf);
+
+                    try {
+                        UIManager.setLookAndFeel(laf);
+                        for (var component : mUIComponents) {
+                            SwingUtilities.updateComponentTreeUI(component);
+                        }
+                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                        Exceptions.printStackTrace(ex);
+                    }
+                }
+
                 case ActionManager.UNDO -> {
                     mYaya.getPanel().undo();
                 }
@@ -196,6 +231,8 @@ public final class MainFrame extends JFrame {
             switch (pce.getKey()) {
                 case Options.KEY_FULL_SCREEN ->
                     mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+                case Options.KEY_NIGHT_MODE ->
+                    mNightModeCheckBoxMenuItem.setSelected(mOptions.isNightMode());
                 case Options.KEY_SHOW_INDICATORS ->
                     mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
                 case Options.KEY_SHOW_LIM_COLUMN ->
@@ -232,6 +269,7 @@ public final class MainFrame extends JFrame {
     private void initMenu() {
         mPopupMenu = new JPopupMenu();
         mNewMenuItem = new JMenuItem();
+        mSystemMenu = new JMenu();
         mScorecardMenu = new JMenu();
         mColorsMenu = new JMenu();
         mLimCheckBoxMenuItem = new JCheckBoxMenuItem();
@@ -240,10 +278,12 @@ public final class MainFrame extends JFrame {
         mDiceMenu = new JMenu();
         mReverseDiceDirectionCheckBoxMenuItem = new JCheckBoxMenuItem();
         mFullscreenCheckBoxMenuItem = new JCheckBoxMenuItem();
+        mNightModeCheckBoxMenuItem = new JCheckBoxMenuItem();
         mHelpMenuItem = new JMenuItem();
         mAboutMenuItem = new JMenuItem();
         mQuitMenuItem = new JMenuItem();
 
+        mSystemMenu.setText(Dict.SYSTEM.toString());
         Mnemonics.setLocalizedText(mScorecardMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.scorecardMenu.text")); // NOI18N
         Mnemonics.setLocalizedText(mColorsMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.colorsMenu.text")); // NOI18N
         Mnemonics.setLocalizedText(mDiceMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.diceMenu.text")); // NOI18N
@@ -251,14 +291,20 @@ public final class MainFrame extends JFrame {
 
         mPopupMenu.add(mNewMenuItem);
         mPopupMenu.add(new JPopupMenu.Separator());
+
+        mPopupMenu.add(mSystemMenu);
+        mSystemMenu.add(mFullscreenCheckBoxMenuItem);
+        mSystemMenu.add(mNightModeCheckBoxMenuItem);
+
         mPopupMenu.add(mScorecardMenu);
         mScorecardMenu.add(mColorsMenu);
         mScorecardMenu.add(mLimCheckBoxMenuItem);
         mScorecardMenu.add(mMaxCheckBoxMenuItem);
         mScorecardMenu.add(mIndicatorCheckBoxMenuItem);
-        mDiceMenu.add(mReverseDiceDirectionCheckBoxMenuItem);
+
         mPopupMenu.add(mDiceMenu);
-        mPopupMenu.add(mFullscreenCheckBoxMenuItem);
+        mDiceMenu.add(mReverseDiceDirectionCheckBoxMenuItem);
+
         mPopupMenu.add(new JPopupMenu.Separator());
         mPopupMenu.add(mHelpMenuItem);
         mPopupMenu.add(mAboutMenuItem);
@@ -291,10 +337,13 @@ public final class MainFrame extends JFrame {
         });
 
         mScorecardMenu.add(fontSlider);
+
+        mUIComponents.add(mPopupMenu);
     }
 
     private void loadSettings() {
 //        mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+        mNightModeCheckBoxMenuItem.setSelected(mOptions.isNightMode());
         mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
         mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
         mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());

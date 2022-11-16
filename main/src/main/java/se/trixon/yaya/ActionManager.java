@@ -36,6 +36,7 @@ import se.trixon.almond.util.SystemHelper;
  */
 public class ActionManager extends AlmondActionManager {
 
+    public static final String NIGHT_MODE = "system.nightMode";
     public static final String SHOW_INDICATORS = "show.indicators";
     public static final String SHOW_LIM = "show.lim";
     public static final String SHOW_MAX = "show.max";
@@ -76,6 +77,9 @@ public class ActionManager extends AlmondActionManager {
         action = createAction(Dict.FULL_SCREEN.toString());
         initAction(action, FULLSCREEN, keyStroke, null, true);
         action.setEnabled(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().isFullScreenSupported());
+
+        action = createAction(Dict.NIGHT_MODE.toString());
+        initAction(action, NIGHT_MODE, null, null, true);
 
         //show lim
         keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
