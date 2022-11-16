@@ -70,13 +70,19 @@ public class Options extends OptionsBase {
         var players = new Player[numOfPlayers];
 
         String storedNames = get(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
-        var names = StringUtils.split(storedNames, ";");
+        var names = StringUtils.splitPreserveAllTokens(storedNames, ";");
 
         for (int i = 0; i < numOfPlayers; i++) {
             players[i] = new Player(-1L, names[i], Player.Handedness.RIGHT);
         }
 
         return players;
+    }
+
+    public String[] getAllPlayers() {
+        String storedNames = get(Options.KEY_PLAYERS_ALL, Options.DEFAULT_PLAYERS_ALL);
+
+        return StringUtils.splitPreserveAllTokens(storedNames, ";");
     }
 
     public int getFontSize() {

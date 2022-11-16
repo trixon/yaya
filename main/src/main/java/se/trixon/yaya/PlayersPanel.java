@@ -49,7 +49,7 @@ public class PlayersPanel extends javax.swing.JPanel {
         String storedNames = mOptions.get(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
 
         if (!StringUtils.isBlank(storedNames)) {
-            var names = StringUtils.split(storedNames, ';');
+            var names = StringUtils.splitPreserveAllTokens(storedNames, ';');
             for (int i = 0; i < mNameComboBoxes.length; i++) {
                 var comboBox = mNameComboBoxes[i];
                 comboBox.setSelectedItem(names[i]);
@@ -66,12 +66,12 @@ public class PlayersPanel extends javax.swing.JPanel {
 
         for (int i = 0; i < mNameComboBoxes.length; i++) {
             var comboBox = mNameComboBoxes[i];
-            names[i] = (String) comboBox.getSelectedItem();
-            allNames.add((String) comboBox.getEditor().getItem());
+            names[i] = StringUtils.defaultIfBlank((String) comboBox.getSelectedItem(), "-");
+            allNames.add(StringUtils.defaultIfBlank((String) comboBox.getEditor().getItem(), "-"));
 
             for (int j = 0; j < comboBox.getModel().getSize(); j++) {
                 String name = comboBox.getModel().getElementAt(j);
-                allNames.add(name);
+                allNames.add(StringUtils.defaultIfBlank(name, "-"));
             }
         }
 
@@ -104,7 +104,7 @@ public class PlayersPanel extends javax.swing.JPanel {
     }
 
     private void initCombos() {
-        var names = StringUtils.split(mOptions.get(Options.KEY_PLAYERS_ALL, Options.DEFAULT_PLAYERS_ALL), ";");
+        var names = StringUtils.splitPreserveAllTokens(mOptions.get(Options.KEY_PLAYERS_ALL, Options.DEFAULT_PLAYERS_ALL), ";");
 
         for (var comboBox : mNameComboBoxes) {
             comboBox.setModel(new DefaultComboBoxModel<>(names));

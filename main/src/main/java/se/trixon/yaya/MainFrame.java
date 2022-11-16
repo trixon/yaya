@@ -23,6 +23,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashSet;
+import java.util.ResourceBundle;
 import java.util.prefs.BackingStoreException;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
@@ -40,6 +41,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openide.LifecycleManager;
 import org.openide.awt.Mnemonics;
@@ -64,6 +66,7 @@ public final class MainFrame extends JFrame {
     private JMenuItem mAboutMenuItem;
     private ActionManager mActionManager = ActionManager.getInstance();
     private final AlmondUI mAlmondUI = AlmondUI.getInstance();
+    private final ResourceBundle mBundle = NbBundle.getBundle(MainFrame.class);
     private JMenu mColorsMenu;
     private JMenu mDiceMenu;
     private JCheckBoxMenuItem mFullscreenCheckBoxMenuItem;
@@ -78,11 +81,12 @@ public final class MainFrame extends JFrame {
     private final Options mOptions = Options.getInstance();
     private JPopupMenu mPopupMenu;
     private JMenuItem mQuitMenuItem;
+    private JMenuItem mRemovePlayerMenuItem;
     private JCheckBoxMenuItem mReverseDiceDirectionCheckBoxMenuItem;
     private JMenu mScorecardMenu;
     private JMenu mSystemMenu;
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
-    private HashSet<Component> mUIComponents = new HashSet<>();
+    private final HashSet<Component> mUIComponents = new HashSet<>();
     private final Yaya mYaya = Yaya.getInstance();
 
     public MainFrame() {
@@ -139,6 +143,44 @@ public final class MainFrame extends JFrame {
         if (result == 1) {
             mNewGamePanel.save();
             mYaya.onRequestNewGameStart();
+        }
+    }
+
+    private void displayRemovePlayer() {
+        var players = mOptions.getAllPlayers();
+        var removedPlayer = (String) JOptionPane.showInputDialog(
+                this,
+                mBundle.getString("removePlayerInfo"),
+                mBundle.getString("removePlayerTitle"),
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                players,
+                "");
+
+        if (StringUtils.isNotBlank(removedPlayer)) {
+            var remainingPlayers = ArrayUtils.removeElement(players, removedPlayer);
+
+            if (remainingPlayers.length == 0) {
+                mOptions.put(Options.KEY_PLAYERS_ALL, Options.DEFAULT_PLAYERS_ALL);
+                mOptions.put(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
+            } else {
+                mOptions.put(Options.KEY_PLAYERS_ALL, String.join(";", remainingPlayers));
+
+                var defaultFillPlayer = remainingPlayers[0];
+                var contenders = mOptions.get(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
+                contenders = StringUtils.replace(contenders, removedPlayer, "");
+                contenders = StringUtils.replace(contenders, ";;", ";%s;".formatted(defaultFillPlayer));
+
+                if (StringUtils.startsWith(contenders, ";")) {
+                    contenders = defaultFillPlayer + contenders;
+                }
+
+                if (StringUtils.endsWith(contenders, ";")) {
+                    contenders = contenders + defaultFillPlayer;
+                }
+
+                mOptions.put(Options.KEY_PLAYERS, contenders);
+            }
         }
     }
 
@@ -246,6 +288,10 @@ public final class MainFrame extends JFrame {
             mOptions.setReverseDirection(mReverseDiceDirectionCheckBoxMenuItem.isSelected());
         });
 
+        mRemovePlayerMenuItem.addActionListener(actionEvent -> {
+            displayRemovePlayer();
+        });
+
         var popupListener = new PopupListener();
         addMouseListener(popupListener);
         mYaya.getPanel().addMouseListener(popupListener);
@@ -270,15 +316,19 @@ public final class MainFrame extends JFrame {
         mPopupMenu = new JPopupMenu();
         mNewMenuItem = new JMenuItem();
         mSystemMenu = new JMenu();
+        mFullscreenCheckBoxMenuItem = new JCheckBoxMenuItem();
+        mNightModeCheckBoxMenuItem = new JCheckBoxMenuItem();
+        mRemovePlayerMenuItem = new JMenuItem(mBundle.getString("removePlayerTitle"));
+
         mScorecardMenu = new JMenu();
         mColorsMenu = new JMenu();
         mLimCheckBoxMenuItem = new JCheckBoxMenuItem();
         mMaxCheckBoxMenuItem = new JCheckBoxMenuItem();
         mIndicatorCheckBoxMenuItem = new JCheckBoxMenuItem();
+
         mDiceMenu = new JMenu();
         mReverseDiceDirectionCheckBoxMenuItem = new JCheckBoxMenuItem();
-        mFullscreenCheckBoxMenuItem = new JCheckBoxMenuItem();
-        mNightModeCheckBoxMenuItem = new JCheckBoxMenuItem();
+
         mHelpMenuItem = new JMenuItem();
         mAboutMenuItem = new JMenuItem();
         mQuitMenuItem = new JMenuItem();
@@ -295,6 +345,7 @@ public final class MainFrame extends JFrame {
         mPopupMenu.add(mSystemMenu);
         mSystemMenu.add(mFullscreenCheckBoxMenuItem);
         mSystemMenu.add(mNightModeCheckBoxMenuItem);
+        mSystemMenu.add(mRemovePlayerMenuItem);
 
         mPopupMenu.add(mScorecardMenu);
         mScorecardMenu.add(mColorsMenu);
