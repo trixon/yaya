@@ -19,6 +19,26 @@ package se.trixon.yaya;
  *
  * @author Patrik Karlström
  */
-public record GameOverItem(Player player, Integer score) {
+public class GameOverItem {
 
+    Player player;
+    int position;
+    Integer score;
+
+    public GameOverItem(Player player, Integer score) {
+        this.player = player;
+        this.score = score;
+    }
+
+    public Player player() {
+        return player;
+    }
+
+    public int position() {
+        return position;
+    }
+
+    public Integer score() {
+        return score;
+    }
 }

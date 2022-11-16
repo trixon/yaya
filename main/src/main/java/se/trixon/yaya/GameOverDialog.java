@@ -15,6 +15,7 @@
  */
 package se.trixon.yaya;
 
+import static j2html.TagCreator.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import javax.swing.JOptionPane;
@@ -22,7 +23,6 @@ import se.trixon.almond.util.AlmondUI;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.almond.util.swing.dialogs.HtmlPanel;
-import se.trixon.yaya.GameOverItem;
 
 /**
  *
@@ -38,43 +38,33 @@ public class GameOverDialog {
     }
 
     private GameOverDialog() {
-        mHtmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(400, 400));
+        mHtmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(400, 490));
         mHtmlPanel.getScrollPane().setBorder(null);
     }
 
     public void display(ArrayList<GameOverItem> gameOverItems) {
         gameOverItems.sort(Comparator.comparing(GameOverItem::score).reversed());
-
-        //TODO Replace with j2html
-        //TODO Mimic Gambas version layout
-        var cssBuilder = new StringBuilder("<html>");
-        cssBuilder.append("<head><style>");
-        cssBuilder.append("h1 { font-size: x-large; margin-bottom: 0px; }");
-        cssBuilder.append("h2 { font-size: large; margin-bottom: 0px; }");
-        cssBuilder.append("body {margin-left: 16px;margin-right: 16px; font-size: xx-large; font-family:courier; }");
-        cssBuilder.append("p {margin-bottom: 4px;margin-top: 4px;}");
-        cssBuilder.append("ul { margin-left: 16px; }");
-        cssBuilder.append("li { }");
-        cssBuilder.append("table { width:100%; }");
-        cssBuilder.append("td { text-align: right; }");
-        cssBuilder.append("</style></head>");
-
-        var builder = new StringBuilder(cssBuilder);
-        builder.append("<html><table>");
-        int position = 0;
-        for (var gameOverItem : gameOverItems) {
-            final String name = gameOverItem.player().getName();
-            final int score = gameOverItem.score();
-
-            builder.append("<tr>");
-            builder.append("<td>").append(++position).append("</td>");
-            builder.append("<td style=\"text-align: left;\">").append(name).append("</td>");
-            builder.append("<td>").append(score).append("</td>");
-            builder.append("</tr>");
+        for (int i = 0; i < gameOverItems.size(); i++) {
+            gameOverItems.get(i).position = i + 1;
         }
-        builder.append("</table></html>");
 
-        display(builder.toString());
+        var html = html(
+                body(
+                        h1(Dict.Game.RESULT.toString()),
+                        table(
+                                tbody(
+                                        each(gameOverItems, gameOverItem
+                                                -> tr(
+                                                td(Integer.toString(gameOverItem.position)),
+                                                td(gameOverItem.player.getName()).withStyle("width:100%;"),
+                                                td(Integer.toString(gameOverItem.score)).withStyle("text-align: right;")
+                                        ).withStyle("border-bottom: 1px solid #ddd;")
+                                        )
+                                )
+                        ).withStyle("font-size: 180%;width:100%;")
+                ));
+
+        display(html.render());
     }
 
     private void display(String message) {
