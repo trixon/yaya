@@ -113,15 +113,15 @@ public final class Help {
                         hr(),
                         table(
                                 tr(
-                                        th(mBundle.getString("help_rule_header_row")),
-                                        th(mBundle.getString("help_rule_header_max")),
-                                        th(mBundle.getString("help_rule_header_score"))
+                                        th(mBundle.getString("help_rule_header_row")).withStyle("text-align: left;"),
+                                        th(mBundle.getString("help_rule_header_max")).withStyle("text-align: right;"),
+                                        th(mBundle.getString("help_rule_header_score")).withStyle("text-align: left;")
                                 ),
                                 tbody(
                                         each(cellRules, cellRule
                                                 -> tr(
                                                 td(cellRule.title),
-                                                td(cellRule.max),
+                                                td(cellRule.max).withStyle("text-align: right;"),
                                                 td(cellRule.desc())
                                         )
                                         )

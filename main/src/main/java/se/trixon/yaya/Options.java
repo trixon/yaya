@@ -30,7 +30,6 @@ import se.trixon.yaya.rules.GameVariant;
 public class Options extends OptionsBase {
 
     public static final boolean DEFAULT_NIGHT_MODE = true;
-
     public static final String DEFAULT_PLAYERS = "Ask;Embla;Ask;Embla;Ask;Embla;Ask;Embla";
     public static final String DEFAULT_PLAYERS_ALL = "Ask;Embla";
     public static final String DEFAULT_RULE_ID = "se.trixon.yaya.rules.yaya_scandinavian";

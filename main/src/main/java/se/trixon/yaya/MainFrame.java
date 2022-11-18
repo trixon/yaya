@@ -126,7 +126,7 @@ public final class MainFrame extends JFrame {
 
     private void displayHelp() {
         var htmlPanel = new HtmlPanel(new Help().getHelp());
-        htmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(680, 740));
+        htmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(720, 740));
         htmlPanel.getScrollPane().setBorder(null);
         String[] buttons = {Dict.CLOSE.toString()};
         var defaultBorder = (EmptyBorder) UIManager.get("OptionPane.border");
@@ -307,6 +307,7 @@ public final class MainFrame extends JFrame {
                         Exceptions.printStackTrace(ex);
                     }
                 }
+                MainFrame.this.setVisible(false);
                 LifecycleManager.getDefault().exit();
             }
         });
