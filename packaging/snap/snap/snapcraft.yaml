@@ -1,0 +1,87 @@
+name: yaya
+title: Yaya
+base: core22
+version: '0.1-SNAPSHOT'
+summary: Yet Another Yahtzee-esque Application
+description: |
+    Enjoy classic family dice games with up to 8 players.
+
+    Ready, Set, Roll!
+grade: stable
+architectures: [ amd64 ]
+confinement: strict
+icon: snap/gui/yaya.png
+license: Apache-2.0
+compression: lzo
+
+layout:
+  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib:
+    bind: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib
+
+apps:
+  yaya:
+    command: yaya/bin/yaya
+    extensions: [gnome]
+    plugs:
+        - audio-playback
+    environment:
+      ALSA_CONFIG_PATH: $SNAP/etc/asound.conf
+
+parts:
+  yaya:
+    plugin: dump
+    source: /root/project/yaya-$SNAPCRAFT_PROJECT_VERSION-linux.zip
+    source-type: zip
+    stage-packages:
+      - libasound2
+      - libasound2-plugins
+
+  config:
+    after:
+      - yaya
+    plugin: nil
+    override-prime: |
+        #sed -i 's/${HOME}\/.${APPNAME}/${SNAP_USER_COMMON}\/.yaya/' /root/prime/yaya/bin/yaya
+        #sed -i 's/${HOME}\/.cache\/${APPNAME}/${SNAP_USER_COMMON}\/.cache\/yaya/' /root/prime/yaya/bin/yaya
+        rm /root/prime/yaya/platform/lib/*.dll
+        rm /root/prime/yaya/platform/lib/*.exe
+        
+  apt:
+    plugin: nil
+    override-build: |
+        apt install openjdk-19-jdk -y
+
+  jlink:
+    plugin: nil
+    after: [apt]
+    override-build: |
+        rm -rf $SNAPCRAFT_PRIME/yaya/jre
+
+        jlink --no-header-files \
+            --no-man-pages \
+            --strip-debug \
+            --compress=0 \
+            --add-modules java.base,java.datatransfer,java.xml,java.prefs,java.desktop,java.instrument,java.logging \
+            --output $SNAPCRAFT_PRIME/yaya/jre
+
+        strip -p --strip-unneeded $SNAPCRAFT_PRIME/yaya/jre/lib/server/libjvm.so
+
+  alsa-pulseaudio:
+    plugin: dump
+    source: .
+    override-pull: |
+      mkdir etc -p
+      cat > etc/asound.conf <<EOF
+      pcm.!default {
+          type pulse
+          fallback "sysdefault"
+          hint {
+              show on
+              description "Default ALSA Output (currently PulseAudio Sound Server)"
+          }
+      }
+      ctl.!default {
+          type pulse
+          fallback "sysdefault"
+      }
+      EOF

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Yaya
+Comment=Yet Another Yahtzee-esque Application
+Exec=yaya %F
+Icon=${SNAP}/meta/gui/yaya.png
+Terminal=false
+Categories=Game;
+StartupNotify=true
+StartupWMClass=Yaya
+
+Name[sv_SE]=Yaya
