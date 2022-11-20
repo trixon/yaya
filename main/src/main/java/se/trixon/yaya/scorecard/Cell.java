@@ -19,12 +19,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.yaya.ThemeManager;
+import se.trixon.yaya.Yaya;
 import se.trixon.yaya.rules.GameCell;
 
 /**
@@ -40,6 +40,9 @@ public class Cell {
     private boolean mHeader = false;
     private final Header mHeaderColumn;
     private final JLabel mLabel = new JLabel();
+    private MouseAdapter mMouseHoverAdapter;
+    private MouseAdapter mMousePressedAdapter;
+    private MouseAdapter mMousePopupAdapter;
     private PlayerColumn mPlayerColumn;
     private int mPreview;
     private boolean mRegistered;
@@ -79,30 +82,13 @@ public class Cell {
 
     public void enableHover() {
         if (isPlayable() && !isRegistered()) {
-            mLabel.addMouseListener(new MouseAdapter() {
-
-                @Override
-                public void mouseEntered(MouseEvent evt) {
-                    mouseEnteredEvent(evt);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent evt) {
-                    mouseExitedEvent(evt);
-                }
-            });
+            mLabel.addMouseListener(mMouseHoverAdapter);
         }
     }
 
     public void enableInput() {
         if (isPlayable() && !isRegistered()) {
-            mLabel.addMouseListener(new MouseAdapter() {
-
-                @Override
-                public void mousePressed(MouseEvent evt) {
-                    mousePressedEvent(evt);
-                }
-            });
+            mLabel.addMouseListener(mMousePressedAdapter);
         }
     }
 
@@ -185,11 +171,8 @@ public class Cell {
                 mLabel.setFont(mLabel.getFont().deriveFont(Font.PLAIN));
             }
 
-            var mouseListeners = (MouseListener[]) (mLabel.getListeners(MouseListener.class));
-
-            for (var mouseListener : mouseListeners) {
-                mLabel.removeMouseListener(mouseListener);
-            }
+            mLabel.removeMouseListener(mMouseHoverAdapter);
+            mLabel.removeMouseListener(mMousePressedAdapter);
         }
     }
 
@@ -260,6 +243,47 @@ public class Cell {
         if (mGameCell.isSum() || mGameCell.isBonus()) {
             mLabel.setFont(mLabel.getFont().deriveFont(Font.BOLD));
         }
+
+        mMouseHoverAdapter = new MouseAdapter() {
+
+            @Override
+            public void mouseEntered(MouseEvent evt) {
+                mouseEnteredEvent(evt);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent evt) {
+                mouseExitedEvent(evt);
+            }
+        };
+
+        mMousePressedAdapter = new MouseAdapter() {
+
+            @Override
+            public void mousePressed(MouseEvent evt) {
+                mousePressedEvent(evt);
+            }
+        };
+
+        mMousePopupAdapter = new MouseAdapter() {
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                publishEvent(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                publishEvent(e);
+            }
+
+            private void publishEvent(MouseEvent e) {
+                Yaya.getGlobalState().put("CellMouseEvent", e);
+            }
+        };
+
+        mLabel.addMouseListener(mMousePopupAdapter);
+
     }
 
     private void mouseEnteredEvent(MouseEvent evt) {
@@ -279,11 +303,8 @@ public class Cell {
             mPlayerColumn.getRowStack().push(mRow);
             mHeaderColumn.hoverRowExited(mRow);
 
-            var mouseListeners = (MouseListener[]) (mLabel.getListeners(MouseListener.class));
-
-            for (var mouseListener : mouseListeners) {
-                mLabel.removeMouseListener(mouseListener);
-            }
+            mLabel.removeMouseListener(mMouseHoverAdapter);
+            mLabel.removeMouseListener(mMousePressedAdapter);
 
             register();
             mPlayerColumn.setText();

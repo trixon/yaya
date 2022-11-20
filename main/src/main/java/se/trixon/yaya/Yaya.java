@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
 import org.openide.util.ImageUtilities;
+import se.trixon.almond.util.GlobalState;
 import se.trixon.almond.util.SystemHelper;
 import se.trixon.almond.util.gson_adapter.AwtColorAdapter;
 
@@ -36,12 +37,16 @@ public class Yaya {
             .setPrettyPrinting()
             .registerTypeAdapter(Color.class, new AwtColorAdapter())
             .create();
-
     public static final String LOG_TITLE = "Yaya";
+    private static final GlobalState sGlobalState = new GlobalState();
     private YayaPanel mYayaPanel;
 
     public static void errln(String name, String message) {
         System.err.println(message);
+    }
+
+    public static GlobalState getGlobalState() {
+        return sGlobalState;
     }
 
     public static BufferedImage getImage(Class c, String imagePath) {

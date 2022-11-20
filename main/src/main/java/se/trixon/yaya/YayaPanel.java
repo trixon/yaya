@@ -18,12 +18,9 @@ package se.trixon.yaya;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.HierarchyBoundsListener;
-import java.awt.event.HierarchyEvent;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.yaya.dice.DiceBoard;
@@ -40,7 +37,6 @@ import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
 public class YayaPanel extends JPanel implements Observer {
 
     private BufferedImage mBackgroundImage;
-
     private DiceBoard mDiceBoard;
     private final Options mOptions = Options.getInstance();
     private boolean mRollable = true;
@@ -57,12 +53,6 @@ public class YayaPanel extends JPanel implements Observer {
         setBackgroundImage(Yaya.getImage("images/wood_panel1.jpg"));
     }
 
-    public void centerInParent() {
-        var topPanel = (JComponent) getParent();
-        if (topPanel != null && topPanel.getHeight() > 0 && topPanel.getWidth() > 0) {
-        }
-    }
-
     public BufferedImage getBackgroundImage() {
         return mBackgroundImage;
     }
@@ -74,18 +64,9 @@ public class YayaPanel extends JPanel implements Observer {
     public void newGame() {
         PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_GAME_START_COUNTER);
 
-//        if (numOfPlayers != settings.getNumOfPlayers()) {
-//            numOfPlayers = settings.getNumOfPlayers();
-//            initRule(settings.getRule());
-//        }
         initGame();
         mScoreCard.newGame();
         mDiceBoard.newTurn();
-
-//        for (int i = 0; i < mScoreCard.getHeaderColumn().getRows().length; i++) {
-//            var row = mScoreCard.getHeaderColumn().getRows()[i];
-////            System.out.println("%d\t%s".formatted(i, row.getLabel().getText()));
-//        }
     }
 
     @Override
@@ -149,17 +130,6 @@ public class YayaPanel extends JPanel implements Observer {
     }
 
     private void init() {
-        addHierarchyBoundsListener(new HierarchyBoundsListener() {
-
-            @Override
-            public void ancestorMoved(HierarchyEvent evt) {
-            }
-
-            @Override
-            public void ancestorResized(HierarchyEvent evt) {
-                centerInParent();
-            }
-        });
     }
 
     private void initComponents() {

@@ -311,6 +311,13 @@ public final class MainFrame extends JFrame {
                 LifecycleManager.getDefault().exit();
             }
         });
+
+        Yaya.getGlobalState().addListener(gsce -> {
+            MouseEvent e = gsce.getValue();
+            if (e.isPopupTrigger()) {
+                mPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+            }
+        }, "CellMouseEvent");
     }
 
     private void initMenu() {
