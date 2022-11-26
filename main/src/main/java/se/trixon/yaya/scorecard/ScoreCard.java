@@ -32,6 +32,7 @@ import javax.swing.SwingConstants;
 import org.apache.commons.lang3.StringUtils;
 import se.trixon.almond.util.CircularInt;
 import se.trixon.almond.util.Dict;
+import se.trixon.almond.util.GlobalState;
 import se.trixon.almond.util.icons.material.swing.MaterialIcon;
 import se.trixon.yaya.GameOverDialog;
 import se.trixon.yaya.GameOverItem;
@@ -39,7 +40,6 @@ import se.trixon.yaya.Options;
 import se.trixon.yaya.ThemeManager;
 import se.trixon.yaya.rules.Rule;
 import se.trixon.yaya.rules.RuleManager;
-import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
 import se.trixon.yaya.themes.Theme;
 
 /**
@@ -53,11 +53,11 @@ public class ScoreCard {
     private final JPanel mFillerPanel = new JPanel();
     private final GameOverDialog mGameOverDialog = GameOverDialog.getInstance();
     private JLabel mGameTitleLabel;
+    private final GlobalState mGlobalState;
     private Header mHeader;
     private final int mNumOfPlayers;
     private int mNumOfRolls;
     private int mNumOfRows;
-    private final ScoreCardObservable mObservable = new ScoreCardObservable();
     private final Options mOptions = Options.getInstance();
     private final JPanel mPanel = new JPanel();
     private final ArrayList<PlayerColumn> mPlayerColumns = new ArrayList<>();
@@ -73,7 +73,8 @@ public class ScoreCard {
     private JButton mUndoButton;
     private JPanel mUndoPanel;
 
-    public ScoreCard() {
+    public ScoreCard(GlobalState globalState) {
+        mGlobalState = globalState;
         mNumOfPlayers = mOptions.getNumOfPlayers();
         mRule = mRuleManager.getRule(mOptions.getRuleId());
         init();
@@ -85,10 +86,6 @@ public class ScoreCard {
 
     public int getNumOfRolls() {
         return mNumOfRolls;
-    }
-
-    public ScoreCardObservable getObservable() {
-        return mObservable;
     }
 
     public JPanel getPanel() {
@@ -170,11 +167,11 @@ public class ScoreCard {
             updatePolePosition();
 
             if (isGameOver()) {
-                mObservable.notify(ScoreCardEvent.GAME_OVER);
+                mGlobalState.put(ScoreCardEvent.class.getName(), ScoreCardEvent.GAME_OVER);
                 gameOver();
             } else {
                 mUndoAction.setEnabled(true);
-                mObservable.notify(ScoreCardEvent.REGISTER);
+                mGlobalState.put(ScoreCardEvent.class.getName(), ScoreCardEvent.REGISTER);
 
                 mActivePlayer = mCurrentPlayer.inc();
                 getActivePlayerColumn().setEnabled(true);
@@ -188,7 +185,7 @@ public class ScoreCard {
         mActivePlayer = mCurrentPlayer.dec();
         getActivePlayerColumn().undo();
 
-        mObservable.notify(ScoreCardEvent.UNDO);
+        mGlobalState.put(ScoreCardEvent.class.getName(), ScoreCardEvent.UNDO);
     }
 
     private void applyColors() {

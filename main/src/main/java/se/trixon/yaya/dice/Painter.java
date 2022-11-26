@@ -140,7 +140,7 @@ class Painter extends JPanel {
                     boolean select = mOptions.isReverseDirection() ? dir == +1 : dir == -1;
 
                     for (var die : mDiceBoard.getDice()) {
-                        die.setSelected(select);
+                        die.setSelected(select, true);
                     }
                 }
             }
@@ -165,7 +165,7 @@ class Painter extends JPanel {
         boolean stopped = true;
 
         for (var die : mDiceBoard.getDice()) {
-            if (die.getAnimator().isAlive()) {
+            if (die.getRollThread().isAlive()) {
                 stopped = false;
                 break;
             }
@@ -245,7 +245,7 @@ class Painter extends JPanel {
                 if (isSelectable()) {
                     for (var die : mDiceBoard.getDice()) {
                         if ((x - mDiceSetX >= DIE_CELL_WIDTH * die.getColumn()) && (x - mDiceSetX <= DIE_CELL_WIDTH * (die.getColumn() + 1))) {
-                            die.setSelected(!die.isSelected());
+                            die.setSelected(!die.isSelected(), true);
                             break;
                         }
                     }
@@ -257,7 +257,7 @@ class Painter extends JPanel {
                     for (var die : mDiceBoard.getDice()) {
                         if ((x - mDiceSetX >= DIE_CELL_WIDTH * die.getColumn()) && (x - mDiceSetX <= DIE_CELL_WIDTH * (die.getColumn() + 1))) {
                         } else {
-                            die.setSelected(!die.isSelected());
+                            die.setSelected(!die.isSelected(), true);
                         }
                     }
                 }
@@ -272,7 +272,7 @@ class Painter extends JPanel {
             if (mDiceRoller.getShakeThread().isAlive()) {
                 mDiceRoller.getShakeThread().interrupt();
                 mDiceRoller.shake(false);
-
+                var r = isRollable();
                 if (x <= mDiceRoller.getImage().getWidth() && isRollable()) {
                     mDiceBoard.rollPreOp();
                 } else {

@@ -16,20 +16,24 @@
 package se.trixon.yaya.dice;
 
 import java.util.ArrayList;
-import java.util.Observable;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.JPanel;
+import se.trixon.almond.util.GlobalState;
 import se.trixon.yaya.Player.Handedness;
 
 /**
  *
  * @author Patrik Karlström
  */
-public class DiceBoard extends Observable {
+public class DiceBoard {
+
+    private final AtomicBoolean mAnyOnFloor = new AtomicBoolean(false);
 
     private final ArrayList<Die> mDice;
     private final DiceBoardPanel mDiceBoardPanel;
     private boolean mDiceOnFloor = false;
     private Thread mDieWatcherThread;
+    private final GlobalState mGlobalState;
     private Handedness mHandedness = Handedness.RIGHT;
     private int mMaxRollCount = 3;
     private int mNumOfDice;
@@ -38,7 +42,8 @@ public class DiceBoard extends Observable {
     private boolean mPlaySound = true;
     private final Roller mRoller;
 
-    public DiceBoard(int numOfDice) {
+    public DiceBoard(GlobalState globalState, int numOfDice) {
+        mGlobalState = globalState;
         mRoller = new Roller(this);
         mPainter = new Painter(this);
         mDice = new ArrayList<>();
@@ -50,6 +55,10 @@ public class DiceBoard extends Observable {
     public void gameOver() {
         mPainter.setRollable(false);
         mPainter.setSelectable(false);
+    }
+
+    public AtomicBoolean getAnyOnFloor() {
+        return mAnyOnFloor;
     }
 
     public int getMaxRollCount() {
@@ -92,12 +101,17 @@ public class DiceBoard extends Observable {
     public void roll() {
         mPainter.setRollable(false);
         mPainter.setSelectable(false);
-        mRoller.roll();
+        mAnyOnFloor.set(false);
         mDiceOnFloor = false;
+        mRoller.roll();
 
-        mDice.forEach(die -> {
-            die.roll();
-        });
+        for (var die : mDice) {
+            if (die.isSelected()) {
+                die.roll();
+            } else {
+                die.setWasSelected(false);
+            }
+        }
 
         mRoller.setImage(getNumOfSelectedDice());
         mDieWatcherThread = new Thread(new DieWatchRunner());
@@ -132,8 +146,7 @@ public class DiceBoard extends Observable {
         });
 
         mDiceBoardPanel.repaint();
-        setChanged();
-        notifyObservers(RollEvent.POST_ROLL);
+        mGlobalState.put(RollEvent.class.getName(), RollEvent.POST_ROLL);
     }
 
     ArrayList<Die> getDice() {
@@ -150,10 +163,6 @@ public class DiceBoard extends Observable {
 
     Painter getPainter() {
         return mPainter;
-    }
-
-    boolean isDiceOnFloor() {
-        return mDiceOnFloor;
     }
 
     boolean isPlaySound() {
@@ -173,17 +182,25 @@ public class DiceBoard extends Observable {
         mPainter.setRollable(false);
         mPainter.setSelectable(enable);
 
-        setChanged();
-        notifyObservers(RollEvent.POST_ROLL);
+        mGlobalState.put(RollEvent.class.getName(), RollEvent.POST_ROLL);
     }
 
     void rollPreOp() {
-        setChanged();
-        notifyObservers(RollEvent.PRE_ROLL);
+        if (mDiceOnFloor) {
+            roll();
+        } else {
+            mGlobalState.put(RollEvent.class.getName(), RollEvent.PRE_ROLL);
+        }
     }
 
     void setDiceOnFloor(boolean diceOnFloor) {
         mDiceOnFloor = diceOnFloor;
+
+        for (var die : mDice) {
+            if (die.isOnFloor()) {
+                die.moveToTop();
+            }
+        }
     }
 
     private void endOfTurn() {
@@ -212,26 +229,50 @@ public class DiceBoard extends Observable {
         }
     }
 
-    public enum RollEvent {
-
-        PRE_ROLL,
-        POST_ROLL;
-    }
-
     private class DieWatchRunner implements Runnable {
 
         @Override
         public void run() {
             mDice.forEach(die -> {
                 try {
-                    die.getAnimator().join();
+                    die.getRollThread().join();
                 } catch (InterruptedException ex) {
+                    //
                 }
             });
 
-            if (!mDiceOnFloor) {
+            if (mDiceOnFloor) {
+                onFloor();
+            } else {
                 rollPostOp();
             }
+        }
+
+        private void onFloor() {
+            mDice.stream()
+                    .filter(die -> die.wasSelected())
+                    .forEachOrdered(die -> {
+                        if (die.isOnFloor()) {
+                            die.moveInFromTop();
+                        } else {
+                            die.moveToTop();
+                        }
+                    });
+
+            mDice.forEach(die -> {
+                try {
+                    die.getMoveInFromTopThread().join();
+                    die.getMoveToTopThread().join();
+                } catch (InterruptedException ex) {
+                    //
+                }
+            });
+
+            mDice.forEach(die -> {
+                die.setSelected(die.wasSelected(), false);
+                mPainter.setRollable(true);
+                mPainter.calcRollable();
+            });
         }
     }
 }

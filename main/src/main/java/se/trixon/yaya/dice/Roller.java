@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +15,11 @@
  */
 package se.trixon.yaya.dice;
 
-import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-import se.trixon.yaya.dice.data.image.DiceImage;
 import se.trixon.almond.util.GraphicsHelper;
+import se.trixon.yaya.dice.data.image.DiceImage;
 
 /**
  *
@@ -30,7 +29,6 @@ class Roller {
 
     private BufferedImage mBufferedImage;
     private final DiceBoard mDiceBoard;
-    private int mNumOfDice;
     private final Random mRandom;
     private Thread mReleaseThread;
     private Thread mShakeThread;
@@ -48,18 +46,8 @@ class Roller {
         init();
     }
 
-    private void init() {
-        setImage(5);
-        mX = -500;
-        mY = Painter.MARGIN_Y_ROLLER;
-    }
-
     BufferedImage getImage() {
         return GraphicsHelper.flipBufferedImageX(mBufferedImage);
-    }
-
-    int getNumOfDice() {
-        return mNumOfDice;
     }
 
     Thread getShakeThread() {
@@ -89,14 +77,6 @@ class Roller {
         mBufferedImage = DiceImage.get(String.format("hand/closed/%02d_%02d.png", rollCount, variant));
     }
 
-    void setNumOfDice(int numOfDice) {
-        mNumOfDice = numOfDice;
-    }
-
-    void setVisible(boolean visible) {
-        mVisible = visible;
-    }
-
     void shake(boolean state) {
         mVisible = true;
         if (state) {
@@ -122,6 +102,12 @@ class Roller {
         mSlideThread.start();
     }
 
+    private void init() {
+        setImage(5);
+        mX = -500;
+        mY = Painter.MARGIN_Y_ROLLER;
+    }
+
     class ReleaseRunner implements Runnable {
 
         @Override
@@ -139,18 +125,18 @@ class Roller {
         @Override
         public void run() {
             BufferedImage originalBufferedImage;
-            AffineTransformOp originalAffineTransformOp = new AffineTransformOp(mBufferedImage.createGraphics().getTransform(), AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+            var originalAffineTransformOp = new AffineTransformOp(mBufferedImage.createGraphics().getTransform(), AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
             originalBufferedImage = originalAffineTransformOp.filter(mBufferedImage, null);
 
             while (!Thread.interrupted()) {
                 mX = Painter.MARGIN_X_ROLLER + mRandom.nextInt(10);
                 mY = Painter.MARGIN_Y_ROLLER + mRandom.nextInt(10);
 
-                AffineTransform affineTransform = mBufferedImage.createGraphics().getTransform();
+                var affineTransform = mBufferedImage.createGraphics().getTransform();
                 double theta = 0.03;
                 affineTransform.rotate(-theta + 2 * theta * mRandom.nextDouble());
 
-                AffineTransformOp affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                var affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
                 mBufferedImage = affineTransformOp.filter(mBufferedImage, null);
 
                 mDiceBoard.getPanel().repaint();
@@ -163,7 +149,6 @@ class Roller {
                 }
 
                 mBufferedImage = originalAffineTransformOp.filter(originalBufferedImage, null);
-
             }
         }
     }
@@ -172,7 +157,6 @@ class Roller {
 
         @Override
         public void run() {
-
             while (!Thread.interrupted() && mX < 0 + Painter.MARGIN_X_ROLLER) {
                 mX += 4 - mX / 5;
 

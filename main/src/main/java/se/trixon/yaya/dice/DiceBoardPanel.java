@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ class DiceBoardPanel extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+        var g2 = (Graphics2D) g;
 
         if (mBackgroundImage != null) {
             for (int i = 0; i < (getHeight() / mBackgroundImage.getHeight()) + 1; i++) {

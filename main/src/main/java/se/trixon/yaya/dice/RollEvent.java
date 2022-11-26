@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.scorecard;
-
-import java.util.Observable;
+package se.trixon.yaya.dice;
 
 /**
  *
- * @author Patrik Karlström
+ * @author Patrik Karlström <patrik@trixon.se>
  */
-public class ScoreCardObservable extends Observable {
+public enum RollEvent {
+    PRE_ROLL,
+    POST_ROLL
 
-    public void notify(ScoreCardEvent scoreCardEvent) {
-        setChanged();
-        notifyObservers(scoreCardEvent);
-    }
-
-    public enum ScoreCardEvent {
-
-        GAME_OVER, REGISTER, UNDO
-    }
 }

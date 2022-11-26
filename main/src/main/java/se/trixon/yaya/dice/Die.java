@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,14 @@
 package se.trixon.yaya.dice;
 
 import java.applet.AudioClip;
-import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
+import org.openide.util.Exceptions;
 import se.trixon.yaya.dice.data.image.DiceImage;
 import se.trixon.yaya.dice.data.sound.DiceSound;
-import org.openide.util.Exceptions;
 
 /**
  *
@@ -36,20 +35,25 @@ class Die {
     private static final int MAX_DR_1 = 4;
     private static final int MAX_DR_2 = 20;
     private static final int MAX_DR_3 = 4;
-    private Thread mAnimatorThread = new Thread();
     private AudioClip mAudioClip;
     private BufferedImage mBufferedImage;
     private int mCenter;
-    private int mColumn;
-    private DiceBoard mDiceBoard;
+    private final int mColumn;
+    private final DiceBoard mDiceBoard;
     private int mDiceToFloor = 0;
     private String mImagePath;
+    private MoveInFromTopThread mMoveInFromTopThread = new MoveInFromTopThread();
+    private MoveToTopThread mMoveToTopThread = new MoveToTopThread();
     private int mOffsetX;
-    private Random mRandom = new Random();
+    private boolean mOnFloor = false;
+    private final Random mRandom = new Random();
+    private RollThread mRollThread = new RollThread();
+    private SelectThread mSelectThread = new SelectThread();
     private boolean mSelected = true;
     private int mStoredY;
     private int mValue;
     private boolean mVisible;
+    private boolean mWasSelected = true;
     private int mX;
     private int mY;
 
@@ -59,40 +63,32 @@ class Die {
         init();
     }
 
-    private int generateValue() {
-        mValue = mRandom.nextInt(6) + 1;
-        int variant = mRandom.nextInt(2) + 1;
-        int mode = 0;
-        mImagePath = String.format("dice/%d_%02d_%02d.png", mode, mValue, variant);
-
-        setBufferedImage(mImagePath);
-
-        return mValue;
+    public MoveInFromTopThread getMoveInFromTopThread() {
+        return mMoveInFromTopThread;
     }
 
-    private void init() {
+    public MoveToTopThread getMoveToTopThread() {
+        return mMoveToTopThread;
     }
 
-    private void repaintDiceBoard() {
-        SwingUtilities.invokeLater(() -> {
-            mDiceBoard.getPanel().repaint();
-        });
+    public RollThread getRollThread() {
+        return mRollThread;
     }
 
-    private void rotate(double theta) {
-        AffineTransform affineTransform = mBufferedImage.createGraphics().getTransform();
-        affineTransform.rotate(theta, mBufferedImage.getWidth() / 2, mBufferedImage.getHeight() / 2);
-        AffineTransformOp affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BICUBIC);
-
-        mBufferedImage = affineTransformOp.filter(mBufferedImage, null);
+    public boolean isOnFloor() {
+        return mOnFloor;
     }
 
-    private void setBufferedImage(String imagePath) {
-        mBufferedImage = DiceImage.get(imagePath);
+    public void setOnFloor(boolean onFloor) {
+        mOnFloor = onFloor;
     }
 
-    Thread getAnimator() {
-        return mAnimatorThread;
+    public void setWasSelected(boolean wasSelected) {
+        this.mWasSelected = wasSelected;
+    }
+
+    public boolean wasSelected() {
+        return mWasSelected;
     }
 
     int getCenter() {
@@ -119,6 +115,23 @@ class Die {
         return mY;
     }
 
+    void interruptAllThreads() {
+        mRollThread.interrupt();
+        mSelectThread.interrupt();
+        mMoveToTopThread.interrupt();
+        mMoveInFromTopThread.interrupt();
+
+        try {
+            mRollThread.join();
+            mSelectThread.join();
+            mMoveToTopThread.join();
+            mMoveInFromTopThread.join();
+        } catch (InterruptedException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+
+    }
+
     boolean isSelected() {
         return mSelected;
     }
@@ -127,24 +140,35 @@ class Die {
         return mVisible;
     }
 
+    void moveInFromTop() {
+        mMoveInFromTopThread = new MoveInFromTopThread();
+        mMoveInFromTopThread.start();
+    }
+
+    void moveToTop() {
+        mMoveToTopThread = new MoveToTopThread();
+        mMoveToTopThread.start();
+    }
+
     void park() {
     }
 
     void reset() {
         setVisible(false);
         mSelected = true;
-        mAnimatorThread.interrupt();
+        mWasSelected = false;
     }
 
     void roll() {
-        if (mAnimatorThread.isAlive()) {
+        if (mRollThread.isAlive()) {
             return;
         }
 
-        if (mSelected) {
-            mAnimatorThread = new Thread(new RollRunner());
-            mAnimatorThread.start();
-        }
+        interruptAllThreads();
+
+        mWasSelected = true;
+        mRollThread = new RollThread();
+        mRollThread.start();
 
         mSelected = false;
     }
@@ -160,32 +184,131 @@ class Die {
     void setEnabled(boolean b) {
     }
 
-    void setSelected(boolean selected) {
-
-        if (mAnimatorThread.isAlive()) {
+    void setSelected(boolean selected, boolean withAnimation) {
+        if (mRollThread.isAlive() || mSelectThread.isAlive()) {
             return;
         }
 
         mSelected = selected;
-        mAnimatorThread = new Thread(new SelectRunner());
-        mAnimatorThread.start();
+
+        if (withAnimation) {
+            mSelectThread = new SelectThread();
+            mSelectThread.start();
+        }
     }
 
     void setVisible(boolean visible) {
         mVisible = visible;
     }
 
-    private class RollRunner implements Runnable {
+    private int generateValue() {
+        mValue = mRandom.nextInt(6) + 1;
+        int variant = mRandom.nextInt(2) + 1;
+        int mode = 0;
+        mImagePath = String.format("dice/%d_%02d_%02d.png", mode, mValue, variant);
+
+        setBufferedImage(mImagePath);
+
+        return mValue;
+    }
+
+    private String getThreadName(Thread t) {
+        return "%s: %d".formatted(t.getClass().getSimpleName(), mColumn);
+    }
+
+    private void init() {
+    }
+
+    private void repaintDiceBoard() {
+        SwingUtilities.invokeLater(() -> {
+            mDiceBoard.getPanel().repaint();
+        });
+    }
+
+    private void rotate(double theta) {
+        var affineTransform = mBufferedImage.createGraphics().getTransform();
+        affineTransform.rotate(theta, mBufferedImage.getWidth() / 2, mBufferedImage.getHeight() / 2);
+        var affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BICUBIC);
+
+        mBufferedImage = affineTransformOp.filter(mBufferedImage, null);
+    }
+
+    private void setBufferedImage(String imagePath) {
+        mBufferedImage = DiceImage.get(imagePath);
+    }
+
+    private void startThread(Thread t, Runnable r) {
+        if (t.isAlive()) {
+            t.interrupt();
+        }
+
+        t = new Thread(r, "%s: %d".formatted(r.getClass().getSimpleName(), mColumn));
+        t.start();
+    }
+
+    class MoveInFromTopThread extends Thread {
+
+        public MoveInFromTopThread() {
+            setName(getThreadName(this));
+        }
+
+        @Override
+        public void run() {
+            mY = -100;
+            while (mY < 0) {
+                mY += 10;
+                mY = Math.min(0, mY);
+
+                setBufferedImage(mImagePath);
+
+                repaintDiceBoard();
+
+                try {
+                    TimeUnit.MILLISECONDS.sleep(80);
+                } catch (InterruptedException ex) {
+                }
+            }
+        }
+    }
+
+    class MoveToTopThread extends Thread {
+
+        public MoveToTopThread() {
+            setName(getThreadName(this));
+        }
+
+        @Override
+        public void run() {
+            while (mY > 0) {
+                mY -= 10;
+                mY = Math.max(0, mY);
+                setBufferedImage(mImagePath);
+
+                repaintDiceBoard();
+                try {
+                    TimeUnit.MILLISECONDS.sleep(80);
+                } catch (InterruptedException ex) {
+                }
+            }
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    class RollThread extends Thread {
 
         private int mBaseX;
         private int mBaseY;
         private int mLoops;
         private String mSoundPath;
 
+        public RollThread() {
+            setName(getThreadName(this));
+        }
+
         @Override
         public void run() {
             /*
-             * This random delay manage the start order of the dice.
+            * This random delay manage the start order of the dice.
              */
             try {
                 TimeUnit.MILLISECONDS.sleep(mRandom.nextInt(300 / (mColumn + 1)));
@@ -198,22 +321,23 @@ class Die {
              */
             rollOut();
             /*
-             * ...continue to generate values and a new positions.
+            * ...continue to generate values and a new positions.
              */
             spin();
-
-//            if (mY < 30 && diceToFloor > 0) {
-//                if (random.nextInt(diceToFloor) == random.nextInt(diceToFloor)) {
-//                    diceToFloor();
-//                }
-//                diceToFloor();
-//            } else {
-//                /*
-//                 * ...final wobble, don't generate a new mValue.
-//                 */
-//                vibrate();
-//            }
-            vibrate();
+//30
+            if (mY < 130 && mDiceToFloor > 0) {
+                if (!mDiceBoard.getAnyOnFloor().get() && mRandom.nextInt(mDiceToFloor) == mRandom.nextInt(mDiceToFloor)) {
+                    mDiceBoard.getAnyOnFloor().set(true);
+                    diceToFloor();
+                } else {
+                    vibrate();
+                }
+            } else {
+                /*
+                * ...final wobble, don't generate a new mValue.
+                 */
+                vibrate();
+            }
 
             try {
                 mAudioClip.stop();
@@ -235,14 +359,16 @@ class Die {
         }
 
         private void diceToFloor() {
+            mDiceBoard.setDiceOnFloor(true);
+            mOnFloor = true;
 
             if (mDiceBoard.isPlaySound()) {
                 mAudioClip = DiceSound.getAudioClip("dtf.au");
                 mAudioClip.play();
             }
 
-            while (mY > -200) {
-                mY -= 10;
+            while (mY < 200) {
+                mY += 10;
                 setBufferedImage(mImagePath);
 
                 repaintDiceBoard();
@@ -251,8 +377,6 @@ class Die {
                 } catch (InterruptedException ex) {
                 }
             }
-
-            mDiceBoard.setDiceOnFloor(true);
         }
 
         private void rollOut() {
@@ -356,22 +480,11 @@ class Die {
         }
     }
 
-    private class RollToFloorRunner implements Runnable {
+    class SelectThread extends Thread {
 
-        @Override
-        public void run() {
-            if (mDiceBoard.isPlaySound()) {
-                mAudioClip = DiceSound.getAudioClip("dtf.au");
-                mAudioClip.play();
-            }
-            try {
-                TimeUnit.MILLISECONDS.sleep(1);
-            } catch (InterruptedException ex) {
-            }
+        public SelectThread() {
+            setName(getThreadName(this));
         }
-    }
-
-    private class SelectRunner implements Runnable {
 
         @Override
         public void run() {
@@ -410,7 +523,6 @@ class Die {
                     }
                 }
             }
-
             mDiceBoard.getPainter().calcRollable();
         }
     }

@@ -19,25 +19,25 @@ import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Observable;
-import java.util.Observer;
 import javax.swing.JPanel;
+import se.trixon.almond.util.GlobalState;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.yaya.dice.DiceBoard;
-import se.trixon.yaya.dice.DiceBoard.RollEvent;
+import se.trixon.yaya.dice.RollEvent;
 import se.trixon.yaya.rules.Rule;
 import se.trixon.yaya.rules.RuleManager;
 import se.trixon.yaya.scorecard.ScoreCard;
-import se.trixon.yaya.scorecard.ScoreCardObservable.ScoreCardEvent;
+import se.trixon.yaya.scorecard.ScoreCardEvent;
 
 /**
  *
  * @author Patrik Karlström
  */
-public class YayaPanel extends JPanel implements Observer {
+public class YayaPanel extends JPanel {
 
     private BufferedImage mBackgroundImage;
     private DiceBoard mDiceBoard;
+    private final GlobalState mGlobalState;
     private final Options mOptions = Options.getInstance();
     private boolean mRollable = true;
     private Rule mRule;
@@ -47,8 +47,10 @@ public class YayaPanel extends JPanel implements Observer {
      * Creates new form YayaPanel
      */
     public YayaPanel() {
+        mGlobalState = Yaya.getGlobalState();
         init();
         initComponents();
+        initListeners();
         initInitialLayout();
         setBackgroundImage(Yaya.getImage("images/wood_panel1.jpg"));
     }
@@ -99,9 +101,37 @@ public class YayaPanel extends JPanel implements Observer {
         paint(g);
     }
 
-    @Override
-    public void update(Observable observable, Object object) {
-        if (object instanceof RollEvent rollEvent) {
+    private void init() {
+    }
+
+    private void initComponents() {
+        setBackground(new java.awt.Color(204, 255, 153));
+        setOpaque(false);
+        setLayout(new java.awt.BorderLayout());
+    }
+
+    private void initDiceBoard() {
+        mDiceBoard.setDiceTofloor(1);
+        mDiceBoard.setMaxRollCount(mRule.getNumOfRolls());
+        add(mDiceBoard.getPanel(), BorderLayout.SOUTH);
+    }
+
+    private void initGame() {
+        removeAll();
+        mRule = RuleManager.getInstance().getRule(mOptions.getRuleId());
+        mDiceBoard = new DiceBoard(mGlobalState, mRule.getNumOfDice());
+        mScoreCard = new ScoreCard(mGlobalState);
+        initScoreCard();
+        initDiceBoard();
+    }
+
+    private void initInitialLayout() {
+        add(new DiceBoard(mGlobalState, 0).getPanel(), BorderLayout.SOUTH);
+    }
+
+    private void initListeners() {
+        mGlobalState.addListener(gsce -> {
+            RollEvent rollEvent = gsce.getValue();
             switch (rollEvent) {
                 case PRE_ROLL -> {
                     mScoreCard.setEnabledUndo(false);
@@ -115,7 +145,10 @@ public class YayaPanel extends JPanel implements Observer {
                 case POST_ROLL ->
                     mScoreCard.parseDice(mDiceBoard.getValues());
             }
-        } else if (object instanceof ScoreCardEvent scoreCardEvent) {
+        }, RollEvent.class.getName());
+
+        mGlobalState.addListener(gsce -> {
+            ScoreCardEvent scoreCardEvent = gsce.getValue();
             switch (scoreCardEvent) {
                 case GAME_OVER ->
                     mDiceBoard.gameOver();
@@ -126,40 +159,10 @@ public class YayaPanel extends JPanel implements Observer {
                 case UNDO ->
                     mDiceBoard.undo();
             }
-        }
-    }
-
-    private void init() {
-    }
-
-    private void initComponents() {
-        setBackground(new java.awt.Color(204, 255, 153));
-        setOpaque(false);
-        setLayout(new java.awt.BorderLayout());
-    }
-
-    private void initDiceBoard() {
-        mDiceBoard.addObserver(this);
-        mDiceBoard.setDiceTofloor(1000);
-        mDiceBoard.setMaxRollCount(mRule.getNumOfRolls());
-        add(mDiceBoard.getPanel(), BorderLayout.SOUTH);
-    }
-
-    private void initGame() {
-        removeAll();
-        mRule = RuleManager.getInstance().getRule(mOptions.getRuleId());
-        mDiceBoard = new DiceBoard(mRule.getNumOfDice());
-        mScoreCard = new ScoreCard();
-        initScoreCard();
-        initDiceBoard();
-    }
-
-    private void initInitialLayout() {
-        add(new DiceBoard(0).getPanel(), BorderLayout.SOUTH);
+        }, ScoreCardEvent.class.getName());
     }
 
     private void initScoreCard() {
-        mScoreCard.getObservable().addObserver(this);
         add(mScoreCard.getPanel(), BorderLayout.CENTER);
     }
 
