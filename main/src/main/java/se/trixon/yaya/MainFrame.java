@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -70,6 +71,7 @@ public final class MainFrame extends JFrame {
     private JMenu mColorsMenu;
     private JMenu mDiceMenu;
     private JCheckBoxMenuItem mFullscreenCheckBoxMenuItem;
+    private JCheckBoxMenuItem mPlaySoundCheckBoxMenuItem;
     private JMenuItem mHelpMenuItem;
     private JCheckBoxMenuItem mIndicatorCheckBoxMenuItem;
     private JCheckBoxMenuItem mLimCheckBoxMenuItem;
@@ -203,6 +205,7 @@ public final class MainFrame extends JFrame {
         mLimCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.SHOW_LIM));
         mMaxCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.SHOW_MAX));
         mIndicatorCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.SHOW_INDICATORS));
+        mPlaySoundCheckBoxMenuItem.setAction(mActionManager.getAction(ActionManager.PLAY_SOUND));
         mAboutMenuItem.setAction(action);
         mHelpMenuItem.setAction(mActionManager.getAction(ActionManager.HELP));
         mQuitMenuItem.setAction(mActionManager.getAction(ActionManager.QUIT));
@@ -227,6 +230,10 @@ public final class MainFrame extends JFrame {
                 case ActionManager.FULLSCREEN -> {
                     mOptions.setFullscreen(!mOptions.isFullscreen());
                     SwingHelper.setFullScreen(mOptions.isFullscreen() ? this : null);
+                }
+
+                case ActionManager.PLAY_SOUND -> {
+                    mOptions.put(Options.KEY_PLAY_SOUND, !mOptions.is(Options.KEY_PLAY_SOUND, Options.DEFAULT_PLAY_SOUND));
                 }
 
                 case ActionManager.NIGHT_MODE -> {
@@ -281,6 +288,8 @@ public final class MainFrame extends JFrame {
                     mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
                 case Options.KEY_SHOW_MAX_COLUMN ->
                     mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
+                case Options.KEY_PLAY_SOUND ->
+                    mPlaySoundCheckBoxMenuItem.setSelected(mOptions.is(Options.KEY_PLAY_SOUND, Options.DEFAULT_PLAY_SOUND));
             }
         });
 
@@ -327,6 +336,7 @@ public final class MainFrame extends JFrame {
         mFullscreenCheckBoxMenuItem = new JCheckBoxMenuItem();
         mNightModeCheckBoxMenuItem = new JCheckBoxMenuItem();
         mRemovePlayerMenuItem = new JMenuItem(mBundle.getString("removePlayerTitle"));
+        mPlaySoundCheckBoxMenuItem = new JCheckBoxMenuItem();
 
         mScorecardMenu = new JMenu();
         mColorsMenu = new JMenu();
@@ -353,6 +363,8 @@ public final class MainFrame extends JFrame {
         mPopupMenu.add(mSystemMenu);
         mSystemMenu.add(mFullscreenCheckBoxMenuItem);
         mSystemMenu.add(mNightModeCheckBoxMenuItem);
+        mSystemMenu.add(mPlaySoundCheckBoxMenuItem);
+        mSystemMenu.add(new JSeparator());
         mSystemMenu.add(mRemovePlayerMenuItem);
 
         mPopupMenu.add(mScorecardMenu);
@@ -406,6 +418,7 @@ public final class MainFrame extends JFrame {
         mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
         mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
         mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
+        mPlaySoundCheckBoxMenuItem.setSelected(mOptions.is(Options.KEY_PLAY_SOUND, Options.DEFAULT_PLAY_SOUND));
 
         mReverseDiceDirectionCheckBoxMenuItem.setSelected(mOptions.isReverseDirection());
     }

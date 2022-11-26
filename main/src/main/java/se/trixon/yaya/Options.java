@@ -30,6 +30,7 @@ import se.trixon.yaya.rules.GameVariant;
 public class Options extends OptionsBase {
 
     public static final boolean DEFAULT_NIGHT_MODE = true;
+    public static final boolean DEFAULT_PLAY_SOUND = true;
     public static final String DEFAULT_PLAYERS = "Ask;Embla;Ask;Embla;Ask;Embla;Ask;Embla";
     public static final String DEFAULT_PLAYERS_ALL = "Ask;Embla";
     public static final String DEFAULT_RULE_ID = "se.trixon.yaya.rules.yaya_scandinavian";
@@ -39,6 +40,7 @@ public class Options extends OptionsBase {
     public static final String KEY_NUM_OF_PLAYERS = "numOfPlayers";
     public static final String KEY_PLAYERS = "players";
     public static final String KEY_PLAYERS_ALL = "players.all";
+    public static final String KEY_PLAY_SOUND = "play_sound";
     public static final String KEY_REVERSE_DIRECTION = "reverseDirection";
     public static final String KEY_RULE_ID = "ruleId";
     public static final String KEY_SHOW_INDICATORS = "showIndicators";

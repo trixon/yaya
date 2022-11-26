@@ -111,6 +111,7 @@ public class YayaPanel extends JPanel {
     }
 
     private void initDiceBoard() {
+        mDiceBoard.setPlaySound(mOptions.is(Options.KEY_PLAY_SOUND, Options.DEFAULT_PLAY_SOUND));
         mDiceBoard.setDiceTofloor(75);
         mDiceBoard.setMaxRollCount(mRule.getNumOfRolls());
         add(mDiceBoard.getPanel(), BorderLayout.SOUTH);
@@ -130,6 +131,14 @@ public class YayaPanel extends JPanel {
     }
 
     private void initListeners() {
+        mOptions.getPreferences().addPreferenceChangeListener(pce -> {
+            switch (pce.getKey()) {
+                case Options.KEY_PLAY_SOUND:
+                    mDiceBoard.setPlaySound(Boolean.parseBoolean(pce.getNewValue()));
+                    break;
+            }
+        });
+
         mGlobalState.addListener(gsce -> {
             RollEvent rollEvent = gsce.getValue();
             switch (rollEvent) {
