@@ -111,7 +111,7 @@ public class YayaPanel extends JPanel {
     }
 
     private void initDiceBoard() {
-        mDiceBoard.setDiceTofloor(1);
+        mDiceBoard.setDiceTofloor(75);
         mDiceBoard.setMaxRollCount(mRule.getNumOfRolls());
         add(mDiceBoard.getPanel(), BorderLayout.SOUTH);
     }

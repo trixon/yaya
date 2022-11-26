@@ -31,7 +31,6 @@ public class DiceBoard {
 
     private final ArrayList<Die> mDice;
     private final DiceBoardPanel mDiceBoardPanel;
-    private boolean mDiceOnFloor = false;
     private Thread mDieWatcherThread;
     private final GlobalState mGlobalState;
     private Handedness mHandedness = Handedness.RIGHT;
@@ -102,7 +101,6 @@ public class DiceBoard {
         mPainter.setRollable(false);
         mPainter.setSelectable(false);
         mAnyOnFloor.set(false);
-        mDiceOnFloor = false;
         mRoller.roll();
 
         for (var die : mDice) {
@@ -186,26 +184,15 @@ public class DiceBoard {
     }
 
     void rollPreOp() {
-        if (mDiceOnFloor) {
+        if (mAnyOnFloor.get()) {
             roll();
         } else {
             mGlobalState.put(RollEvent.class.getName(), RollEvent.PRE_ROLL);
         }
     }
 
-    void setDiceOnFloor(boolean diceOnFloor) {
-        mDiceOnFloor = diceOnFloor;
-
-        for (var die : mDice) {
-            if (die.isOnFloor()) {
-                die.moveToTop();
-            }
-        }
-    }
-
     private void endOfTurn() {
         mDice.forEach(die -> {
-            die.park();
             die.setEnabled(false);
         });
     }
@@ -241,7 +228,7 @@ public class DiceBoard {
                 }
             });
 
-            if (mDiceOnFloor) {
+            if (mAnyOnFloor.get()) {
                 onFloor();
             } else {
                 rollPostOp();

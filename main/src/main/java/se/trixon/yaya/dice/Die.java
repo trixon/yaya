@@ -150,9 +150,6 @@ class Die {
         mMoveToTopThread.start();
     }
 
-    void park() {
-    }
-
     void reset() {
         setVisible(false);
         mSelected = true;
@@ -166,6 +163,7 @@ class Die {
 
         interruptAllThreads();
 
+        mOnFloor = false;
         mWasSelected = true;
         mRollThread = new RollThread();
         mRollThread.start();
@@ -255,7 +253,7 @@ class Die {
         @Override
         public void run() {
             mY = -100;
-            while (mY < 0) {
+            while (mY < -20) {
                 mY += 10;
                 mY = Math.min(0, mY);
 
@@ -324,8 +322,8 @@ class Die {
             * ...continue to generate values and a new positions.
              */
             spin();
-//30
-            if (mY < 130 && mDiceToFloor > 0) {
+
+            if (mY < 30 && mDiceToFloor > 0) {
                 if (!mDiceBoard.getAnyOnFloor().get() && mRandom.nextInt(mDiceToFloor) == mRandom.nextInt(mDiceToFloor)) {
                     mDiceBoard.getAnyOnFloor().set(true);
                     diceToFloor();
@@ -359,7 +357,6 @@ class Die {
         }
 
         private void diceToFloor() {
-            mDiceBoard.setDiceOnFloor(true);
             mOnFloor = true;
 
             if (mDiceBoard.isPlaySound()) {
@@ -373,7 +370,7 @@ class Die {
 
                 repaintDiceBoard();
                 try {
-                    TimeUnit.MILLISECONDS.sleep(80);
+                    TimeUnit.MILLISECONDS.sleep(60);
                 } catch (InterruptedException ex) {
                 }
             }
