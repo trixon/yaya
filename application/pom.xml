@@ -5,7 +5,7 @@
     <parent>
         <groupId>se.trixon.yaya</groupId>
         <artifactId>parent</artifactId>
-        <version>0.2</version>
+        <version>0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -51,7 +51,7 @@
                 <groupId>org.apache.netbeans.utilities</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
-                    <finalName>yaya-${project.version}</finalName>
+                    <finalName>Yaya-${project.version}</finalName>
                     <etcConfFile>src/yaya.conf</etcConfFile>
                     <verifyRuntime>true</verifyRuntime>
 
