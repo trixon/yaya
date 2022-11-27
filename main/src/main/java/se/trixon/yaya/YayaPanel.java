@@ -24,10 +24,11 @@ import se.trixon.almond.util.GlobalState;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.yaya.dice.DiceBoard;
 import se.trixon.yaya.dice.RollEvent;
-import se.trixon.yaya.scorecard.rules.Rule;
-import se.trixon.yaya.scorecard.rules.RuleManager;
 import se.trixon.yaya.scorecard.ScoreCard;
 import se.trixon.yaya.scorecard.ScoreCardEvent;
+import se.trixon.yaya.scorecard.rules.GameState;
+import se.trixon.yaya.scorecard.rules.Rule;
+import se.trixon.yaya.scorecard.rules.RuleManager;
 
 /**
  *
@@ -118,6 +119,7 @@ public class YayaPanel extends JPanel {
     }
 
     private void initGame() {
+        Yaya.getGlobalState().put(Yaya.KEY_GAME_STATE, GameState.JUST_STARTED);
         removeAll();
         mRule = RuleManager.getInstance().getRule(mOptions.getRuleId());
         mDiceBoard = new DiceBoard(mGlobalState, mRule.getNumOfDice());
@@ -151,16 +153,20 @@ public class YayaPanel extends JPanel {
                     }
                 }
 
-                case POST_ROLL ->
+                case POST_ROLL -> {
                     mScoreCard.parseDice(mDiceBoard.getValues());
+                    Yaya.getGlobalState().put(Yaya.KEY_GAME_STATE, GameState.RUNNING);
+                }
             }
         }, RollEvent.class.getName());
 
         mGlobalState.addListener(gsce -> {
             ScoreCardEvent scoreCardEvent = gsce.getValue();
             switch (scoreCardEvent) {
-                case GAME_OVER ->
+                case GAME_OVER -> {
+                    Yaya.getGlobalState().put(Yaya.KEY_GAME_STATE, GameState.GAME_OVER);
                     mDiceBoard.gameOver();
+                }
 
                 case REGISTER ->
                     mDiceBoard.newTurn();

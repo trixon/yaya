@@ -61,6 +61,7 @@ import se.trixon.almond.util.swing.DelayedResetRunner;
 import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.almond.util.swing.dialogs.HtmlPanel;
 import se.trixon.almond.util.swing.dialogs.about.AboutPanel;
+import se.trixon.yaya.scorecard.rules.GameState;
 
 public final class MainFrame extends JFrame {
 
@@ -109,7 +110,7 @@ public final class MainFrame extends JFrame {
     }
 
     private void createUI() {
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle(org.openide.util.NbBundle.getMessage(MainFrame.class, "MainFrame.title")); // NOI18N
         setMinimumSize(SwingHelper.getUIScaledDim(100, 50));
 
@@ -308,6 +309,17 @@ public final class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
+                if (GameState.RUNNING == Yaya.getGlobalState().get(Yaya.KEY_GAME_STATE)) {
+                    int confirmed = JOptionPane.showConfirmDialog(MainFrame.this,
+                            mBundle.getString("confirmQuitMessage"),
+                            mBundle.getString("confirmQuitTitle"),
+                            JOptionPane.YES_NO_OPTION);
+
+                    if (confirmed != JOptionPane.YES_OPTION) {
+                        return;
+                    }
+                }
+
                 if (!mOptions.isFullscreen()) {
                     SwingHelper.frameStateSave(mOptions.getPreferences(), MainFrame.this);
                     try {
