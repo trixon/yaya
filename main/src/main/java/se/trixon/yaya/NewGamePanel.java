@@ -20,8 +20,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import org.openide.util.NbBundle;
 import se.trixon.almond.util.Dict;
-import se.trixon.yaya.rules.Rule;
-import se.trixon.yaya.rules.RuleManager;
+import se.trixon.yaya.scorecard.rules.Rule;
+import se.trixon.yaya.scorecard.rules.RuleManager;
 
 /**
  *

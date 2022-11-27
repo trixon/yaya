@@ -116,10 +116,10 @@
     </modules>
 
     <repositories>
-        <!--        <repository>
+        <repository>
             <id>netbeans-next</id>
-            <url>https://repository.apache.org/content/repositories/orgapachenetbeans-1121</url>
-        </repository>    -->
+            <url>https://repository.apache.org/content/repositories/orgapachenetbeans-1122</url>
+        </repository>
         <repository>
             <id>mapton</id>
             <url>https://mapton.org/repo/maven/</url>
@@ -134,7 +134,7 @@
     </pluginRepositories>
 
     <properties>
-        <netbeans.version>RELEASE150</netbeans.version>
+        <netbeans.version>RELEASE160</netbeans.version>
         <almond.version>17.0.0-SNAPSHOT</almond.version>
         <brandingToken>yaya</brandingToken>
         <netbeans.hint.license>apache20</netbeans.hint.license>

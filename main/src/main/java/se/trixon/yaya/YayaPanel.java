@@ -24,8 +24,8 @@ import se.trixon.almond.util.GlobalState;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.yaya.dice.DiceBoard;
 import se.trixon.yaya.dice.RollEvent;
-import se.trixon.yaya.rules.Rule;
-import se.trixon.yaya.rules.RuleManager;
+import se.trixon.yaya.scorecard.rules.Rule;
+import se.trixon.yaya.scorecard.rules.RuleManager;
 import se.trixon.yaya.scorecard.ScoreCard;
 import se.trixon.yaya.scorecard.ScoreCardEvent;
 

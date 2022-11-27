@@ -21,7 +21,7 @@ import se.trixon.almond.util.OptionsBase;
 import static se.trixon.almond.util.OptionsBase.DEFAULT_FULL_SCREEN;
 import static se.trixon.almond.util.OptionsBase.KEY_FULL_SCREEN;
 import se.trixon.almond.util.swing.SwingHelper;
-import se.trixon.yaya.rules.GameVariant;
+import se.trixon.yaya.scorecard.rules.GameVariant;
 
 /**
  *

@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.rules;
-
-import org.openide.util.lookup.ServiceProvider;
+package se.trixon.yaya.scorecard.rules;
 
 /**
  *
  * @author Patrik Karlström
  */
-@ServiceProvider(service = RuleProvider.class)
-public class RuleProviderMaxiYaya extends RuleProvider {
+import java.util.ArrayList;
 
-    public RuleProviderMaxiYaya() {
-        super("maxi_yaya.json");
+public class GameColumn extends ArrayList<GameCell> {
+
+    public Integer[] getLim() {
+        return stream().map(k -> k.getLim()).toArray(Integer[]::new);
+    }
+
+    public Integer[] getMax() {
+        return stream().map(k -> k.getMax()).toArray(Integer[]::new);
     }
 }

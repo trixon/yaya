@@ -25,7 +25,7 @@ import javax.swing.border.EmptyBorder;
 import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.yaya.ThemeManager;
 import se.trixon.yaya.Yaya;
-import se.trixon.yaya.rules.GameCell;
+import se.trixon.yaya.scorecard.rules.GameCell;
 
 /**
  *

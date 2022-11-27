@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.TreeSet;
-import se.trixon.yaya.rules.GameCell;
+import se.trixon.yaya.scorecard.rules.GameCell;
 
 /**
  *

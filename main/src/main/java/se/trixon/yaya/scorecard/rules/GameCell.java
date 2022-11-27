@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.rules;
+package se.trixon.yaya.scorecard.rules;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;

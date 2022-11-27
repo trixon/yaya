@@ -22,7 +22,7 @@ import org.openide.util.NbPreferences;
 import se.trixon.almond.util.AlmondUI;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
-import se.trixon.yaya.rules.RuleManager;
+import se.trixon.yaya.scorecard.rules.RuleManager;
 
 /**
  *

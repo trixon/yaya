@@ -19,7 +19,7 @@ import javax.swing.SwingConstants;
 import se.trixon.almond.util.GraphicsHelper;
 import se.trixon.yaya.Options;
 import se.trixon.yaya.ThemeManager;
-import se.trixon.yaya.rules.Rule;
+import se.trixon.yaya.scorecard.rules.Rule;
 import se.trixon.yaya.themes.Theme;
 
 /**

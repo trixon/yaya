@@ -1,7 +1,7 @@
 name: yaya
 title: Yaya
 base: core22
-version: '0.1-SNAPSHOT'
+version: '0.2-SNAPSHOT'
 summary: Yet Another Yahtzee-esque Application
 description: |
     Enjoy classic family dice games with up to 8 players.

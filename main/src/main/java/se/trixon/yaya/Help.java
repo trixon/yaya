@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
 import se.trixon.almond.util.SystemHelper;
-import se.trixon.yaya.rules.RuleManager;
+import se.trixon.yaya.scorecard.rules.RuleManager;
 
 public final class Help {
 

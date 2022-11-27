@@ -21,7 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import se.trixon.yaya.Options;
 import se.trixon.yaya.Player;
-import se.trixon.yaya.rules.Rule;
+import se.trixon.yaya.scorecard.rules.Rule;
 
 /**
  *

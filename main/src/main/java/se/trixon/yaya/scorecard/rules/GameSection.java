@@ -13,18 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.rules;
-
-import org.openide.util.lookup.ServiceProvider;
+package se.trixon.yaya.scorecard.rules;
 
 /**
  *
- * @author Patrik Karlström
+ * @author Patrik Karlström <patrik@trixon.se>
  */
-@ServiceProvider(service = RuleProvider.class)
-public class RuleProviderQuickie extends RuleProvider {
-
-    public RuleProviderQuickie() {
-        super("quickie.json");
-    }
+public enum GameSection {
+    UPPER, LOWER;
 }

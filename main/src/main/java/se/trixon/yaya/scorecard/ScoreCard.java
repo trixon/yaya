@@ -38,8 +38,8 @@ import se.trixon.yaya.GameOverDialog;
 import se.trixon.yaya.GameOverItem;
 import se.trixon.yaya.Options;
 import se.trixon.yaya.ThemeManager;
-import se.trixon.yaya.rules.Rule;
-import se.trixon.yaya.rules.RuleManager;
+import se.trixon.yaya.scorecard.rules.Rule;
+import se.trixon.yaya.scorecard.rules.RuleManager;
 import se.trixon.yaya.themes.Theme;
 
 /**

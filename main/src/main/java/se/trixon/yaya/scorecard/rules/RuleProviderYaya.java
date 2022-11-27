@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya.rules;
+package se.trixon.yaya.scorecard.rules;
 
 import org.openide.util.lookup.ServiceProvider;
 
@@ -22,9 +22,9 @@ import org.openide.util.lookup.ServiceProvider;
  * @author Patrik Karlström
  */
 @ServiceProvider(service = RuleProvider.class)
-public class RuleProviderYayaScandinavian extends RuleProvider {
+public class RuleProviderYaya extends RuleProvider {
 
-    public RuleProviderYayaScandinavian() {
-        super("yaya_scandinavian.json");
+    public RuleProviderYaya() {
+        super("yaya.json");
     }
 }
