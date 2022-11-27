@@ -1,10 +1,12 @@
 name: yaya
 title: Yaya
 base: core22
-version: '0.2-SNAPSHOT'
+version: '0.2'
 summary: Yet Another Yahtzee-esque Application
 description: |
     Enjoy classic family dice games with up to 8 players.
+    
+    If you know your way around games like Yahtzee, Yatzy, Yacht and Crag you will do fine.
 
     Ready, Set, Roll!
 grade: stable
