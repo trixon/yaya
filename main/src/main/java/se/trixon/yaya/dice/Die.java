@@ -15,7 +15,6 @@
  */
 package se.trixon.yaya.dice;
 
-import java.applet.AudioClip;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Random;
@@ -23,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
 import org.openide.util.Exceptions;
 import se.trixon.yaya.dice.data.image.DiceImage;
-import se.trixon.yaya.dice.data.sound.DiceSound;
+import se.trixon.yaya.dice.data.sound.Sound;
 
 /**
  *
@@ -35,7 +34,6 @@ class Die {
     private static final int MAX_DR_1 = 4;
     private static final int MAX_DR_2 = 20;
     private static final int MAX_DR_3 = 4;
-    private AudioClip mAudioClip;
     private BufferedImage mBufferedImage;
     private int mCenter;
     private final int mColumn;
@@ -84,7 +82,7 @@ class Die {
     }
 
     public void setWasSelected(boolean wasSelected) {
-        this.mWasSelected = wasSelected;
+        mWasSelected = wasSelected;
     }
 
     public boolean wasSelected() {
@@ -297,7 +295,6 @@ class Die {
         private int mBaseX;
         private int mBaseY;
         private int mLoops;
-        private String mSoundPath;
 
         public RollThread() {
             setName(getThreadName(this));
@@ -336,32 +333,13 @@ class Die {
                  */
                 vibrate();
             }
-
-            try {
-                mAudioClip.stop();
-            } catch (NullPointerException ex) {
-            }
-
-        }
-
-        private void delayedPlay(String soundPath, int maxDelay) {
-            try {
-                mSoundPath = soundPath;
-                mAudioClip = DiceSound.getAudioClip(mSoundPath);
-
-                TimeUnit.MILLISECONDS.sleep(mRandom.nextInt(maxDelay));
-                mAudioClip.loop();
-            } catch (InterruptedException ex) {
-                Exceptions.printStackTrace(ex);
-            }
         }
 
         private void diceToFloor() {
             mOnFloor = true;
 
             if (mDiceBoard.isPlaySound()) {
-                mAudioClip = DiceSound.getAudioClip("dtf.au");
-                mAudioClip.play();
+                new Sound("dtf.au", true, false);
             }
 
             while (mY < 200) {
@@ -377,9 +355,12 @@ class Die {
         }
 
         private void rollOut() {
+            Sound sound = null;
+
             if (mDiceBoard.isPlaySound()) {
                 int variant = mRandom.nextInt(MAX_DR_2) + 1;
-                delayedPlay(String.format("dr_2_%02d.au", variant), 100);
+                sound = new Sound(String.format("dr_2_%02d.au", variant), false, true);
+                sound.play(100);
             }
 
             while (mX < mCenter - 75) {
@@ -401,19 +382,20 @@ class Die {
                 }
             }
 
-            try {
-                mAudioClip.stop();
-            } catch (NullPointerException ex) {
+            if (sound != null) {
+                sound.stop();
             }
         }
 
         private void spin() {
             mBaseY = mY;
             mLoops = mRandom.nextInt(7) + 5;
+            Sound sound = null;
 
             if (mDiceBoard.isPlaySound()) {
                 int variant = mRandom.nextInt(MAX_DR_2) + 1;
-                delayedPlay(String.format("dr_2_%02d.au", variant), 200);
+                sound = new Sound(String.format("dr_2_%02d.au", variant), false, true);
+                sound.play(200);
             }
 
             for (int i = 0; i < mLoops; i++) {
@@ -435,18 +417,19 @@ class Die {
                 }
             }
 
-            try {
-                mAudioClip.stop();
-            } catch (NullPointerException ex) {
+            if (sound != null) {
+                sound.stop();
             }
         }
 
         private void vibrate() {
             mLoops = mRandom.nextInt(10) + 3;
+            Sound sound = null;
 
             if (mDiceBoard.isPlaySound()) {
                 int variant = mRandom.nextInt(MAX_DR_3) + 1;
-                delayedPlay(String.format("dr_3_%02d.au", variant), 100);
+                sound = new Sound(String.format("dr_3_%02d.au", variant));
+                sound.play(100);
             }
 
             mBaseX = mX;
@@ -474,6 +457,10 @@ class Die {
             setBufferedImage(mImagePath);
             repaintDiceBoard();
             mStoredY = mY;
+
+            if (sound != null) {
+                sound.stop();
+            }
         }
     }
 
@@ -485,16 +472,8 @@ class Die {
 
         @Override
         public void run() {
-            if (mDiceBoard.isPlaySound() && false) {
-                mAudioClip = DiceSound.getAudioClip("ds_01.au");
-                mAudioClip.play();
-                try {
-                    TimeUnit.MILLISECONDS.sleep(120);
-                } catch (InterruptedException ex) {
-                }
-            }
-
             int endPos = mDiceBoard.getPanel().getHeight();
+
             if (mSelected) {
                 while (mY < endPos) {
                     mY = Math.min((int) (mY * 1.3), endPos);
