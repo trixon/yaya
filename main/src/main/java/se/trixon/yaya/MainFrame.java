@@ -309,7 +309,7 @@ public final class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
-                if (GameState.RUNNING == Yaya.getGlobalState().get(Yaya.KEY_GAME_STATE)) {
+                if (!Yaya.IN_DEVELOPMENT && GameState.RUNNING == Yaya.getGlobalState().get(Yaya.KEY_GAME_STATE)) {
                     int confirmed = JOptionPane.showConfirmDialog(MainFrame.this,
                             mBundle.getString("confirmQuitMessage"),
                             mBundle.getString("confirmQuitTitle"),

@@ -37,6 +37,7 @@ public class Yaya {
             .setPrettyPrinting()
             .registerTypeAdapter(Color.class, new AwtColorAdapter())
             .create();
+    public static final boolean IN_DEVELOPMENT = true;
     public static final String KEY_GAME_STATE = "gamestate";
     public static final String LOG_TITLE = "Yaya";
     private static final GlobalState sGlobalState = new GlobalState();
