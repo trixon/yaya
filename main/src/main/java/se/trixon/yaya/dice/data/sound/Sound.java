@@ -17,7 +17,7 @@ package se.trixon.yaya.dice.data.sound;
 
 import java.io.IOException;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
@@ -32,6 +32,7 @@ import se.trixon.almond.util.SystemHelper;
 public class Sound {
 
     private Clip mClip;
+    private final ConcurrentHashMap<String, Clip> mClipCache = new ConcurrentHashMap<>();
     private final Random mRandom = new Random();
 
     public Sound(String clipName) {
@@ -50,36 +51,51 @@ public class Sound {
         }
     }
 
+    public Clip getClip() {
+        return mClip;
+    }
+
     public void play() {
-        mClip.start();
+        new Thread(() -> {
+            mClip.start();
+        }).start();
     }
 
     public void play(int maxDelay) {
-        try {
-            TimeUnit.MILLISECONDS.sleep(mRandom.nextInt(maxDelay));
-        } catch (InterruptedException ex) {
-            Exceptions.printStackTrace(ex);
-        }
+        SystemHelper.runLaterDelayed(mRandom.nextInt(maxDelay), () -> {
+            play();
+        });
+    }
 
-        play();
+    public void stop(int delay) {
+        SystemHelper.runLaterDelayed(delay, () -> {
+            stop();
+        });
     }
 
     public void stop() {
         mClip.stop();
+        mClip.close();
     }
 
     private void load(String clipName) {
-        var path = SystemHelper.getPackageAsPath(Sound.class) + clipName;
-        var inputStream = Sound.class.getClassLoader().getResourceAsStream(path);
+        mClip = mClipCache.computeIfAbsent(clipName, k -> {
+            var path = SystemHelper.getPackageAsPath(Sound.class) + clipName;
+            var inputStream = Sound.class.getClassLoader().getResourceAsStream(path);
 
-        try {
-            var audioInputStream = AudioSystem.getAudioInputStream(inputStream);
-            mClip = AudioSystem.getClip();
-            mClip.open(audioInputStream);
-            audioInputStream.close();
-            inputStream.close();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-            Exceptions.printStackTrace(ex);
-        }
+            try {
+                var audioInputStream = AudioSystem.getAudioInputStream(inputStream);
+                var clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                audioInputStream.close();
+                inputStream.close();
+
+                return clip;
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+
+            return null;
+        });
     }
 }

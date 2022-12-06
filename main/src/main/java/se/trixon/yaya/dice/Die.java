@@ -458,8 +458,8 @@ class Die {
             repaintDiceBoard();
             mStoredY = mY;
 
-            if (sound != null) {
-                sound.stop();
+            if (sound != null && sound.getClip().isRunning()) {
+                sound.stop(600);
             }
         }
     }
