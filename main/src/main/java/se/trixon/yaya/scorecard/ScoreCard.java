@@ -34,6 +34,7 @@ import se.trixon.almond.util.CircularInt;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.GlobalState;
 import se.trixon.almond.util.icons.material.swing.MaterialIcon;
+import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.GameOverDialog;
 import se.trixon.yaya.GameOverItem;
 import se.trixon.yaya.Options;
@@ -247,15 +248,42 @@ public class ScoreCard {
     }
 
     private void gameOver() {
-        //TODO Make scorecard fireworks
+        int stackSize = mPlayerColumns.get(0).getRowStack().size();
+        int cellCount = stackSize * mPlayerColumns.size();
+        long totalTime = 200L;
+        long cellDelay = totalTime / cellCount;
 
-        var gameOverItems = new ArrayList<GameOverItem>();
-        for (var playerColumn : mPlayerColumns) {
-            var gameOverItem = new GameOverItem(playerColumn.getPlayer(), playerColumn.getCurrentScore());
-            gameOverItems.add(gameOverItem);
-        }
+        new Thread(() -> {
+            for (int i = 0; i < stackSize; i++) {
+                var ii = i;
+                for (var playerColumn : mPlayerColumns) {
+                    SwingHelper.runAndWait((long) (cellDelay * 1), () -> {
+                        playerColumn.getRows()[playerColumn.getRowStack().get(ii)].getLabel().setVisible(false);
+                        mScoreCardPanel.revalidate();
+                        mScoreCardPanel.repaint();
+                    });
+                }
+            }
 
-        mGameOverDialog.display(gameOverItems);
+            for (int i = 0; i < stackSize; i++) {
+                var ii = i;
+                for (var playerColumn : mPlayerColumns) {
+                    SwingHelper.runAndWait((long) (cellDelay * 2), () -> {
+                        playerColumn.getRows()[playerColumn.getRowStack().get(ii)].getLabel().setVisible(true);
+                        mScoreCardPanel.revalidate();
+                        mScoreCardPanel.repaint();
+                    });
+                }
+            }
+
+            var gameOverItems = new ArrayList<GameOverItem>();
+            for (var playerColumn : mPlayerColumns) {
+                var gameOverItem = new GameOverItem(playerColumn.getPlayer(), playerColumn.getCurrentScore());
+                gameOverItems.add(gameOverItem);
+            }
+
+            mGameOverDialog.display(gameOverItems);
+        }).start();
     }
 
     private PlayerColumn getActivePlayerColumn() {
