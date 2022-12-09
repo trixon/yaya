@@ -15,6 +15,9 @@
  */
 package se.trixon.yaya;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import org.apache.commons.lang3.StringUtils;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.util.OptionsBase;
@@ -30,9 +33,9 @@ import se.trixon.yaya.scorecard.rules.GameVariant;
 public class Options extends OptionsBase {
 
     public static final boolean DEFAULT_NIGHT_MODE = true;
-    public static final boolean DEFAULT_PLAY_SOUND = true;
     public static final String DEFAULT_PLAYERS = "Ask;Embla;Ask;Embla;Ask;Embla;Ask;Embla";
     public static final String DEFAULT_PLAYERS_ALL = "Ask;Embla";
+    public static final boolean DEFAULT_PLAY_SOUND = true;
     public static final String DEFAULT_RULE_ID = "se.trixon.yaya.rules.yaya_scandinavian";
     public static final String KEY_FONT_SIZE = "font.size";
     public static final String KEY_GAME_START_COUNTER = "game.start_counter";
@@ -55,6 +58,7 @@ public class Options extends OptionsBase {
     private static final boolean DEFAULT_SHOW_LIM_COLUMN = false;
     private static final boolean DEFAULT_SHOW_MAX_COLUMN = false;
     private static final String DEFAULT_THEME = "default";
+    private final BooleanProperty mNightModeProperty = new SimpleBooleanProperty();
     private Player[] mPlayers;
 
     public static Options getInstance() {
@@ -123,7 +127,7 @@ public class Options extends OptionsBase {
     }
 
     public boolean isNightMode() {
-        return is(KEY_NIGHT_MODE, DEFAULT_NIGHT_MODE);
+        return mNightModeProperty.get();
     }
 
     public boolean isReverseDirection() {
@@ -142,6 +146,10 @@ public class Options extends OptionsBase {
         return is(KEY_SHOW_MAX_COLUMN, DEFAULT_SHOW_MAX_COLUMN);
     }
 
+    public BooleanProperty nightModeProperty() {
+        return mNightModeProperty;
+    }
+
     public void setFontSize(int size) {
         put(KEY_FONT_SIZE, size);
     }
@@ -154,8 +162,8 @@ public class Options extends OptionsBase {
         put(GameVariant.PREFIX + type, variant);
     }
 
-    public void setNightMode(boolean value) {
-        put(KEY_NIGHT_MODE, value);
+    public void setNightMode(boolean nightMode) {
+        mNightModeProperty.set(nightMode);
     }
 
     public void setNumOfPlayers(int players) {
@@ -191,6 +199,21 @@ public class Options extends OptionsBase {
     }
 
     private void init() {
+        mNightModeProperty.set(is(KEY_NIGHT_MODE, DEFAULT_NIGHT_MODE));
+
+        initListeners();
+    }
+
+    private void initListeners() {
+        ChangeListener<Object> changeListener = (observable, oldValue, newValue) -> {
+            save();
+        };
+
+        mNightModeProperty.addListener(changeListener);
+    }
+
+    private void save() {
+        put(KEY_NIGHT_MODE, isNightMode());
     }
 
     private static class Holder {

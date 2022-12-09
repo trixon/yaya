@@ -15,31 +15,23 @@
  */
 package se.trixon.yaya;
 
-import java.awt.EventQueue;
-import org.openide.modules.OnStart;
-import se.trixon.almond.util.SystemHelper;
-import se.trixon.yaya.scorecard.rules.RuleManager;
+import javafx.embed.swing.SwingNode;
+import javafx.scene.layout.BorderPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author Patrik Karlström <patrik@trixon.se>
  */
-@OnStart
-public class DoOnStart implements Runnable {
+public class YayaPane extends BorderPane {
 
-    private final Options mOptions = Options.getInstance();
+    private final SwingNode mSwingNode = new SwingNode();
+    private final Yaya mYaya = Yaya.getInstance();
 
-    @Override
-    public void run() {
-        mOptions.setFullscreen(false);
-
-        SystemHelper.runLaterDelayed(300, () -> {
-            EventQueue.invokeLater(() -> {
-                RuleManager.getInstance().init();
-                new Thread(() -> {
-                    App.main(new String[]{});
-                }).start();
-            });
+    public YayaPane() {
+        setCenter(mSwingNode);
+        SwingUtilities.invokeLater(() -> {
+            mSwingNode.setContent(mYaya.getPanel());
         });
     }
 
