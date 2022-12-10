@@ -16,12 +16,14 @@
 package se.trixon.yaya;
 
 import de.jangassen.MenuToolkit;
-import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -64,6 +66,7 @@ public class App extends Application {
     private final Options mOptions = Options.getInstance();
     private BorderPane mRoot;
     private Stage mStage;
+    private final ThemeManager mThemeManager = ThemeManager.getInstance();
     private final Yaya mYaya = Yaya.getInstance();
 
     /**
@@ -131,6 +134,7 @@ public class App extends Application {
         mStage.setScene(new Scene(mRoot));
 
         initMenu();
+        initMenuColor();
     }
 
     private void initAccelerators() {
@@ -163,7 +167,7 @@ public class App extends Application {
     }
 
     private void initMenu() {
-        mContextMenu = ActionUtils.createContextMenu(Arrays.asList(
+        var actions = Arrays.asList(
                 YActions.forId("core", "newround"),
                 ActionUtils.ACTION_SEPARATOR,
                 new ActionGroup(Dict.SYSTEM.toString(),
@@ -174,9 +178,6 @@ public class App extends Application {
                         YActions.forId("core", "removePlayer")
                 ),
                 new ActionGroup(NbBundle.getMessage(YActions.class, "scorecard"),
-                        new ActionGroup(NbBundle.getMessage(YActions.class, "colors"),
-                                new ArrayList<>()
-                        ),
                         YActions.forId("core", "lim"),
                         YActions.forId("core", "max"),
                         YActions.forId("core", "indicator")
@@ -189,7 +190,8 @@ public class App extends Application {
                 mAboutAction,
                 ActionUtils.ACTION_SEPARATOR,
                 YActions.forId("core", "quit")
-        ));
+        );
+        mContextMenu = ActionUtils.createContextMenu(actions);
 
         mStage.getScene().setOnMousePressed(mouseEvent -> {
             if (mouseEvent.isSecondaryButtonDown()) {
@@ -198,6 +200,26 @@ public class App extends Application {
                 mContextMenu.hide();
             }
         });
+    }
+
+    private void initMenuColor() {
+        var colorMenu = new Menu(NbBundle.getMessage(YActions.class, "colors"));
+        var toggleGroup = new ToggleGroup();
+
+        for (var theme : mThemeManager.getItems()) {
+            var rmi = new RadioMenuItem(theme.getName());
+            rmi.setToggleGroup(toggleGroup);
+            rmi.setSelected(mOptions.getThemeId().equalsIgnoreCase(theme.getId()));
+            rmi.setOnAction(ae -> {
+                mThemeManager.setTheme(theme);
+                mOptions.setThemeId(theme.getId());
+            });
+
+            colorMenu.getItems().add(rmi);
+        }
+
+        var sysMenu = (Menu) mContextMenu.getItems().get(3);
+        sysMenu.getItems().add(0, colorMenu);
     }
 
     private void updateNightMode() {
