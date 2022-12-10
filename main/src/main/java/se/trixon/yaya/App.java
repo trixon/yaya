@@ -93,10 +93,9 @@ public class App extends Application {
         mYaya.setApplication(this);
         mYaya.setStage(stage);
 
-        updateNightMode();
-
         mStage.setTitle(APP_TITLE);
         FxHelper.removeSceneInitFlicker(mStage);
+        updateNightMode();
 
         mStage.show();
         initAccelerators();
@@ -113,8 +112,6 @@ public class App extends Application {
         } else {
             mYaya.onRequestNewGameStart();
         }
-
-        updateNightMode();
     }
 
     @Override
@@ -134,7 +131,9 @@ public class App extends Application {
         mAboutAction = AboutPane.getAction(mStage, aboutModel);
 
         mRoot = new BorderPane(mAppForm = new AppForm());
-        mStage.setScene(new Scene(mRoot));
+        var scene = new Scene(mRoot);
+        mStage.setScene(scene);
+        FxHelper.applyFontScale(scene);
 
         initMenu();
         initMenuColor();
@@ -171,12 +170,14 @@ public class App extends Application {
     }
 
     private void initMenu() {
-        var actions = Arrays.asList(
-                YActions.forId("core", "newround"),
+        var nightModeAction = YActions.forId("core", "nightmode");
+        nightModeAction.selectedProperty().bindBidirectional(mOptions.nightModeProperty());
+
+        var actions = Arrays.asList(YActions.forId("core", "newround"),
                 ActionUtils.ACTION_SEPARATOR,
                 new ActionGroup(Dict.SYSTEM.toString(),
                         YActions.forId("core", "fullscreen"),
-                        YActions.forId("core", "nightmode"),
+                        nightModeAction,
                         YActions.forId("core", "playSound"),
                         ActionUtils.ACTION_SEPARATOR,
                         YActions.forId("core", "removePlayer")

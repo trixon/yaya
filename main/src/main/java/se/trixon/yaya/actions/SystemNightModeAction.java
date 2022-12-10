@@ -30,13 +30,5 @@ public class SystemNightModeAction extends YAction {
 
     public SystemNightModeAction() {
         super(Dict.NIGHT_MODE.toString());
-
-        setEventHandler(eventHandler -> {
-            System.out.println(id());
-        });
-
-        setPostInitRunnable(() -> {
-        });
     }
-
 }
