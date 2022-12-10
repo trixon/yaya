@@ -20,6 +20,9 @@ import com.google.gson.GsonBuilder;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.stage.Stage;
 import org.openide.util.ImageUtilities;
 import se.trixon.almond.util.GlobalState;
 import se.trixon.almond.util.SystemHelper;
@@ -41,6 +44,8 @@ public class Yaya {
     public static final String KEY_GAME_STATE = "gamestate";
     public static final String LOG_TITLE = "Yaya";
     private static final GlobalState sGlobalState = new GlobalState();
+    private final ObjectProperty<App> mApplicationProperty = new SimpleObjectProperty<>();
+    private final ObjectProperty<Stage> mStageProperty = new SimpleObjectProperty<>();
     private YayaPanel mYayaPanel;
 
     public static void errln(String name, String message) {
@@ -74,6 +79,14 @@ public class Yaya {
     private Yaya() {
     }
 
+    public ObjectProperty<App> applicationProperty() {
+        return mApplicationProperty;
+    }
+
+    public App getApplication() {
+        return mApplicationProperty.get();
+    }
+
     public YayaPanel getPanel() {
         if (mYayaPanel == null) {
             mYayaPanel = new YayaPanel();
@@ -82,8 +95,24 @@ public class Yaya {
         return mYayaPanel;
     }
 
+    public Stage getStage() {
+        return mStageProperty.get();
+    }
+
     public void onRequestNewGameStart() {
         getPanel().newGame();
+    }
+
+    public void setApplication(App application) {
+        mApplicationProperty.set(application);
+    }
+
+    public void setStage(Stage stage) {
+        mStageProperty.set(stage);
+    }
+
+    public ObjectProperty<Stage> stageProperty() {
+        return mStageProperty;
     }
 
     private static class Holder {

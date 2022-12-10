@@ -16,11 +16,11 @@
 package se.trixon.yaya;
 
 import de.jangassen.MenuToolkit;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -32,7 +32,11 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.apache.commons.lang3.SystemUtils;
 import org.controlsfx.control.action.Action;
+import org.controlsfx.control.action.ActionGroup;
+import org.controlsfx.control.action.ActionUtils;
 import org.openide.LifecycleManager;
+import org.openide.util.NbBundle;
+import se.trixon.almond.nbp.core.ModuleHelper;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.PomInfo;
 import se.trixon.almond.util.PrefsHelper;
@@ -43,7 +47,7 @@ import se.trixon.almond.util.fx.AlmondFx;
 import se.trixon.almond.util.fx.FxHelper;
 import se.trixon.almond.util.fx.dialogs.about.AboutPane;
 import se.trixon.almond.util.icons.material.MaterialIcon;
-import se.trixon.almond.util.swing.SwingHelper;
+import se.trixon.yaya.actions.YActions;
 
 /**
  *
@@ -52,14 +56,12 @@ import se.trixon.almond.util.swing.SwingHelper;
 public class App extends Application {
 
     public static final String APP_TITLE = "Yaya";
-    public static final int ICON_SIZE_TOOLBAR = 32;
     private static final boolean IS_MAC = SystemUtils.IS_OS_MAC;
     private Action mAboutAction;
     private final AlmondFx mAlmondFX = AlmondFx.getInstance();
     private AppForm mAppForm;
-    private Action mHelpAction;
+    private ContextMenu mContextMenu;
     private final Options mOptions = Options.getInstance();
-    private Action mOptionsAction;
     private BorderPane mRoot;
     private Stage mStage;
     private final Yaya mYaya = Yaya.getInstance();
@@ -82,6 +84,8 @@ public class App extends Application {
         if (IS_MAC) {
             initMac();
         }
+        mYaya.setApplication(this);
+        mYaya.setStage(stage);
 
         updateNightMode();
 
@@ -96,13 +100,15 @@ public class App extends Application {
         PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
         int gameStartCounter = mOptions.getPreferences().getInt(Options.KEY_GAME_START_COUNTER, 0);
         if (gameStartCounter == 0) {
-            SwingHelper.runLaterDelayed(200, () -> {
-//                mActionManager.getAction(ActionManager.HELP).actionPerformed(null);
-//                mActionManager.getAction(ActionManager.NEW).actionPerformed(null);
+            FxHelper.runLaterDelayed(200, () -> {
+                YActions.forId("core", "newround").handle(null);
+                YActions.forId("core", "help").handle(null);
             });
         } else {
             mYaya.onRequestNewGameStart();
         }
+
+        updateNightMode();
     }
 
     @Override
@@ -114,65 +120,17 @@ public class App extends Application {
         mStage.setMinHeight(FxHelper.getUIScaled(200));
         mStage.setMinWidth(FxHelper.getUIScaled(200));
 
-        mOptionsAction = new Action(Dict.OPTIONS.toString(), actionEvent -> {
-            displayOptions();
-        });
-        FxHelper.setTooltip(mOptionsAction, new KeyCodeCombination(KeyCode.COMMA, KeyCombination.SHORTCUT_DOWN));
-//        mOptionsAction.disabledProperty().bind(mRunManager.runningProperty());
-
-        mHelpAction = new Action(Dict.HELP.toString(), actionEvent -> {
-            displayHelp();
-        });
-        FxHelper.setTooltip(mHelpAction, new KeyCodeCombination(KeyCode.F1, KeyCombination.SHORTCUT_ANY));
-
         //about
-        var pomInfo = new PomInfo(App.class, "se.trixon", "yaya");
+        var pomInfo = new PomInfo(App.class, "se.trixon.yaya", "main");
         var aboutModel = new AboutModel(SystemHelper.getBundle(App.class, "about"), SystemHelperFx.getResourceAsImageView(App.class, "logo.png"));
         aboutModel.setAppVersion(pomInfo.getVersion());
+        aboutModel.setAppDate(ModuleHelper.getBuildTime(MainFrame.class));
         mAboutAction = AboutPane.getAction(mStage, aboutModel);
 
         mRoot = new BorderPane(mAppForm = new AppForm());
-//        var actions = mAppForm.getToolBarActions();
-//        actions.addAll(Arrays.asList(
-//                ActionUtils.ACTION_SPAN,
-//                ActionUtils.ACTION_SPAN,
-//                mOptionsAction,
-//                mAboutAction,
-//                mHelpAction
-//        ));
-//
-//        var toolBar = ActionUtils.createToolBar(actions, ActionUtils.ActionTextBehavior.HIDE);
-//        FxHelper.undecorateButtons(toolBar.getItems().stream());
-//        FxHelper.slimToolBar(toolBar);
-//
-//        mRoot.setTop(toolBar);
         mStage.setScene(new Scene(mRoot));
-    }
 
-    private void displayHelp() {
-        System.out.println("DISPLAY HELP");
-    }
-
-    private void displayOptions() {
-//        if (mOptionsPanel == null) {
-//            mOptionsPanel = new OptionsPanel();
-//        }
-
-        var alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.initOwner(mStage);
-        alert.setTitle(Dict.OPTIONS.toString());
-        alert.setGraphic(null);
-        alert.setHeaderText(null);
-        alert.setResizable(true);
-
-        var dialogPane = alert.getDialogPane();
-//        dialogPane.setContent(mOptionsPanel);
-        FxHelper.removeSceneInitFlicker(dialogPane);
-
-        var button = (Button) dialogPane.lookupButton(ButtonType.OK);
-        button.setText(Dict.CLOSE.toString());
-
-        FxHelper.showAndWait(alert, mStage);
+        initMenu();
     }
 
     private void initAccelerators() {
@@ -181,16 +139,6 @@ public class App extends Application {
         accelerators.put(new KeyCodeCombination(KeyCode.Q, KeyCombination.SHORTCUT_DOWN), () -> {
             mStage.fireEvent(new WindowEvent(mStage, WindowEvent.WINDOW_CLOSE_REQUEST));
         });
-
-        if (!IS_MAC) {
-            accelerators.put(new KeyCodeCombination(KeyCode.COMMA, KeyCombination.SHORTCUT_DOWN), () -> {
-                displayOptions();
-            });
-
-            accelerators.put(new KeyCodeCombination(KeyCode.F1, KeyCombination.SHORTCUT_ANY), () -> {
-                displayHelp();
-            });
-        }
     }
 
     private void initListeners() {
@@ -205,26 +153,55 @@ public class App extends Application {
         menuToolkit.setApplicationMenu(applicationMenu);
 
         applicationMenu.getItems().remove(0);
-        MenuItem aboutMenuItem = new MenuItem(String.format(Dict.ABOUT_S.toString(), APP_TITLE));
+        var aboutMenuItem = new MenuItem(String.format(Dict.ABOUT_S.toString(), APP_TITLE));
         aboutMenuItem.setOnAction(mAboutAction);
 
-        var settingsMenuItem = new MenuItem(Dict.PREFERENCES.toString());
-        settingsMenuItem.setOnAction(mOptionsAction);
-        settingsMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.COMMA, KeyCombination.SHORTCUT_DOWN));
-
         applicationMenu.getItems().add(0, aboutMenuItem);
-        applicationMenu.getItems().add(2, settingsMenuItem);
 
         int cnt = applicationMenu.getItems().size();
         applicationMenu.getItems().get(cnt - 1).setText(String.format("%s %s", Dict.QUIT.toString(), APP_TITLE));
     }
 
+    private void initMenu() {
+        mContextMenu = ActionUtils.createContextMenu(Arrays.asList(
+                YActions.forId("core", "newround"),
+                ActionUtils.ACTION_SEPARATOR,
+                new ActionGroup(Dict.SYSTEM.toString(),
+                        YActions.forId("core", "fullscreen"),
+                        YActions.forId("core", "nightmode"),
+                        YActions.forId("core", "playSound"),
+                        ActionUtils.ACTION_SEPARATOR,
+                        YActions.forId("core", "removePlayer")
+                ),
+                new ActionGroup(NbBundle.getMessage(YActions.class, "scorecard"),
+                        new ActionGroup(NbBundle.getMessage(YActions.class, "colors"),
+                                new ArrayList<>()
+                        ),
+                        YActions.forId("core", "lim"),
+                        YActions.forId("core", "max"),
+                        YActions.forId("core", "indicator")
+                ),
+                new ActionGroup(NbBundle.getMessage(YActions.class, "dice"),
+                        YActions.forId("core", "reverse-dice")
+                ),
+                ActionUtils.ACTION_SEPARATOR,
+                YActions.forId("core", "help"),
+                mAboutAction,
+                ActionUtils.ACTION_SEPARATOR,
+                YActions.forId("core", "quit")
+        ));
+
+        mStage.getScene().setOnMousePressed(mouseEvent -> {
+            if (mouseEvent.isSecondaryButtonDown()) {
+                mContextMenu.show(mRoot, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+            } else if (mouseEvent.isPrimaryButtonDown()) {
+                mContextMenu.hide();
+            }
+        });
+    }
+
     private void updateNightMode() {
         MaterialIcon.setDefaultColor(mOptions.isNightMode() ? Color.LIGHTGRAY : Color.BLACK);
-
-        mOptionsAction.setGraphic(MaterialIcon._Action.SETTINGS.getImageView(ICON_SIZE_TOOLBAR));
-        mAboutAction.setGraphic(MaterialIcon._Action.INFO_OUTLINE.getImageView(ICON_SIZE_TOOLBAR));
-        mHelpAction.setGraphic(MaterialIcon._Action.HELP_OUTLINE.getImageView(ICON_SIZE_TOOLBAR));
 
         FxHelper.setDarkThemeEnabled(mOptions.isNightMode());
         if (mOptions.isNightMode()) {

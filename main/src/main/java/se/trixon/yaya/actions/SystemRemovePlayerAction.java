@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
+ * Copyright 2022 Patrik Karlström.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya;
+package se.trixon.yaya.actions;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import org.openide.util.NbBundle;
+import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
- * @author Patrik Karlström <patrik@trixon.se>
+ * @author Patrik Karlström
  */
-public class AppForm extends BorderPane {
+@YAction.Description(category = "core", id = "removePlayer")
+@ServiceProvider(service = YAction.class)
+public class SystemRemovePlayerAction extends YAction {
 
-    private final YayaPane mYayaPane = new YayaPane();
+    public SystemRemovePlayerAction() {
+        super(NbBundle.getMessage(YActions.class, "removePlayerTitle"));
 
-    public void initAccelerators() {
-        var box = new HBox(new Label("TEMPORARY POPUP MENU PLACE HOLDER"));
-        setTop(box);
-        setCenter(mYayaPane);
+        setEventHandler(eventHandler -> {
+            System.out.println(id());
+        });
     }
 
 }

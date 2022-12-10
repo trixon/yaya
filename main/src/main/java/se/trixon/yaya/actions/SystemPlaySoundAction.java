@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Patrik Karlström <patrik@trixon.se>.
+ * Copyright 2022 Patrik Karlström.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package se.trixon.yaya;
+package se.trixon.yaya.actions;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import org.controlsfx.control.action.ActionCheck;
+import org.openide.util.lookup.ServiceProvider;
+import se.trixon.almond.util.Dict;
 
 /**
  *
- * @author Patrik Karlström <patrik@trixon.se>
+ * @author Patrik Karlström
  */
-public class AppForm extends BorderPane {
+@YAction.Description(category = "core", id = "playSound")
+@ServiceProvider(service = YAction.class)
+@ActionCheck
+public class SystemPlaySoundAction extends YAction {
 
-    private final YayaPane mYayaPane = new YayaPane();
+    public SystemPlaySoundAction() {
+        super(Dict.Game.PLAY_SOUND.toString());
 
-    public void initAccelerators() {
-        var box = new HBox(new Label("TEMPORARY POPUP MENU PLACE HOLDER"));
-        setTop(box);
-        setCenter(mYayaPane);
+        setEventHandler(eventHandler -> {
+            System.out.println(id());
+        });
     }
 
 }
