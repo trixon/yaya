@@ -20,9 +20,11 @@ import java.util.Arrays;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -49,6 +51,7 @@ import se.trixon.almond.util.fx.AlmondFx;
 import se.trixon.almond.util.fx.FxHelper;
 import se.trixon.almond.util.fx.dialogs.about.AboutPane;
 import se.trixon.almond.util.icons.material.MaterialIcon;
+import se.trixon.almond.util.swing.DelayedResetRunner;
 import se.trixon.yaya.actions.YActions;
 
 /**
@@ -135,6 +138,7 @@ public class App extends Application {
 
         initMenu();
         initMenuColor();
+        initMenuSize();
     }
 
     private void initAccelerators() {
@@ -218,8 +222,29 @@ public class App extends Application {
             colorMenu.getItems().add(rmi);
         }
 
-        var sysMenu = (Menu) mContextMenu.getItems().get(3);
-        sysMenu.getItems().add(0, colorMenu);
+        var scorecardMenu = (Menu) mContextMenu.getItems().get(3);
+        scorecardMenu.getItems().add(0, colorMenu);
+    }
+
+    private void initMenuSize() {
+        var scorecardMenu = (Menu) mContextMenu.getItems().get(3);
+
+        var fontMenuItem = new MenuItem(Dict.SIZE.toString());
+        fontMenuItem.setDisable(true);
+        scorecardMenu.getItems().add(fontMenuItem);
+
+        var fontSlider = new Slider(8, 72, mOptions.getFontSize());
+        var fontResetRunner = new DelayedResetRunner(50, () -> {
+            mOptions.setFontSize((int) fontSlider.getValue());
+        });
+
+        fontSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            fontResetRunner.reset();
+        });
+
+        var customMenuItem = new CustomMenuItem(fontSlider);
+        customMenuItem.setHideOnClick(false);
+        scorecardMenu.getItems().add(customMenuItem);
     }
 
     private void updateNightMode() {
