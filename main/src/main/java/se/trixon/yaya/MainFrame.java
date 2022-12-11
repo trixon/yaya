@@ -229,8 +229,8 @@ public final class MainFrame extends JFrame {
                     mOptions.setShowIndicators(!mOptions.isShowIndicators());
 
                 case ActionManager.FULLSCREEN -> {
-                    mOptions.setFullscreen(!mOptions.isFullscreen());
-                    SwingHelper.setFullScreen(mOptions.isFullscreen() ? this : null);
+                    mOptions.setFullScreen(!mOptions.isFullScreen());
+                    SwingHelper.setFullScreen(mOptions.isFullScreen() ? this : null);
                 }
 
                 case ActionManager.PLAY_SOUND -> {
@@ -280,7 +280,7 @@ public final class MainFrame extends JFrame {
         mOptions.getPreferences().addPreferenceChangeListener(pce -> {
             switch (pce.getKey()) {
                 case Options.KEY_FULL_SCREEN ->
-                    mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+                    mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullScreen());
                 case Options.KEY_NIGHT_MODE ->
                     mNightModeCheckBoxMenuItem.setSelected(mOptions.isNightMode());
                 case Options.KEY_SHOW_INDICATORS ->
@@ -320,7 +320,7 @@ public final class MainFrame extends JFrame {
                     }
                 }
 
-                if (!mOptions.isFullscreen()) {
+                if (!mOptions.isFullScreen()) {
                     SwingHelper.frameStateSave(mOptions.getPreferences(), MainFrame.this);
                     try {
                         NbPreferences.forModule(Options.class).sync();
@@ -425,7 +425,7 @@ public final class MainFrame extends JFrame {
     }
 
     private void loadSettings() {
-//        mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+//        mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullScreen());
         mNightModeCheckBoxMenuItem.setSelected(mOptions.isNightMode());
         mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
         mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());

@@ -27,13 +27,9 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import org.apache.commons.lang3.SystemUtils;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.control.action.ActionGroup;
@@ -81,6 +77,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        mYaya.setApplication(this);
+        mYaya.setStage(stage);
         mStage = stage;
         stage.getIcons().add(new Image(App.class.getResourceAsStream("logo.png")));
 
@@ -90,9 +88,7 @@ public class App extends Application {
         if (IS_MAC) {
             initMac();
         }
-        mYaya.setApplication(this);
-        mYaya.setStage(stage);
-
+//        mStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("F11"));
         mStage.setTitle(APP_TITLE);
         FxHelper.removeSceneInitFlicker(mStage);
         updateNightMode();
@@ -141,11 +137,6 @@ public class App extends Application {
     }
 
     private void initAccelerators() {
-        var accelerators = mStage.getScene().getAccelerators();
-
-        accelerators.put(new KeyCodeCombination(KeyCode.Q, KeyCombination.SHORTCUT_DOWN), () -> {
-            mStage.fireEvent(new WindowEvent(mStage, WindowEvent.WINDOW_CLOSE_REQUEST));
-        });
     }
 
     private void initListeners() {
@@ -172,11 +163,12 @@ public class App extends Application {
     private void initMenu() {
         var nightModeAction = YActions.forId("core", "nightmode");
         nightModeAction.selectedProperty().bindBidirectional(mOptions.nightModeProperty());
+        var fullscreenAction = YActions.forId("core", "fullScreen");
 
         var actions = Arrays.asList(YActions.forId("core", "newround"),
                 ActionUtils.ACTION_SEPARATOR,
                 new ActionGroup(Dict.SYSTEM.toString(),
-                        YActions.forId("core", "fullscreen"),
+                        fullscreenAction,
                         nightModeAction,
                         YActions.forId("core", "playSound"),
                         ActionUtils.ACTION_SEPARATOR,
@@ -196,6 +188,7 @@ public class App extends Application {
                 ActionUtils.ACTION_SEPARATOR,
                 YActions.forId("core", "quit")
         );
+
         mContextMenu = ActionUtils.createContextMenu(actions);
 
         mStage.getScene().setOnMousePressed(mouseEvent -> {

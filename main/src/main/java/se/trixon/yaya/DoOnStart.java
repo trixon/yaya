@@ -31,8 +31,6 @@ public class DoOnStart implements Runnable {
 
     @Override
     public void run() {
-        mOptions.setFullscreen(false);
-
         SystemHelper.runLaterDelayed(300, () -> {
             EventQueue.invokeLater(() -> {
                 RuleManager.getInstance().init();

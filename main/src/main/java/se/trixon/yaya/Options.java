@@ -21,7 +21,6 @@ import javafx.beans.value.ChangeListener;
 import org.apache.commons.lang3.StringUtils;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.util.OptionsBase;
-import static se.trixon.almond.util.OptionsBase.DEFAULT_FULL_SCREEN;
 import static se.trixon.almond.util.OptionsBase.KEY_FULL_SCREEN;
 import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.scorecard.rules.GameVariant;
@@ -58,6 +57,7 @@ public class Options extends OptionsBase {
     private static final boolean DEFAULT_SHOW_LIM_COLUMN = false;
     private static final boolean DEFAULT_SHOW_MAX_COLUMN = false;
     private static final String DEFAULT_THEME = "default";
+    private final BooleanProperty mFullScreenProperty = new SimpleBooleanProperty();
     private final BooleanProperty mNightModeProperty = new SimpleBooleanProperty();
     private Player[] mPlayers;
 
@@ -82,6 +82,10 @@ public class Options extends OptionsBase {
         }
 
         return players;
+    }
+
+    public BooleanProperty fullScreenProperty() {
+        return mFullScreenProperty;
     }
 
     public String[] getAllPlayers() {
@@ -122,8 +126,8 @@ public class Options extends OptionsBase {
         return get(KEY_THEME, DEFAULT_THEME);
     }
 
-    public boolean isFullscreen() {
-        return is(KEY_FULL_SCREEN, DEFAULT_FULL_SCREEN);
+    public boolean isFullScreen() {
+        return mFullScreenProperty.get();
     }
 
     public boolean isNightMode() {
@@ -154,14 +158,15 @@ public class Options extends OptionsBase {
         put(KEY_FONT_SIZE, size);
     }
 
-    public void setFullscreen(boolean value) {
-        put(KEY_FULL_SCREEN, value);
+    public void setFullScreen(boolean value) {
+        mFullScreenProperty.set(value);
     }
 
     public void setGameVariant(String type, String variant) {
         put(GameVariant.PREFIX + type, variant);
     }
 
+    @Deprecated
     public void setNightMode(boolean nightMode) {
         mNightModeProperty.set(nightMode);
     }
@@ -200,6 +205,7 @@ public class Options extends OptionsBase {
 
     private void init() {
         mNightModeProperty.set(is(KEY_NIGHT_MODE, DEFAULT_NIGHT_MODE));
+        mFullScreenProperty.set(is(KEY_FULL_SCREEN, DEFAULT_FULL_SCREEN));
 
         initListeners();
     }
@@ -209,6 +215,7 @@ public class Options extends OptionsBase {
             save();
         };
 
+        mFullScreenProperty.addListener(changeListener);
         mNightModeProperty.addListener(changeListener);
     }
 
