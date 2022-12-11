@@ -17,25 +17,33 @@ package se.trixon.yaya;
 
 import com.dlsc.gemsfx.util.StageManager;
 import com.dlsc.workbenchfx.Workbench;
+import com.dlsc.workbenchfx.model.WorkbenchDialog;
 import com.dlsc.workbenchfx.view.controls.ToolbarItem;
-import de.jangassen.MenuToolkit;
 import java.util.Arrays;
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CustomMenuItem;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.apache.commons.lang3.SystemUtils;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.control.action.ActionGroup;
 import org.controlsfx.control.action.ActionUtils;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 import org.openide.LifecycleManager;
 import org.openide.util.NbBundle;
 import se.trixon.almond.nbp.core.ModuleHelper;
@@ -57,7 +65,7 @@ import se.trixon.yaya.actions.YActions;
 public class App extends Application {
 
     public static final String APP_TITLE = "Yaya";
-    private Action mAboutAction;
+    public static final int ICON_SIZE_TOOLBAR = FxHelper.getUIScaled(40);
     private AppModule mAppModule;
     private final Options mOptions = Options.getInstance();
     private Stage mStage;
@@ -100,29 +108,38 @@ public class App extends Application {
 
         mStage.getIcons().add(new Image(App.class.getResourceAsStream("logo.png")));
         mStage.setTitle(APP_TITLE);
-        mStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("F11"));
+        mStage.setFullScreenExitHint("");
         int minWidth = FxHelper.getUIScaled(200);
         mStage.setMinWidth(minWidth);
         int minHeight = FxHelper.getUIScaled(200);
         mStage.setMinHeight(minHeight);
         StageManager.install(mStage, mOptions.getPreferences().node("stage").absolutePath(), minWidth, minHeight);
 
-        //about
-        var pomInfo = new PomInfo(App.class, "se.trixon.yaya", "main");
-        var aboutModel = new AboutModel(SystemHelper.getBundle(App.class, "about"), SystemHelperFx.getResourceAsImageView(App.class, "logo.png"));
-        aboutModel.setAppVersion(pomInfo.getVersion());
-        try {
-            aboutModel.setAppDate(ModuleHelper.getBuildTime(App.class));
-        } catch (Exception e) {
-            System.out.println("not run as a platform");
-        }
-        mAboutAction = AboutPane.getAction(mStage, aboutModel);
-
         mAppModule = new AppModule();
+
+        var newGameToolbarItem = new ToolbarItem(new FontIcon(FontAwesomeSolid.PLAY), event -> {
+            YActions.forId("core", "newround").handle(null);
+        });
+
+        var helpToolbarItem = new ToolbarItem(new FontIcon(FontAwesomeSolid.QUESTION), event -> {
+            YActions.forId("core", "help").handle(null);
+        });
+
+        var fullScreenToolbarItem = new ToolbarItem(new FontIcon(FontAwesomeSolid.EXPAND), event -> {
+            YActions.forId("core", "fullScreen").handle(null);
+        });
+
+        mStage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
+            fullScreenToolbarItem.setGraphic(new FontIcon(newValue ? FontAwesomeSolid.COMPRESS : FontAwesomeSolid.EXPAND));
+        });
+
         mWorkbench = Workbench.builder(mAppModule)
                 .toolbarLeft(
-                        new ToolbarItem("Crag/Standard")
-                ).build();
+                        newGameToolbarItem,
+                        helpToolbarItem,
+                        new ToolbarItem("Crag/Standard"))
+                .toolbarRight(fullScreenToolbarItem)
+                .build();
 
         mWorkbench.getStylesheets().add(AppModule.class.getResource("customTheme.css").toExternalForm());
 
@@ -132,42 +149,24 @@ public class App extends Application {
         mStage.setScene(scene);
         initWorkbenchDrawer();
 
-        if (SystemUtils.IS_OS_MAC) {
-            initMac();
-        }
-
 //        initListeners();
 //        initMenu();
 //        initMenuColor();
 //        initMenuSize();
         mYaya.setStage(mStage);
+
+        newGameToolbarItem.setTooltip(new Tooltip(YActions.forId("core", "newround").getLongText()));
+        helpToolbarItem.setTooltip(new Tooltip(YActions.forId("core", "help").getLongText()));
+        fullScreenToolbarItem.setTooltip(new Tooltip(YActions.forId("core", "fullScreen").getLongText()));
     }
 
     private void initListeners() {
     }
 
-    private void initMac() {
-        var menuToolkit = MenuToolkit.toolkit();
-        var applicationMenu = menuToolkit.createDefaultApplicationMenu(APP_TITLE);
-        menuToolkit.setApplicationMenu(applicationMenu);
-
-        applicationMenu.getItems().remove(0);
-        var aboutMenuItem = new MenuItem(String.format(Dict.ABOUT_S.toString(), APP_TITLE));
-        aboutMenuItem.setOnAction(mAboutAction);
-
-        applicationMenu.getItems().add(0, aboutMenuItem);
-
-        int cnt = applicationMenu.getItems().size();
-        applicationMenu.getItems().get(cnt - 1).setText(String.format("%s %s", Dict.QUIT.toString(), APP_TITLE));
-    }
-
     private void initMenu() {
-        var fullscreenAction = YActions.forId("core", "fullScreen");
 
-        var actions = Arrays.asList(YActions.forId("core", "newround"),
-                ActionUtils.ACTION_SEPARATOR,
+        var actions = Arrays.asList(
                 new ActionGroup(Dict.SYSTEM.toString(),
-                        fullscreenAction,
                         YActions.forId("core", "playSound"),
                         ActionUtils.ACTION_SEPARATOR,
                         YActions.forId("core", "removePlayer")
@@ -179,12 +178,7 @@ public class App extends Application {
                 ),
                 new ActionGroup(NbBundle.getMessage(YActions.class, "dice"),
                         YActions.forId("core", "reverse-dice")
-                ),
-                ActionUtils.ACTION_SEPARATOR,
-                YActions.forId("core", "help"),
-                mAboutAction,
-                ActionUtils.ACTION_SEPARATOR,
-                YActions.forId("core", "quit")
+                )
         );
     }
 
@@ -230,7 +224,47 @@ public class App extends Application {
     }
 
     private void initWorkbenchDrawer() {
+        //about
+        var aboutAction = new Action(Dict.ABOUT.toString(), actionEvent -> {
+            mWorkbench.hideNavigationDrawer();
+
+            var pomInfo = new PomInfo(App.class, "se.trixon.yaya", "main");
+            var aboutModel = new AboutModel(
+                    SystemHelper.getBundle(App.class, "about"),
+                    SystemHelperFx.getResourceAsImageView(App.class, "logo.png")
+            );
+            aboutModel.setAppVersion(pomInfo.getVersion());
+            try {
+                aboutModel.setAppDate(ModuleHelper.getBuildTime(App.class));
+            } catch (Exception e) {
+                //nvm
+            }
+
+            var aboutPane = new AboutPane(aboutModel);
+
+            double scaledFontSize = FxHelper.getScaledFontSize();
+            var appLabel = new Label(aboutModel.getAppName());
+            appLabel.setFont(new Font(scaledFontSize * 1.8));
+            var verLabel = new Label(String.format("%s %s", Dict.VERSION.toString(), aboutModel.getAppVersion()));
+            verLabel.setFont(new Font(scaledFontSize * 1.2));
+            var dateLabel = new Label(aboutModel.getAppDate());
+            dateLabel.setFont(new Font(scaledFontSize * 1.2));
+
+            var box = new VBox(appLabel, verLabel, dateLabel);
+            box.setAlignment(Pos.CENTER_LEFT);
+            box.setPadding(new Insets(0, 0, 0, 22));
+            var topBorderPane = new BorderPane(box);
+            topBorderPane.setLeft(aboutModel.getImageView());
+            topBorderPane.setPadding(new Insets(22));
+            var mainBorderPane = new BorderPane(aboutPane);
+            mainBorderPane.setTop(topBorderPane);
+
+            var dialog = WorkbenchDialog.builder(Dict.ABOUT.toString(), mainBorderPane, ButtonType.CLOSE).build();
+            mWorkbench.showDialog(dialog);
+        });
+
         mWorkbench.getNavigationDrawerItems().setAll(
+                ActionUtils.createMenuItem(aboutAction),
                 ActionUtils.createMenuItem(YActions.forId("core", "quit"))
         );
     }
