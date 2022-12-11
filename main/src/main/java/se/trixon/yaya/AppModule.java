@@ -15,24 +15,49 @@
  */
 package se.trixon.yaya;
 
+import com.dlsc.workbenchfx.Workbench;
+import com.dlsc.workbenchfx.model.WorkbenchModule;
 import javafx.embed.swing.SwingNode;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javax.swing.SwingUtilities;
+import se.trixon.almond.util.icons.material.MaterialIcon;
 
 /**
  *
  * @author Patrik Karlström <patrik@trixon.se>
  */
-public class YayaPane extends BorderPane {
+public class AppModule extends WorkbenchModule {
 
+    private static final int MODULE_ICON_SIZE = 32;
+    private BorderPane mRoot = new BorderPane();
+    private Workbench mWorkbench;
     private final SwingNode mSwingNode = new SwingNode();
     private final Yaya mYaya = Yaya.getInstance();
 
-    public YayaPane() {
-        setCenter(mSwingNode);
+    public AppModule() {
+        super("", MaterialIcon._Places.CASINO.getImageView(MODULE_ICON_SIZE).getImage());
+    }
+
+    @Override
+    public void init(Workbench workbench) {
+        super.init(workbench);
+        mWorkbench = workbench;
+
+        createUI();
+    }
+
+    @Override
+    public Node activate() {
+        return mRoot;
+    }
+
+    private void createUI() {
         SwingUtilities.invokeLater(() -> {
             mSwingNode.setContent(mYaya.getPanel());
         });
+
+        mRoot = new BorderPane(mSwingNode);
     }
 
 }

@@ -15,11 +15,13 @@
  */
 package se.trixon.yaya;
 
+import com.dlsc.gemsfx.util.StageManager;
+import com.dlsc.workbenchfx.Workbench;
+import com.dlsc.workbenchfx.view.controls.ToolbarItem;
 import de.jangassen.MenuToolkit;
 import java.util.Arrays;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -27,7 +29,7 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.SystemUtils;
@@ -43,10 +45,8 @@ import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
 import se.trixon.almond.util.SystemHelperFx;
 import se.trixon.almond.util.fx.AboutModel;
-import se.trixon.almond.util.fx.AlmondFx;
 import se.trixon.almond.util.fx.FxHelper;
 import se.trixon.almond.util.fx.dialogs.about.AboutPane;
-import se.trixon.almond.util.icons.material.MaterialIcon;
 import se.trixon.almond.util.swing.DelayedResetRunner;
 import se.trixon.yaya.actions.YActions;
 
@@ -57,15 +57,12 @@ import se.trixon.yaya.actions.YActions;
 public class App extends Application {
 
     public static final String APP_TITLE = "Yaya";
-    private static final boolean IS_MAC = SystemUtils.IS_OS_MAC;
     private Action mAboutAction;
-    private final AlmondFx mAlmondFX = AlmondFx.getInstance();
-    private AppForm mAppForm;
-    private ContextMenu mContextMenu;
+    private AppModule mAppModule;
     private final Options mOptions = Options.getInstance();
-    private BorderPane mRoot;
     private Stage mStage;
     private final ThemeManager mThemeManager = ThemeManager.getInstance();
+    private Workbench mWorkbench;
     private final Yaya mYaya = Yaya.getInstance();
 
     /**
@@ -77,26 +74,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        mYaya.setApplication(this);
-        mYaya.setStage(stage);
         mStage = stage;
-        stage.getIcons().add(new Image(App.class.getResourceAsStream("logo.png")));
-
-        mAlmondFX.addStageWatcher(stage, App.class);
         createUI();
-
-        if (IS_MAC) {
-            initMac();
-        }
-//        mStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("F11"));
-        mStage.setTitle(APP_TITLE);
-        FxHelper.removeSceneInitFlicker(mStage);
-        updateNightMode();
-
         mStage.show();
-        initAccelerators();
-        initListeners();
-        mAppForm.initAccelerators();
 
         PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
         int gameStartCounter = mOptions.getPreferences().getInt(Options.KEY_GAME_START_COUNTER, 0);
@@ -116,33 +96,54 @@ public class App extends Application {
     }
 
     private void createUI() {
-        mStage.setMinHeight(FxHelper.getUIScaled(200));
-        mStage.setMinWidth(FxHelper.getUIScaled(200));
+        mYaya.setApplication(this);
+
+        mStage.getIcons().add(new Image(App.class.getResourceAsStream("logo.png")));
+        mStage.setTitle(APP_TITLE);
+        mStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("F11"));
+        int minWidth = FxHelper.getUIScaled(200);
+        mStage.setMinWidth(minWidth);
+        int minHeight = FxHelper.getUIScaled(200);
+        mStage.setMinHeight(minHeight);
+        StageManager.install(mStage, mOptions.getPreferences().node("stage").absolutePath(), minWidth, minHeight);
 
         //about
         var pomInfo = new PomInfo(App.class, "se.trixon.yaya", "main");
         var aboutModel = new AboutModel(SystemHelper.getBundle(App.class, "about"), SystemHelperFx.getResourceAsImageView(App.class, "logo.png"));
         aboutModel.setAppVersion(pomInfo.getVersion());
-        aboutModel.setAppDate(ModuleHelper.getBuildTime(MainFrame.class));
+        try {
+            aboutModel.setAppDate(ModuleHelper.getBuildTime(App.class));
+        } catch (Exception e) {
+            System.out.println("not run as a platform");
+        }
         mAboutAction = AboutPane.getAction(mStage, aboutModel);
 
-        mRoot = new BorderPane(mAppForm = new AppForm());
-        var scene = new Scene(mRoot);
-        mStage.setScene(scene);
+        mAppModule = new AppModule();
+        mWorkbench = Workbench.builder(mAppModule)
+                .toolbarLeft(
+                        new ToolbarItem("Crag/Standard")
+                ).build();
+
+        mWorkbench.getStylesheets().add(AppModule.class.getResource("customTheme.css").toExternalForm());
+
+        var scene = new Scene(mWorkbench);
+        scene.setFill(Color.web("#bb6624"));
         FxHelper.applyFontScale(scene);
+        mStage.setScene(scene);
+        initWorkbenchDrawer();
 
-        initMenu();
-        initMenuColor();
-        initMenuSize();
-    }
+        if (SystemUtils.IS_OS_MAC) {
+            initMac();
+        }
 
-    private void initAccelerators() {
+//        initListeners();
+//        initMenu();
+//        initMenuColor();
+//        initMenuSize();
+        mYaya.setStage(mStage);
     }
 
     private void initListeners() {
-        mOptions.nightModeProperty().addListener((observable, oldValue, newValue) -> {
-            updateNightMode();
-        });
     }
 
     private void initMac() {
@@ -161,15 +162,12 @@ public class App extends Application {
     }
 
     private void initMenu() {
-        var nightModeAction = YActions.forId("core", "nightmode");
-        nightModeAction.selectedProperty().bindBidirectional(mOptions.nightModeProperty());
         var fullscreenAction = YActions.forId("core", "fullScreen");
 
         var actions = Arrays.asList(YActions.forId("core", "newround"),
                 ActionUtils.ACTION_SEPARATOR,
                 new ActionGroup(Dict.SYSTEM.toString(),
                         fullscreenAction,
-                        nightModeAction,
                         YActions.forId("core", "playSound"),
                         ActionUtils.ACTION_SEPARATOR,
                         YActions.forId("core", "removePlayer")
@@ -188,16 +186,6 @@ public class App extends Application {
                 ActionUtils.ACTION_SEPARATOR,
                 YActions.forId("core", "quit")
         );
-
-        mContextMenu = ActionUtils.createContextMenu(actions);
-
-        mStage.getScene().setOnMousePressed(mouseEvent -> {
-            if (mouseEvent.isSecondaryButtonDown()) {
-                mContextMenu.show(mRoot, mouseEvent.getScreenX(), mouseEvent.getScreenY());
-            } else if (mouseEvent.isPrimaryButtonDown()) {
-                mContextMenu.hide();
-            }
-        });
     }
 
     private void initMenuColor() {
@@ -216,16 +204,16 @@ public class App extends Application {
             colorMenu.getItems().add(rmi);
         }
 
-        var scorecardMenu = (Menu) mContextMenu.getItems().get(3);
-        scorecardMenu.getItems().add(0, colorMenu);
+//        var scorecardMenu = (Menu) mContextMenu.getItems().get(3);
+//        scorecardMenu.getItems().add(0, colorMenu);
     }
 
     private void initMenuSize() {
-        var scorecardMenu = (Menu) mContextMenu.getItems().get(3);
+//        var scorecardMenu = (Menu) mContextMenu.getItems().get(3);
 
         var fontMenuItem = new MenuItem(Dict.SIZE.toString());
         fontMenuItem.setDisable(true);
-        scorecardMenu.getItems().add(fontMenuItem);
+//        scorecardMenu.getItems().add(fontMenuItem);
 
         var fontSlider = new Slider(8, 72, mOptions.getFontSize());
         var fontResetRunner = new DelayedResetRunner(50, () -> {
@@ -238,17 +226,13 @@ public class App extends Application {
 
         var customMenuItem = new CustomMenuItem(fontSlider);
         customMenuItem.setHideOnClick(false);
-        scorecardMenu.getItems().add(customMenuItem);
+//        scorecardMenu.getItems().add(customMenuItem);
     }
 
-    private void updateNightMode() {
-        MaterialIcon.setDefaultColor(mOptions.isNightMode() ? Color.LIGHTGRAY : Color.BLACK);
-
-        FxHelper.setDarkThemeEnabled(mOptions.isNightMode());
-        if (mOptions.isNightMode()) {
-            FxHelper.loadDarkTheme(mStage.getScene());
-        } else {
-            FxHelper.unloadDarkTheme(mStage.getScene());
-        }
+    private void initWorkbenchDrawer() {
+        mWorkbench.getNavigationDrawerItems().setAll(
+                ActionUtils.createMenuItem(YActions.forId("core", "quit"))
+        );
     }
+
 }
