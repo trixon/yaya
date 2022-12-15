@@ -15,11 +15,16 @@
  */
 package se.trixon.yaya.actions;
 
+import com.dlsc.workbenchfx.model.WorkbenchDialog;
+import java.util.ResourceBundle;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.web.WebView;
 import org.openide.util.lookup.ServiceProvider;
 import se.trixon.almond.util.Dict;
+import se.trixon.almond.util.SystemHelper;
+import se.trixon.yaya.Help;
 
 /**
  *
@@ -29,13 +34,22 @@ import se.trixon.almond.util.Dict;
 @ServiceProvider(service = YAction.class)
 public class RootHelpAction extends YAction {
 
+    private final ResourceBundle mBundle = SystemHelper.getBundle(Help.class, "Help");
+    private final WebView mWebView = new WebView();
+
     public RootHelpAction() {
         super(Dict.HELP.toString());
         var keyCodeCombination = new KeyCodeCombination(KeyCode.F1, KeyCombination.SHORTCUT_ANY);
         setAccelerator(keyCodeCombination);
+        var help = new Help();
+        mWebView.getEngine().loadContent(help.getHelp());
 
         setEventHandler(eventHandler -> {
-            System.out.println(id());
+            getWorkbench().showDialog(WorkbenchDialog.builder(mBundle.getString("help_intro"), mWebView, WorkbenchDialog.Type.INFORMATION)
+                    .maximized(true)
+                    .showButtonsBar(false)
+                    .build()
+            );
         });
 
         setPostInitRunnable(() -> {

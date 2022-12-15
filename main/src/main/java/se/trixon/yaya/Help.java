@@ -93,7 +93,6 @@ public final class Help {
 
         var html = html(
                 body(
-                        h1(mBundle.getString("help_intro")),
                         p(mBundle.getString("help_header_quickstart")),
                         hr(),
                         ul(

@@ -15,6 +15,7 @@
  */
 package se.trixon.yaya.actions;
 
+import com.dlsc.workbenchfx.Workbench;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -77,6 +78,10 @@ public class YAction extends Action {
 
     protected Stage getStage() {
         return mYaya.getStage();
+    }
+
+    protected Workbench getWorkbench() {
+        return mYaya.getWorkbench();
     }
 
     protected String id() {

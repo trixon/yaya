@@ -34,7 +34,7 @@ public class RootNewRoundAction extends YAction {
         setAccelerator(keyCodeCombination);
 
         setEventHandler(eventHandler -> {
-            System.out.println(id());
+            mYaya.onRequestNewGameStart();
         });
 
         setPostInitRunnable(() -> {

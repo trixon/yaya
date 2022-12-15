@@ -24,6 +24,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
@@ -39,6 +40,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.control.action.ActionGroup;
 import org.controlsfx.control.action.ActionUtils;
@@ -142,6 +144,7 @@ public class App extends Application {
                 .build();
 
         mWorkbench.getStylesheets().add(AppModule.class.getResource("customTheme.css").toExternalForm());
+        mYaya.setWorkbench(mWorkbench);
 
         var scene = new Scene(mWorkbench);
         scene.setFill(Color.web("#bb6624"));
@@ -149,7 +152,7 @@ public class App extends Application {
         mStage.setScene(scene);
         initWorkbenchDrawer();
 
-//        initListeners();
+        initListeners();
 //        initMenu();
 //        initMenuColor();
 //        initMenuSize();
@@ -161,6 +164,16 @@ public class App extends Application {
     }
 
     private void initListeners() {
+        mStage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, windowEvent -> {
+            if (false) {//TODO Add condition
+                var dialog = WorkbenchDialog.builder("title", "message", WorkbenchDialog.Type.CONFIRMATION).onResult(buttonType -> {
+                    if (buttonType.getButtonData() != ButtonBar.ButtonData.YES) {
+                        windowEvent.consume();
+                    }
+                }).blocking(true).build();
+                mWorkbench.showDialog(dialog);
+            }
+        });
     }
 
     private void initMenu() {

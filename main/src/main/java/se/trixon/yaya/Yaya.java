@@ -15,6 +15,7 @@
  */
 package se.trixon.yaya;
 
+import com.dlsc.workbenchfx.Workbench;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.awt.Color;
@@ -46,6 +47,7 @@ public class Yaya {
     private static final GlobalState sGlobalState = new GlobalState();
     private final ObjectProperty<App> mApplicationProperty = new SimpleObjectProperty<>();
     private final ObjectProperty<Stage> mStageProperty = new SimpleObjectProperty<>();
+    private Workbench mWorkbench;
     private YayaPanel mYayaPanel;
 
     public static void errln(String name, String message) {
@@ -99,6 +101,10 @@ public class Yaya {
         return mStageProperty.get();
     }
 
+    public Workbench getWorkbench() {
+        return mWorkbench;
+    }
+
     public void onRequestNewGameStart() {
         getPanel().newGame();
     }
@@ -109,6 +115,10 @@ public class Yaya {
 
     public void setStage(Stage stage) {
         mStageProperty.set(stage);
+    }
+
+    public void setWorkbench(Workbench workbench) {
+        mWorkbench = workbench;
     }
 
     public ObjectProperty<Stage> stageProperty() {
