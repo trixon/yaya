@@ -163,4 +163,9 @@ public class Theme {
     public boolean isOpaqueWindow() {
         return mOpaqueWindow;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }
