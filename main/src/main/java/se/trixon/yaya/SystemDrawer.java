@@ -124,7 +124,7 @@ public class SystemDrawer extends BorderPane {
         setCenter(optionsBox);
 
         var buttonBox = new VBox(FxHelper.getUIScaled(16));
-        var removePlayerButton = new Button(mBundle.getString("removePlayerTitle"));
+        var removePlayerButton = ActionUtils.createButton(YActions.forId("core", "removePlayer"));
         var helpButton = ActionUtils.createButton(YActions.forId("core", "help"));
         var aboutButton = ActionUtils.createButton(YActions.forId("core", "about"));
         var quitButton = ActionUtils.createButton(YActions.forId("core", "quit"));

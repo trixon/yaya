@@ -15,8 +15,15 @@
  */
 package se.trixon.yaya.actions;
 
+import com.dlsc.workbenchfx.model.WorkbenchDialog;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openide.util.NbBundle;
 import org.openide.util.lookup.ServiceProvider;
+import se.trixon.almond.util.fx.FxHelper;
+import se.trixon.yaya.Options;
 
 /**
  *
@@ -30,8 +37,46 @@ public class SystemRemovePlayerAction extends YAction {
         super(NbBundle.getMessage(YActions.class, "removePlayerTitle"));
 
         setEventHandler(eventHandler -> {
-            System.out.println(id());
+            var players = mOptions.getAllPlayers();
+            var comboBox = new ComboBox<String>();
+            comboBox.getItems().setAll(players);
+            comboBox.getSelectionModel().select(0);
+            comboBox.setMinWidth(FxHelper.getUIScaled(250));
+
+            var dialog = WorkbenchDialog.builder(
+                    mBundle.getString("removePlayerTitle"),
+                    comboBox,
+                    ButtonType.OK, ButtonType.CANCEL
+            ).onResult(buttonType -> {
+                if (buttonType == ButtonType.OK) {
+                    var removedPlayer = comboBox.getValue();
+                    var remainingPlayers = ArrayUtils.removeElement(players, removedPlayer);
+
+                    if (remainingPlayers.length == 0) {
+                        mOptions.put(Options.KEY_PLAYERS_ALL, Options.DEFAULT_PLAYERS_ALL);
+                        mOptions.put(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
+                    } else {
+                        mOptions.put(Options.KEY_PLAYERS_ALL, String.join(";", remainingPlayers));
+
+                        var defaultFillPlayer = remainingPlayers[0];
+                        var contenders = mOptions.get(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
+                        contenders = StringUtils.replace(contenders, removedPlayer, "");
+                        contenders = StringUtils.replace(contenders, ";;", ";%s;".formatted(defaultFillPlayer));
+
+                        if (StringUtils.startsWith(contenders, ";")) {
+                            contenders = defaultFillPlayer + contenders;
+                        }
+
+                        if (StringUtils.endsWith(contenders, ";")) {
+                            contenders = contenders + defaultFillPlayer;
+                        }
+
+                        mOptions.put(Options.KEY_PLAYERS, contenders);
+                    }
+                }
+            }).build();
+
+            getWorkbench().showDialog(dialog);
         });
     }
-
 }

@@ -20,6 +20,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableMap;
 import javafx.scene.input.KeyCodeCombination;
@@ -27,6 +28,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.SystemUtils;
 import org.controlsfx.control.action.Action;
+import se.trixon.almond.util.SystemHelper;
 import se.trixon.almond.util.fx.FxHelper;
 import se.trixon.yaya.App;
 import se.trixon.yaya.Options;
@@ -39,6 +41,7 @@ import se.trixon.yaya.Yaya;
 public class YAction extends Action {
 
     protected static final boolean IS_MAC = SystemUtils.IS_OS_MAC;
+    protected final ResourceBundle mBundle = SystemHelper.getBundle(YActions.class, "Bundle");
     protected Options mOptions = Options.getInstance();
     protected Yaya mYaya = Yaya.getInstance();
     private Runnable mPostInitRunnable;
