@@ -36,7 +36,7 @@ public class ScorecardIndicatorAction extends YAction {
         setAccelerator(keyCodeCombination);
 
         setEventHandler(eventHandler -> {
-            System.out.println(id());
+            mOptions.invert(mOptions.displayIndicatorsProperty());
         });
 
         setPostInitRunnable(() -> {

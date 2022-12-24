@@ -45,6 +45,7 @@ public class RootHelpAction extends YAction {
         mWebView.getEngine().loadContent(help.getHelp());
 
         setEventHandler(eventHandler -> {
+            getWorkbench().hideDrawer();
             getWorkbench().showDialog(WorkbenchDialog.builder(mBundle.getString("help_intro"), mWebView, WorkbenchDialog.Type.INFORMATION)
                     .maximized(true)
                     .showButtonsBar(false)

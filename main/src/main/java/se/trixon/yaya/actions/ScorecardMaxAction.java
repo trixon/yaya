@@ -36,7 +36,7 @@ public class ScorecardMaxAction extends YAction {
         setAccelerator(keyCodeCombination);
 
         setEventHandler(eventHandler -> {
-            System.out.println(id());
+            mOptions.invert(mOptions.displayMaxProperty());
         });
 
         setPostInitRunnable(() -> {

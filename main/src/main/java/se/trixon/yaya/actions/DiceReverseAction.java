@@ -15,6 +15,8 @@
  */
 package se.trixon.yaya.actions;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import org.controlsfx.control.action.ActionCheck;
 import org.openide.util.NbBundle;
 import org.openide.util.lookup.ServiceProvider;
@@ -30,9 +32,16 @@ public class DiceReverseAction extends YAction {
 
     public DiceReverseAction() {
         super(NbBundle.getMessage(YActions.class, "reverseDiceDirection"));
+        var keyCodeCombination = new KeyCodeCombination(KeyCode.F8);
+        setAccelerator(keyCodeCombination);
 
         setEventHandler(eventHandler -> {
-            System.out.println(id());
+            mOptions.invert(mOptions.diceReversedProperty());
+        });
+
+        setPostInitRunnable(() -> {
+            setAcceleratorForStage(keyCodeCombination);
+            addTooltipKeyCode(keyCodeCombination);
         });
     }
 

@@ -15,6 +15,8 @@
  */
 package se.trixon.yaya.actions;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import org.controlsfx.control.action.ActionCheck;
 import org.openide.util.lookup.ServiceProvider;
 import se.trixon.almond.util.Dict;
@@ -30,9 +32,16 @@ public class SystemPlaySoundAction extends YAction {
 
     public SystemPlaySoundAction() {
         super(Dict.Game.PLAY_SOUND.toString());
+        var keyCodeCombination = new KeyCodeCombination(KeyCode.F4);
+        setAccelerator(keyCodeCombination);
 
         setEventHandler(eventHandler -> {
-            System.out.println(id());
+            mOptions.invert(mOptions.playSoundProperty());
+        });
+
+        setPostInitRunnable(() -> {
+            setAcceleratorForStage(keyCodeCombination);
+            addTooltipKeyCode(keyCodeCombination);
         });
     }
 

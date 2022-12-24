@@ -33,6 +33,7 @@ import org.openide.LifecycleManager;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.fx.FxHelper;
 import se.trixon.yaya.actions.YActions;
+import se.trixon.yaya.scorecard.rules.RuleManager;
 
 /**
  *
@@ -44,6 +45,7 @@ public class App extends Application {
     public static final int ICON_SIZE_TOOLBAR = FxHelper.getUIScaled(40);
     private AppModule mAppModule;
     private final Options mOptions = Options.getInstance();
+    private final RuleManager mRuleManager = RuleManager.getInstance();
     private Stage mStage;
     private Workbench mWorkbench;
     private final Yaya mYaya = Yaya.getInstance();
@@ -95,16 +97,9 @@ public class App extends Application {
         var newGameToolbarItem = new ToolbarItem(new FontIcon(FontAwesomeSolid.PLAY), event -> {
             YActions.forId("core", "newround").handle(null);
         });
-        newGameToolbarItem.textProperty().set("Crag/Standard");
+        newGameToolbarItem.textProperty().bind(mRuleManager.getRule().nameProperty());
 
-        var infoToolbarItem = new ToolbarItem(new FontIcon(FontAwesomeSolid.INFO), event -> {
-            YActions.forId("core", "info").handle(null);
-        });
-        var helpToolbarItem = new ToolbarItem(new FontIcon(FontAwesomeSolid.QUESTION), event -> {
-            YActions.forId("core", "help").handle(null);
-        });
-
-        var optionsToolbarItem = new ToolbarItem(new FontIcon(FontAwesomeSolid.WRENCH), event -> {
+        var optionsToolbarItem = new ToolbarItem(new FontIcon(FontAwesomeSolid.BARS), event -> {
             YActions.forId("core", "options").handle(null);
         });
 
@@ -118,12 +113,11 @@ public class App extends Application {
         YActions.forId("core", "quit");
         mWorkbench = Workbench.builder(mAppModule)
                 .toolbarLeft(
-                        newGameToolbarItem)
+                        optionsToolbarItem,
+                        newGameToolbarItem
+                )
                 .toolbarRight(
-                        infoToolbarItem,
-                        helpToolbarItem,
-                        fullScreenToolbarItem,
-                        optionsToolbarItem
+                        fullScreenToolbarItem
                 )
                 .build();
 
@@ -138,8 +132,8 @@ public class App extends Application {
         initListeners();
         mYaya.setStage(mStage);
 
+        optionsToolbarItem.setTooltip(new Tooltip(YActions.forId("core", "options").getLongText()));
         newGameToolbarItem.setTooltip(new Tooltip(YActions.forId("core", "newround").getLongText()));
-        helpToolbarItem.setTooltip(new Tooltip(YActions.forId("core", "help").getLongText()));
         fullScreenToolbarItem.setTooltip(new Tooltip(YActions.forId("core", "fullScreen").getLongText()));
     }
 

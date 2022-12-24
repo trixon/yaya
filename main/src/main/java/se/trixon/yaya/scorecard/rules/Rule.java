@@ -19,6 +19,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import se.trixon.yaya.Yaya;
 
 /**
@@ -49,6 +51,7 @@ public class Rule {
     private int mTotalScore;
     @SerializedName("variants")
     private ArrayList<GameVariant> mVariants;
+    private final transient StringProperty mNameProperty = new SimpleStringProperty();
 
     public Rule() {
     }
@@ -103,6 +106,10 @@ public class Rule {
         return mLocals;
     }
 
+    public StringProperty nameProperty() {
+        return mNameProperty;
+    }
+
     public int getNumOfDice() {
         return mNumOfDice;
     }
@@ -144,6 +151,7 @@ public class Rule {
     }
 
     public void postLoad() {
+        mNameProperty.set(getTitle());
         mTotalScore = 0;
         mResultRow = -1;
 

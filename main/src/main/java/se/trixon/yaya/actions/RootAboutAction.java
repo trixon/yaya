@@ -38,11 +38,11 @@ import se.trixon.yaya.App;
  *
  * @author Patrik Karlström
  */
-@YAction.Description(category = "core", id = "info")
+@YAction.Description(category = "core", id = "about")
 @ServiceProvider(service = YAction.class)
-public class RootInfoAction extends YAction {
+public class RootAboutAction extends YAction {
 
-    public RootInfoAction() {
+    public RootAboutAction() {
         super(Dict.ABOUT.toString());
 //        KeyCodeCombination keyCodeCombination = null;// new KeyCodeCombination(KeyCode.F1, KeyCombination.SHORTCUT_ANY);
 //        setAccelerator(keyCodeCombination);
@@ -79,6 +79,7 @@ public class RootInfoAction extends YAction {
             var mainBorderPane = new BorderPane(aboutPane);
             mainBorderPane.setTop(topBorderPane);
 
+            getWorkbench().hideDrawer();
             var dialog = WorkbenchDialog.builder(Dict.ABOUT.toString(), mainBorderPane, ButtonType.CLOSE).build();
             getWorkbench().showDialog(dialog);
 

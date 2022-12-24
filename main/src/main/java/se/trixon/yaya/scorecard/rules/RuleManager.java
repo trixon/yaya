@@ -18,6 +18,8 @@ package se.trixon.yaya.scorecard.rules;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import org.openide.util.Lookup;
 import se.trixon.yaya.Options;
 
@@ -27,7 +29,9 @@ import se.trixon.yaya.Options;
  */
 public class RuleManager {
 
+    private final ObjectProperty<Rule> mRuleProperty = new SimpleObjectProperty<>();
     private ArrayList<Rule> mRules;
+    private final Options mOptions = Options.getInstance();
 
     public static RuleManager getInstance() {
         return Holder.INSTANCE;
@@ -68,6 +72,21 @@ public class RuleManager {
         return index;
     }
 
+    public Rule getRule(String id) {
+        for (var rule : mRules) {
+            if (rule.getId().equalsIgnoreCase(id)) {
+                return rule;
+            }
+        }
+
+        //TODO Throw something?
+        return null;
+    }
+
+    public Rule getRule() {
+        return mRuleProperty.get();
+    }
+
     public String getTitle(String id) {
         for (var rule : mRules) {
             if (rule.getId().equalsIgnoreCase(id)) {
@@ -82,17 +101,6 @@ public class RuleManager {
         return mRules.stream().map(k -> k.getTitle()).toArray(String[]::new);
     }
 
-    public Rule getRule(String id) {
-        for (var rule : mRules) {
-            if (rule.getId().equalsIgnoreCase(id)) {
-                return rule;
-            }
-        }
-
-        //TODO Throw something?
-        return null;
-    }
-
     public void init() {
         mRules = new ArrayList<>();
 
@@ -101,6 +109,15 @@ public class RuleManager {
         }
 
         Collections.sort(mRules, Comparator.comparing(Rule::getTitle));
+        setRule(getRule(mOptions.getRuleId()));
+    }
+
+    public ObjectProperty<Rule> ruleProperty() {
+        return mRuleProperty;
+    }
+
+    public void setRule(Rule rule) {
+        mRuleProperty.set(rule);
     }
 
     private static class Holder {

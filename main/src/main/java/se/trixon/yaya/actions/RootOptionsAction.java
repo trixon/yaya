@@ -21,7 +21,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import org.openide.util.lookup.ServiceProvider;
 import se.trixon.almond.util.Dict;
-import se.trixon.yaya.OptionsPane;
+import se.trixon.yaya.SystemDrawer;
 
 /**
  *
@@ -31,7 +31,7 @@ import se.trixon.yaya.OptionsPane;
 @ServiceProvider(service = YAction.class)
 public class RootOptionsAction extends YAction {
 
-    private OptionsPane mOptionsPane;
+    private SystemDrawer mSystemDrawer;
 
     public RootOptionsAction() {
         super(Dict.OPTIONS.toString());
@@ -39,14 +39,14 @@ public class RootOptionsAction extends YAction {
         setAccelerator(keyCodeCombination);
 
         setEventHandler(eventHandler -> {
-            if (mOptionsPane == null) {
-                mOptionsPane = new OptionsPane();
+            if (mSystemDrawer == null) {
+                mSystemDrawer = new SystemDrawer();
             }
 
-            if (getWorkbench().getDrawerShown() == mOptionsPane) {
+            if (getWorkbench().getDrawerShown() == mSystemDrawer) {
                 getWorkbench().hideDrawer();
             } else {
-                getWorkbench().showDrawer(mOptionsPane, Side.RIGHT);
+                getWorkbench().showDrawer(mSystemDrawer, Side.LEFT);
             }
         });
 
