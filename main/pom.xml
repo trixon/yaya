@@ -166,7 +166,25 @@
             <artifactId>ikonli-materialdesign-pack</artifactId>
             <version>${ikonli.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>0.64.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sandec</groupId>
+            <artifactId>mdfx</artifactId>
+            <version>0.2.8</version>
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>sandec</id>
+            <url>https://sandec.jfrog.io/artifactory/repo</url>
+        </repository>
+    </repositories>
 
     <properties>
         <ikonli.version>12.3.1</ikonli.version>

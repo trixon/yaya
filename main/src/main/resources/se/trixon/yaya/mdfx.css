@@ -1,0 +1,45 @@
+/*
+Copyright 2022 Patrik Karlström <patrik@trixon.se>.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+/* 
+    Created on : 25 dec. 2022, 11:29:14
+    Author     : Patrik Karlström <patrik@trixon.se>
+*/
+
+* {
+   -mdfx-font-color: green;
+   -mdfx-link-color: blue;
+   -mdfx-border-color-1: #888;
+
+   -mdfx-bg-color-1: #ccc;
+   -mdfx-bg-color-2: #ddd;
+   -mdfx-bg-color-3: #eee;
+
+   -mdfx-bq-color-border: #4488cc; /* the blockquote's border color */
+   -mdfx-bq-color-background: #0000ff0c; /* the blockquote's background color */
+}
+
+.markdown-text {
+  -fx-font-family: ARIAL;
+}
+.markdown-italic {
+  -fx-font-style: italic;
+}
+.markdown-bold {
+  -fx-font-weight: bold;
+}
+.markdown-strikethrough {
+  -fx-strikethrough: true;
+}

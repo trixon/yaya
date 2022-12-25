@@ -16,12 +16,14 @@
 package se.trixon.yaya;
 
 import com.dlsc.workbenchfx.model.WorkbenchDialog;
+import com.sandec.mdfx.MarkdownView;
+import com.vladsch.flexmark.html2md.converter.FlexmarkHtmlConverter;
 import static j2html.TagCreator.*;
 import java.util.ArrayList;
 import java.util.Comparator;
+import javafx.application.Platform;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.web.WebView;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.fx.FxHelper;
 import se.trixon.yaya.actions.YActions;
@@ -32,7 +34,7 @@ import se.trixon.yaya.actions.YActions;
  */
 public class GameOverDialog {
 
-    private final WebView mWebView = new WebView();
+    private MarkdownView mMarkdownView;
     private final Yaya mYaya = Yaya.getInstance();
 
     public static GameOverDialog getInstance() {
@@ -40,6 +42,9 @@ public class GameOverDialog {
     }
 
     private GameOverDialog() {
+        Platform.runLater(() -> {
+            mMarkdownView = new MarkdownView();
+        });
     }
 
     public void display(ArrayList<GameOverItem> gameOverItems) {
@@ -67,13 +72,13 @@ public class GameOverDialog {
     }
 
     private void display(String message) {
-        mWebView.getEngine().loadContent(message);
+        mMarkdownView.setMdString(FlexmarkHtmlConverter.builder().build().convert(message));
         var newQuickButtonType = new ButtonType(Dict.Game.NEW_ROUND.toString(), ButtonBar.ButtonData.OK_DONE);
         var newDialogButtonType = new ButtonType(Dict.Game.NEW_ROUND.toString() + "…", ButtonBar.ButtonData.APPLY);
 
         var dialog = WorkbenchDialog.builder(
                 Dict.Game.GAME_OVER.toString(),
-                mWebView,
+                mMarkdownView,
                 newDialogButtonType, newQuickButtonType
         ).onResult(buttonType -> {
             if (buttonType == newDialogButtonType) {

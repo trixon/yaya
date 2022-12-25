@@ -16,14 +16,17 @@
 package se.trixon.yaya.actions;
 
 import com.dlsc.workbenchfx.model.WorkbenchDialog;
+import com.sandec.mdfx.MarkdownView;
+import com.vladsch.flexmark.html2md.converter.FlexmarkHtmlConverter;
 import java.util.ResourceBundle;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.web.WebView;
 import org.openide.util.lookup.ServiceProvider;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.SystemHelper;
+import se.trixon.yaya.AppModule;
 import se.trixon.yaya.Help;
 
 /**
@@ -35,18 +38,21 @@ import se.trixon.yaya.Help;
 public class RootHelpAction extends YAction {
 
     private final ResourceBundle mBundle = SystemHelper.getBundle(Help.class, "Help");
-    private final WebView mWebView = new WebView();
+    private final MarkdownView mMarkdownView = new MarkdownView();
 
     public RootHelpAction() {
         super(Dict.HELP.toString());
         var keyCodeCombination = new KeyCodeCombination(KeyCode.F1, KeyCombination.SHORTCUT_ANY);
         setAccelerator(keyCodeCombination);
         var help = new Help();
-        mWebView.getEngine().loadContent(help.getHelp());
+        mMarkdownView.getStylesheets().add(AppModule.class.getResource("mdfx.css").toExternalForm());
 
+        mMarkdownView.setMdString(FlexmarkHtmlConverter.builder().build().convert(help.getHelp()));
+        var content = new ScrollPane(mMarkdownView);
+        content.setFitToWidth(true);
         setEventHandler(eventHandler -> {
             getWorkbench().hideDrawer();
-            getWorkbench().showDialog(WorkbenchDialog.builder(mBundle.getString("help_intro"), mWebView, WorkbenchDialog.Type.INFORMATION)
+            getWorkbench().showDialog(WorkbenchDialog.builder(mBundle.getString("help_intro"), content, WorkbenchDialog.Type.INFORMATION)
                     .maximized(true)
                     .showButtonsBar(false)
                     .build()
