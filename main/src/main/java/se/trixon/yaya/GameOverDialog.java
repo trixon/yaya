@@ -15,14 +15,16 @@
  */
 package se.trixon.yaya;
 
+import com.dlsc.workbenchfx.model.WorkbenchDialog;
 import static j2html.TagCreator.*;
 import java.util.ArrayList;
 import java.util.Comparator;
-import javax.swing.JOptionPane;
-import se.trixon.almond.util.AlmondUI;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.web.WebView;
 import se.trixon.almond.util.Dict;
-import se.trixon.almond.util.swing.SwingHelper;
-import se.trixon.almond.util.swing.dialogs.HtmlPanel;
+import se.trixon.almond.util.fx.FxHelper;
+import se.trixon.yaya.actions.YActions;
 
 /**
  *
@@ -30,7 +32,7 @@ import se.trixon.almond.util.swing.dialogs.HtmlPanel;
  */
 public class GameOverDialog {
 
-    private final HtmlPanel mHtmlPanel = new HtmlPanel();
+    private final WebView mWebView = new WebView();
     private final Yaya mYaya = Yaya.getInstance();
 
     public static GameOverDialog getInstance() {
@@ -38,8 +40,6 @@ public class GameOverDialog {
     }
 
     private GameOverDialog() {
-        mHtmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(400, 490));
-        mHtmlPanel.getScrollPane().setBorder(null);
     }
 
     public void display(ArrayList<GameOverItem> gameOverItems) {
@@ -63,23 +63,27 @@ public class GameOverDialog {
                                 )
                         ).withStyle("font-size: 180%;width:100%;")
                 ));
-
-        display(html.render());
+        FxHelper.runLater(() -> display(html.render()));
     }
 
     private void display(String message) {
-        mHtmlPanel.setHtml(message);
-        var newDialog = Dict.Game.NEW_ROUND.toString() + "…";
-        var newQuick = Dict.Game.NEW_ROUND.toString();
+        mWebView.getEngine().loadContent(message);
+        var newQuickButtonType = new ButtonType(Dict.Game.NEW_ROUND.toString(), ButtonBar.ButtonData.OK_DONE);
+        var newDialogButtonType = new ButtonType(Dict.Game.NEW_ROUND.toString() + "…", ButtonBar.ButtonData.APPLY);
 
-        var buttons = new String[]{newDialog, newQuick};
-        var result = JOptionPane.showOptionDialog(AlmondUI.getInstance().getFrame(), mHtmlPanel, Dict.Game.GAME_OVER.toString(), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, newQuick);
+        var dialog = WorkbenchDialog.builder(
+                Dict.Game.GAME_OVER.toString(),
+                mWebView,
+                newDialogButtonType, newQuickButtonType
+        ).onResult(buttonType -> {
+            if (buttonType == newDialogButtonType) {
+                YActions.forId("core", "newround").handle(null);
+            } else if (buttonType == newQuickButtonType) {
+                mYaya.onRequestNewGameStart();
+            }
+        }).build();
 
-        if (result == 0) {
-            //ActionManager.getInstance().getAction(ActionManager.NEW).actionPerformed(null);
-        } else if (result == 1) {
-            mYaya.onRequestNewGameStart();
-        }
+        mYaya.getWorkbench().showDialog(dialog);
     }
 
     private static class Holder {
