@@ -31,14 +31,12 @@ import se.trixon.yaya.scorecard.rules.GameVariant;
  */
 public class Options extends OptionsBase {
 
-    public static final boolean DEFAULT_NIGHT_MODE = true;
     public static final String DEFAULT_PLAYERS = "Ask;Embla;Ask;Embla;Ask;Embla;Ask;Embla";
     public static final String DEFAULT_PLAYERS_ALL = "Ask;Embla";
     public static final boolean DEFAULT_PLAY_SOUND = true;
     public static final String DEFAULT_RULE_ID = "se.trixon.yaya.rules.yaya_scandinavian";
     public static final String KEY_FONT_SIZE = "font.size";
     public static final String KEY_GAME_START_COUNTER = "game.start_counter";
-    public static final String KEY_NIGHT_MODE = "nightMode";
     public static final String KEY_NUM_OF_PLAYERS = "numOfPlayers";
     public static final String KEY_PLAYERS = "players";
     public static final String KEY_PLAYERS_ALL = "players.all";
@@ -62,8 +60,6 @@ public class Options extends OptionsBase {
     private final BooleanProperty mDisplayLimProperty = new SimpleBooleanProperty();
     private final BooleanProperty mDisplayMaxProperty = new SimpleBooleanProperty();
     private final BooleanProperty mFullScreenProperty = new SimpleBooleanProperty();
-    @Deprecated
-    private final BooleanProperty mNightModeProperty = new SimpleBooleanProperty();
     private final BooleanProperty mPlaySoundProperty = new SimpleBooleanProperty();
     private Player[] mPlayers;
 
@@ -156,10 +152,6 @@ public class Options extends OptionsBase {
         return mFullScreenProperty.get();
     }
 
-    public boolean isNightMode() {
-        return mNightModeProperty.get();
-    }
-
     public boolean isReverseDirection() {
         return is(KEY_REVERSE_DIRECTION, DEFAULT_REVERSE_DIRECTION);
     }
@@ -176,10 +168,6 @@ public class Options extends OptionsBase {
         return is(KEY_SHOW_MAX_COLUMN, DEFAULT_SHOW_MAX_COLUMN);
     }
 
-    public BooleanProperty nightModeProperty() {
-        return mNightModeProperty;
-    }
-
     public BooleanProperty playSoundProperty() {
         return mPlaySoundProperty;
     }
@@ -194,11 +182,6 @@ public class Options extends OptionsBase {
 
     public void setGameVariant(String type, String variant) {
         put(GameVariant.PREFIX + type, variant);
-    }
-
-    @Deprecated
-    public void setNightMode(boolean nightMode) {
-        mNightModeProperty.set(nightMode);
     }
 
     public void setNumOfPlayers(int players) {
@@ -234,7 +217,6 @@ public class Options extends OptionsBase {
     }
 
     private void init() {
-        mNightModeProperty.set(is(KEY_NIGHT_MODE, DEFAULT_NIGHT_MODE));
         mFullScreenProperty.set(is(KEY_FULL_SCREEN, DEFAULT_FULL_SCREEN));
         mDisplayLimProperty.set(is(KEY_SHOW_LIM_COLUMN, DEFAULT_SHOW_LIM_COLUMN));
         mDisplayMaxProperty.set(is(KEY_SHOW_MAX_COLUMN, DEFAULT_SHOW_MAX_COLUMN));
@@ -256,11 +238,9 @@ public class Options extends OptionsBase {
         mFullScreenProperty.addListener(changeListener);
         mPlaySoundProperty.addListener(changeListener);
         mDiceReversedProperty.addListener(changeListener);
-        mNightModeProperty.addListener(changeListener);
     }
 
     private void save() {
-        put(KEY_NIGHT_MODE, isNightMode());
         put(KEY_SHOW_LIM_COLUMN, displayLimProperty().get());
         put(KEY_SHOW_MAX_COLUMN, displayMaxProperty().get());
         put(KEY_SHOW_INDICATORS, displayIndicatorsProperty().get());

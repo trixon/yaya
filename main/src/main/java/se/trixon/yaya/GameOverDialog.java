@@ -76,7 +76,7 @@ public class GameOverDialog {
         var result = JOptionPane.showOptionDialog(AlmondUI.getInstance().getFrame(), mHtmlPanel, Dict.Game.GAME_OVER.toString(), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, newQuick);
 
         if (result == 0) {
-            ActionManager.getInstance().getAction(ActionManager.NEW).actionPerformed(null);
+            //ActionManager.getInstance().getAction(ActionManager.NEW).actionPerformed(null);
         } else if (result == 1) {
             mYaya.onRequestNewGameStart();
         }
