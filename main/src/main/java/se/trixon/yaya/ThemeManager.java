@@ -15,8 +15,11 @@
  */
 package se.trixon.yaya;
 
-import java.util.ArrayList;
 import java.util.Comparator;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.openide.util.Lookup;
 import se.trixon.yaya.themes.Theme;
 import se.trixon.yaya.themes.ThemeProvider;
@@ -28,49 +31,61 @@ import se.trixon.yaya.themes.ThemeProviderDefault;
  */
 public class ThemeManager {
 
-    private final ArrayList<Theme> mItems = new ArrayList<>();
+    private final ObjectProperty<ObservableList<Theme>> mItemsProperty = new SimpleObjectProperty<>();
     private final Options mOptions = Options.getInstance();
-    private Theme mTheme;
+    private final ObjectProperty<Theme> mThemeProperty = new SimpleObjectProperty<>();
 
     public static ThemeManager getInstance() {
         return Holder.INSTANCE;
     }
 
     private ThemeManager() {
+        mItemsProperty.set(FXCollections.observableArrayList());
+
+        mThemeProperty.addListener((p, o, n) -> {
+            mOptions.setThemeId(n.getId());
+        });
+
         for (var themeProvider : Lookup.getDefault().lookupAll(ThemeProvider.class)) {
-            mItems.add(themeProvider.load());
+            getItems().add(themeProvider.load());
         }
 
-        mItems.sort(Comparator.comparing(Theme::getName));
+        FXCollections.sort(getItems(), Comparator.comparing(Theme::getName));
 
         loadTheme();
     }
 
-    public ArrayList<Theme> getItems() {
-        return mItems;
+    public ObservableList<Theme> getItems() {
+        return mItemsProperty.get();
     }
 
     public Theme getTheme() {
-        return mTheme;
+        return mThemeProperty.get();
     }
 
-    public void setTheme(Theme theme) {
-        mTheme = theme;
+    public ObjectProperty<ObservableList<Theme>> itemsProperty() {
+        return mItemsProperty;
+    }
+
+    public ObjectProperty<Theme> themeProperty() {
+        return mThemeProperty;
     }
 
     private void loadTheme() {
-        mTheme = null;
+        Theme theme = null;
 
-        for (var theme : mItems) {
-            if (theme.getId().equalsIgnoreCase(mOptions.getThemeId())) {
-                mTheme = theme;
+        for (var t : getItems()) {
+            if (t.getId().equalsIgnoreCase(mOptions.getThemeId())) {
+                theme = t;
                 break;
             }
         }
 
-        if (mTheme == null) {
-            mTheme = new ThemeProviderDefault().load();
+        if (theme == null) {
+            theme = new ThemeProviderDefault().load();
         }
+
+        mThemeProperty.set(theme);
     }
 
     private static class Holder {

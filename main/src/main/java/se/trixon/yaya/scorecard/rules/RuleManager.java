@@ -112,10 +112,6 @@ public class RuleManager {
         return "";
     }
 
-    public StringProperty titleProperty() {
-        return mTitleProperty;
-    }
-
     public String[] getTitles() {
         return mRules.stream().map(k -> k.getTitle()).toArray(String[]::new);
     }
@@ -144,6 +140,10 @@ public class RuleManager {
 
     public void setRule(Rule rule) {
         mRuleProperty.set(rule);
+    }
+
+    public StringProperty titleProperty() {
+        return mTitleProperty;
     }
 
     private static class Holder {

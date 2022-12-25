@@ -105,13 +105,8 @@ public class SystemDrawer extends BorderPane {
         );
         optionsBox.setPadding(FxHelper.getUIScaledInsets(8));
 
-        mThemeComboBox.getItems().addAll(mThemeManager.getItems());
-        mThemeComboBox.setValue(mThemeManager.getTheme());
-
-        mThemeComboBox.valueProperty().addListener((p, o, n) -> {
-            mThemeManager.setTheme(n);
-            mOptions.setThemeId(n.getId());
-        });
+        mThemeComboBox.itemsProperty().bind(mThemeManager.itemsProperty());
+        mThemeComboBox.valueProperty().bindBidirectional(mThemeManager.themeProperty());
 
         var fontResetRunner = new DelayedResetRunner(50, () -> {
             mOptions.setFontSize((int) mScorecardSizeSlider.getValue());
