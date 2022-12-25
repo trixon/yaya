@@ -20,6 +20,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.openide.util.Lookup;
 import se.trixon.yaya.Options;
 
@@ -29,15 +33,22 @@ import se.trixon.yaya.Options;
  */
 public class RuleManager {
 
+    private final ObjectProperty<ObservableList<Rule>> mItemsProperty = new SimpleObjectProperty<>();
+    private final Options mOptions = Options.getInstance();
     private final ObjectProperty<Rule> mRuleProperty = new SimpleObjectProperty<>();
     private ArrayList<Rule> mRules;
-    private final Options mOptions = Options.getInstance();
+    private final transient StringProperty mTitleProperty = new SimpleStringProperty();
 
     public static RuleManager getInstance() {
         return Holder.INSTANCE;
     }
 
     private RuleManager() {
+        mItemsProperty.set(FXCollections.observableArrayList());
+        mRuleProperty.addListener((p, o, n) -> {
+            mOptions.setRuleId(n.getId());
+            mTitleProperty.set(n.getTitle());
+        });
     }
 
     public String[] getIdArray() {
@@ -72,6 +83,10 @@ public class RuleManager {
         return index;
     }
 
+    public ObservableList<Rule> getItems() {
+        return mItemsProperty.get();
+    }
+
     public Rule getRule(String id) {
         for (var rule : mRules) {
             if (rule.getId().equalsIgnoreCase(id)) {
@@ -97,6 +112,10 @@ public class RuleManager {
         return "";
     }
 
+    public StringProperty titleProperty() {
+        return mTitleProperty;
+    }
+
     public String[] getTitles() {
         return mRules.stream().map(k -> k.getTitle()).toArray(String[]::new);
     }
@@ -105,11 +124,18 @@ public class RuleManager {
         mRules = new ArrayList<>();
 
         for (var ruleProvider : Lookup.getDefault().lookupAll(RuleProvider.class)) {
-            mRules.add(ruleProvider.load());
+            var rule = ruleProvider.load();
+            mRules.add(rule);
+            getItems().add(rule);
         }
 
+        FXCollections.sort(getItems(), Comparator.comparing(Rule::getTitle));
         Collections.sort(mRules, Comparator.comparing(Rule::getTitle));
         setRule(getRule(mOptions.getRuleId()));
+    }
+
+    public ObjectProperty<ObservableList<Rule>> itemsProperty() {
+        return mItemsProperty;
     }
 
     public ObjectProperty<Rule> ruleProperty() {

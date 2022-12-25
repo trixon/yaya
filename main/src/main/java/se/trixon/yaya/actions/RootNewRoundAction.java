@@ -15,10 +15,14 @@
  */
 package se.trixon.yaya.actions;
 
+import com.dlsc.workbenchfx.model.WorkbenchDialog;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import org.openide.util.lookup.ServiceProvider;
 import se.trixon.almond.util.Dict;
+import se.trixon.yaya.NewGamePane;
 
 /**
  *
@@ -34,7 +38,24 @@ public class RootNewRoundAction extends YAction {
         setAccelerator(keyCodeCombination);
 
         setEventHandler(eventHandler -> {
-            mYaya.onRequestNewGameStart();
+            var playButtonType = new ButtonType(Dict.PLAY.toString(), ButtonBar.ButtonData.OK_DONE);
+            var newGamePane = new NewGamePane();
+            newGamePane.load();
+
+            var dialog = WorkbenchDialog.builder(
+                    Dict.Game.NEW_ROUND.toString(),
+                    newGamePane,
+                    playButtonType, ButtonType.CANCEL
+            ).onResult(buttonType -> {
+                if (buttonType == playButtonType) {
+                    newGamePane.save();
+
+                    mYaya.onRequestNewGameStart();
+                }
+            }).build();
+
+            getWorkbench().showDialog(dialog);
+
         });
 
         setPostInitRunnable(() -> {

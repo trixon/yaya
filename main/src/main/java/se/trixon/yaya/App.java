@@ -97,7 +97,7 @@ public class App extends Application {
         var newGameToolbarItem = new ToolbarItem(new FontIcon(FontAwesomeSolid.PLAY), event -> {
             YActions.forId("core", "newround").handle(null);
         });
-        newGameToolbarItem.textProperty().bind(mRuleManager.getRule().nameProperty());
+        newGameToolbarItem.textProperty().bind(mRuleManager.titleProperty());
 
         var optionsToolbarItem = new ToolbarItem(new FontIcon(FontAwesomeSolid.BARS), event -> {
             YActions.forId("core", "options").handle(null);
