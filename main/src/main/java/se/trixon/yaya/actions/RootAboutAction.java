@@ -44,8 +44,6 @@ public class RootAboutAction extends YAction {
 
     public RootAboutAction() {
         super(Dict.ABOUT.toString());
-//        KeyCodeCombination keyCodeCombination = null;// new KeyCodeCombination(KeyCode.F1, KeyCombination.SHORTCUT_ANY);
-//        setAccelerator(keyCodeCombination);
 
         setEventHandler(eventHandler -> {
             var pomInfo = new PomInfo(App.class, "se.trixon.yaya", "main");
@@ -78,7 +76,7 @@ public class RootAboutAction extends YAction {
             topBorderPane.setPadding(new Insets(22));
             var mainBorderPane = new BorderPane(aboutPane);
             mainBorderPane.setTop(topBorderPane);
-
+            mainBorderPane.setPrefHeight(400);
             getWorkbench().hideDrawer();
             var dialog = WorkbenchDialog.builder(Dict.ABOUT.toString(), mainBorderPane, ButtonType.CLOSE).build();
             getWorkbench().showDialog(dialog);

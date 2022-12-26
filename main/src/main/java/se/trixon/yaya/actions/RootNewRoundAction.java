@@ -38,23 +38,27 @@ public class RootNewRoundAction extends YAction {
         setAccelerator(keyCodeCombination);
 
         setEventHandler(eventHandler -> {
-            var playButtonType = new ButtonType(Dict.PLAY.toString(), ButtonBar.ButtonData.OK_DONE);
-            var newGamePane = new NewGamePane();
-            newGamePane.load();
+            if (!isDialogShowing()) {
+                setDialogShowing(true);
+                var playButtonType = new ButtonType(Dict.PLAY.toString(), ButtonBar.ButtonData.OK_DONE);
+                var newGamePane = new NewGamePane();
+                newGamePane.load();
 
-            var dialog = WorkbenchDialog.builder(
-                    Dict.Game.NEW_ROUND.toString(),
-                    newGamePane,
-                    playButtonType, ButtonType.CANCEL
-            ).onResult(buttonType -> {
-                if (buttonType == playButtonType) {
-                    newGamePane.save();
+                var dialog = WorkbenchDialog.builder(
+                        Dict.Game.NEW_ROUND.toString(),
+                        newGamePane,
+                        playButtonType, ButtonType.CANCEL
+                ).onResult(buttonType -> {
+                    setDialogShowing(false);
+                    if (buttonType == playButtonType) {
+                        newGamePane.save();
 
-                    mYaya.onRequestNewGameStart();
-                }
-            }).build();
+                        mYaya.onRequestNewGameStart();
+                    }
+                }).build();
 
-            getWorkbench().showDialog(dialog);
+                getWorkbench().showDialog(dialog);
+            }
 
         });
 

@@ -1,7 +1,7 @@
 .root > * {
     -primary-color: #bb6624;
     -primary-variant-color: #a0571f;
-    -secondary-color: #6300ff;
+    -secondary-color: #5C4033;
     -secondary-variant-color: #1e005f;
     -background-color: #bb6624;
     -surface-color: #FFFFFF;
@@ -18,6 +18,6 @@
 }
 
 .navigation-drawer .drawer-box .header {
-    -fx-background-color: #bb6624;
+    -fx-background-color: wheat;
     -fx-min-height: 2.4285714286em;
 }

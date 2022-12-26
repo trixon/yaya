@@ -38,25 +38,31 @@ import se.trixon.yaya.Help;
 public class RootHelpAction extends YAction {
 
     private final ResourceBundle mBundle = SystemHelper.getBundle(Help.class, "Help");
-    private final MarkdownView mMarkdownView = new MarkdownView();
 
     public RootHelpAction() {
         super(Dict.HELP.toString());
         var keyCodeCombination = new KeyCodeCombination(KeyCode.F1, KeyCombination.SHORTCUT_ANY);
         setAccelerator(keyCodeCombination);
-        var help = new Help();
-        mMarkdownView.getStylesheets().add(AppModule.class.getResource("mdfx.css").toExternalForm());
-
-        mMarkdownView.setMdString(FlexmarkHtmlConverter.builder().build().convert(help.getHelp()));
-        var content = new ScrollPane(mMarkdownView);
-        content.setFitToWidth(true);
         setEventHandler(eventHandler -> {
-            getWorkbench().hideDrawer();
-            getWorkbench().showDialog(WorkbenchDialog.builder(mBundle.getString("help_intro"), content, WorkbenchDialog.Type.INFORMATION)
-                    .maximized(true)
-                    .showButtonsBar(false)
-                    .build()
-            );
+            var help = new Help();
+            var markdownView = new MarkdownView(FlexmarkHtmlConverter.builder().build().convert(help.getHelp()));
+            markdownView.getStylesheets().add(AppModule.class.getResource("mdfx.css").toExternalForm());
+            var scrollPane = new ScrollPane(markdownView);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+            if (!isDialogShowing()) {
+                setDialogShowing(true);
+                getWorkbench().hideDrawer();
+                getWorkbench().showDialog(WorkbenchDialog.builder(mBundle.getString("help_intro"), scrollPane, WorkbenchDialog.Type.INFORMATION)
+                        .maximized(true)
+                        .showButtonsBar(false)
+                        .onResult(buttonType -> {
+                            setDialogShowing(false);
+                        })
+                        .build()
+                );
+            }
         });
 
         setPostInitRunnable(() -> {

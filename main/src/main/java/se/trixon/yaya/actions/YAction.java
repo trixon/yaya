@@ -44,6 +44,7 @@ public class YAction extends Action {
     protected final ResourceBundle mBundle = SystemHelper.getBundle(YActions.class, "Bundle");
     protected Options mOptions = Options.getInstance();
     protected Yaya mYaya = Yaya.getInstance();
+    private boolean mDialogShowing;
     private Runnable mPostInitRunnable;
 
     public YAction(String text) {
@@ -53,6 +54,14 @@ public class YAction extends Action {
                 mPostInitRunnable.run();
             }
         });
+    }
+
+    public boolean isDialogShowing() {
+        return mDialogShowing;
+    }
+
+    public void setDialogShowing(boolean dialogShowing) {
+        mDialogShowing = dialogShowing;
     }
 
     public void setPostInitRunnable(Runnable postInitRunnable) {

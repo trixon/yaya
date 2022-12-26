@@ -91,20 +91,23 @@ public class SystemDrawer extends BorderPane {
 
         setPrefWidth(FxHelper.getUIScaled(300));
         mThemeComboBox = new ComboBox<>();
-        var optionsBox = new VBox(FxHelper.getUIScaled(8));
+        var optionsBox = new VBox(FxHelper.getUIScaled(12));
         optionsBox.getChildren().addAll(
-                mScorecardSizeLabel,
-                mScorecardSizeSlider,
-                new Label(Dict.THEME.toString()),
-                mThemeComboBox,
+                new VBox(FxHelper.getUIScaled(4),
+                        mScorecardSizeLabel,
+                        mScorecardSizeSlider
+                ),
+                new VBox(FxHelper.getUIScaled(4),
+                        new Label(Dict.THEME.toString()),
+                        mThemeComboBox
+                ),
                 mPlaySoundToggleSwitch,
                 mScoreCardLimToggleSwitch,
                 mScoreCardMaxToggleSwitch,
                 mScoreCardIndicatorToggleSwitch,
                 mDiceReversedToggleSwitch
         );
-        optionsBox.setPadding(FxHelper.getUIScaledInsets(8));
-
+        optionsBox.setPadding(FxHelper.getUIScaledInsets(32));
         mThemeComboBox.itemsProperty().bind(mThemeManager.itemsProperty());
         mThemeComboBox.valueProperty().bindBidirectional(mThemeManager.themeProperty());
 
@@ -118,17 +121,19 @@ public class SystemDrawer extends BorderPane {
         setTop(drawerBox);
         setCenter(optionsBox);
 
-        var buttonBox = new VBox(FxHelper.getUIScaled(16));
+        var buttonBox = new VBox(FxHelper.getUIScaled(12));
         var removePlayerButton = ActionUtils.createButton(YActions.forId("core", "removePlayer"));
         var helpButton = ActionUtils.createButton(YActions.forId("core", "help"));
         var aboutButton = ActionUtils.createButton(YActions.forId("core", "about"));
         var quitButton = ActionUtils.createButton(YActions.forId("core", "quit"));
+
         buttonBox.getChildren().addAll(
                 removePlayerButton,
                 helpButton,
                 aboutButton,
                 quitButton
         );
+
         buttonBox.setPadding(FxHelper.getUIScaledInsets(32));
 
         bindWidths(optionsBox, optionsBox.getChildren());

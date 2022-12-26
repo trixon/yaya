@@ -17,6 +17,7 @@ package se.trixon.yaya;
 
 import java.util.Random;
 import java.util.TreeSet;
+import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -45,7 +46,8 @@ public class NewGamePane extends GridPane {
     private final Button mShuffleButton = new Button(Dict.Game.SHUFFLE.toString());
 
     public NewGamePane() {
-        setGridLinesVisible(true);
+        //setGridLinesVisible(true);
+        setPrefWidth(FxHelper.getUIScaled(300));
         createUI();
         initListeners();
     }
@@ -107,16 +109,20 @@ public class NewGamePane extends GridPane {
             }
         });
 
-        var leftBox = new VBox();
-        var rightBox = new VBox();
+        var leftBox = new VBox(FxHelper.getUIScaled(12));
+        var rightBox = new VBox(FxHelper.getUIScaled(12));
+        playersLabel.setPadding(FxHelper.getUIScaledInsets(12, 0, 4, 0));
+        leftBox.setPadding(FxHelper.getUIScaledInsets(12, 6, 0, 0));
+        rightBox.setPadding(FxHelper.getUIScaledInsets(12, 0, 0, 6));
+
         for (int i = 0; i < MAX_NUM_OF_PLAYERS; i++) {
             var comboBox = new ComboBox<String>();
             comboBox.setEditable(true);
             mNameComboBoxes[i] = comboBox;
             var parent = (i & 1) == 0 ? leftBox : rightBox;
             parent.getChildren().add(mNameComboBoxes[i]);
-
         }
+
         int col = 0;
         int row = 0;
 //        gameLabel.setPrefWidth(9999);
@@ -127,6 +133,14 @@ public class NewGamePane extends GridPane {
         add(mShuffleButton, 1, row, 1, 1);
         add(leftBox, 0, ++row, 1, 1);
         add(rightBox, 1, row, 1, 1);
+
+        mPlayerSpinner.prefWidthProperty().bind(mNameComboBoxes[0].widthProperty());
+        GridPane.setHalignment(gameLabel, HPos.CENTER);
+        GridPane.setHalignment(playersLabel, HPos.CENTER);
+        GridPane.setHalignment(mShuffleButton, HPos.RIGHT);
+
+        gameLabel.setStyle("-fx-font-size: 1.8em;");
+        playersLabel.setStyle("-fx-font-size: 1.8em;");
 
         FxHelper.autoSizeColumn(this, 2);
     }
