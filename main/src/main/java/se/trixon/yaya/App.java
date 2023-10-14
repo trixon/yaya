@@ -86,11 +86,11 @@ public class App extends Application {
         mStage.getIcons().add(new Image(App.class.getResourceAsStream("logo.png")));
         mStage.setTitle(APP_TITLE);
         mStage.setFullScreenExitHint("");
-        int minWidth = FxHelper.getUIScaled(200);
+        int minWidth = FxHelper.getUIScaled(400);
         mStage.setMinWidth(minWidth);
-        int minHeight = FxHelper.getUIScaled(200);
+        int minHeight = FxHelper.getUIScaled(400);
         mStage.setMinHeight(minHeight);
-        StageManager.install(mStage, mOptions.getPreferences().node("stage").absolutePath(), minWidth, minHeight);
+        StageManager.install(mStage, mOptions.getPreferences().node("stage"), minWidth, minHeight);
 
         mAppModule = new AppModule();
 
