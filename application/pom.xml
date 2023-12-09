@@ -14,11 +14,6 @@
 
     <name>application</name>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <all.clusters>${project.build.directory}/${brandingToken}</all.clusters>
-    </properties>
-
     <dependencies>
         <!-- NetBeans -->
         <dependency>
