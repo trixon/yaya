@@ -22,9 +22,10 @@
     <dependencies>
         <!-- NetBeans -->
         <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-core-startup</artifactId>
-            <version>${netbeans.version}</version>
+            <groupId>se.trixon.netbeans-platform</groupId>
+            <artifactId>runtime-container</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <type>pom</type>
         </dependency>
 
         <!-- Yaya -->
