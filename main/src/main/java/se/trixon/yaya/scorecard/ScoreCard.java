@@ -230,14 +230,18 @@ public class ScoreCard {
 
     private void applyFontSize(Container container, float size) {
         for (var component : container.getComponents()) {
-            if (component instanceof JLabel label) {
-                label.setFont(label.getFont().deriveFont(size));
-                var d = label.getPreferredSize();
-                d.height = (int) (size * 1.2);
-                d.width = 1;
-                label.setMinimumSize(d);
-            } else if (component instanceof Container subContainer) {
-                applyFontSize(subContainer, size);
+            switch (component) {
+                case JLabel label -> {
+                    label.setFont(label.getFont().deriveFont(size));
+                    var d = label.getPreferredSize();
+                    d.height = (int) (size * 1.2);
+                    d.width = 1;
+                    label.setMinimumSize(d);
+                }
+                case Container subContainer ->
+                    applyFontSize(subContainer, size);
+                default -> {
+                }
             }
         }
     }
