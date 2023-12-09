@@ -30,8 +30,7 @@ import se.trixon.almond.util.icons.material.MaterialIcon;
 public class AppModule extends WorkbenchModule {
 
     private static final int MODULE_ICON_SIZE = 32;
-    private BorderPane mRoot = new BorderPane();
-    private Workbench mWorkbench;
+    private final BorderPane mRoot = new BorderPane();
     private final SwingNode mSwingNode = new SwingNode();
     private final Yaya mYaya = Yaya.getInstance();
 
@@ -40,16 +39,15 @@ public class AppModule extends WorkbenchModule {
     }
 
     @Override
-    public void init(Workbench workbench) {
-        super.init(workbench);
-        mWorkbench = workbench;
-
-        createUI();
+    public Node activate() {
+        return mRoot;
     }
 
     @Override
-    public Node activate() {
-        return mRoot;
+    public void init(Workbench workbench) {
+        super.init(workbench);
+
+        createUI();
     }
 
     private void createUI() {
@@ -57,7 +55,7 @@ public class AppModule extends WorkbenchModule {
             mSwingNode.setContent(mYaya.getPanel());
         });
 
-        mRoot = new BorderPane(mSwingNode);
+        mRoot.setCenter(mSwingNode);
     }
 
 }
