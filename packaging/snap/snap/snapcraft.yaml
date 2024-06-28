@@ -1,7 +1,7 @@
 name: yaya
 title: Yaya
 base: core22
-version: '0.2'
+version: 'REPLACE_WITH_VERSION'
 summary: Yet Another Yahtzee-esque Application
 description: |
     Enjoy classic family dice games with up to 8 players.
@@ -32,7 +32,7 @@ apps:
 parts:
   yaya:
     plugin: dump
-    source: /root/project/yaya-$SNAPCRAFT_PROJECT_VERSION-linux.zip
+    source: /root/project/Yaya-$SNAPCRAFT_PROJECT_VERSION-linux.zip
     source-type: zip
     stage-packages:
       - libasound2
@@ -43,10 +43,11 @@ parts:
       - yaya
     plugin: nil
     override-prime: |
-        #sed -i 's/${HOME}\/.${APPNAME}/${SNAP_USER_COMMON}\/.yaya/' /root/prime/yaya/bin/yaya
-        #sed -i 's/${HOME}\/.cache\/${APPNAME}/${SNAP_USER_COMMON}\/.cache\/yaya/' /root/prime/yaya/bin/yaya
-        rm /root/prime/yaya/platform/lib/*.dll
-        rm /root/prime/yaya/platform/lib/*.exe
+      craftctl default
+      sed -i 's/${HOME}\/.${APPNAME}/${SNAP_USER_COMMON}\/.yaya/' /root/prime/yaya/bin/yaya
+      sed -i 's/${HOME}\/.cache\/${APPNAME}/${SNAP_USER_COMMON}\/.cache\/yaya/' /root/prime/yaya/bin/yaya
+      rm /root/prime/yaya/platform/lib/*.dll
+      rm /root/prime/yaya/platform/lib/*.exe
         
   alsa-pulseaudio:
     plugin: dump
@@ -67,3 +68,6 @@ parts:
           fallback "sysdefault"
       }
       EOF
+
+lint:
+  ignore: [library]
