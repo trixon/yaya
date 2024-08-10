@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Yaya
+Comment=Yet Another Yahtzee-esque Application
+Exec=yaya %F
+Icon=se.trixon.yaya
+Terminal=false
+Categories=Game;
+StartupNotify=true
+StartupWMClass=Yaya
+
