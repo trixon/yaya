@@ -19,15 +19,31 @@ import com.dlsc.workbenchfx.Workbench;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+import org.openide.awt.Actions;
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
+import org.openide.util.NbPreferences;
+import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.GlobalState;
+import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
+import se.trixon.almond.util.fx.FxHelper;
 import se.trixon.almond.util.gson_adapter.AwtColorAdapter;
+import se.trixon.yaya.actions.YActions;
+import se.trixon.yaya.scorecard.rules.RuleManager;
 
 /**
  *
@@ -46,9 +62,13 @@ public class Yaya {
     public static final String LOG_TITLE = "Yaya";
     private static final GlobalState sGlobalState = new GlobalState();
     private final ObjectProperty<App> mApplicationProperty = new SimpleObjectProperty<>();
+    private final ResourceBundle mBundle = NbBundle.getBundle(YActions.class);
+    private final Options mOptions = Options.getInstance();
+    private JPopupMenu mPopupMenu;
+    private final RuleManager mRuleManager = RuleManager.getInstance();
     private final ObjectProperty<Stage> mStageProperty = new SimpleObjectProperty<>();
     private Workbench mWorkbench;
-    private YayaPanel mYayaPanel;
+    private final YayaPanel mYayaPanel;
 
     public static void errln(String name, String message) {
         System.err.println(message);
@@ -79,6 +99,24 @@ public class Yaya {
     }
 
     private Yaya() {
+        //INIT
+        mRuleManager.init();
+        mYayaPanel = new YayaPanel();
+        initMenu();
+        var popupListener = new PopupListener();
+//        addMouseListener(popupListener);
+        mYayaPanel.addMouseListener(popupListener);
+        PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
+        int gameStartCounter = mOptions.getPreferences().getInt(Options.KEY_GAME_START_COUNTER, 0);
+        if (gameStartCounter == 0) {
+            FxHelper.runLaterDelayed(200, () -> {
+                YActions.forId("core", "newround").handle(null);
+                YActions.forId("core", "help").handle(null);
+            });
+        } else {
+            onRequestNewGameStart();
+        }
+
     }
 
     public ObjectProperty<App> applicationProperty() {
@@ -90,10 +128,6 @@ public class Yaya {
     }
 
     public YayaPanel getPanel() {
-        if (mYayaPanel == null) {
-            mYayaPanel = new YayaPanel();
-        }
-
         return mYayaPanel;
     }
 
@@ -125,8 +159,132 @@ public class Yaya {
         return mStageProperty;
     }
 
+    private void initMenu() {
+        mPopupMenu = new JPopupMenu();
+        var newMenuItem = new JMenuItem();
+        var systemMenu = new JMenu(Dict.SYSTEM.toString());
+//        mFullscreenCheckBoxMenuItem = new JCheckBoxMenuItem();
+//        mNightModeCheckBoxMenuItem = new JCheckBoxMenuItem();
+        var removePlayerMenuItem = new JMenuItem();
+//        mPlaySoundCheckBoxMenuItem = new JCheckBoxMenuItem();
+//
+        var scorecardMenu = new JMenu(mBundle.getString("scorecard"));
+//        mColorsMenu = new JMenu();
+//        mLimCheckBoxMenuItem = new JCheckBoxMenuItem();
+//        mMaxCheckBoxMenuItem = new JCheckBoxMenuItem();
+//        mIndicatorCheckBoxMenuItem = new JCheckBoxMenuItem();
+//
+
+        var diceMenu = new JMenu(mBundle.getString("dice"));
+        var reverseDiceDirectionCheckBoxMenuItem = new JCheckBoxMenuItem();
+//
+        var helpMenuItem = new JMenuItem();
+        var aboutMenuItem = new JMenuItem();
+        var quitMenuItem = new JMenuItem();
+//
+//        systemMenu.setText(Dict.SYSTEM.toString());
+//        Mnemonics.setLocalizedText(mScorecardMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.scorecardMenu.text")); // NOI18N
+//        Mnemonics.setLocalizedText(mColorsMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.colorsMenu.text")); // NOI18N
+//        Mnemonics.setLocalizedText(mDiceMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.diceMenu.text")); // NOI18N
+//        Mnemonics.setLocalizedText(mReverseDiceDirectionCheckBoxMenuItem, NbBundle.getMessage(MainFrame.class, "MainFrame.reverseDiceDirectionCheckBoxMenuItem.text")); // NOI18N
+        var reverseDiceDirectionAction = Actions.checkbox(
+                NbPreferences.forModule(Yaya.class).absolutePath(),
+                Options.KEY_REVERSE_DIRECTION,
+                mBundle.getString("reverseDiceDirection"),
+                "",
+                true
+        );
+        Actions.connect(reverseDiceDirectionCheckBoxMenuItem, reverseDiceDirectionAction, false);
+        Actions.connect(newMenuItem, Actions.forID("Game", "se.trixon.yaya.actions.NewRoundAction"), false);
+        Actions.connect(removePlayerMenuItem, Actions.forID("Game", "se.trixon.yaya.actions.RemovePlayerAction"), false);
+        Actions.connect(helpMenuItem, Actions.forID("Help", "se.trixon.yaya.actions.HelpAction"), false);
+        Actions.connect(aboutMenuItem, Actions.forID("Help", "se.trixon.yaya.actions.AboutAction"), false);
+        Actions.connect(quitMenuItem, Actions.forID("File", "se.trixon.almond.nbp.actions.QuitAction"), false);
+        mPopupMenu.add(newMenuItem);
+        mPopupMenu.add(new JPopupMenu.Separator());
+        mPopupMenu.add(systemMenu);
+//        systemMenu.add(mFullscreenCheckBoxMenuItem);
+//        systemMenu.add(mNightModeCheckBoxMenuItem);
+//        systemMenu.add(mPlaySoundCheckBoxMenuItem);
+        systemMenu.add(new JSeparator());
+        systemMenu.add(removePlayerMenuItem);
+//
+        mPopupMenu.add(scorecardMenu);
+//        mScorecardMenu.add(mColorsMenu);
+//        mScorecardMenu.add(mLimCheckBoxMenuItem);
+//        mScorecardMenu.add(mMaxCheckBoxMenuItem);
+//        mScorecardMenu.add(mIndicatorCheckBoxMenuItem);
+//
+        mPopupMenu.add(diceMenu);
+        diceMenu.add(reverseDiceDirectionCheckBoxMenuItem);
+//
+        mPopupMenu.add(new JPopupMenu.Separator());
+        mPopupMenu.add(helpMenuItem);
+        mPopupMenu.add(aboutMenuItem);
+        mPopupMenu.add(new JPopupMenu.Separator());
+        mPopupMenu.add(quitMenuItem);
+//
+//        var buttonGroup = new ButtonGroup();
+//        for (var theme : mThemeManager.getItems()) {
+//            var radioButtonMenuItem = new JRadioButtonMenuItem(theme.getName());
+//            radioButtonMenuItem.addActionListener(actionEvent -> {
+//                mThemeManager.setTheme(theme);
+//                mOptions.setThemeId(theme.getId());
+//            });
+//            buttonGroup.add(radioButtonMenuItem);
+//            mColorsMenu.add(radioButtonMenuItem);
+//            radioButtonMenuItem.setSelected(mOptions.getThemeId().equalsIgnoreCase(theme.getId()));
+//        }
+//
+//        var fontMenuItem = new JMenuItem(Dict.SIZE.toString());
+//        fontMenuItem.setEnabled(false);
+//        mScorecardMenu.add(fontMenuItem);
+//
+//        var fontSlider = new JSlider(8, 72, mOptions.getFontSize());
+//        var fontResetRunner = new DelayedResetRunner(50, () -> {
+//            mOptions.setFontSize(fontSlider.getValue());
+//        });
+//
+//        fontSlider.addChangeListener(changeEvent -> {
+//            fontResetRunner.reset();
+//        });
+//
+//        mScorecardMenu.add(fontSlider);
+//        mUIComponents.add(mPopupMenu); NO USE
+    }
+
+    private void loadSettings() {
+////        mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
+//        mNightModeCheckBoxMenuItem.setSelected(mOptions.isNightMode());
+//        mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
+//        mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
+//        mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
+//        mPlaySoundCheckBoxMenuItem.setSelected(mOptions.is(Options.KEY_PLAY_SOUND, Options.DEFAULT_PLAY_SOUND));
+//
+//        mReverseDiceDirectionCheckBoxMenuItem.setSelected(mOptions.isReverseDirection());
+    }
+
     private static class Holder {
 
         private static final Yaya INSTANCE = new Yaya();
+    }
+
+    class PopupListener extends MouseAdapter {
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            maybeShowPopup(e);
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            maybeShowPopup(e);
+        }
+
+        private void maybeShowPopup(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                mPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+            }
+        }
     }
 }

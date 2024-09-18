@@ -15,39 +15,52 @@
  */
 package se.trixon.yaya.actions;
 
-import java.util.ResourceBundle;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import org.openide.util.lookup.ServiceProvider;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
+import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
+import org.openide.awt.ActionRegistration;
+import org.openide.util.NbBundle;
 import se.trixon.almond.util.Dict;
-import se.trixon.almond.util.SystemHelper;
-import se.trixon.almond.util.fx.dialogs.Message;
+import se.trixon.almond.util.swing.SwingHelper;
+import se.trixon.almond.util.swing.dialogs.HtmlPanel;
 import se.trixon.yaya.Help;
 
 /**
  *
  * @author Patrik Karlström
  */
-@YAction.Description(category = "core", id = "help")
-@ServiceProvider(service = YAction.class)
-public class RootHelpAction extends YAction {
+@ActionID(
+        category = "Help",
+        id = "se.trixon.yaya.actions.HelpAction"
+)
+@ActionRegistration(
+        displayName = "#CTL_HelpAction"
+)
+@ActionReference(path = "Shortcuts", name = "F1")
+@NbBundle.Messages("CTL_HelpAction=Help")
+public final class RootHelpAction extends YAction2 implements ActionListener {
 
-    private final ResourceBundle mBundle = SystemHelper.getBundle(Help.class, "Help");
+    private final HtmlPanel mHtmlPanel = new HtmlPanel(new Help().getHelp());
 
-    public RootHelpAction() {
-        super(Dict.HELP.toString());
-        var keyCodeCombination = new KeyCodeCombination(KeyCode.F1, KeyCombination.SHORTCUT_ANY);
-        setAccelerator(keyCodeCombination);
-        setEventHandler(eventHandler -> {
-            getWorkbench().hideDrawer();
-            Message.html(getWorkbench(), Dict.HELP.toString(), new Help().getHelp());
-        });
-
-        setPostInitRunnable(() -> {
-            setAcceleratorForStage(keyCodeCombination);
-            addTooltipKeyCode(keyCodeCombination);
-        });
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        mHtmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(720, 740));
+        mHtmlPanel.getScrollPane().setBorder(null);
+        var defaultBorder = (EmptyBorder) UIManager.get("OptionPane.border");
+        UIManager.put("OptionPane.border", new EmptyBorder(0, 0, 0, 0));
+        var d = new NotifyDescriptor(
+                mHtmlPanel,
+                Dict.HELP.toString(),
+                NotifyDescriptor.DEFAULT_OPTION,
+                NotifyDescriptor.PLAIN_MESSAGE,
+                new String[]{Dict.CLOSE.toString()},
+                Dict.CLOSE.toString());
+        DialogDisplayer.getDefault().notify(d);
+        UIManager.put("OptionPane.border", defaultBorder);
     }
-
 }

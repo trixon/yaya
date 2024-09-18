@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Patrik Karlström.
+ * Copyright 2024 pata.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,56 +15,48 @@
  */
 package se.trixon.yaya.actions;
 
-import com.dlsc.workbenchfx.model.WorkbenchDialog;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import org.openide.util.lookup.ServiceProvider;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
+import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
+import org.openide.awt.ActionRegistration;
+import org.openide.util.NbBundle.Messages;
 import se.trixon.almond.util.Dict;
-import se.trixon.yaya.NewGamePane;
+import se.trixon.yaya.NewGamePanel;
 
-/**
- *
- * @author Patrik Karlström
- */
-@YAction.Description(category = "core", id = "newround")
-@ServiceProvider(service = YAction.class)
-public class RootNewRoundAction extends YAction {
+@ActionID(
+        category = "Game",
+        id = "se.trixon.yaya.actions.NewRoundAction"
+)
+@ActionRegistration(
+        displayName = "#CTL_NewRoundAction"
+)
+@ActionReference(path = "Shortcuts", name = "N")
+@Messages("CTL_NewRoundAction=New round")
+public final class RootNewRoundAction extends YAction2 implements ActionListener {
+
+    private final NewGamePanel mNewGamePanel = new NewGamePanel();
 
     public RootNewRoundAction() {
-        super(Dict.Game.NEW_ROUND.toString());
-        var keyCodeCombination = new KeyCodeCombination(KeyCode.N);
-        setAccelerator(keyCodeCombination);
+    }
 
-        setEventHandler(eventHandler -> {
-            if (!isDialogShowing()) {
-                setDialogShowing(true);
-                var playButtonType = new ButtonType(Dict.PLAY.toString(), ButtonBar.ButtonData.OK_DONE);
-                var newGamePane = new NewGamePane();
-                newGamePane.load();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        mNewGamePanel.load();
 
-                var dialog = WorkbenchDialog.builder(
-                        Dict.Game.NEW_ROUND.toString(),
-                        newGamePane,
-                        playButtonType, ButtonType.CANCEL
-                ).onResult(buttonType -> {
-                    setDialogShowing(false);
-                    if (buttonType == playButtonType) {
-                        newGamePane.save();
+        var d = new NotifyDescriptor(
+                mNewGamePanel,
+                Dict.Game.NEW_ROUND.toString(),
+                NotifyDescriptor.OK_CANCEL_OPTION,
+                NotifyDescriptor.PLAIN_MESSAGE,
+                new String[]{Dict.CANCEL.toString(), Dict.PLAY.toString()},
+                Dict.PLAY.toString());
 
-                        mYaya.onRequestNewGameStart();
-                    }
-                }).build();
-
-                getWorkbench().showDialog(dialog);
-            }
-
-        });
-
-        setPostInitRunnable(() -> {
-            setAcceleratorForStage(keyCodeCombination);
-            addTooltipKeyCode(keyCodeCombination);
-        });
+        if (Dict.PLAY.toString() == DialogDisplayer.getDefault().notify(d)) {
+            mNewGamePanel.save();
+            mYaya.onRequestNewGameStart();
+        }
     }
 }

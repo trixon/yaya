@@ -129,6 +129,16 @@
             </exclusions>
         </dependency>
 
+        <!-- Trixon -->
+        <dependency>
+            <groupId>se.trixon.almond</groupId>
+            <artifactId>almond-nbp-actions</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>se.trixon.almond</groupId>
+            <artifactId>almond-nbp-actions-osx</artifactId>
+        </dependency>
+
         <!-- Yaya -->
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -151,7 +161,7 @@
                     <finalName>Yaya-${project.version}</finalName>
                     <etcConfFile>src/yaya.conf</etcConfFile>
                     <verifyRuntime>true</verifyRuntime>
-                    <additionalArguments>&#045;&#045;locale en</additionalArguments>
+                    <!--<additionalArguments>&#045;&#045;locale en</additionalArguments>-->
                     <!--<additionalArguments>&#045;&#045;fontsize 32</additionalArguments>-->
                     <!--<additionalArguments>&#045;&#045;fontsize 16</additionalArguments>-->
                 </configuration>

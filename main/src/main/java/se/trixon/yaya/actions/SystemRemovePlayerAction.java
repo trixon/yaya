@@ -15,68 +15,77 @@
  */
 package se.trixon.yaya.actions;
 
-import com.dlsc.workbenchfx.model.WorkbenchDialog;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.openide.DialogDescriptor;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
+import org.openide.awt.ActionID;
+import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle;
-import org.openide.util.lookup.ServiceProvider;
-import se.trixon.almond.util.fx.FxHelper;
 import se.trixon.yaya.Options;
 
 /**
  *
  * @author Patrik Karlström
  */
-@YAction.Description(category = "core", id = "removePlayer")
-@ServiceProvider(service = YAction.class)
-public class SystemRemovePlayerAction extends YAction {
+@ActionID(
+        category = "Game",
+        id = "se.trixon.yaya.actions.RemovePlayerAction"
+)
+@ActionRegistration(
+        displayName = "#CTL_RemovePlayerAction"
+)
+@NbBundle.Messages("CTL_RemovePlayerAction=Remove player")
+public final class SystemRemovePlayerAction extends YAction2 implements ActionListener {
 
-    public SystemRemovePlayerAction() {
-        super(NbBundle.getMessage(YActions.class, "removePlayerTitle"));
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        var players = mOptions.getAllPlayers();
+        var items = Stream.of(players)
+                .map(player -> new NotifyDescriptor.QuickPick.Item(player, null))
+                .toList();
 
-        setEventHandler(eventHandler -> {
-            var players = mOptions.getAllPlayers();
-            var comboBox = new ComboBox<String>();
-            comboBox.getItems().setAll(players);
-            comboBox.getSelectionModel().select(0);
-            comboBox.setMinWidth(FxHelper.getUIScaled(250));
+        var d = new NotifyDescriptor.QuickPick(
+                mBundle.getString("removePlayerInfo") + " ".repeat(35),
+                Bundle.CTL_RemovePlayerAction(),
+                items,
+                true);
 
-            var dialog = WorkbenchDialog.builder(
-                    mBundle.getString("removePlayerTitle"),
-                    comboBox,
-                    ButtonType.OK, ButtonType.CANCEL
-            ).onResult(buttonType -> {
-                if (buttonType == ButtonType.OK) {
-                    var removedPlayer = comboBox.getValue();
-                    var remainingPlayers = ArrayUtils.removeElement(players, removedPlayer);
+        if (DialogDescriptor.OK_OPTION == DialogDisplayer.getDefault().notify(d)) {
+            var playersToRemove = items.stream()
+                    .filter(item -> item.isSelected())
+                    .map(item -> item.getLabel())
+                    .toArray(String[]::new);
 
-                    if (remainingPlayers.length == 0) {
-                        mOptions.put(Options.KEY_PLAYERS_ALL, Options.DEFAULT_PLAYERS_ALL);
-                        mOptions.put(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
-                    } else {
-                        mOptions.put(Options.KEY_PLAYERS_ALL, String.join(";", remainingPlayers));
+            var remainingPlayers = ArrayUtils.removeElements(players, playersToRemove);
 
-                        var defaultFillPlayer = remainingPlayers[0];
-                        var contenders = mOptions.get(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
-                        contenders = StringUtils.replace(contenders, removedPlayer, "");
-                        contenders = StringUtils.replace(contenders, ";;", ";%s;".formatted(defaultFillPlayer));
+            if (remainingPlayers.length == 0) {
+                mOptions.put(Options.KEY_PLAYERS_ALL, Options.DEFAULT_PLAYERS_ALL);
+                mOptions.put(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
+            } else {
+                mOptions.put(Options.KEY_PLAYERS_ALL, String.join(";", remainingPlayers));
 
-                        if (StringUtils.startsWith(contenders, ";")) {
-                            contenders = defaultFillPlayer + contenders;
-                        }
-
-                        if (StringUtils.endsWith(contenders, ";")) {
-                            contenders = contenders + defaultFillPlayer;
-                        }
-
-                        mOptions.put(Options.KEY_PLAYERS, contenders);
-                    }
+                var defaultFillPlayer = remainingPlayers[0];
+                var contenders = mOptions.get(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
+                for (var removedPlayer : playersToRemove) {
+                    contenders = StringUtils.replace(contenders, removedPlayer, "");
                 }
-            }).build();
+                contenders = StringUtils.replace(contenders, ";;", ";%s;".formatted(defaultFillPlayer));
 
-            getWorkbench().showDialog(dialog);
-        });
+                if (StringUtils.startsWith(contenders, ";")) {
+                    contenders = defaultFillPlayer + contenders;
+                }
+
+                if (StringUtils.endsWith(contenders, ";")) {
+                    contenders = contenders + defaultFillPlayer;
+                }
+
+                mOptions.put(Options.KEY_PLAYERS, contenders);
+            }
+        }
     }
 }
