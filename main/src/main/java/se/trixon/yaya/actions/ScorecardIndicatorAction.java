@@ -15,33 +15,24 @@
  */
 package se.trixon.yaya.actions;
 
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import org.controlsfx.control.action.ActionCheck;
-import org.openide.util.NbBundle;
-import org.openide.util.lookup.ServiceProvider;
-
 /**
  *
  * @author Patrik Karlström
  */
-@YAction.Description(category = "core", id = "indicator")
-@ServiceProvider(service = YAction.class)
-@ActionCheck
 public class ScorecardIndicatorAction extends YAction {
 
-    public ScorecardIndicatorAction() {
-        super(NbBundle.getMessage(YActions.class, "indicator"));
-        var keyCodeCombination = new KeyCodeCombination(KeyCode.F7);
-        setAccelerator(keyCodeCombination);
-
-        setEventHandler(eventHandler -> {
-            mOptions.invert(mOptions.displayIndicatorsProperty());
-        });
-
-        setPostInitRunnable(() -> {
-            setAcceleratorForStage(keyCodeCombination);
-            addTooltipKeyCode(keyCodeCombination);
-        });
-    }
+//    public ScorecardIndicatorAction() {
+//        super(NbBundle.getMessage(YActions.class, "indicator"));
+//        var keyCodeCombination = new KeyCodeCombination(KeyCode.F7);
+//        setAccelerator(keyCodeCombination);
+//
+//        setEventHandler(eventHandler -> {
+//            mOptions.invert(mOptions.displayIndicatorsProperty());
+//        });
+//
+//        setPostInitRunnable(() -> {
+//            setAcceleratorForStage(keyCodeCombination);
+//            addTooltipKeyCode(keyCodeCombination);
+//        });
+//    }
 }

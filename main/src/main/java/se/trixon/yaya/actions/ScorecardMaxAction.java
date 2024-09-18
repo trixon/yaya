@@ -15,33 +15,24 @@
  */
 package se.trixon.yaya.actions;
 
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import org.controlsfx.control.action.ActionCheck;
-import org.openide.util.NbBundle;
-import org.openide.util.lookup.ServiceProvider;
-
 /**
  *
  * @author Patrik Karlström
  */
-@YAction.Description(category = "core", id = "max")
-@ServiceProvider(service = YAction.class)
-@ActionCheck
 public class ScorecardMaxAction extends YAction {
 
-    public ScorecardMaxAction() {
-        super(NbBundle.getMessage(YActions.class, "max"));
-        var keyCodeCombination = new KeyCodeCombination(KeyCode.F6);
-        setAccelerator(keyCodeCombination);
-
-        setEventHandler(eventHandler -> {
-            mOptions.invert(mOptions.displayMaxProperty());
-        });
-
-        setPostInitRunnable(() -> {
-            setAcceleratorForStage(keyCodeCombination);
-            addTooltipKeyCode(keyCodeCombination);
-        });
-    }
+//    public ScorecardMaxAction() {
+//        super(NbBundle.getMessage(YActions.class, "max"));
+//        var keyCodeCombination = new KeyCodeCombination(KeyCode.F6);
+//        setAccelerator(keyCodeCombination);
+//
+//        setEventHandler(eventHandler -> {
+//            mOptions.invert(mOptions.displayMaxProperty());
+//        });
+//
+//        setPostInitRunnable(() -> {
+//            setAcceleratorForStage(keyCodeCombination);
+//            addTooltipKeyCode(keyCodeCombination);
+//        });
+//    }
 }

@@ -39,7 +39,7 @@ import se.trixon.yaya.Yaya;
         displayName = "#CTL_AboutAction"
 )
 @NbBundle.Messages("CTL_AboutAction=About")
-public final class RootAboutAction extends YAction2 implements ActionListener {
+public final class RootAboutAction extends YAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {

@@ -35,7 +35,7 @@ import se.trixon.yaya.NewGamePanel;
 )
 @ActionReference(path = "Shortcuts", name = "N")
 @Messages("CTL_NewRoundAction=New round")
-public final class RootNewRoundAction extends YAction2 implements ActionListener {
+public final class RootNewRoundAction extends YAction implements ActionListener {
 
     private final NewGamePanel mNewGamePanel = new NewGamePanel();
 

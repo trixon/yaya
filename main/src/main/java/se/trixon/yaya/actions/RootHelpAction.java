@@ -43,7 +43,7 @@ import se.trixon.yaya.Help;
 )
 @ActionReference(path = "Shortcuts", name = "F1")
 @NbBundle.Messages("CTL_HelpAction=Help")
-public final class RootHelpAction extends YAction2 implements ActionListener {
+public final class RootHelpAction extends YAction implements ActionListener {
 
     private final HtmlPanel mHtmlPanel = new HtmlPanel(new Help().getHelp());
 

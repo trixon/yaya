@@ -15,34 +15,24 @@
  */
 package se.trixon.yaya.actions;
 
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import org.controlsfx.control.action.ActionCheck;
-import org.openide.util.NbBundle;
-import org.openide.util.lookup.ServiceProvider;
-
 /**
  *
  * @author Patrik Karlström
  */
-@YAction.Description(category = "core", id = "lim")
-@ServiceProvider(service = YAction.class)
-@ActionCheck
 public class ScorecardLimAction extends YAction {
 
-    public ScorecardLimAction() {
-        super(NbBundle.getMessage(YActions.class, "lim"));
-        var keyCodeCombination = new KeyCodeCombination(KeyCode.F5);
-        setAccelerator(keyCodeCombination);
-
-        setEventHandler(eventHandler -> {
-            mOptions.invert(mOptions.displayLimProperty());
-        });
-
-        setPostInitRunnable(() -> {
-            setAcceleratorForStage(keyCodeCombination);
-            addTooltipKeyCode(keyCodeCombination);
-        });
-    }
-
+//    public ScorecardLimAction() {
+//        super(NbBundle.getMessage(YActions.class, "lim"));
+//        var keyCodeCombination = new KeyCodeCombination(KeyCode.F5);
+//        setAccelerator(keyCodeCombination);
+//
+//        setEventHandler(eventHandler -> {
+//            mOptions.invert(mOptions.displayLimProperty());
+//        });
+//
+//        setPostInitRunnable(() -> {
+//            setAcceleratorForStage(keyCodeCombination);
+//            addTooltipKeyCode(keyCodeCombination);
+//        });
+//    }
 }

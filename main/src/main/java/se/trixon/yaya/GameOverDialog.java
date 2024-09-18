@@ -15,17 +15,7 @@
  */
 package se.trixon.yaya;
 
-import com.dlsc.workbenchfx.model.WorkbenchDialog;
-import static j2html.TagCreator.*;
 import java.util.ArrayList;
-import java.util.Comparator;
-import javafx.application.Platform;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.web.WebView;
-import se.trixon.almond.util.Dict;
-import se.trixon.almond.util.fx.FxHelper;
-import se.trixon.yaya.actions.YActions;
 
 /**
  *
@@ -33,63 +23,66 @@ import se.trixon.yaya.actions.YActions;
  */
 public class GameOverDialog {
 
-    private WebView mWebView;
-    private final Yaya mYaya = Yaya.getInstance();
-
-    public static GameOverDialog getInstance() {
-        return Holder.INSTANCE;
-    }
-
-    private GameOverDialog() {
-        Platform.runLater(() -> {
-            mWebView = new WebView();
-        });
-    }
-
     public void display(ArrayList<GameOverItem> gameOverItems) {
-        gameOverItems.sort(Comparator.comparing(GameOverItem::score).reversed());
-        for (int i = 0; i < gameOverItems.size(); i++) {
-            gameOverItems.get(i).position = i + 1;
-        }
-
-        var html = html(
-                body(
-                        h1(Dict.Game.RESULT.toString()),
-                        table(
-                                tbody(
-                                        each(gameOverItems, gameOverItem
-                                                -> tr(
-                                                td(Integer.toString(gameOverItem.position)),
-                                                td(gameOverItem.player.getName()).withStyle("width:100%;"),
-                                                td(Integer.toString(gameOverItem.score)).withStyle("text-align: right;")
-                                        ).withStyle("border-bottom: 1px solid #ddd;")
-                                        )
-                                )
-                        ).withStyle("font-size: 180%;width:100%;")
-                ));
-        FxHelper.runLater(() -> display(html.render()));
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    private void display(String message) {
-        mWebView.getEngine().loadContent(message);
-        var newQuickButtonType = new ButtonType(Dict.Game.NEW_ROUND.toString(), ButtonBar.ButtonData.OK_DONE);
-        var newDialogButtonType = new ButtonType(Dict.Game.NEW_ROUND.toString() + "…", ButtonBar.ButtonData.APPLY);
-
-        var dialog = WorkbenchDialog.builder(
-                Dict.Game.GAME_OVER.toString(),
-                mWebView,
-                newDialogButtonType, newQuickButtonType
-        ).onResult(buttonType -> {
-            if (buttonType == newDialogButtonType) {
-                YActions.forId("core", "newround").handle(null);
-            } else if (buttonType == newQuickButtonType) {
-                mYaya.onRequestNewGameStart();
-            }
-        }).build();
-
-        mYaya.getWorkbench().showDialog(dialog);
-    }
-
+//    private WebView mWebView;
+//    private final Yaya mYaya = Yaya.getInstance();
+//
+//    public static GameOverDialog getInstance() {
+//        return Holder.INSTANCE;
+//    }
+//
+//    private GameOverDialog() {
+//        Platform.runLater(() -> {
+//            mWebView = new WebView();
+//        });
+//    }
+//
+//    public void display(ArrayList<GameOverItem> gameOverItems) {
+//        gameOverItems.sort(Comparator.comparing(GameOverItem::score).reversed());
+//        for (int i = 0; i < gameOverItems.size(); i++) {
+//            gameOverItems.get(i).position = i + 1;
+//        }
+//
+//        var html = html(
+//                body(
+//                        h1(Dict.Game.RESULT.toString()),
+//                        table(
+//                                tbody(
+//                                        each(gameOverItems, gameOverItem
+//                                                -> tr(
+//                                                td(Integer.toString(gameOverItem.position)),
+//                                                td(gameOverItem.player.getName()).withStyle("width:100%;"),
+//                                                td(Integer.toString(gameOverItem.score)).withStyle("text-align: right;")
+//                                        ).withStyle("border-bottom: 1px solid #ddd;")
+//                                        )
+//                                )
+//                        ).withStyle("font-size: 180%;width:100%;")
+//                ));
+//        FxHelper.runLater(() -> display(html.render()));
+//    }
+//
+//    private void display(String message) {
+//        mWebView.getEngine().loadContent(message);
+//        var newQuickButtonType = new ButtonType(Dict.Game.NEW_ROUND.toString(), ButtonBar.ButtonData.OK_DONE);
+//        var newDialogButtonType = new ButtonType(Dict.Game.NEW_ROUND.toString() + "…", ButtonBar.ButtonData.APPLY);
+//
+//        var dialog = WorkbenchDialog.builder(
+//                Dict.Game.GAME_OVER.toString(),
+//                mWebView,
+//                newDialogButtonType, newQuickButtonType
+//        ).onResult(buttonType -> {
+//            if (buttonType == newDialogButtonType) {
+//                YActions.forId("core", "newround").handle(null);
+//            } else if (buttonType == newQuickButtonType) {
+//                mYaya.onRequestNewGameStart();
+//            }
+//        }).build();
+//
+//        mYaya.getWorkbench().showDialog(dialog);
+//    }
     private static class Holder {
 
         private static final GameOverDialog INSTANCE = new GameOverDialog();

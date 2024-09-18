@@ -15,18 +15,15 @@
  */
 package se.trixon.yaya;
 
-import com.dlsc.workbenchfx.Workbench;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.stage.Stage;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -40,9 +37,9 @@ import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.GlobalState;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
-import se.trixon.almond.util.fx.FxHelper;
 import se.trixon.almond.util.gson_adapter.AwtColorAdapter;
-import se.trixon.yaya.actions.YActions;
+import se.trixon.almond.util.swing.SwingHelper;
+import se.trixon.yaya.actions.YAction;
 import se.trixon.yaya.scorecard.rules.RuleManager;
 
 /**
@@ -61,13 +58,10 @@ public class Yaya {
     public static final String KEY_GAME_STATE = "gamestate";
     public static final String LOG_TITLE = "Yaya";
     private static final GlobalState sGlobalState = new GlobalState();
-    private final ObjectProperty<App> mApplicationProperty = new SimpleObjectProperty<>();
-    private final ResourceBundle mBundle = NbBundle.getBundle(YActions.class);
+    private final ResourceBundle mBundle = NbBundle.getBundle(YAction.class);
     private final Options mOptions = Options.getInstance();
     private JPopupMenu mPopupMenu;
     private final RuleManager mRuleManager = RuleManager.getInstance();
-    private final ObjectProperty<Stage> mStageProperty = new SimpleObjectProperty<>();
-    private Workbench mWorkbench;
     private final YayaPanel mYayaPanel;
 
     public static void errln(String name, String message) {
@@ -98,8 +92,20 @@ public class Yaya {
         System.out.println(message);
     }
 
+//    private void postStart() {
+//        PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
+//        int gameStartCounter = mOptions.getPreferences().getInt(Options.KEY_GAME_START_COUNTER, 0);
+//        if (gameStartCounter == 0) {
+//            FxHelper.runLaterDelayed(200, () -> {
+//                YActions.forId("core", "newround").handle(null);
+//                YActions.forId("core", "help").handle(null);
+//            });
+//        } else {
+//            mYaya.onRequestNewGameStart();
+//        }
+//
+//    }
     private Yaya() {
-        //INIT
         mRuleManager.init();
         mYayaPanel = new YayaPanel();
         initMenu();
@@ -107,56 +113,23 @@ public class Yaya {
 //        addMouseListener(popupListener);
         mYayaPanel.addMouseListener(popupListener);
         PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
-        int gameStartCounter = mOptions.getPreferences().getInt(Options.KEY_GAME_START_COUNTER, 0);
-        if (gameStartCounter == 0) {
-            FxHelper.runLaterDelayed(200, () -> {
-                YActions.forId("core", "newround").handle(null);
-                YActions.forId("core", "help").handle(null);
+        int gameStartCounter = mOptions.getInt(Options.KEY_GAME_START_COUNTER, 0);
+        if (gameStartCounter == 0 || true) {
+            SwingHelper.runLaterDelayed(200, () -> {
+                Actions.forID("Help", "se.trixon.yaya.actions.HelpAction").actionPerformed(new ActionEvent(mYayaPanel, 0, ""));
+                Actions.forID("Game", "se.trixon.yaya.actions.NewRoundAction").actionPerformed(null);
             });
         } else {
             onRequestNewGameStart();
         }
-
-    }
-
-    public ObjectProperty<App> applicationProperty() {
-        return mApplicationProperty;
-    }
-
-    public App getApplication() {
-        return mApplicationProperty.get();
     }
 
     public YayaPanel getPanel() {
         return mYayaPanel;
     }
 
-    public Stage getStage() {
-        return mStageProperty.get();
-    }
-
-    public Workbench getWorkbench() {
-        return mWorkbench;
-    }
-
     public void onRequestNewGameStart() {
         getPanel().newGame();
-    }
-
-    public void setApplication(App application) {
-        mApplicationProperty.set(application);
-    }
-
-    public void setStage(Stage stage) {
-        mStageProperty.set(stage);
-    }
-
-    public void setWorkbench(Workbench workbench) {
-        mWorkbench = workbench;
-    }
-
-    public ObjectProperty<Stage> stageProperty() {
-        return mStageProperty;
     }
 
     private void initMenu() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Patrik Karlström.
+ * Copyright 2024 Patrik Karlström <patrik@trixon.se>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,107 +15,21 @@
  */
 package se.trixon.yaya.actions;
 
-import com.dlsc.workbenchfx.Workbench;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.util.ResourceBundle;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableMap;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.stage.Stage;
 import org.apache.commons.lang3.SystemUtils;
-import org.controlsfx.control.action.Action;
-import se.trixon.almond.util.SystemHelper;
-import se.trixon.almond.util.fx.FxHelper;
-import se.trixon.yaya.App;
+import org.openide.util.NbBundle;
 import se.trixon.yaya.Options;
 import se.trixon.yaya.Yaya;
 
 /**
  *
- * @author Patrik Karlström
+ * @author Patrik Karlström <patrik@trixon.se>
  */
-public class YAction extends Action {
+public abstract class YAction {
 
     protected static final boolean IS_MAC = SystemUtils.IS_OS_MAC;
-    protected final ResourceBundle mBundle = SystemHelper.getBundle(YActions.class, "Bundle");
+    protected final ResourceBundle mBundle = NbBundle.getBundle(YAction.class);
     protected Options mOptions = Options.getInstance();
     protected Yaya mYaya = Yaya.getInstance();
-    private boolean mDialogShowing;
-    private Runnable mPostInitRunnable;
 
-    public YAction(String text) {
-        super(text);
-        mYaya.stageProperty().addListener((ObservableValue<? extends Stage> observable, Stage oldValue, Stage newValue) -> {
-            if (mPostInitRunnable != null) {
-                mPostInitRunnable.run();
-            }
-        });
-    }
-
-    public boolean isDialogShowing() {
-        return mDialogShowing;
-    }
-
-    public void setDialogShowing(boolean dialogShowing) {
-        mDialogShowing = dialogShowing;
-    }
-
-    public void setPostInitRunnable(Runnable postInitRunnable) {
-        mPostInitRunnable = postInitRunnable;
-    }
-
-    protected void addTooltipKeyCode(KeyCodeCombination keyCodeCombination) {
-        FxHelper.setTooltip(this, keyCodeCombination);
-    }
-
-    protected String category() {
-        var description = getClass().getAnnotation(Description.class);
-        if (description != null) {
-            return description.category();
-        }
-        return getClass().getName();
-    }
-
-    protected ObservableMap<KeyCombination, Runnable> getAccelerators() {
-        return getStage().getScene().getAccelerators();
-    }
-
-    protected App getApplication() {
-        return mYaya.getApplication();
-    }
-
-    protected Stage getStage() {
-        return mYaya.getStage();
-    }
-
-    protected Workbench getWorkbench() {
-        return mYaya.getWorkbench();
-    }
-
-    protected String id() {
-        var description = getClass().getAnnotation(Description.class);
-        if (description != null) {
-            return description.id();
-        }
-        return getClass().getName();
-    }
-
-    protected void setAcceleratorForStage(KeyCodeCombination keyCodeCombination) {
-        getAccelerators().put(keyCodeCombination, () -> {
-            handle(null);
-        });
-    }
-
-    @Retention(value = RetentionPolicy.RUNTIME)
-    @Target(value = ElementType.TYPE)
-    public @interface Description {
-
-        String category() default "";
-
-        String id();
-    }
 }

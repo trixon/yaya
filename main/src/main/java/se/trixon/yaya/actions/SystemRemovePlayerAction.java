@@ -40,7 +40,7 @@ import se.trixon.yaya.Options;
         displayName = "#CTL_RemovePlayerAction"
 )
 @NbBundle.Messages("CTL_RemovePlayerAction=Remove player")
-public final class SystemRemovePlayerAction extends YAction2 implements ActionListener {
+public final class SystemRemovePlayerAction extends YAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {

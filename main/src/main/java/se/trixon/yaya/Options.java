@@ -15,9 +15,6 @@
  */
 package se.trixon.yaya;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
 import org.apache.commons.lang3.StringUtils;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.util.OptionsBase;
@@ -55,12 +52,6 @@ public class Options extends OptionsBase {
     private static final boolean DEFAULT_SHOW_LIM_COLUMN = false;
     private static final boolean DEFAULT_SHOW_MAX_COLUMN = false;
     private static final String DEFAULT_THEME = "default";
-    private final BooleanProperty mDiceReversedProperty = new SimpleBooleanProperty();
-    private final BooleanProperty mDisplayIndicatorProperty = new SimpleBooleanProperty();
-    private final BooleanProperty mDisplayLimProperty = new SimpleBooleanProperty();
-    private final BooleanProperty mDisplayMaxProperty = new SimpleBooleanProperty();
-    private final BooleanProperty mFullScreenProperty = new SimpleBooleanProperty();
-    private final BooleanProperty mPlaySoundProperty = new SimpleBooleanProperty();
     private Player[] mPlayers;
 
     public static Options getInstance() {
@@ -84,26 +75,6 @@ public class Options extends OptionsBase {
         }
 
         return players;
-    }
-
-    public BooleanProperty diceReversedProperty() {
-        return mDiceReversedProperty;
-    }
-
-    public BooleanProperty displayIndicatorsProperty() {
-        return mDisplayIndicatorProperty;
-    }
-
-    public BooleanProperty displayLimProperty() {
-        return mDisplayLimProperty;
-    }
-
-    public BooleanProperty displayMaxProperty() {
-        return mDisplayMaxProperty;
-    }
-
-    public BooleanProperty fullScreenProperty() {
-        return mFullScreenProperty;
     }
 
     public String[] getAllPlayers() {
@@ -144,12 +115,8 @@ public class Options extends OptionsBase {
         return get(KEY_THEME, DEFAULT_THEME);
     }
 
-    public void invert(BooleanProperty booleanProperty) {
-        booleanProperty.set(!booleanProperty.get());
-    }
-
     public boolean isFullScreen() {
-        return mFullScreenProperty.get();
+        return is(KEY_FULL_SCREEN, DEFAULT_FULL_SCREEN);
     }
 
     public boolean isReverseDirection() {
@@ -168,16 +135,12 @@ public class Options extends OptionsBase {
         return is(KEY_SHOW_MAX_COLUMN, DEFAULT_SHOW_MAX_COLUMN);
     }
 
-    public BooleanProperty playSoundProperty() {
-        return mPlaySoundProperty;
-    }
-
     public void setFontSize(int size) {
         put(KEY_FONT_SIZE, size);
     }
 
     public void setFullScreen(boolean value) {
-        mFullScreenProperty.set(value);
+        put(KEY_FULL_SCREEN, value);
     }
 
     public void setGameVariant(String type, String variant) {
@@ -217,35 +180,10 @@ public class Options extends OptionsBase {
     }
 
     private void init() {
-        mFullScreenProperty.set(is(KEY_FULL_SCREEN, DEFAULT_FULL_SCREEN));
-        mDisplayLimProperty.set(is(KEY_SHOW_LIM_COLUMN, DEFAULT_SHOW_LIM_COLUMN));
-        mDisplayMaxProperty.set(is(KEY_SHOW_MAX_COLUMN, DEFAULT_SHOW_MAX_COLUMN));
-        mDisplayIndicatorProperty.set(is(KEY_SHOW_INDICATORS, DEFAULT_SHOW_INDICATORS));
-        mDiceReversedProperty.set(is(KEY_REVERSE_DIRECTION, DEFAULT_REVERSE_DIRECTION));
-        mPlaySoundProperty.set(is(KEY_PLAY_SOUND, DEFAULT_PLAY_SOUND));
-
         initListeners();
     }
 
     private void initListeners() {
-        ChangeListener<Object> changeListener = (observable, oldValue, newValue) -> {
-            save();
-        };
-
-        mDisplayLimProperty.addListener(changeListener);
-        mDisplayMaxProperty.addListener(changeListener);
-        mDisplayIndicatorProperty.addListener(changeListener);
-        mFullScreenProperty.addListener(changeListener);
-        mPlaySoundProperty.addListener(changeListener);
-        mDiceReversedProperty.addListener(changeListener);
-    }
-
-    private void save() {
-        put(KEY_SHOW_LIM_COLUMN, displayLimProperty().get());
-        put(KEY_SHOW_MAX_COLUMN, displayMaxProperty().get());
-        put(KEY_SHOW_INDICATORS, displayIndicatorsProperty().get());
-        put(KEY_PLAY_SOUND, playSoundProperty().get());
-        put(KEY_REVERSE_DIRECTION, diceReversedProperty().get());
     }
 
     private static class Holder {
