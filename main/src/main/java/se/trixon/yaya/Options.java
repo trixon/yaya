@@ -58,6 +58,10 @@ public class Options extends OptionsBase {
         return Holder.INSTANCE;
     }
 
+    public static String getPref() {
+        return getInstance().getPreferences().absolutePath();
+    }
+
     private Options() {
         mPreferences = NbPreferences.forModule(getClass());
         init();

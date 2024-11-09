@@ -24,22 +24,18 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.JSeparator;
 import org.openide.awt.Actions;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
-import org.openide.util.NbPreferences;
-import se.trixon.almond.util.Dict;
+import se.trixon.almond.nbp.Almond;
 import se.trixon.almond.util.GlobalState;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
 import se.trixon.almond.util.gson_adapter.AwtColorAdapter;
 import se.trixon.almond.util.swing.SwingHelper;
-import se.trixon.yaya.actions.YAction;
+import se.trixon.yaya.actions.BaseAction;
 import se.trixon.yaya.scorecard.rules.RuleManager;
 
 /**
@@ -58,7 +54,7 @@ public class Yaya {
     public static final String KEY_GAME_STATE = "gamestate";
     public static final String LOG_TITLE = "Yaya";
     private static final GlobalState sGlobalState = new GlobalState();
-    private final ResourceBundle mBundle = NbBundle.getBundle(YAction.class);
+    private final ResourceBundle mBundle = NbBundle.getBundle(BaseAction.class);
     private final Options mOptions = Options.getInstance();
     private JPopupMenu mPopupMenu;
     private final RuleManager mRuleManager = RuleManager.getInstance();
@@ -92,29 +88,19 @@ public class Yaya {
         System.out.println(message);
     }
 
-//    private void postStart() {
-//        PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
-//        int gameStartCounter = mOptions.getPreferences().getInt(Options.KEY_GAME_START_COUNTER, 0);
-//        if (gameStartCounter == 0) {
-//            FxHelper.runLaterDelayed(200, () -> {
-//                YActions.forId("core", "newround").handle(null);
-//                YActions.forId("core", "help").handle(null);
-//            });
-//        } else {
-//            mYaya.onRequestNewGameStart();
-//        }
-//
-//    }
     private Yaya() {
         mRuleManager.init();
         mYayaPanel = new YayaPanel();
         initMenu();
         var popupListener = new PopupListener();
+        Almond.getFrame().addMouseListener(popupListener);
+        SystemHelper.runLaterDelayed(5000, () -> {
+        });
 //        addMouseListener(popupListener);
         mYayaPanel.addMouseListener(popupListener);
         PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
         int gameStartCounter = mOptions.getInt(Options.KEY_GAME_START_COUNTER, 0);
-        if (gameStartCounter == 0 || true) {
+        if (gameStartCounter == 0) {
             SwingHelper.runLaterDelayed(200, () -> {
                 Actions.forID("Help", "se.trixon.yaya.actions.HelpAction").actionPerformed(new ActionEvent(mYayaPanel, 0, ""));
                 Actions.forID("Game", "se.trixon.yaya.actions.NewRoundAction").actionPerformed(null);
@@ -135,106 +121,31 @@ public class Yaya {
     private void initMenu() {
         mPopupMenu = new JPopupMenu();
         var newMenuItem = new JMenuItem();
-        var systemMenu = new JMenu(Dict.SYSTEM.toString());
-//        mFullscreenCheckBoxMenuItem = new JCheckBoxMenuItem();
-//        mNightModeCheckBoxMenuItem = new JCheckBoxMenuItem();
+        var fullscreenMenuItem = new JMenuItem();
+        var optionsMenuItem = new JMenuItem();
         var removePlayerMenuItem = new JMenuItem();
-//        mPlaySoundCheckBoxMenuItem = new JCheckBoxMenuItem();
-//
-        var scorecardMenu = new JMenu(mBundle.getString("scorecard"));
-//        mColorsMenu = new JMenu();
-//        mLimCheckBoxMenuItem = new JCheckBoxMenuItem();
-//        mMaxCheckBoxMenuItem = new JCheckBoxMenuItem();
-//        mIndicatorCheckBoxMenuItem = new JCheckBoxMenuItem();
-//
-
-        var diceMenu = new JMenu(mBundle.getString("dice"));
-        var reverseDiceDirectionCheckBoxMenuItem = new JCheckBoxMenuItem();
-//
         var helpMenuItem = new JMenuItem();
         var aboutMenuItem = new JMenuItem();
         var quitMenuItem = new JMenuItem();
-//
-//        systemMenu.setText(Dict.SYSTEM.toString());
-//        Mnemonics.setLocalizedText(mScorecardMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.scorecardMenu.text")); // NOI18N
-//        Mnemonics.setLocalizedText(mColorsMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.colorsMenu.text")); // NOI18N
-//        Mnemonics.setLocalizedText(mDiceMenu, NbBundle.getMessage(MainFrame.class, "MainFrame.diceMenu.text")); // NOI18N
-//        Mnemonics.setLocalizedText(mReverseDiceDirectionCheckBoxMenuItem, NbBundle.getMessage(MainFrame.class, "MainFrame.reverseDiceDirectionCheckBoxMenuItem.text")); // NOI18N
-        var reverseDiceDirectionAction = Actions.checkbox(
-                NbPreferences.forModule(Yaya.class).absolutePath(),
-                Options.KEY_REVERSE_DIRECTION,
-                mBundle.getString("reverseDiceDirection"),
-                "",
-                true
-        );
-        Actions.connect(reverseDiceDirectionCheckBoxMenuItem, reverseDiceDirectionAction, false);
+
         Actions.connect(newMenuItem, Actions.forID("Game", "se.trixon.yaya.actions.NewRoundAction"), false);
         Actions.connect(removePlayerMenuItem, Actions.forID("Game", "se.trixon.yaya.actions.RemovePlayerAction"), false);
+        Actions.connect(optionsMenuItem, Actions.forID("Game", "se.trixon.yaya.actions.OptionsAction"), false);
+        Actions.connect(fullscreenMenuItem, Actions.forID("Help", "se.trixon.yaya.actions.FullScreenAction"), false);
         Actions.connect(helpMenuItem, Actions.forID("Help", "se.trixon.yaya.actions.HelpAction"), false);
         Actions.connect(aboutMenuItem, Actions.forID("Help", "se.trixon.yaya.actions.AboutAction"), false);
         Actions.connect(quitMenuItem, Actions.forID("File", "se.trixon.almond.nbp.actions.QuitAction"), false);
+
         mPopupMenu.add(newMenuItem);
+        mPopupMenu.add(fullscreenMenuItem);
         mPopupMenu.add(new JPopupMenu.Separator());
-        mPopupMenu.add(systemMenu);
-//        systemMenu.add(mFullscreenCheckBoxMenuItem);
-//        systemMenu.add(mNightModeCheckBoxMenuItem);
-//        systemMenu.add(mPlaySoundCheckBoxMenuItem);
-        systemMenu.add(new JSeparator());
-        systemMenu.add(removePlayerMenuItem);
-//
-        mPopupMenu.add(scorecardMenu);
-//        mScorecardMenu.add(mColorsMenu);
-//        mScorecardMenu.add(mLimCheckBoxMenuItem);
-//        mScorecardMenu.add(mMaxCheckBoxMenuItem);
-//        mScorecardMenu.add(mIndicatorCheckBoxMenuItem);
-//
-        mPopupMenu.add(diceMenu);
-        diceMenu.add(reverseDiceDirectionCheckBoxMenuItem);
-//
+        mPopupMenu.add(optionsMenuItem);
+        mPopupMenu.add(removePlayerMenuItem);
         mPopupMenu.add(new JPopupMenu.Separator());
         mPopupMenu.add(helpMenuItem);
         mPopupMenu.add(aboutMenuItem);
         mPopupMenu.add(new JPopupMenu.Separator());
         mPopupMenu.add(quitMenuItem);
-//
-//        var buttonGroup = new ButtonGroup();
-//        for (var theme : mThemeManager.getItems()) {
-//            var radioButtonMenuItem = new JRadioButtonMenuItem(theme.getName());
-//            radioButtonMenuItem.addActionListener(actionEvent -> {
-//                mThemeManager.setTheme(theme);
-//                mOptions.setThemeId(theme.getId());
-//            });
-//            buttonGroup.add(radioButtonMenuItem);
-//            mColorsMenu.add(radioButtonMenuItem);
-//            radioButtonMenuItem.setSelected(mOptions.getThemeId().equalsIgnoreCase(theme.getId()));
-//        }
-//
-//        var fontMenuItem = new JMenuItem(Dict.SIZE.toString());
-//        fontMenuItem.setEnabled(false);
-//        mScorecardMenu.add(fontMenuItem);
-//
-//        var fontSlider = new JSlider(8, 72, mOptions.getFontSize());
-//        var fontResetRunner = new DelayedResetRunner(50, () -> {
-//            mOptions.setFontSize(fontSlider.getValue());
-//        });
-//
-//        fontSlider.addChangeListener(changeEvent -> {
-//            fontResetRunner.reset();
-//        });
-//
-//        mScorecardMenu.add(fontSlider);
-//        mUIComponents.add(mPopupMenu); NO USE
-    }
-
-    private void loadSettings() {
-////        mFullscreenCheckBoxMenuItem.setSelected(mOptions.isFullscreen());
-//        mNightModeCheckBoxMenuItem.setSelected(mOptions.isNightMode());
-//        mIndicatorCheckBoxMenuItem.setSelected(mOptions.isShowIndicators());
-//        mLimCheckBoxMenuItem.setSelected(mOptions.isShowLimColumn());
-//        mMaxCheckBoxMenuItem.setSelected(mOptions.isShowMaxColumn());
-//        mPlaySoundCheckBoxMenuItem.setSelected(mOptions.is(Options.KEY_PLAY_SOUND, Options.DEFAULT_PLAY_SOUND));
-//
-//        mReverseDiceDirectionCheckBoxMenuItem.setSelected(mOptions.isReverseDirection());
     }
 
     private static class Holder {

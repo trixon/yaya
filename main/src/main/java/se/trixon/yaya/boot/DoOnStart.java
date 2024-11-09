@@ -15,12 +15,13 @@
  */
 package se.trixon.yaya.boot;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import org.openide.modules.OnStart;
 import org.openide.windows.WindowManager;
+import se.trixon.almond.nbp.Almond;
 import se.trixon.almond.nbp.NbHelper;
-import se.trixon.almond.util.SystemHelper;
 import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.Options;
 import se.trixon.yaya.Yaya;
@@ -33,17 +34,15 @@ import se.trixon.yaya.Yaya;
 public class DoOnStart implements Runnable {
 
     private final Options mOptions = Options.getInstance();
-    private static long age;
 
     static {
 //        FlatLaf.registerCustomDefaultsSource("se.trixon.yaya.themes");
-//        FlatDarkLaf.setup();
+        FlatLightLaf.setup();
         System.setProperty("netbeans.winsys.no_help_in_dialogs", "true");
         System.setProperty("netbeans.winsys.no_toolbars", "true");
 
-//        NbHelper.setLafDefault("Dark");
+        NbHelper.setLafDefault("Light");
         NbHelper.setLafAccentColor("#FF00FF");
-        age = System.currentTimeMillis();
         UIManager.put("Button.arc", 999);
         UIManager.put("Label.background", "#ff0000");
         UIManager.put("Button.background", "#ff0000");
@@ -61,9 +60,8 @@ public class DoOnStart implements Runnable {
 //        FlatLaf.registerCustomDefaultsSource("se.trixon.yaya.themes");
 //        FlatDarkLaf.setup();
         var windowManager = WindowManager.getDefault();
-        System.out.println("run 0 " + SystemHelper.age(age));
         windowManager.invokeWhenUIReady(() -> {
-            System.out.println("run 1 " + SystemHelper.age(age));
+            Almond.setFrame((JFrame) windowManager.getMainWindow());
 
             var frame = (JFrame) windowManager.getMainWindow();
 //            frame.setVisible(false);
@@ -73,14 +71,13 @@ public class DoOnStart implements Runnable {
             SwingHelper.runLaterDelayed(0, () -> {
                 contentPane.add(Yaya.getInstance().getPanel());
             });
-            frame.repaint();
-            frame.revalidate();
+//            frame.repaint();
+//            frame.revalidate();
 //            frame.setVisible(true);
 
-            System.out.println("run 2 " + SystemHelper.age(age));
             UIManager.put("Button.arc", 999);
 //            UIManager.put("Label.background", "#ff0000");
-//            UIManager.put("Button.background", "#ff0000");
+            UIManager.put("Button.background", "#ff0000");
 //            UIManager.put("PopupMenu.background", "#ff0000");
 //            UIManager.put("Menu.background", "#ff0000");
 //            UIManager.put("MenuItem.background", "#ff0000");

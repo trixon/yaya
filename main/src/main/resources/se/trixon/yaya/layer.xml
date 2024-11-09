@@ -28,6 +28,20 @@ limitations under the License.
                 <attr name="noIconInMenu" boolvalue="true"/>
             </file>
         </folder>
+        <folder name="Game">
+            <file name="se-trixon-yaya-actions-PlaySoundAction.instance">
+                <!--<attr name="preferencesNode" methodvalue="se.trixon.yaya.Options.getInstance.getPreferences" />-->
+                <attr name="preferencesNode" stringvalue="se.trixon.yaya.Options.getPref" />
+                <attr name="preferencesKey" stringvalue="test-play-sound"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.checkbox"/>
+                <!--<attr name="displayName" bundlevalue="your.pkg.Bundle-key"/>-->
+                <attr name="displayName" stringvalue="Play sound"/>
+                <!--<attr name="iconBase" stringvalue="mmm"/>-->
+                <!--<attr name="iconBase" stringvalue="your/pkg/YourImage.png"/>-->
+                <!-- if desired: <attr name="noIconInMenu" boolvalue="true"/> -->
+                <!-- if desired: <attr name="asynchronous" boolvalue="true"/> -->
+            </file>
+        </folder>
     </folder>
     <file name="Menu_hidden"/>
     <folder name="OptionsDialog">

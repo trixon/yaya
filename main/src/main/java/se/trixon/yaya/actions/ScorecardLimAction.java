@@ -15,24 +15,28 @@
  */
 package se.trixon.yaya.actions;
 
+import java.awt.event.ActionEvent;
+import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
+import org.openide.awt.ActionRegistration;
+import org.openide.util.NbBundle;
+import se.trixon.yaya.Options;
+
 /**
  *
  * @author Patrik Karlström
  */
-public class ScorecardLimAction extends YAction {
+@ActionID(
+        category = "Game",
+        id = "se.trixon.yaya.actions.LimAction"
+)
+@ActionRegistration(displayName = "#CTL_LimAction")
+@ActionReference(path = "Shortcuts", name = "F5")
+@NbBundle.Messages("CTL_LimAction=LIM")
+public class ScorecardLimAction extends BaseAction {
 
-//    public ScorecardLimAction() {
-//        super(NbBundle.getMessage(YActions.class, "lim"));
-//        var keyCodeCombination = new KeyCodeCombination(KeyCode.F5);
-//        setAccelerator(keyCodeCombination);
-//
-//        setEventHandler(eventHandler -> {
-//            mOptions.invert(mOptions.displayLimProperty());
-//        });
-//
-//        setPostInitRunnable(() -> {
-//            setAcceleratorForStage(keyCodeCombination);
-//            addTooltipKeyCode(keyCodeCombination);
-//        });
-//    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        mOptions.invert(Options.KEY_SHOW_LIM_COLUMN);
+    }
 }

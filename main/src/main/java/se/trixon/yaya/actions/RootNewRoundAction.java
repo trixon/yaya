@@ -16,7 +16,6 @@
 package se.trixon.yaya.actions;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
@@ -35,7 +34,7 @@ import se.trixon.yaya.NewGamePanel;
 )
 @ActionReference(path = "Shortcuts", name = "N")
 @Messages("CTL_NewRoundAction=New round")
-public final class RootNewRoundAction extends YAction implements ActionListener {
+public final class RootNewRoundAction extends BaseAction {
 
     private final NewGamePanel mNewGamePanel = new NewGamePanel();
 

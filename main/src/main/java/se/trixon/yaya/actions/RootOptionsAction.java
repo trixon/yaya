@@ -16,40 +16,41 @@
 package se.trixon.yaya.actions;
 
 import java.awt.event.ActionEvent;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle;
-import se.trixon.almond.nbp.core.ModuleHelper;
-import se.trixon.almond.nbp.dialogs.NbAbout;
-import se.trixon.almond.util.PomInfo;
-import se.trixon.almond.util.SystemHelper;
-import se.trixon.almond.util.swing.AboutModel;
-import se.trixon.yaya.Yaya;
+import se.trixon.almond.util.Dict;
+import se.trixon.yaya.OptionsPanel;
 
 /**
  *
  * @author Patrik Karlström
  */
 @ActionID(
-        category = "Help",
-        id = "se.trixon.yaya.actions.AboutAction"
+        category = "Game",
+        id = "se.trixon.yaya.actions.OptionsAction"
 )
 @ActionRegistration(
-        displayName = "#CTL_AboutAction"
+        displayName = "#CTL_OptionsAction"
 )
-@NbBundle.Messages("CTL_AboutAction=About")
-public final class RootAboutAction extends BaseAction {
+@ActionReference(path = "Shortcuts", name = "O")
+@NbBundle.Messages("CTL_OptionsAction=Options")
+public final class RootOptionsAction extends BaseAction {
+
+    private final OptionsPanel mOptionsPanel = new OptionsPanel();
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var pomInfo = new PomInfo(Yaya.class, "se.trixon.yaya", "main");
-        var aboutModel = new AboutModel(
-                SystemHelper.getBundle(Yaya.class, "about"),
-                SystemHelper.getResourceAsImageIcon(Yaya.class, "logo.png")
-        );
-        aboutModel.setAppDate(ModuleHelper.getBuildTime(Yaya.class));
-        aboutModel.setAppVersion(pomInfo.getVersion());
-
-        new NbAbout(aboutModel).display();
+        var d = new NotifyDescriptor(
+                mOptionsPanel,
+                Dict.OPTIONS.toString(),
+                NotifyDescriptor.DEFAULT_OPTION,
+                NotifyDescriptor.PLAIN_MESSAGE,
+                new String[]{Dict.CLOSE.toString()},
+                Dict.CLOSE.toString());
+        DialogDisplayer.getDefault().notify(d);
     }
 }

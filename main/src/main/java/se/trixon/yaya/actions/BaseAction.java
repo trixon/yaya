@@ -15,6 +15,7 @@
  */
 package se.trixon.yaya.actions;
 
+import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 import org.apache.commons.lang3.SystemUtils;
 import org.openide.util.NbBundle;
@@ -25,11 +26,10 @@ import se.trixon.yaya.Yaya;
  *
  * @author Patrik Karlström <patrik@trixon.se>
  */
-public abstract class YAction {
+public abstract class BaseAction implements ActionListener {
 
     protected static final boolean IS_MAC = SystemUtils.IS_OS_MAC;
-    protected final ResourceBundle mBundle = NbBundle.getBundle(YAction.class);
+    protected final ResourceBundle mBundle = NbBundle.getBundle(BaseAction.class);
     protected Options mOptions = Options.getInstance();
     protected Yaya mYaya = Yaya.getInstance();
-
 }

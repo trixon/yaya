@@ -129,11 +129,6 @@
             <version>2.11.0</version>
         </dependency>
         <dependency>
-            <groupId>org.jdesktop</groupId>
-            <artifactId>beansbinding</artifactId>
-            <version>1.2.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.j2html</groupId>
             <artifactId>j2html</artifactId>
             <version>1.6.0</version>
@@ -143,12 +138,10 @@
             <artifactId>slf4j-nop</artifactId>
             <version>2.1.0-alpha1</version>
         </dependency>
-
-        <!--Other-->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
-            <version>22.0.2</version>
+            <version>23.0.1</version>
         </dependency>
     </dependencies>
 

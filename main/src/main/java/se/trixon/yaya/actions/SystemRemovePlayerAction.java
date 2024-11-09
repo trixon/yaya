@@ -16,7 +16,6 @@
 package se.trixon.yaya.actions;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +23,7 @@ import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle;
 import se.trixon.yaya.Options;
@@ -36,11 +36,10 @@ import se.trixon.yaya.Options;
         category = "Game",
         id = "se.trixon.yaya.actions.RemovePlayerAction"
 )
-@ActionRegistration(
-        displayName = "#CTL_RemovePlayerAction"
-)
+@ActionRegistration(displayName = "#CTL_RemovePlayerAction")
+@ActionReference(path = "Shortcuts", name = "DELETE")
 @NbBundle.Messages("CTL_RemovePlayerAction=Remove player")
-public final class SystemRemovePlayerAction extends YAction implements ActionListener {
+public final class SystemRemovePlayerAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {

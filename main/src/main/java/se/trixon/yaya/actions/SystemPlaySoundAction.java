@@ -15,24 +15,17 @@
  */
 package se.trixon.yaya.actions;
 
+import java.awt.event.ActionEvent;
+import se.trixon.yaya.Options;
+
 /**
  *
  * @author Patrik Karlström
  */
-public class SystemPlaySoundAction extends YAction {
+public class SystemPlaySoundAction extends BaseAction {
 
-//    public SystemPlaySoundAction() {
-//        super(Dict.Game.PLAY_SOUND.toString());
-//        var keyCodeCombination = new KeyCodeCombination(KeyCode.F4);
-//        setAccelerator(keyCodeCombination);
-//
-//        setEventHandler(eventHandler -> {
-//            mOptions.invert(mOptions.playSoundProperty());
-//        });
-//
-//        setPostInitRunnable(() -> {
-//            setAcceleratorForStage(keyCodeCombination);
-//            addTooltipKeyCode(keyCodeCombination);
-//        });
-//    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        mOptions.invert(Options.KEY_PLAY_SOUND);
+    }
 }

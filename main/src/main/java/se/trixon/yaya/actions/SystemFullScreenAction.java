@@ -15,24 +15,33 @@
  */
 package se.trixon.yaya.actions;
 
+import java.awt.event.ActionEvent;
+import org.apache.commons.lang3.SystemUtils;
+import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
+import org.openide.awt.ActionRegistration;
+import org.openide.awt.Actions;
+import org.openide.util.NbBundle;
+
 /**
  *
  * @author Patrik Karlström
  */
-public class SystemFullScreenAction extends YAction {
+@ActionID(
+        category = "Help",
+        id = "se.trixon.yaya.actions.FullScreenAction"
+)
+@ActionRegistration(displayName = "#CTL_FullScreenAction")
+@ActionReference(path = "Shortcuts", name = "F")
+@NbBundle.Messages("CTL_FullScreenAction=Full screen")
+public class SystemFullScreenAction extends BaseAction {
 
-//    public SystemFullScreenAction() {
-//        super(Dict.TOGGLE_FULL_SCREEN.toString());
-//        var keyCodeCombination = new KeyCodeCombination(KeyCode.F11);
-//        setAccelerator(keyCodeCombination);
-//
-//        setEventHandler(eventHandler -> {
-//            getStage().setFullScreen(!getStage().isFullScreen());
-//        });
-//
-//        setPostInitRunnable(() -> {
-//            setAcceleratorForStage(keyCodeCombination);
-//            addTooltipKeyCode(keyCodeCombination);
-//        });
-//    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (SystemUtils.IS_OS_MAC) {
+            Actions.forID("Almond", "se.trixon.almond.nbp.osx.actions.ToggleFullScreenAction").actionPerformed(null);
+        } else {
+            Actions.forID("Window", "org.netbeans.core.windows.actions.ToggleFullScreenAction").actionPerformed(null);
+        }
+    }
 }

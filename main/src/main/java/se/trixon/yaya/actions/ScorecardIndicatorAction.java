@@ -15,24 +15,28 @@
  */
 package se.trixon.yaya.actions;
 
+import java.awt.event.ActionEvent;
+import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
+import org.openide.awt.ActionRegistration;
+import org.openide.util.NbBundle;
+import se.trixon.yaya.Options;
+
 /**
  *
  * @author Patrik Karlström
  */
-public class ScorecardIndicatorAction extends YAction {
+@ActionID(
+        category = "Game",
+        id = "se.trixon.yaya.actions.IndicatorAction"
+)
+@ActionRegistration(displayName = "#CTL_IndicatorAction")
+@ActionReference(path = "Shortcuts", name = "F7")
+@NbBundle.Messages("CTL_IndicatorAction=Indicators")
+public class ScorecardIndicatorAction extends BaseAction {
 
-//    public ScorecardIndicatorAction() {
-//        super(NbBundle.getMessage(YActions.class, "indicator"));
-//        var keyCodeCombination = new KeyCodeCombination(KeyCode.F7);
-//        setAccelerator(keyCodeCombination);
-//
-//        setEventHandler(eventHandler -> {
-//            mOptions.invert(mOptions.displayIndicatorsProperty());
-//        });
-//
-//        setPostInitRunnable(() -> {
-//            setAcceleratorForStage(keyCodeCombination);
-//            addTooltipKeyCode(keyCodeCombination);
-//        });
-//    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        mOptions.invert(Options.KEY_SHOW_INDICATORS);
+    }
 }

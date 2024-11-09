@@ -15,24 +15,28 @@
  */
 package se.trixon.yaya.actions;
 
+import java.awt.event.ActionEvent;
+import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
+import org.openide.awt.ActionRegistration;
+import org.openide.util.NbBundle;
+import se.trixon.yaya.Options;
+
 /**
  *
  * @author Patrik Karlström
  */
-public class ScorecardMaxAction extends YAction {
+@ActionID(
+        category = "Game",
+        id = "se.trixon.yaya.actions.MaxAction"
+)
+@ActionRegistration(displayName = "#CTL_MaxAction")
+@ActionReference(path = "Shortcuts", name = "F6")
+@NbBundle.Messages("CTL_MaxAction=Max")
+public class ScorecardMaxAction extends BaseAction {
 
-//    public ScorecardMaxAction() {
-//        super(NbBundle.getMessage(YActions.class, "max"));
-//        var keyCodeCombination = new KeyCodeCombination(KeyCode.F6);
-//        setAccelerator(keyCodeCombination);
-//
-//        setEventHandler(eventHandler -> {
-//            mOptions.invert(mOptions.displayMaxProperty());
-//        });
-//
-//        setPostInitRunnable(() -> {
-//            setAcceleratorForStage(keyCodeCombination);
-//            addTooltipKeyCode(keyCodeCombination);
-//        });
-//    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        mOptions.invert(Options.KEY_SHOW_MAX_COLUMN);
+    }
 }
