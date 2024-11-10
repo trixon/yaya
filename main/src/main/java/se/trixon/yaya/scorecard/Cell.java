@@ -23,8 +23,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import se.trixon.almond.util.GraphicsHelper;
+import se.trixon.yaya.PopupManager;
 import se.trixon.yaya.ThemeManager;
-import se.trixon.yaya.Yaya;
 import se.trixon.yaya.scorecard.rules.GameCell;
 
 /**
@@ -42,7 +42,7 @@ public class Cell {
     private final JLabel mLabel = new JLabel();
     private MouseAdapter mMouseHoverAdapter;
     private MouseAdapter mMousePressedAdapter;
-    private MouseAdapter mMousePopupAdapter;
+//    private MouseAdapter mMousePopupAdapter;
     private PlayerColumn mPlayerColumn;
     private int mPreview;
     private boolean mRegistered;
@@ -265,24 +265,7 @@ public class Cell {
             }
         };
 
-        mMousePopupAdapter = new MouseAdapter() {
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                publishEvent(e);
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                publishEvent(e);
-            }
-
-            private void publishEvent(MouseEvent e) {
-                Yaya.getGlobalState().put("CellMouseEvent", e);
-            }
-        };
-
-        mLabel.addMouseListener(mMousePopupAdapter);
+        mLabel.addMouseListener(PopupManager.getInstance().getMouseAdapter());
 
     }
 

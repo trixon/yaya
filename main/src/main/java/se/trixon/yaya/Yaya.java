@@ -19,13 +19,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import org.openide.awt.Actions;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
@@ -56,7 +52,6 @@ public class Yaya {
     private static final GlobalState sGlobalState = new GlobalState();
     private final ResourceBundle mBundle = NbBundle.getBundle(BaseAction.class);
     private final Options mOptions = Options.getInstance();
-    private JPopupMenu mPopupMenu;
     private final RuleManager mRuleManager = RuleManager.getInstance();
     private final YayaPanel mYayaPanel;
 
@@ -91,13 +86,7 @@ public class Yaya {
     private Yaya() {
         mRuleManager.init();
         mYayaPanel = new YayaPanel();
-        initMenu();
-        var popupListener = new PopupListener();
-        Almond.getFrame().addMouseListener(popupListener);
-        SystemHelper.runLaterDelayed(5000, () -> {
-        });
-//        addMouseListener(popupListener);
-        mYayaPanel.addMouseListener(popupListener);
+        Almond.getFrame().addMouseListener(PopupManager.getInstance().getMouseAdapter());
         PrefsHelper.inc(mOptions.getPreferences(), Options.KEY_APP_START_COUNTER);
         int gameStartCounter = mOptions.getInt(Options.KEY_GAME_START_COUNTER, 0);
         if (gameStartCounter == 0) {
@@ -118,57 +107,9 @@ public class Yaya {
         getPanel().newGame();
     }
 
-    private void initMenu() {
-        mPopupMenu = new JPopupMenu();
-        var newMenuItem = new JMenuItem();
-        var fullscreenMenuItem = new JMenuItem();
-        var optionsMenuItem = new JMenuItem();
-        var removePlayerMenuItem = new JMenuItem();
-        var helpMenuItem = new JMenuItem();
-        var aboutMenuItem = new JMenuItem();
-        var quitMenuItem = new JMenuItem();
-
-        Actions.connect(newMenuItem, Actions.forID("Game", "se.trixon.yaya.actions.NewRoundAction"), false);
-        Actions.connect(removePlayerMenuItem, Actions.forID("Game", "se.trixon.yaya.actions.RemovePlayerAction"), false);
-        Actions.connect(optionsMenuItem, Actions.forID("Game", "se.trixon.yaya.actions.OptionsAction"), false);
-        Actions.connect(fullscreenMenuItem, Actions.forID("Help", "se.trixon.yaya.actions.FullScreenAction"), false);
-        Actions.connect(helpMenuItem, Actions.forID("Help", "se.trixon.yaya.actions.HelpAction"), false);
-        Actions.connect(aboutMenuItem, Actions.forID("Help", "se.trixon.yaya.actions.AboutAction"), false);
-        Actions.connect(quitMenuItem, Actions.forID("File", "se.trixon.almond.nbp.actions.QuitAction"), false);
-
-        mPopupMenu.add(newMenuItem);
-        mPopupMenu.add(fullscreenMenuItem);
-        mPopupMenu.add(new JPopupMenu.Separator());
-        mPopupMenu.add(optionsMenuItem);
-        mPopupMenu.add(removePlayerMenuItem);
-        mPopupMenu.add(new JPopupMenu.Separator());
-        mPopupMenu.add(helpMenuItem);
-        mPopupMenu.add(aboutMenuItem);
-        mPopupMenu.add(new JPopupMenu.Separator());
-        mPopupMenu.add(quitMenuItem);
-    }
-
     private static class Holder {
 
         private static final Yaya INSTANCE = new Yaya();
     }
 
-    class PopupListener extends MouseAdapter {
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            maybeShowPopup(e);
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            maybeShowPopup(e);
-        }
-
-        private void maybeShowPopup(MouseEvent e) {
-            if (e.isPopupTrigger()) {
-                mPopupMenu.show(e.getComponent(), e.getX(), e.getY());
-            }
-        }
-    }
 }
