@@ -15,6 +15,7 @@
  */
 package se.trixon.yaya.actions;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -23,6 +24,7 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle.Messages;
 import se.trixon.almond.util.Dict;
+import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.NewGamePanel;
 
 @ActionID(
@@ -39,6 +41,7 @@ public final class RootNewRoundAction extends BaseAction {
     private final NewGamePanel mNewGamePanel = new NewGamePanel();
 
     public RootNewRoundAction() {
+        mNewGamePanel.setPreferredSize(new Dimension(SwingHelper.getUIScaled(400), mNewGamePanel.getPreferredSize().height));
     }
 
     @Override

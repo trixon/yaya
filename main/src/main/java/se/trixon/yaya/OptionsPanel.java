@@ -81,7 +81,6 @@ public class OptionsPanel extends javax.swing.JPanel {
         systemPanel = new javax.swing.JPanel();
         soundCheckBox = new javax.swing.JCheckBox();
         reverseScrollCheckBox = new javax.swing.JCheckBox();
-        nightModeCheckBox = new javax.swing.JCheckBox();
 
         scorecardPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(OptionsPanel.class, "OptionsPanel.scorecardPanel.border.title"))); // NOI18N
 
@@ -185,9 +184,6 @@ public class OptionsPanel extends javax.swing.JPanel {
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(nightModeCheckBox, org.openide.util.NbBundle.getMessage(OptionsPanel.class, "OptionsPanel.nightModeCheckBox.text")); // NOI18N
-        nightModeCheckBox.setEnabled(false);
-
         javax.swing.GroupLayout systemPanelLayout = new javax.swing.GroupLayout(systemPanel);
         systemPanel.setLayout(systemPanelLayout);
         systemPanelLayout.setHorizontalGroup(
@@ -196,8 +192,7 @@ public class OptionsPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(systemPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(soundCheckBox)
-                    .addComponent(reverseScrollCheckBox)
-                    .addComponent(nightModeCheckBox))
+                    .addComponent(reverseScrollCheckBox))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         systemPanelLayout.setVerticalGroup(
@@ -207,8 +202,6 @@ public class OptionsPanel extends javax.swing.JPanel {
                 .addComponent(soundCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(reverseScrollCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nightModeCheckBox)
                 .addContainerGap())
         );
 
@@ -266,7 +259,6 @@ public class OptionsPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox indicatorCheckBox;
     private javax.swing.JCheckBox limCheckBox;
     private javax.swing.JCheckBox maxCheckBox;
-    private javax.swing.JCheckBox nightModeCheckBox;
     private javax.swing.JCheckBox reverseScrollCheckBox;
     private javax.swing.JPanel scorecardPanel;
     private javax.swing.JLabel sizeLabel;

@@ -16,6 +16,7 @@
 package se.trixon.yaya.actions;
 
 import java.awt.event.ActionEvent;
+import javax.swing.border.EmptyBorder;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
@@ -23,6 +24,7 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle;
 import se.trixon.almond.util.Dict;
+import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.OptionsPanel;
 
 /**
@@ -41,6 +43,11 @@ import se.trixon.yaya.OptionsPanel;
 public final class RootOptionsAction extends BaseAction {
 
     private final OptionsPanel mOptionsPanel = new OptionsPanel();
+
+    public RootOptionsAction() {
+        var borderSize = SwingHelper.getUIScaled(16);
+        mOptionsPanel.setBorder(new EmptyBorder(borderSize, borderSize, 0, borderSize));
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

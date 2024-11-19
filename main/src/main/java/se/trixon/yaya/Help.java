@@ -22,6 +22,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
 import se.trixon.almond.util.SystemHelper;
+import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.scorecard.rules.RuleManager;
 
 public final class Help {
@@ -91,51 +92,56 @@ public final class Help {
             cellRules.add(cellRule);
         }
 
-        var html = html(
-                body(
-                        p(mBundle.getString("help_header_quickstart")),
-                        hr(),
-                        ul(
-                                li(mBundle.getString("help_bullit_5")),
-                                li(mBundle.getString("help_bullit_1")),
-                                li(mBundle.getString("help_bullit_2")),
-                                li(mBundle.getString("help_bullit_3")),
-                                li(mBundle.getString("help_bullit_4"))
-                        ),
-                        p(mBundle.getString("help_header_games")),
-                        hr(),
-                        ul(
-                                each(titles, title
-                                        -> li(title))
-                        ),
-                        p(mBundle.getString("help_rules").formatted(rule.getTitle(), rule.getNumOfDice(), rule.getNumOfRolls())),
-                        hr(),
-                        table(
-                                tr(
-                                        th(mBundle.getString("help_rule_header_row")).withStyle("text-align: left;"),
-                                        th(mBundle.getString("help_rule_header_max")).withStyle("text-align: right;"),
-                                        th(mBundle.getString("help_rule_header_score")).withStyle("text-align: left;")
-                                ),
-                                tbody(
-                                        each(cellRules, cellRule
-                                                -> tr(
-                                                td(cellRule.title),
-                                                td(cellRule.max).withStyle("text-align: right;"),
-                                                td(cellRule.desc())
-                                        )
-                                        )
-                                ),
-                                p()
-                        ),
-                        p(mBundle.getString("help_header_variants")),
-                        hr(),
-                        ul(
-                                each(variants, variant
-                                        -> li(variant.getLocalized()))
-                        ),
-                        hr()
-                ));
+        var fontSize = String.format(Locale.ENGLISH, "%.2f", SwingHelper.getUIScaled(1.5));
 
+        var html = html(header(style("""
+                              body {background-color: #A0522D;color: white;font-size: %sem;}
+                                h1 {color: red;}
+                                p {color: white;}
+                                table {color: white;}
+                              """.formatted(fontSize))
+        ), body(
+                p(mBundle.getString("help_header_quickstart")),
+                hr(),
+                ul(
+                        li(mBundle.getString("help_bullit_5")),
+                        li(mBundle.getString("help_bullit_1")),
+                        li(mBundle.getString("help_bullit_2")),
+                        li(mBundle.getString("help_bullit_3")),
+                        li(mBundle.getString("help_bullit_4"))
+                ),
+                p(mBundle.getString("help_header_games")),
+                hr(),
+                ul(
+                        each(titles, title
+                                -> li(title))
+                ),
+                p(mBundle.getString("help_rules").formatted(rule.getTitle(), rule.getNumOfDice(), rule.getNumOfRolls())),
+                hr(),
+                table(
+                        tr(
+                                th(mBundle.getString("help_rule_header_row")).withStyle("text-align: left;"),
+                                th(mBundle.getString("help_rule_header_max")).withStyle("text-align: right;"),
+                                th(mBundle.getString("help_rule_header_score")).withStyle("text-align: left;")
+                        ),
+                        tbody(
+                                each(cellRules, cellRule
+                                        -> tr(
+                                        td(cellRule.title),
+                                        td(cellRule.max).withStyle("text-align: right;"),
+                                        td(cellRule.desc())
+                                )
+                                )
+                        ),
+                        p()
+                ) //                        p(mBundle.getString("help_header_variants")),
+        //                        hr(),
+        //                        ul(
+        //                                each(variants, variant
+        //                                        -> li(variant.getLocalized()))
+        //                        ),
+        //                        hr()
+        ));
         return html.render();
     }
 

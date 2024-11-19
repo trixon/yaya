@@ -48,7 +48,7 @@ public final class RootHelpAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        mHtmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(720, 740));
+        mHtmlPanel.setPreferredSize(SwingHelper.getUIScaledDim(760, 740));
         mHtmlPanel.getScrollPane().setBorder(null);
         var defaultBorder = (EmptyBorder) UIManager.get("OptionPane.border");
         UIManager.put("OptionPane.border", new EmptyBorder(0, 0, 0, 0));
