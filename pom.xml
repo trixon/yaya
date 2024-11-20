@@ -10,7 +10,7 @@
 
     <groupId>se.trixon.yaya</groupId>
     <artifactId>parent</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>24.11-NEXT</version>
     <packaging>pom</packaging>
 
     <name>parent</name>
