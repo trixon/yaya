@@ -52,7 +52,7 @@ public class ScoreCard {
     private int mActivePlayer;
     private CircularInt mCurrentPlayer;
     private final JPanel mFillerPanel = new JPanel();
-    private GameOverDialog mGameOverDialog;// = GameOverDialog.getInstance();
+    private final GameOverDialog mGameOverDialog = GameOverDialog.getInstance();
     private JLabel mGameTitleLabel;
     private final GlobalState mGlobalState;
     private Header mHeader;

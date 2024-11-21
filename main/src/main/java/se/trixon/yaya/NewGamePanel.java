@@ -69,18 +69,22 @@ public class NewGamePanel extends JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        variantLabel = new javax.swing.JLabel();
+        variantComboBox = new javax.swing.JComboBox();
         gameLabel = new javax.swing.JLabel();
         gameComboBox = new javax.swing.JComboBox();
         byLineLabel = new javax.swing.JLabel();
-        variantLabel = new javax.swing.JLabel();
-        variantComboBox = new javax.swing.JComboBox();
         selectPlayersPanel = new se.trixon.yaya.PlayersPanel();
         jPanel1 = new javax.swing.JPanel();
 
+        variantLabel.setLabelFor(variantComboBox);
+        org.openide.awt.Mnemonics.setLocalizedText(variantLabel, org.openide.util.NbBundle.getMessage(NewGamePanel.class, "NewGamePanel.variantLabel.text")); // NOI18N
+
+        variantComboBox.setEnabled(false);
+
         setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
         setEnabled(false);
-        setMinimumSize(new java.awt.Dimension(440, 446));
-        setPreferredSize(new java.awt.Dimension(440, 446));
+        setPreferredSize(new java.awt.Dimension(440, 350));
         setLayout(new java.awt.GridBagLayout());
 
         gameLabel.setFont(gameLabel.getFont().deriveFont(gameLabel.getFont().getStyle() | java.awt.Font.BOLD, gameLabel.getFont().getSize()+4));
@@ -111,21 +115,6 @@ public class NewGamePanel extends JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 0);
         add(byLineLabel, gridBagConstraints);
-
-        variantLabel.setLabelFor(variantComboBox);
-        org.openide.awt.Mnemonics.setLocalizedText(variantLabel, org.openide.util.NbBundle.getMessage(NewGamePanel.class, "NewGamePanel.variantLabel.text")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        add(variantLabel, gridBagConstraints);
-
-        variantComboBox.setEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        add(variantComboBox, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
