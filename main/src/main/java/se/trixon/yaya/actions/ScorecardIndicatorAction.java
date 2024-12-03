@@ -37,6 +37,6 @@ public class ScorecardIndicatorAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        mOptions.invert(Options.KEY_SHOW_INDICATORS);
+        mOptions.invert(Options.KEY_SHOW_INDICATORS, Options.DEFAULT_SHOW_INDICATORS);
     }
 }

@@ -15,7 +15,9 @@
  */
 package se.trixon.yaya;
 
+import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
+import org.openide.awt.Actions;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.swing.DelayedResetRunner;
 import se.trixon.yaya.themes.Theme;
@@ -41,6 +43,9 @@ public class OptionsPanel extends javax.swing.JPanel {
         initComponents();
         initListeners();
         loadOptions();
+        var a = Actions.forID("Game", "se.trixon.yaya.actions.RemovePlayerAction");
+        Actions.connect(removeButton, a);
+        removeButton.setText((String) a.getValue(Action.NAME));
     }
 
     private void initListeners() {
@@ -81,6 +86,7 @@ public class OptionsPanel extends javax.swing.JPanel {
         systemPanel = new javax.swing.JPanel();
         soundCheckBox = new javax.swing.JCheckBox();
         reverseScrollCheckBox = new javax.swing.JCheckBox();
+        removeButton = new javax.swing.JButton();
 
         scorecardPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(OptionsPanel.class, "OptionsPanel.scorecardPanel.border.title"))); // NOI18N
 
@@ -190,9 +196,10 @@ public class OptionsPanel extends javax.swing.JPanel {
             systemPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(systemPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(systemPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(systemPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(soundCheckBox)
-                    .addComponent(reverseScrollCheckBox))
+                    .addComponent(reverseScrollCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(removeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         systemPanelLayout.setVerticalGroup(
@@ -202,7 +209,9 @@ public class OptionsPanel extends javax.swing.JPanel {
                 .addComponent(soundCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(reverseScrollCheckBox)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(removeButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -259,6 +268,7 @@ public class OptionsPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox indicatorCheckBox;
     private javax.swing.JCheckBox limCheckBox;
     private javax.swing.JCheckBox maxCheckBox;
+    private javax.swing.JButton removeButton;
     private javax.swing.JCheckBox reverseScrollCheckBox;
     private javax.swing.JPanel scorecardPanel;
     private javax.swing.JLabel sizeLabel;

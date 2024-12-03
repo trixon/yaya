@@ -37,6 +37,6 @@ public class ScorecardMaxAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        mOptions.invert(Options.KEY_SHOW_MAX_COLUMN);
+        mOptions.invert(Options.KEY_SHOW_MAX_COLUMN, Options.DEFAULT_SHOW_MAX_COLUMN);
     }
 }

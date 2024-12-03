@@ -150,6 +150,8 @@ public class ScoreCard {
     public void setVisibleIndicators(boolean visible) {
         mShowIndicators = visible;
         getActivePlayerColumn().setVisibleIndicators(visible);
+        mScoreCardPanel.repaint();
+        mScoreCardPanel.revalidate();
     }
 
     public void undo() {

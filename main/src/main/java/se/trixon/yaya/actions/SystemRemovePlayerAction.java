@@ -23,7 +23,6 @@ import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
-import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle;
 import se.trixon.yaya.Options;
@@ -37,7 +36,6 @@ import se.trixon.yaya.Options;
         id = "se.trixon.yaya.actions.RemovePlayerAction"
 )
 @ActionRegistration(displayName = "#CTL_RemovePlayerAction")
-@ActionReference(path = "Shortcuts", name = "DELETE")
 @NbBundle.Messages("CTL_RemovePlayerAction=Remove player")
 public final class SystemRemovePlayerAction extends BaseAction {
 

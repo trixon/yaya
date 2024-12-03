@@ -63,13 +63,11 @@ public class PopupManager extends MouseAdapter {
         var newMenuItem = new JMenuItem();
         var fullscreenMenuItem = new JMenuItem();
         var optionsMenuItem = new JMenuItem();
-        var removePlayerMenuItem = new JMenuItem();
         var helpMenuItem = new JMenuItem();
         var aboutMenuItem = new JMenuItem();
         var quitMenuItem = new JMenuItem();
 
         Actions.connect(newMenuItem, Actions.forID("Game", "se.trixon.yaya.actions.NewRoundAction"), false);
-        Actions.connect(removePlayerMenuItem, Actions.forID("Game", "se.trixon.yaya.actions.RemovePlayerAction"), false);
         Actions.connect(optionsMenuItem, Actions.forID("Game", "se.trixon.yaya.actions.OptionsAction"), false);
         Actions.connect(fullscreenMenuItem, Actions.forID("Help", "se.trixon.yaya.actions.FullScreenAction"), false);
         Actions.connect(helpMenuItem, Actions.forID("Help", "se.trixon.yaya.actions.HelpAction"), false);
@@ -77,10 +75,9 @@ public class PopupManager extends MouseAdapter {
         Actions.connect(quitMenuItem, Actions.forID("File", "se.trixon.almond.nbp.actions.QuitAction"), false);
 
         mPopupMenu.add(newMenuItem);
-        mPopupMenu.add(fullscreenMenuItem);
         mPopupMenu.add(new JPopupMenu.Separator());
         mPopupMenu.add(optionsMenuItem);
-        mPopupMenu.add(removePlayerMenuItem);
+        mPopupMenu.add(fullscreenMenuItem);
         mPopupMenu.add(new JPopupMenu.Separator());
         mPopupMenu.add(helpMenuItem);
         mPopupMenu.add(aboutMenuItem);

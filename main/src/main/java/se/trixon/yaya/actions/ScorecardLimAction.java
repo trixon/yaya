@@ -37,6 +37,6 @@ public class ScorecardLimAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        mOptions.invert(Options.KEY_SHOW_LIM_COLUMN);
+        mOptions.invert(Options.KEY_SHOW_LIM_COLUMN, Options.DEFAULT_SHOW_LIM_COLUMN);
     }
 }

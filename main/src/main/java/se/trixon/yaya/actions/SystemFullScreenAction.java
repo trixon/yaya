@@ -32,7 +32,7 @@ import org.openide.util.NbBundle;
         id = "se.trixon.yaya.actions.FullScreenAction"
 )
 @ActionRegistration(displayName = "#CTL_FullScreenAction")
-@ActionReference(path = "Shortcuts", name = "F")
+@ActionReference(path = "Shortcuts", name = "F11")
 @NbBundle.Messages("CTL_FullScreenAction=Full screen")
 public class SystemFullScreenAction extends BaseAction {
 

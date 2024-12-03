@@ -134,5 +134,4 @@ public class DoOnStart implements Runnable {
             contentPane.add(Yaya.getInstance().getPanel());
         });
     }
-
 }

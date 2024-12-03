@@ -33,7 +33,7 @@ import se.trixon.yaya.NewGamePanel;
 @ActionRegistration(
         displayName = "#CTL_NewRoundAction"
 )
-@ActionReference(path = "Shortcuts", name = "N")
+@ActionReference(path = "Shortcuts", name = "F2")
 @Messages("CTL_NewRoundAction=New round")
 public final class RootNewRoundAction extends BaseAction {
 

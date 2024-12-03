@@ -16,16 +16,27 @@
 package se.trixon.yaya.actions;
 
 import java.awt.event.ActionEvent;
+import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
+import org.openide.awt.ActionRegistration;
+import org.openide.util.NbBundle;
 import se.trixon.yaya.Options;
 
 /**
  *
  * @author Patrik Karlström
  */
+@ActionID(
+        category = "Game",
+        id = "se.trixon.yaya.actions.PlaySoundAction"
+)
+@ActionRegistration(displayName = "#CTL_PlaySoundAction")
+@ActionReference(path = "Shortcuts", name = "F4")
+@NbBundle.Messages("CTL_PlaySoundAction=Play sound")
 public class SystemPlaySoundAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        mOptions.invert(Options.KEY_PLAY_SOUND);
+        mOptions.invert(Options.KEY_PLAY_SOUND, Options.DEFAULT_PLAY_SOUND);
     }
 }

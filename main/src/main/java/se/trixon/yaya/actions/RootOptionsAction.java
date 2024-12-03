@@ -38,7 +38,7 @@ import se.trixon.yaya.OptionsPanel;
 @ActionRegistration(
         displayName = "#CTL_OptionsAction"
 )
-@ActionReference(path = "Shortcuts", name = "O")
+@ActionReference(path = "Shortcuts", name = "F3")
 @NbBundle.Messages("CTL_OptionsAction=Options")
 public final class RootOptionsAction extends BaseAction {
 

@@ -32,6 +32,9 @@ public class Options extends OptionsBase {
     public static final String DEFAULT_PLAYERS_ALL = "Ask;Embla";
     public static final boolean DEFAULT_PLAY_SOUND = true;
     public static final String DEFAULT_RULE_ID = "se.trixon.yaya.rules.yaya_scandinavian";
+    public static final boolean DEFAULT_SHOW_INDICATORS = true;
+    public static final boolean DEFAULT_SHOW_LIM_COLUMN = false;
+    public static final boolean DEFAULT_SHOW_MAX_COLUMN = false;
     public static final String KEY_FONT_SIZE = "font.size";
     public static final String KEY_GAME_START_COUNTER = "game.start_counter";
     public static final String KEY_NUM_OF_PLAYERS = "numOfPlayers";
@@ -44,13 +47,10 @@ public class Options extends OptionsBase {
     public static final String KEY_SHOW_LIM_COLUMN = "showLimColumn";
     public static final String KEY_SHOW_MAX_COLUMN = "showMaxColumn";
     public static final String KEY_THEME = "theme";
-    private static final int DEFAULT_FONT_SIZE = 12;
+    private static final int DEFAULT_FONT_SIZE = 24;
     private static final String DEFAULT_GAME_VARIANT = "standard";
     private static final int DEFAULT_NUM_OF_PLAYERS = 2;
     private static final boolean DEFAULT_REVERSE_DIRECTION = false;
-    private static final boolean DEFAULT_SHOW_INDICATORS = true;
-    private static final boolean DEFAULT_SHOW_LIM_COLUMN = false;
-    private static final boolean DEFAULT_SHOW_MAX_COLUMN = false;
     private static final String DEFAULT_THEME = "default";
     private Player[] mPlayers;
 
