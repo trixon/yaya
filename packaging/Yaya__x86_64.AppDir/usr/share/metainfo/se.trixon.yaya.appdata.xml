@@ -15,6 +15,21 @@
     </description>
     <launchable type="desktop-id">se.trixon.yaya.desktop</launchable>
     <url type="homepage">https://trixon.se/</url>
+    <url type="bugtracker">https://github.com/trixon/yaya/issues</url>
+    <url type="donation">https://buymeacoffee.com/trixon</url>
+    <provides>
+        <id>se.trixon.yaya.desktop</id>
+    </provides>
+    <keywords>
+        <keyword translate="no">java</keyword>
+        <keyword translate="no">netbeans</keyword>
+    </keywords>
+
+    <branding>
+        <color type="primary" scheme_preference="light">#ff8248</color>
+        <color type="primary" scheme_preference="dark">#A0522D</color>
+    </branding>
+
     <screenshots>
         <screenshot type="default">
             <image>https://trixon.se/files/screenshots/yaya_appstream01.png</image>
@@ -25,7 +40,4 @@
             <caption>Help window with rules</caption>
         </screenshot>
     </screenshots>
-    <provides>
-        <id>se.trixon.yaya.desktop</id>
-    </provides>
 </component>
