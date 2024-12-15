@@ -4,7 +4,7 @@
     <parent>
         <groupId>se.trixon.yaya</groupId>
         <artifactId>parent</artifactId>
-        <version>24.12x</version>
+        <version>25-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>main</artifactId>
@@ -108,6 +108,10 @@
                 <exclusion>
                     <groupId>org.apache.commons</groupId>
                     <artifactId>commons-csv</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-text</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
