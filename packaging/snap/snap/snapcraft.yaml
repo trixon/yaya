@@ -1,6 +1,6 @@
 name: yaya
 title: Yaya
-base: core22
+base: core24
 version: 'REPLACE_WITH_VERSION'
 summary: Yet Another Yahtzee-esque Application
 description: |
@@ -10,22 +10,17 @@ description: |
 
     Ready, Set, Roll!
 grade: stable
-architectures: [ amd64 ]
+platforms:
+    amd64:
 confinement: strict
 icon: snap/gui/yaya.png
 license: Apache-2.0
 compression: lzo
 
-layout:
-  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib:
-    bind: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib
-
 apps:
   yaya:
     command: yaya/bin/yaya
     extensions: [gnome]
-    plugs:
-        - audio-playback
     environment:
       ALSA_CONFIG_PATH: $SNAP/etc/asound.conf
 
@@ -35,7 +30,6 @@ parts:
     source: /root/project/Yaya-$SNAPCRAFT_PROJECT_VERSION-linux.zip
     source-type: zip
     stage-packages:
-      - libasound2
       - libasound2-plugins
 
   config:
