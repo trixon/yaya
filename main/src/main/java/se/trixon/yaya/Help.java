@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import se.trixon.almond.util.SystemHelper;
 import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.scorecard.rules.RuleManager;
@@ -44,45 +45,45 @@ public final class Help {
             if (gameCell.isRollCounter()) {
                 desc = mBundle.getString("help_rule_counter");
                 continue;
-            } else if (StringUtils.startsWith(args, "sum ")) { //NOI18N
+            } else if (Strings.CS.startsWith(args, "sum ")) { //NOI18N
                 var arg = StringUtils.split(args);
                 if (arg.length == 2) {
                     desc = mBundle.getString("help_rule_sum_all").formatted(gameCell.getTitle().toLowerCase(Locale.getDefault()));
                 } else {
                     desc = mBundle.getString("help_rule_sum_fixed").formatted(arg[2], arg[1]);
                 }
-            } else if (StringUtils.startsWith(args, "sum_n ")) { //NOI18N
+            } else if (Strings.CS.startsWith(args, "sum_n ")) { //NOI18N
                 var arg = StringUtils.split(args);
                 desc = mBundle.getString("help_rule_sumn").formatted(arg[1]);
-            } else if (StringUtils.startsWith(args, "sequence ")) { //NOI18N
+            } else if (Strings.CS.startsWith(args, "sequence ")) { //NOI18N
                 var arg = StringUtils.split(args);
                 desc = mBundle.getString("help_rule_sequence").formatted(arg[4], arg[1]);
             } else if (gameCell.isBonus()) {
                 desc = mBundle.getString("help_rule_bonus").formatted(gameCell.getMax(), gameCell.getSumRows(), gameCell.getLim());
             } else if (!gameCell.isBonus() && !gameCell.isRollCounter() && gameCell.isSum()) {
                 desc = mBundle.getString("help_rule_sum_of_rows").formatted(gameCell.getSumRows().replace(",", " & "));
-            } else if (StringUtils.startsWith(args, "duplicates ")) { //NOI18N
+            } else if (Strings.CS.startsWith(args, "duplicates ")) { //NOI18N
                 if (gameCell.getMax() == gameCell.getLim()) {
                     desc = mBundle.getString("help_rule_duplicates_fixed").formatted(gameCell.getMax(), StringUtils.split(args)[1]);
                 } else {
                     desc = mBundle.getString("help_rule_duplicates").formatted(StringUtils.split(args)[1]);
                 }
-            } else if (StringUtils.startsWith(args, "pair ")) { //NOI18N
+            } else if (Strings.CS.startsWith(args, "pair ")) { //NOI18N
                 desc = mBundle.getString("help_rule_pair").formatted(StringUtils.split(args)[1]);
-            } else if (StringUtils.startsWith(args, "straight ")) { //NOI18N
+            } else if (Strings.CS.startsWith(args, "straight ")) { //NOI18N
                 desc = mBundle.getString("help_rule_straight").formatted(gameCell.getSumRows());
-            } else if (StringUtils.startsWith(args, "house ")) { //NOI18N
+            } else if (Strings.CS.startsWith(args, "house ")) { //NOI18N
                 var arg = StringUtils.split(args);
                 if (gameCell.getMax() == gameCell.getLim()) {
                     desc = mBundle.getString("help_rule_house_fixed").formatted(gameCell.getMax(), arg[1], arg[2]);
                 } else {
                     desc = mBundle.getString("help_rule_house").formatted(arg[1], arg[2]);
                 }
-            } else if (StringUtils.equals(args, "sum")) { //NOI18N
+            } else if (Strings.CS.equals(args, "sum")) { //NOI18N
                 desc = mBundle.getString("help_rule_sum");
-            } else if (StringUtils.startsWith(args, "custom_crag")) { //NOI18N
+            } else if (Strings.CS.startsWith(args, "custom_crag")) { //NOI18N
                 desc = mBundle.getString("help_rule_custom_crag").formatted(StringUtils.split(args)[1]);
-            } else if (StringUtils.startsWith(args, "equals")) { //NOI18N
+            } else if (Strings.CS.startsWith(args, "equals")) { //NOI18N
                 var arg = StringUtils.split(args);
                 desc = mBundle.getString("help_rule_equals").formatted(arg[2], arg[1]);
             }

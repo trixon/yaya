@@ -18,7 +18,7 @@ package se.trixon.yaya.actions;
 import java.awt.event.ActionEvent;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -69,15 +69,15 @@ public final class SystemRemovePlayerAction extends BaseAction {
                 var defaultFillPlayer = remainingPlayers[0];
                 var contenders = mOptions.get(Options.KEY_PLAYERS, Options.DEFAULT_PLAYERS);
                 for (var removedPlayer : playersToRemove) {
-                    contenders = StringUtils.replace(contenders, removedPlayer, "");
+                    contenders = Strings.CS.replace(contenders, removedPlayer, "");
                 }
-                contenders = StringUtils.replace(contenders, ";;", ";%s;".formatted(defaultFillPlayer));
+                contenders = Strings.CS.replace(contenders, ";;", ";%s;".formatted(defaultFillPlayer));
 
-                if (StringUtils.startsWith(contenders, ";")) {
+                if (Strings.CS.startsWith(contenders, ";")) {
                     contenders = defaultFillPlayer + contenders;
                 }
 
-                if (StringUtils.endsWith(contenders, ";")) {
+                if (Strings.CS.endsWith(contenders, ";")) {
                     contenders = contenders + defaultFillPlayer;
                 }
 

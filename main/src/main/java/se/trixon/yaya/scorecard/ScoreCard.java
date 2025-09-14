@@ -29,7 +29,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import se.trixon.almond.util.CircularInt;
 import se.trixon.almond.util.Dict;
 import se.trixon.almond.util.GlobalState;
@@ -309,7 +309,7 @@ public class ScoreCard {
         mOptions.getPreferences().addPreferenceChangeListener(pce -> {
             if (pce.getKey().equalsIgnoreCase(Options.KEY_SHOW_INDICATORS)) {
                 setVisibleIndicators(mOptions.isShowIndicators());
-            } else if (StringUtils.equalsAny(pce.getKey(), Options.KEY_THEME)) {
+            } else if (Strings.CS.equalsAny(pce.getKey(), Options.KEY_THEME)) {
                 applyColors();
             } else if (pce.getKey().equalsIgnoreCase(Options.KEY_FONT_SIZE)) {
                 applyFontSize(mPanel, mOptions.getScaledFontSize());
