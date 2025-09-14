@@ -159,7 +159,7 @@
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
                     <finalName>Yaya-${project.version}</finalName>
-                    <etcConfFile>src/yaya.conf</etcConfFile>
+                    <etcConfFile>src/main/resources/yaya.conf</etcConfFile>
                     <verifyRuntime>true</verifyRuntime>
                     <!--<additionalArguments>&#045;&#045;locale en</additionalArguments>-->
                     <!--<additionalArguments>&#045;&#045;fontsize 32</additionalArguments>-->
