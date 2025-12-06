@@ -4,7 +4,7 @@
     <parent>
         <groupId>se.trixon.yaya</groupId>
         <artifactId>parent</artifactId>
-        <version>25.09</version>
+        <version>25.09x</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>main</artifactId>
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>se.trixon.netbeans-platform</groupId>
             <artifactId>basic</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>28</version>
             <type>pom</type>
         </dependency>
         <dependency>
