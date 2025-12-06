@@ -88,7 +88,7 @@ public class PlayersPanel extends javax.swing.JPanel {
         mMaxNumOfPlayers = maxNumOfPlayers;
         numberSpinner.setModel(new SpinnerNumberModel(1, 1, maxNumOfPlayers, 1));
 
-        mNameComboBoxes = new JComboBox[mMaxNumOfPlayers];
+        mNameComboBoxes = (JComboBox<String>[]) new JComboBox[mMaxNumOfPlayers];
         leftPanel.removeAll();
         rightPanel.removeAll();
         JPanel parent;

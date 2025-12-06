@@ -43,7 +43,7 @@ public class NewGamePanel extends JPanel {
     }
 
     public void load() {
-        gameComboBox.setModel(new DefaultComboBoxModel(mRuleManager.getTitles()));
+        gameComboBox.setModel(new DefaultComboBoxModel<>(mRuleManager.getTitles()));
         gameComboBox.setSelectedIndex(mRuleManager.getIndexForId(mOptions.getRuleId()));
         selectPlayersPanel.load();
     }
@@ -70,9 +70,9 @@ public class NewGamePanel extends JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         variantLabel = new javax.swing.JLabel();
-        variantComboBox = new javax.swing.JComboBox();
+        variantComboBox = new javax.swing.JComboBox<>();
         gameLabel = new javax.swing.JLabel();
-        gameComboBox = new javax.swing.JComboBox();
+        gameComboBox = new javax.swing.JComboBox<>();
         byLineLabel = new javax.swing.JLabel();
         selectPlayersPanel = new se.trixon.yaya.PlayersPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -148,17 +148,17 @@ public class NewGamePanel extends JPanel {
         byLineLabel.setText(byLine);
         String[] localizedVariant = mRule.getLocalizedVariants().clone();
         Arrays.sort(localizedVariant);
-        variantComboBox.setModel(new DefaultComboBoxModel(localizedVariant));
+        variantComboBox.setModel(new DefaultComboBoxModel<>(localizedVariant));
         variantComboBox.setSelectedIndex(mRule.getLocalizedIndexForVariantId(mOptions.getGameVariant(mRule.getId())));
     }//GEN-LAST:event_gameComboBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel byLineLabel;
-    private javax.swing.JComboBox gameComboBox;
+    private javax.swing.JComboBox<String> gameComboBox;
     private javax.swing.JLabel gameLabel;
     private javax.swing.JPanel jPanel1;
     private se.trixon.yaya.PlayersPanel selectPlayersPanel;
-    private javax.swing.JComboBox variantComboBox;
+    private javax.swing.JComboBox<String> variantComboBox;
     private javax.swing.JLabel variantLabel;
     // End of variables declaration//GEN-END:variables
 }
