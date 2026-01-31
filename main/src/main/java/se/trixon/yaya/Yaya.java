@@ -15,8 +15,12 @@
  */
 package se.trixon.yaya;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -29,7 +33,8 @@ import se.trixon.almond.nbp.Almond;
 import se.trixon.almond.util.GlobalState;
 import se.trixon.almond.util.PrefsHelper;
 import se.trixon.almond.util.SystemHelper;
-import se.trixon.almond.util.gson_adapter.AwtColorAdapter;
+import se.trixon.almond.util.jackson.AwtColorHexARGBDeserializer;
+import se.trixon.almond.util.jackson.AwtColorHexARGBSerializer;
 import se.trixon.almond.util.swing.SwingHelper;
 import se.trixon.yaya.actions.BaseAction;
 import se.trixon.yaya.scorecard.rules.RuleManager;
@@ -40,12 +45,16 @@ import se.trixon.yaya.scorecard.rules.RuleManager;
  */
 public class Yaya {
 
-    public static final Gson GSON = new GsonBuilder()
-            .setVersion(1.0)
-            .serializeNulls()
-            .setPrettyPrinting()
-            .registerTypeAdapter(Color.class, new AwtColorAdapter())
-            .create();
+    public final static JsonMapper JSON = JsonMapper.builder()
+            .enable(SerializationFeature.INDENT_OUTPUT)
+            .addModule(new SimpleModule()
+                    .addSerializer(Color.class, new AwtColorHexARGBSerializer())
+                    .addDeserializer(Color.class, new AwtColorHexARGBDeserializer())
+            )
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .visibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
+            .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+            .build();
     public static final boolean IN_DEVELOPMENT = true;
     public static final String KEY_GAME_STATE = "gamestate";
     public static final String LOG_TITLE = "Yaya";

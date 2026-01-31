@@ -15,8 +15,10 @@
  */
 package se.trixon.yaya;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Comparator;
 import java.util.HashMap;
+import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import se.trixon.yaya.themes.Theme;
 import se.trixon.yaya.themes.ThemeProvider;
@@ -37,7 +39,15 @@ public class ThemeManager {
 
     private ThemeManager() {
         mThemes = Lookup.getDefault().lookupAll(ThemeProvider.class).stream()
-                .map(provider -> provider.load())
+                .map(provider -> {
+                    try {
+                        return provider.load();
+                    } catch (JsonProcessingException ex) {
+                        Exceptions.printStackTrace(ex);
+                        return null;
+                    }
+                })
+                .filter(theme -> theme != null)
                 .filter(theme -> {
                     mIdToTheme.put(theme.getId(), theme);
                     return true;

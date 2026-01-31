@@ -15,9 +15,11 @@
  */
 package se.trixon.yaya.scorecard.rules;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import se.trixon.yaya.Options;
 
@@ -95,8 +97,12 @@ public class RuleManager {
         mRules = new ArrayList<>();
 
         for (var ruleProvider : Lookup.getDefault().lookupAll(RuleProvider.class)) {
-            var rule = ruleProvider.load();
-            mRules.add(rule);
+            try {
+                var rule = ruleProvider.load();
+                mRules.add(rule);
+            } catch (JsonProcessingException ex) {
+                Exceptions.printStackTrace(ex);
+            }
         }
 
         Collections.sort(mRules, Comparator.comparing(Rule::getTitle));

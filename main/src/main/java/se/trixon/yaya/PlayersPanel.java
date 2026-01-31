@@ -84,6 +84,7 @@ public class PlayersPanel extends javax.swing.JPanel {
         return (int) numberSpinner.getValue();
     }
 
+    @SuppressWarnings("unchecked")
     private void setMaxNumOfPlayers(int maxNumOfPlayers) {
         mMaxNumOfPlayers = maxNumOfPlayers;
         numberSpinner.setModel(new SpinnerNumberModel(1, 1, maxNumOfPlayers, 1));

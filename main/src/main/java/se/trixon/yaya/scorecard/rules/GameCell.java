@@ -15,7 +15,7 @@
  */
 package se.trixon.yaya.scorecard.rules;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.TreeSet;
 import se.trixon.almond.util.StringHelper;
@@ -27,32 +27,32 @@ import se.trixon.yaya.Yaya;
  */
 public class GameCell {
 
-    @SerializedName("bonus")
+    @JsonProperty("bonus")
     private boolean mBonus;
-    @SerializedName("formula")
+    @JsonProperty("formula")
     private String mFormula;
-    @SerializedName("id")
+    @JsonProperty("id")
     private String mId;
-    @SerializedName("lim")
+    @JsonProperty("lim")
     private int mLim = 0;
-    @SerializedName("locals")
+    @JsonProperty("locals")
     private final HashMap<String, String> mLocals = new HashMap<>();
-    @SerializedName("max")
+    @JsonProperty("max")
     private int mMax = 0;
-    @SerializedName("isPlayable")
+    @JsonProperty("isPlayable")
     private boolean mPlayable;
-    @SerializedName("isResult")
+    @JsonProperty("isResult")
     private boolean mResult;
-    @SerializedName("isRollCounter")
+    @JsonProperty("isRollCounter")
     private boolean mRollCounter;
-    @SerializedName("section")
+    @JsonProperty("section")
     private GameSection mSection;
-    @SerializedName("isSum")
+    @JsonProperty("isSum")
     private boolean mSum;
-    @SerializedName("sum_rows")
+    @JsonProperty("sum_rows")
     private String mSumRows;
     private transient TreeSet<Integer> mSumSet;
-    @SerializedName("title")
+    @JsonProperty("title")
     private String mTitle;
 
     public GameCell() {

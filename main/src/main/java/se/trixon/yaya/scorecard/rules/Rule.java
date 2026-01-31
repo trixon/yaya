@@ -15,10 +15,12 @@
  */
 package se.trixon.yaya.scorecard.rules;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import org.openide.util.Exceptions;
 import se.trixon.yaya.Yaya;
 
 /**
@@ -27,27 +29,27 @@ import se.trixon.yaya.Yaya;
  */
 public class Rule {
 
-    @SerializedName("author")
+    @JsonProperty("author")
     private String mAuthor;
-    @SerializedName("date")
+    @JsonProperty("date")
     private String mDate;
-    @SerializedName("default_variant")
+    @JsonProperty("default_variant")
     private int mDefaultVariant;
-    @SerializedName("rows")
+    @JsonProperty("rows")
     private GameColumn mGameColumn = new GameColumn();
-    @SerializedName("id")
+    @JsonProperty("id")
     private String mId;
-    @SerializedName("locals")
+    @JsonProperty("locals")
     private final HashMap<String, String> mLocals = new HashMap<>();
-    @SerializedName("dice")
+    @JsonProperty("dice")
     private int mNumOfDice;
-    @SerializedName("rolls")
+    @JsonProperty("rolls")
     private int mNumOfRolls;
     private int mResultRow;
-    @SerializedName("title")
+    @JsonProperty("title")
     private String mTitle;
     private int mTotalScore;
-    @SerializedName("variants")
+    @JsonProperty("variants")
     private ArrayList<GameVariant> mVariants;
 
     public Rule() {
@@ -204,7 +206,12 @@ public class Rule {
 
     @Override
     public String toString() {
-        return Yaya.GSON.toJson(this);
+        try {
+            return Yaya.JSON.writeValueAsString(this);
+        } catch (JsonProcessingException ex) {
+            Exceptions.printStackTrace(ex);
+            return "";
+        }
     }
 
 }

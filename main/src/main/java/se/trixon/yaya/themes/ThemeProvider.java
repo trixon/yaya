@@ -15,7 +15,7 @@
  */
 package se.trixon.yaya.themes;
 
-import com.google.gson.JsonSyntaxException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.openide.util.Exceptions;
@@ -38,14 +38,14 @@ public abstract class ThemeProvider {
         return mId;
     }
 
-    public Theme load() throws JsonSyntaxException {
-        var theme = Yaya.GSON.fromJson(getTheme(), Theme.class);
+    public Theme load() throws JsonProcessingException {
+        var theme = Yaya.JSON.readValue(getTheme(), Theme.class);
 
         return theme;
     }
 
     private String getTheme() {
-        try ( var inputStream = getClass().getResourceAsStream("/" + SystemHelper.getPackageAsPath(getClass()) + mId)) {
+        try (var inputStream = getClass().getResourceAsStream("/" + SystemHelper.getPackageAsPath(getClass()) + mId)) {
             return IOUtils.toString(inputStream, "UTF-8");
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);

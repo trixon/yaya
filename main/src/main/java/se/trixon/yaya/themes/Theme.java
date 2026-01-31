@@ -15,7 +15,7 @@
  */
 package se.trixon.yaya.themes;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.awt.Color;
 import java.util.HashMap;
 import se.trixon.yaya.Yaya;
@@ -26,47 +26,47 @@ import se.trixon.yaya.Yaya;
  */
 public class Theme {
 
-    @SerializedName("BG_HeaderColumn")
+    @JsonProperty("BG_HeaderColumn")
     private Color mBgHeaderColumn;
-    @SerializedName("BG_HeaderRow")
+    @JsonProperty("BG_HeaderRow")
     private Color mBgHeaderRow;
-    @SerializedName("BG_HeaderSum")
+    @JsonProperty("BG_HeaderSum")
     private Color mBgHeaderSum;
-    @SerializedName("BG_IndicatorHi")
+    @JsonProperty("BG_IndicatorHi")
     private Color mBgIndicatorHi;
-    @SerializedName("BG_IndicatorLo")
+    @JsonProperty("BG_IndicatorLo")
     private Color mBgIndicatorLo;
-    @SerializedName("BG_ScoreCell")
+    @JsonProperty("BG_ScoreCell")
     private Color mBgScoreCell;
-    @SerializedName("BG_Scorecard")
+    @JsonProperty("BG_Scorecard")
     private Color mBgScorecard;
-    @SerializedName("BG_ScorecardFiller")
+    @JsonProperty("BG_ScorecardFiller")
     private Color mBgScorecardFiller;
-    @SerializedName("BG_Window")
+    @JsonProperty("BG_Window")
     private Color mBgWindow;
-    @SerializedName("FG_HeaderColumn")
+    @JsonProperty("FG_HeaderColumn")
     private Color mFgHeaderColumn;
-    @SerializedName("FG_HeaderRow")
+    @JsonProperty("FG_HeaderRow")
     private Color mFgHeaderRow;
-    @SerializedName("FG_HeaderSum")
+    @JsonProperty("FG_HeaderSum")
     private Color mFgHeaderSum;
-    @SerializedName("FG_IndicatorHi")
+    @JsonProperty("FG_IndicatorHi")
     private Color mFgIndicatorHi;
-    @SerializedName("FG_IndicatorLo")
+    @JsonProperty("FG_IndicatorLo")
     private Color mFgIndicatorLo;
-    @SerializedName("FG_ScoreCell")
+    @JsonProperty("FG_ScoreCell")
     private Color mFgScoreCell;
-    @SerializedName("ICON_Undo")
+    @JsonProperty("ICON_Undo")
     private Color mIconUndo;
-    @SerializedName("id")
+    @JsonProperty("id")
     private String mId;
-    @SerializedName("locals")
+    @JsonProperty("locals")
     private final HashMap<String, String> mLocals = new HashMap<>();
-    @SerializedName("name")
+    @JsonProperty("name")
     private String mName;
-    @SerializedName("isOpagueScorecard")
+    @JsonProperty("isOpagueScorecard")
     private boolean mOpaqueScorecard;
-    @SerializedName("isOpagueWindow")
+    @JsonProperty("isOpagueWindow")
     private boolean mOpaqueWindow;
 
     public Color getBgHeaderColumn() {

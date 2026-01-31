@@ -15,7 +15,7 @@
  */
 package se.trixon.yaya.scorecard.rules;
 
-import com.google.gson.JsonSyntaxException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.openide.util.Exceptions;
@@ -38,15 +38,15 @@ public abstract class RuleProvider {
         return mId;
     }
 
-    public Rule load() throws JsonSyntaxException {
-        var rule = Yaya.GSON.fromJson(getDefinition(), Rule.class);
+    public Rule load() throws JsonProcessingException {
+        var rule = Yaya.JSON.readValue(getDefinition(), Rule.class);
         rule.postLoad();
 
         return rule;
     }
 
     private String getDefinition() {
-        try ( var inputStream = getClass().getResourceAsStream("/" + SystemHelper.getPackageAsPath(getClass()) + mId)) {
+        try (var inputStream = getClass().getResourceAsStream("/" + SystemHelper.getPackageAsPath(getClass()) + mId)) {
             return IOUtils.toString(inputStream, "UTF-8");
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
