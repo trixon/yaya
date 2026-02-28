@@ -17,6 +17,17 @@ icon: snap/gui/yaya.png
 license: Apache-2.0
 compression: lzo
 
+source-code:
+  - https://github.com/trixon/yaya
+contact:
+  - patrik@trixon.se
+website:
+  - https://trixon.se
+issues:
+  - https://github.com/trixon/yaya/issues
+donation:
+  - https://buymeacoffee.com/trixon
+
 apps:
   yaya:
     command: yaya/bin/yaya
