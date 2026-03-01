@@ -5,7 +5,7 @@
     <parent>
         <groupId>se.trixon.yaya</groupId>
         <artifactId>parent</artifactId>
-        <version>25.09x</version>
+        <version>26.03</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
